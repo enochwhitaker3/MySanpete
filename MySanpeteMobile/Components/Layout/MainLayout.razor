@@ -5,11 +5,10 @@
 <MudSnackbarProvider />
 
 <MudLayout>
-    <MudAppBar Elevation="0" style="background-color:#5EB0BF">
-        <MudIconButton Icon="@Icons.Custom.Brands.MudBlazor" Color="Color.Inherit" Link="https://mudblazor.com/" Target="_blank" />
-        <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/arbems/.NET-MAUI-Blazor-Hybrid-app-with-MudBlazor" Target="_blank" />
+    <MudAppBar Elevation="0" Style="background-color:#FFFFFF; padding-top:4vh; justify-items:center;">
+        <MudImage Src="My_Sanpete.png" Style="width:100px; height:100px; margin-bottom:4vh;" />
         <MudSpacer />
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Dark" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" Style="padding-bottom:5vh;" />
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="1" Anchor="Anchor.Right">
         <MudDrawerHeader>
@@ -18,9 +17,7 @@
         <NavMenu />
     </MudDrawer>
     <MudMainContent>
-        <MudContainer MaxWidth="MaxWidth.Large" Class="my-5 pt-5">
-            @Body
-        </MudContainer>
+        @Body
     </MudMainContent>
 </MudLayout>
 
