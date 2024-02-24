@@ -6,6 +6,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+
+builder.Services.AddAuthentication().AddGoogle(googleOptions =>
+{
+    googleOptions.ClientId = builder.Configuration["GoogleClientId"] ?? throw new Exception("BWAH");
+    googleOptions.ClientSecret = builder.Configuration["GoogleClientSecret"] ?? throw new Exception("BWAH");
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
