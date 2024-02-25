@@ -65,4 +65,8 @@
         <PackageReference Include="MudBlazor" Version="6.16.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\RazorClassLibrary\RazorClassLibrary.csproj" />
+    </ItemGroup>
+
 </Project>

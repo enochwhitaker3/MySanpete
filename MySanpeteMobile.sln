@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySanpeteMobile", "MySanpeteMobile\MySanpeteMobile.csproj", "{8E0405EC-A91E-4939-8F32-40D3C6A1F722}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MySanpeteMobile", "MySanpeteMobile\MySanpeteMobile.csproj", "{8E0405EC-A91E-4939-8F32-40D3C6A1F722}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySanpeteWeb", "MySanpeteWeb\MySanpeteWeb.csproj", "{453AD530-8223-4875-898A-395D94E0C4BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MySanpeteWeb", "MySanpeteWeb\MySanpeteWeb.csproj", "{453AD530-8223-4875-898A-395D94E0C4BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorClassLib", "RazorClassLib\RazorClassLib.csproj", "{319CDC72-BFF1-41BE-99FB-239D63920500}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorClassLibrary", "RazorClassLibrary\RazorClassLibrary.csproj", "{52F163B8-01DF-4E78-9FC6-7955C2EDDB90}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +25,10 @@ Global
 		{453AD530-8223-4875-898A-395D94E0C4BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{453AD530-8223-4875-898A-395D94E0C4BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{453AD530-8223-4875-898A-395D94E0C4BA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{319CDC72-BFF1-41BE-99FB-239D63920500}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{319CDC72-BFF1-41BE-99FB-239D63920500}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{319CDC72-BFF1-41BE-99FB-239D63920500}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{319CDC72-BFF1-41BE-99FB-239D63920500}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52F163B8-01DF-4E78-9FC6-7955C2EDDB90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52F163B8-01DF-4E78-9FC6-7955C2EDDB90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52F163B8-01DF-4E78-9FC6-7955C2EDDB90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52F163B8-01DF-4E78-9FC6-7955C2EDDB90}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
