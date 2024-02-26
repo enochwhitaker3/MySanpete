@@ -1,3 +1,4 @@
+using MudBlazor.Services;
 using MySanpeteWeb.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,12 +7,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+builder.Services.AddMudServices();
 
-builder.Services.AddAuthentication().AddGoogle(googleOptions =>
-{
-    googleOptions.ClientId = builder.Configuration["GoogleClientId"] ?? throw new Exception("BWAH");
-    googleOptions.ClientSecret = builder.Configuration["GoogleClientSecret"] ?? throw new Exception("BWAH");
-});
+
+//builder.Services.AddAuthentication().AddGoogle(googleOptions =>
+//{
+//    googleOptions.ClientId = builder.Configuration["GoogleClientId"] ?? throw new Exception("BWAH");
+//    googleOptions.ClientSecret = builder.Configuration["GoogleClientSecret"] ?? throw new Exception("BWAH");
+//});
 
 var app = builder.Build();
 
