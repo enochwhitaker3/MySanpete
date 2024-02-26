@@ -1,18 +1,7 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">MySanpeteWeb</a>
-    </div>
-</div>
-
-<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
-
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-    </nav>
-</div>
-
+﻿<MudNavMenu>
+    <MudNavLink Href="/businesses" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Business">Businesses</MudNavLink>
+    <MudNavLink Href="/blogs" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Newspaper">Blogs</MudNavLink>
+    <MudNavLink Href="/podcasts" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Podcasts">Podcast</MudNavLink>
+    <MudNavLink Href="/events" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Event">Events</MudNavLink>
+    <MudNavLink Href="/login" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Person">Log in</MudNavLink>
+</MudNavMenu>

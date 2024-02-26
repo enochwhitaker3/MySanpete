@@ -8,18 +8,22 @@
 
     <MudAppBar Elevation="0" Style="background-color:#FFFFFF; padding-top:4vh; justify-items:center;">
         <MudHidden Breakpoint="Breakpoint.SmAndUp">
-            <MudImage Src="Images/My_Sanpete.png" Style="width:100px; height:100px; margin-bottom:4vh;" />
+            <a href="/">
+                <MudImage Src="Images/My_Sanpete.png" Style="width:100px; height:100px; margin-bottom:4vh;" />
+            </a>
             <MudSpacer />
             <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Dark" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" Style="padding-bottom:5vh;" />
         </MudHidden>
         <MudHidden Breakpoint="Breakpoint.Xs">
-            <MudImage Src="Images/My_Sanpete.png" Style="width:100px; height:100px; margin-bottom:4vh;" />
+            <a href="/">
+                <MudImage Src="Images/My_Sanpete.png" Style="width:100px; height:100px; margin-bottom:4vh;" />
+            </a>            
             <MudSpacer />
-            <MudNavLink Href="" Match="NavLinkMatch.All" Style="color:black; margin-left:0px; width:fit-content; padding-bottom:4vh;">Businesses</MudNavLink>
-            <MudNavLink Href="" Match="NavLinkMatch.All" Style="color:black; margin-left:0px; width:fit-content; padding-bottom:4vh;">Blogs</MudNavLink>
-            <MudNavLink Href="" Match="NavLinkMatch.All" Style="color:black; margin-left:0px; width:fit-content; padding-bottom:4vh;">Podcast</MudNavLink>
-            <MudNavLink Href="" Match="NavLinkMatch.All" Style="color:black; margin-left:0px; width:fit-content; padding-bottom:4vh;">Events</MudNavLink>
-            <MudNavLink Href="" Match="NavLinkMatch.All" Style="color:black; margin-left:0px; width:fit-content; padding-bottom:4vh;">Log in</MudNavLink>
+            <MudNavLink Href="/businesses" Match="NavLinkMatch.All" Style="color:black; margin-left:0px; width:fit-content; padding-bottom:4vh;">Businesses</MudNavLink>
+            <MudNavLink Href="/blogs" Match="NavLinkMatch.All" Style="color:black; margin-left:0px; width:fit-content; padding-bottom:4vh;">Blogs</MudNavLink>
+            <MudNavLink Href="/podcasts" Match="NavLinkMatch.All" Style="color:black; margin-left:0px; width:fit-content; padding-bottom:4vh;">Podcast</MudNavLink>
+            <MudNavLink Href="/events" Match="NavLinkMatch.All" Style="color:black; margin-left:0px; width:fit-content; padding-bottom:4vh;">Events</MudNavLink>
+            <MudNavLink Href="/login" Match="NavLinkMatch.All" Style="color:black; margin-left:0px; width:fit-content; padding-bottom:4vh;">Log in</MudNavLink>
         </MudHidden>
     </MudAppBar>
 
