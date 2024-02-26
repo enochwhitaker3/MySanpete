@@ -1,4 +1,5 @@
-﻿<Router AppAssembly="@typeof(MauiProgram).Assembly">
+﻿@using RazorClassLibrary.Pages
+<Router AppAssembly="@typeof(MauiProgram).Assembly">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(Components.Layout.MainLayout)" />
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
