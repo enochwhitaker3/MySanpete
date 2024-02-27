@@ -18,10 +18,4 @@
     <PackageReference Include="MudBlazor.ThemeManager" Version="1.0.8" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DTOs\" />
-    <Folder Include="Requests\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
-
 </Project>
