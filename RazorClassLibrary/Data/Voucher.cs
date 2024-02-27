@@ -25,7 +25,9 @@ public partial class Voucher
 
     public int? TotalReclaimable { get; set; }
 
+    public virtual ICollection<BundleVoucher> BundleVouchers { get; set; } = new List<BundleVoucher>();
+
     public virtual Business Business { get; set; } = null!;
 
-    public virtual ICollection<UserVourcher> UserVourchers { get; set; } = new List<UserVourcher>();
+    public virtual ICollection<UserVoucher> UserVouchers { get; set; } = new List<UserVoucher>();
 }
