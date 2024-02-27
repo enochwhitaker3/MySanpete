@@ -94,18 +94,7 @@ body, html {
     margin-top: 100px;
 }
 
-.title{
-    font-size:50px;
-    font-family:'Segoe UI';
-    font-weight:bold;
-    margin-bottom:25px;
-}
 
-.undertitle {
-    font-size: large;
-    font-family: 'Segoe UI';
-    padding-left: 35px;
-}
 .overlay-text {
     position: absolute;
     top: 50%;
