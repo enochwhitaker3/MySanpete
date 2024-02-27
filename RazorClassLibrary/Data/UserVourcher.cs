@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MySanpeteWeb.Data;
+namespace RazorClassLibrary.Data;
 
 public partial class UserVourcher
 {

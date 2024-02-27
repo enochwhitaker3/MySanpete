@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace MySanpeteWeb.Data;
+namespace RazorClassLibrary.Data;
 
 public partial class MySanpeteDbContext : DbContext
 {

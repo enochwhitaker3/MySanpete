@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MySanpeteWeb.Data;
+namespace RazorClassLibrary.Data;
 
-public partial class BlogReaction
+public partial class PodcastReaction
 {
     public int Id { get; set; }
 
-    public int BlogId { get; set; }
+    public int PodcastId { get; set; }
 
     public int ReactionId { get; set; }
 
-    public virtual Blog Blog { get; set; } = null!;
+    public virtual Podcast Podcast { get; set; } = null!;
 
     public virtual Reaction Reaction { get; set; } = null!;
 }
