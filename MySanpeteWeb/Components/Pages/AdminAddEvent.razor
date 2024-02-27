@@ -1,9 +1,9 @@
 ﻿@page "/add-event"
-@using FluentValidation
+
 
 <h3>Admin Add Event</h3>
 
-
+@* 
 <MudCard>
     <MudForm Model="@model" @ref="@form" Validation="@(orderValidator.ValidateValue)" ValidationDelay="0">
         <MudCardContent>
@@ -58,47 +58,15 @@
 </MudCard>
 
 @code {
-    [Inject] ISnackbar Snackbar { get; set; }
 
     MudForm form;
 
-    OrderModelFluentValidator orderValidator = new OrderModelFluentValidator();
+    OccasianModelFluentValidator orderValidator = new OccasianModelFluentValidator();
 
     OrderDetailsModelFluentValidator orderDetailsValidator = new OrderDetailsModelFluentValidator();
 
-    OrderModel model = new OrderModel();
+    Occasion model = new Occasion();
 
-    // TODO: REMOVE THIS ONCE WE HAVE SCAFFOLDED THE DB
-    public class OrderModel
-    {
-        public string Business { get; set; } = "";
-        public string Title { get; set; } = "";
-        public string Description { get; set; }
-        public string Location { get; set; }
-        public AddressModel Address { get; set; } = new AddressModel();
-        public List<OrderDetailsModel> OrderDetails = new List<OrderDetailsModel>()
-        {
-            new OrderDetailsModel()
-                {
-                    Description = "Perform Work order 1",
-                    Offer = 100
-                },
-            new OrderDetailsModel()
-        };
-    }
-
-    public class AddressModel
-    {
-        public string Address { get; set; }
-        public string City { get; set; }
-        public string Country { get; set; }
-    }
-
-    public class OrderDetailsModel
-    {
-        public string Description { get; set; }
-        public decimal Offer { get; set; }
-    }
 
     private async Task Submit()
     {
@@ -114,9 +82,9 @@
     /// A standard AbstractValidator which contains multiple rules and can be shared with the back end API
     /// </summary>
     /// <typeparam name="OrderModel"></typeparam>
-    public class OrderModelFluentValidator : AbstractValidator<OrderModel>
+    public class OccasianModelFluentValidator : AbstractValidator<OrderModel>
     {
-        public OrderModelFluentValidator()
+        public OccasianModelFluentValidator()
         {
             RuleFor(x => x.Title)
                 .NotEmpty();
@@ -173,3 +141,4 @@
         };
     }
 }
+ *@
