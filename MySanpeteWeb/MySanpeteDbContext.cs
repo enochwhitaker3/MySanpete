@@ -22,6 +22,10 @@ public partial class MySanpeteDbContext : DbContext
 
     public virtual DbSet<BlogReaction> BlogReactions { get; set; }
 
+    public virtual DbSet<Bundle> Bundles { get; set; }
+
+    public virtual DbSet<BundleVoucher> BundleVouchers { get; set; }
+
     public virtual DbSet<Business> Businesses { get; set; }
 
     public virtual DbSet<EndUser> EndUsers { get; set; }
@@ -44,9 +48,12 @@ public partial class MySanpeteDbContext : DbContext
 
     public virtual DbSet<UserRole> UserRoles { get; set; }
 
-    public virtual DbSet<UserVourcher> UserVourchers { get; set; }
+    public virtual DbSet<UserVoucher> UserVouchers { get; set; }
 
     public virtual DbSet<Voucher> Vouchers { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        => optionsBuilder.UseNpgsql("Name=MySanpeteDb");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -104,6 +111,7 @@ public partial class MySanpeteDbContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.BlogId).HasColumnName("blog_id");
             entity.Property(e => e.ReactionId).HasColumnName("reaction_id");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
 
             entity.HasOne(d => d.Blog).WithMany(p => p.BlogReactions)
                 .HasForeignKey(d => d.BlogId)
@@ -114,6 +122,44 @@ public partial class MySanpeteDbContext : DbContext
                 .HasForeignKey(d => d.ReactionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("blog_reaction_reaction_id_fkey");
+
+            entity.HasOne(d => d.User).WithMany(p => p.BlogReactions)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("fk_user_id");
+        });
+
+        modelBuilder.Entity<Bundle>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("bundle_pkey");
+
+            entity.ToTable("bundle", "mysanpete");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.BundleName).HasColumnName("bundle_name");
+            entity.Property(e => e.EndDate).HasColumnName("end_date");
+            entity.Property(e => e.FinalPrice)
+                .HasColumnType("money")
+                .HasColumnName("final_price");
+            entity.Property(e => e.StartDate).HasColumnName("start_date");
+        });
+
+        modelBuilder.Entity<BundleVoucher>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("bundle_voucher_pkey");
+
+            entity.ToTable("bundle_voucher", "mysanpete");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.BundleId).HasColumnName("bundle_id");
+            entity.Property(e => e.VoucherId).HasColumnName("voucher_id");
+
+            entity.HasOne(d => d.Bundle).WithMany(p => p.BundleVouchers)
+                .HasForeignKey(d => d.BundleId)
+                .HasConstraintName("bundle_voucher_bundle_id_fkey");
+
+            entity.HasOne(d => d.Voucher).WithMany(p => p.BundleVouchers)
+                .HasForeignKey(d => d.VoucherId)
+                .HasConstraintName("bundle_voucher_voucher_id_fkey");
         });
 
         modelBuilder.Entity<Business>(entity =>
@@ -135,6 +181,10 @@ public partial class MySanpeteDbContext : DbContext
             entity.ToTable("end_user", "mysanpete");
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Guid).HasColumnName("guid");
+            entity.Property(e => e.Isactive)
+                .HasDefaultValue(true)
+                .HasColumnName("isactive");
             entity.Property(e => e.Photo).HasColumnName("photo");
             entity.Property(e => e.UserEmail).HasColumnName("user_email");
             entity.Property(e => e.UserName)
@@ -214,6 +264,7 @@ public partial class MySanpeteDbContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.PodcastId).HasColumnName("podcast_id");
             entity.Property(e => e.ReactionId).HasColumnName("reaction_id");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
 
             entity.HasOne(d => d.Podcast).WithMany(p => p.PodcastReactions)
                 .HasForeignKey(d => d.PodcastId)
@@ -224,6 +275,10 @@ public partial class MySanpeteDbContext : DbContext
                 .HasForeignKey(d => d.ReactionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("podcast_reaction_reaction_id_fkey");
+
+            entity.HasOne(d => d.User).WithMany(p => p.PodcastReactions)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("fk_user_id");
         });
 
         modelBuilder.Entity<Reaction>(entity =>
@@ -314,25 +369,30 @@ public partial class MySanpeteDbContext : DbContext
             entity.Property(e => e.RoleName).HasColumnName("role_name");
         });
 
-        modelBuilder.Entity<UserVourcher>(entity =>
+        modelBuilder.Entity<UserVoucher>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("user_vourcher_pkey");
 
-            entity.ToTable("user_vourcher", "mysanpete");
+            entity.ToTable("user_voucher", "mysanpete");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.FinalPrice)
                 .HasColumnType("money")
                 .HasColumnName("final_price");
+            entity.Property(e => e.Isused)
+                .HasDefaultValue(false)
+                .HasColumnName("isused");
+            entity.Property(e => e.TimesClaimd).HasColumnName("times_claimd");
+            entity.Property(e => e.TotalReclaimable).HasColumnName("total_reclaimable");
             entity.Property(e => e.UserId).HasColumnName("user_id");
             entity.Property(e => e.VoucherId).HasColumnName("voucher_id");
 
-            entity.HasOne(d => d.User).WithMany(p => p.UserVourchers)
+            entity.HasOne(d => d.User).WithMany(p => p.UserVouchers)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("user_vourcher_user_id_fkey");
 
-            entity.HasOne(d => d.Voucher).WithMany(p => p.UserVourchers)
+            entity.HasOne(d => d.Voucher).WithMany(p => p.UserVouchers)
                 .HasForeignKey(d => d.VoucherId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("user_vourcher_voucher_id_fkey");
