@@ -10,7 +10,8 @@ public static class DtoConverter
         {
             Id = user.Id,
             Guid = user.Guid,
-            Username = user.UserEmail,
+            Username = user.UserName,
+            UserEmail = user.UserEmail,
             Photo = user.Photo,
         };
     }
