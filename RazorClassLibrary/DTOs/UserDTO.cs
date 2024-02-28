@@ -13,6 +13,4 @@ public class UserDTO
     public Guid? Guid { get; set; }
     public string? Username { get; set; }
     public byte[]? Photo { get; set; }
-
-   
 }

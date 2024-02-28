@@ -14,4 +14,22 @@ public static class DtoConverter
             Photo = user.Photo,
         };
     }
+
+    public static VoucherDTO ToDto(this Voucher voucher)
+    {
+        return new VoucherDTO()
+        {
+            Id = voucher.Id,
+            BusinessName = voucher.Business.BusinessName,
+            StartDate = voucher.StartDate,
+            EndDate = voucher.EndDate,
+            PromoCode = voucher.PromoCode,
+            PromoName = voucher.PromoName,
+            PromoDescription = voucher.PromoDescription,
+            LeftInStock = voucher.PromoStock - voucher.UserVouchers.Count(),
+            RetailPrice = voucher.RetailPrice,
+            AmmountReclaimable = voucher.TotalReclaimable,
+            Stock = voucher.PromoStock
+        };
+    }
 }

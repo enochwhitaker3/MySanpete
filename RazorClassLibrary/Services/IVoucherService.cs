@@ -10,7 +10,7 @@ public interface IVoucherService
 
     public Task<VoucherDTO> GetVoucher(int id);
 
-    public Task<List<Voucher>> GetAllBusinessVouchers(int businessId);
+    public Task<List<VoucherDTO>> GetAllBusinessVouchers(int businessId);
 
     public Task AddVoucher(AddVoucherRequest request);
 

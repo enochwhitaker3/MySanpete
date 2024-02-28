@@ -18,7 +18,8 @@ public class WebVoucherService : IVoucherService
     public async Task AddVoucher(AddVoucherRequest request)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
-        Voucher newVoucher = new Voucher(){
+        Voucher newVoucher = new Voucher()
+        {
             BusinessId = request.BusinessId,
             StartDate = request.StartDate,
             EndDate = request.EndDate,
@@ -32,33 +33,74 @@ public class WebVoucherService : IVoucherService
         await context.Vouchers.AddAsync(newVoucher);
     }
 
-    public Task<bool> ClaimVoucher(int id)
+    public async Task<bool> ClaimVoucher(int id)
     {
-        throw new NotImplementedException();
+        var context = await dbContextFactory.CreateDbContextAsync();
+        var userVoucher = await context.UserVouchers.Where(x => x.VoucherId == id).FirstOrDefaultAsync();
+
+        if (userVoucher != null)
+        {
+            userVoucher.Isused = true;
+            return true;
+        }
+        return false;
     }
 
-    public Task DeleteVoucher(int id)
+    public async Task DeleteVoucher(int id)
     {
-        throw new NotImplementedException();
+        var context = await dbContextFactory.CreateDbContextAsync();
+        
+        var voucher = await context.UserVouchers.Where(x => x.Id == id).FirstOrDefaultAsync();
+        if (voucher != null) 
+        { 
+            context.Remove(voucher);
+        }
     }
 
-    public Task<List<Voucher>> GetAllBusinessVouchers(int businessId)
+    public async Task<List<VoucherDTO>> GetAllBusinessVouchers(int businessId)
     {
-        throw new NotImplementedException();
+        var context = await dbContextFactory.CreateDbContextAsync();
+        var vouchers = await context.Vouchers.Where(x => x.BusinessId == businessId).ToListAsync();
+        return vouchers.Select(x => x.ToDto()).ToList();
     }
 
-    public Task<List<VoucherDTO>> GetAllVouchers()
+    public async Task<List<VoucherDTO>> GetAllVouchers()
     {
-        throw new NotImplementedException();
+        var context = await dbContextFactory.CreateDbContextAsync();
+        var vouchers = await context.Vouchers.ToListAsync();
+        return vouchers.Select(x => x.ToDto()).ToList();
     }
 
-    public Task<VoucherDTO> GetVoucher(int id)
+    public async Task<VoucherDTO> GetVoucher(int id)
     {
-        throw new NotImplementedException();
+        var context = await dbContextFactory.CreateDbContextAsync();
+        var voucher = await context.Vouchers.Where(x => x.Id == id).FirstOrDefaultAsync();
+        if (voucher is not null)
+        {
+            return voucher.ToDto();
+        }
+        return new VoucherDTO();
     }
 
-    public Task UpdateVoucher(Voucher voucher)
+    public async Task UpdateVoucher(Voucher voucher)
     {
-        throw new NotImplementedException();
+        var context = await dbContextFactory.CreateDbContextAsync();
+        var voucherUnderChange = await context.Vouchers.Where(x => x.Id == voucher.Id).FirstOrDefaultAsync();
+
+        if (voucherUnderChange is not null)
+        {
+            voucherUnderChange.BusinessId = voucher.BusinessId;
+            voucherUnderChange.StartDate = voucher.StartDate;
+            voucherUnderChange.EndDate = voucher.EndDate;
+            voucherUnderChange.PromoCode = voucher.PromoCode;
+            voucherUnderChange.PromoName = voucher.PromoName;
+            voucherUnderChange.PromoDescription = voucher.PromoDescription;
+            voucherUnderChange.PromoStock = voucher.PromoStock;
+            voucherUnderChange.RetailPrice = voucher.RetailPrice;
+            voucherUnderChange.TotalReclaimable = voucher.TotalReclaimable;
+        }
+        else { return; }
+
+        context.Update(voucherUnderChange);
     }
 }
