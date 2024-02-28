@@ -46,9 +46,8 @@ public static class DtoConverter
             Commentable = blog.Commentable,
             Photo = blog.Photo,
             Comments = blog.BlogComments.Select(x => x.Comment.ToDto()).ToList(),
-            
+            Reactions = blog.BlogReactions.Select(x => x.Reaction).ToList()
         };
-        // TODO: add list of reactions
     }
 
     public static CommentDTO ToDto(this UserComment comment)
@@ -57,7 +56,7 @@ public static class DtoConverter
         {
             Id = comment.Id,
             ReplyId = comment.ReplyId,
-            // TODO: add a list of replies
+            Content = comment.CommentText
         };
     }
 }

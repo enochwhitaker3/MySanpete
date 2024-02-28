@@ -62,13 +62,22 @@ public class WebBlogService : IBlogService
     public async Task<List<BlogDTO>> GetAllBlogs()
     {
         var context = await dbContextFactory.CreateDbContextAsync();
-        return await context.Blogs.Select(x => x.ToDto()).ToListAsync();
+        return await context.Blogs
+            .Include(x => x.BlogComments)
+            .Include(x => x.BlogReactions)
+                .ThenInclude(x => x.Reaction)
+            .Select(x => x.ToDto()).ToListAsync();
     }
 
     public async Task<BlogDTO> GetBlog(int id)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
-        var blog = await context.Blogs.Where(x => x.Id == id).FirstOrDefaultAsync();
+        var blog = await context.Blogs
+            .Include(x => x.BlogComments)
+            .Include(x => x.BlogReactions)
+                .ThenInclude(x => x.Reaction)
+            .Where(x => x.Id == id).FirstOrDefaultAsync();
+
         if (blog != null)
         {
             return blog.ToDto();

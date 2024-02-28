@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RazorClassLibrary.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,12 +15,7 @@ public class BlogDTO
     public string? AuthorName { get; set; }
     public DateTime? PublishDate { get; set; }
     public List<CommentDTO>? Comments { get; set; }
-
-    // TODO: Dusty add Reaction
-    //public List<Reaction> Reactions { get; set; }
-
+    public List<Reaction>? Reactions { get; set; }
     public bool Commentable { get; set; }
     public Byte[]? Photo { get; set; }
-
-
 }
