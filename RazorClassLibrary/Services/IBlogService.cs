@@ -1,4 +1,6 @@
-﻿using System;
+﻿using RazorClassLibrary.DTOs;
+using RazorClassLibrary.Requests;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +10,9 @@ namespace RazorClassLibrary.Services;
 
 public interface IBlogService
 {
-    public Task AddBlog();
+    public Task AddBlog(AddBlogRequest request);
+    public Task EditBlog(BlogDTO blogDto);
+    public Task DeleteBlog(int id);
+    public Task<BlogDTO> GetBlog(int id);
+    public Task<List<BlogDTO>> GetAllBlogs();
 }

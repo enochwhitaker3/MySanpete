@@ -31,6 +31,7 @@ public class WebVoucherService : IVoucherService
             TotalReclaimable = request.TotalReclaimable
         };
         await context.Vouchers.AddAsync(newVoucher);
+        await context.SaveChangesAsync();
     }
 
     public async Task<bool> ClaimVoucher(int id)
@@ -41,6 +42,7 @@ public class WebVoucherService : IVoucherService
         if (userVoucher != null)
         {
             userVoucher.Isused = true;
+            await context.SaveChangesAsync();
             return true;
         }
         return false;
@@ -50,10 +52,11 @@ public class WebVoucherService : IVoucherService
     {
         var context = await dbContextFactory.CreateDbContextAsync();
         
-        var voucher = await context.UserVouchers.Where(x => x.Id == id).FirstOrDefaultAsync();
+        var voucher = await context.Vouchers.Where(x => x.Id == id).FirstOrDefaultAsync();
         if (voucher != null) 
         { 
-            context.Remove(voucher);
+            context.Vouchers.Remove(voucher);
+            await context.SaveChangesAsync();
         }
     }
 
@@ -101,6 +104,7 @@ public class WebVoucherService : IVoucherService
         }
         else { return; }
 
-        context.Update(voucherUnderChange);
+        context.Vouchers.Update(voucherUnderChange);
+        await context.SaveChangesAsync();
     }
 }

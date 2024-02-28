@@ -33,4 +33,31 @@ public static class DtoConverter
             Stock = voucher.PromoStock
         };
     }
+
+    public static BlogDTO ToDto(this Blog blog)
+    {
+        return new BlogDTO()
+        {
+            Id = blog.Id,
+            Title = blog.Title,
+            Content = blog.BlogContent,
+            AuthorName = blog.Author.UserName,
+            PublishDate = blog.PublishDate,
+            Commentable = blog.Commentable,
+            Photo = blog.Photo,
+            Comments = blog.BlogComments.Select(x => x.Comment.ToDto()).ToList(),
+            
+        };
+        // TODO: add list of reactions
+    }
+
+    public static CommentDTO ToDto(this UserComment comment)
+    {
+        return new CommentDTO()
+        {
+            Id = comment.Id,
+            ReplyId = comment.ReplyId,
+            // TODO: add a list of replies
+        };
+    }
 }
