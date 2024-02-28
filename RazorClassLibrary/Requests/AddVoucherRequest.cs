@@ -8,13 +8,13 @@ namespace RazorClassLibrary.Requests;
 
 public class AddVoucherRequest
 {
-    public int BusinessId;
-    public DateTime StartDate;
-    public DateTime? EndDate;
-    public string PromoCode;
-    public string PromoDescription;
-    public string PromoName;
-    public int PromoStock;
-    public Decimal RetailPrice;
-    public int TotalReclaimable;
+    public int BusinessId { get; set; }
+    public DateTime StartDate { get; set; }
+    public DateTime? EndDate { get; set; }
+    public string PromoCode { get; set; }
+    public string PromoDescription { get; set; }
+    public string PromoName { get; set; }
+    public int PromoStock { get; set; }
+    public Decimal RetailPrice { get; set; }
+    public int TotalReclaimable { get; set; }
 }
