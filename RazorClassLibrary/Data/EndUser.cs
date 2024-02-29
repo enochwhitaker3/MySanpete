@@ -15,7 +15,15 @@ public partial class EndUser
 
     public string UserEmail { get; set; } = null!;
 
+    public bool? Isactive { get; set; }
+
+    public Guid? Guid { get; set; }
+
+    public virtual ICollection<BlogReaction> BlogReactions { get; set; } = new List<BlogReaction>();
+
     public virtual ICollection<Blog> Blogs { get; set; } = new List<Blog>();
+
+    public virtual ICollection<PodcastReaction> PodcastReactions { get; set; } = new List<PodcastReaction>();
 
     public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
 
@@ -25,5 +33,5 @@ public partial class EndUser
 
     public virtual UserRole UserRole { get; set; } = null!;
 
-    public virtual ICollection<UserVourcher> UserVourchers { get; set; } = new List<UserVourcher>();
+    public virtual ICollection<UserVoucher> UserVouchers { get; set; } = new List<UserVoucher>();
 }

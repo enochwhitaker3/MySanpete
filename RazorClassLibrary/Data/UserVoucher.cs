@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace RazorClassLibrary.Data;
 
-public partial class UserVourcher
+public partial class UserVoucher
 {
     public int Id { get; set; }
 
@@ -12,6 +12,12 @@ public partial class UserVourcher
     public int VoucherId { get; set; }
 
     public decimal? FinalPrice { get; set; }
+
+    public bool? Isused { get; set; }
+
+    public int? TimesClaimd { get; set; }
+
+    public int? TotalReclaimable { get; set; }
 
     public virtual EndUser User { get; set; } = null!;
 
