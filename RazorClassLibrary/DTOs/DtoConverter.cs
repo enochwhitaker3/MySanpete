@@ -70,4 +70,15 @@ public static class DtoConverter
             Reactions = podcast.PodcastReactions.Select(x => x.Reaction).ToList(),
         };
     }
+
+    public static BundleDTO ToDto(this Bundle bundle) 
+    {
+        return new BundleDTO()
+        {
+            Id = bundle.Id,
+            EndDate = bundle.EndDate,
+            StartDate = bundle.StartDate,
+            //FinalPrice = bundle.BundleVouchers.Sum(x => x.)
+        };
+    }
 }

@@ -9,8 +9,6 @@ public partial class Bundle
 
     public string? BundleName { get; set; }
 
-    public decimal? FinalPrice { get; set; }
-
     public DateTime? StartDate { get; set; }
 
     public DateTime? EndDate { get; set; }

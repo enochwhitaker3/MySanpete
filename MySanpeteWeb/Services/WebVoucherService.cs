@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MySanpeteWeb.Data;
 using RazorClassLibrary.Data;
 using RazorClassLibrary.Requests;
 using RazorClassLibrary.Services;
@@ -23,9 +22,9 @@ public class WebVoucherService : IVoucherService
             BusinessId = request.BusinessId,
             StartDate = request.StartDate,
             EndDate = request.EndDate,
-            PromoCode = request.PromoCode,
-            PromoDescription = request.PromoDescription,
-            PromoName = request.PromoName,
+            PromoCode = request.PromoCode ?? "",
+            PromoDescription = request.PromoDescription ?? "",
+            PromoName = request.PromoName ?? "",
             PromoStock = request.PromoStock,
             RetailPrice = request.RetailPrice,
             TotalReclaimable = request.TotalReclaimable

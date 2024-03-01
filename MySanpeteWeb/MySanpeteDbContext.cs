@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using RazorClassLibrary.Data;
 
-namespace MySanpeteWeb.Data;
+namespace MySanpeteWeb;
 
 public partial class MySanpeteDbContext : DbContext
 {
@@ -137,9 +137,6 @@ public partial class MySanpeteDbContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.BundleName).HasColumnName("bundle_name");
             entity.Property(e => e.EndDate).HasColumnName("end_date");
-            entity.Property(e => e.FinalPrice)
-                .HasColumnType("money")
-                .HasColumnName("final_price");
             entity.Property(e => e.StartDate).HasColumnName("start_date");
         });
 
@@ -151,6 +148,7 @@ public partial class MySanpeteDbContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.BundleId).HasColumnName("bundle_id");
+            entity.Property(e => e.DiscountPrice).HasColumnName("discount_price");
             entity.Property(e => e.VoucherId).HasColumnName("voucher_id");
 
             entity.HasOne(d => d.Bundle).WithMany(p => p.BundleVouchers)
@@ -376,12 +374,14 @@ public partial class MySanpeteDbContext : DbContext
             entity.ToTable("user_voucher", "mysanpete");
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.ChargeId).HasColumnName("charge_id");
             entity.Property(e => e.FinalPrice)
                 .HasColumnType("money")
                 .HasColumnName("final_price");
             entity.Property(e => e.Isused)
                 .HasDefaultValue(false)
                 .HasColumnName("isused");
+            entity.Property(e => e.PurchaseDate).HasColumnName("purchase_date");
             entity.Property(e => e.TimesClaimd).HasColumnName("times_claimd");
             entity.Property(e => e.TotalReclaimable).HasColumnName("total_reclaimable");
             entity.Property(e => e.UserId).HasColumnName("user_id");

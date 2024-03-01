@@ -19,6 +19,10 @@ public partial class UserVoucher
 
     public int? TotalReclaimable { get; set; }
 
+    public string? ChargeId { get; set; }
+
+    public DateTime? PurchaseDate { get; set; }
+
     public virtual EndUser User { get; set; } = null!;
 
     public virtual Voucher Voucher { get; set; } = null!;
