@@ -78,7 +78,8 @@ public static class DtoConverter
             Id = bundle.Id,
             EndDate = bundle.EndDate,
             StartDate = bundle.StartDate,
-            //FinalPrice = bundle.BundleVouchers.Sum(x => x.)
+            FinalPrice = bundle.BundleVouchers.Sum(x => x.DiscountPrice),
+            Vouchers = bundle.BundleVouchers.Select(x => x.Voucher!.ToDto()).ToList(),
         };
     }
 }
