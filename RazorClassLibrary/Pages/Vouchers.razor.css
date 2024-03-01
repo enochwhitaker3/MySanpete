@@ -98,7 +98,9 @@ html {
 }
 
 .ticket-info {
-    padding: 10px 30px;
+    padding-left:30px;
+    padding-right: 30px;
+    padding-top: 10px;
     display: flex;
     flex-direction: column;
     text-align: center;
