@@ -11,6 +11,8 @@ public partial class BundleVoucher
 
     public int? BundleId { get; set; }
 
+    public decimal? DiscountPrice { get; set; }
+
     public virtual Bundle? Bundle { get; set; }
 
     public virtual Voucher? Voucher { get; set; }
