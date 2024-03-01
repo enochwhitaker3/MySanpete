@@ -111,9 +111,50 @@ public class WebBundleService : IBundleService
 
     }
 
-    public Task<bool> PurchaseBundle(PurchaseBundleRequest request)
+    public async Task<bool> PurchaseBundle(PurchaseBundleRequest request)
     {
-        throw new NotImplementedException();
+        using var context = await dbContextFactory.CreateDbContextAsync();
+
+        //Get the bundle
+        var bundleToPurchase = await context.Bundles
+                                   .Include(b => b.BundleVouchers)
+                                    .ThenInclude(b => b.Voucher)
+                                     .ThenInclude(b => b.UserVouchers)
+                                   .FirstOrDefaultAsync(b => b.Id == request.BundleId);
+
+        if(bundleToPurchase is null)
+        {
+            throw new Exception("Cannot purcahse bundle that doesn't exist");
+        }
+
+        var userToPurchase = await context.EndUsers.FirstOrDefaultAsync(u => u.Guid == request.UserId);
+
+        if(userToPurchase is null) 
+        {
+            throw new Exception("Cannot purchase a bundle for a user that doesn't exist");
+        }
+
+        //Ping stripe and make sure the database has a new. 
+
+        var purchases = bundleToPurchase.BundleVouchers.Select(bv => new UserVoucher()
+        {
+            ChargeId = request.ChargeId,
+            FinalPrice = bv.DiscountPrice,
+            PurchaseDate = DateTime.Now.ToUniversalTime(),
+            TotalReclaimable = bv.Voucher!.TotalReclaimable,
+            UserId = userToPurchase.Id,
+            TimesClaimd = 0,
+            VoucherId = bv.VoucherId ?? throw new Exception("The voucher id was not found")
+            
+        });
+
+        foreach(var purchase in purchases)
+        {
+            context.UserVouchers.Add(purchase);
+        }
+
+        await context.SaveChangesAsync();
+        return true;
     }
 
     public Task<BundleDTO> UpdateBundle(BundleDTO bundle)
