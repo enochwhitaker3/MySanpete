@@ -1,144 +1,83 @@
 ﻿@page "/add-event"
+@using RazorClassLibrary.Data
+@using RazorClassLibrary.Requests
+@using RazorClassLibrary.Services
+
+
+@inject IOccasionService occasionService;
 
 
 <h3>Admin Add Event</h3>
+<form method="post" @onsubmit="CreateNewOccasion" class="mt-5">
+    <div class="form-group mt-5">
+        <label for="title">Title</label>
+        <input id="title" class="form-control" @bind="Title" />
+    </div>
+    <div class="form-group mt-5">
+        <label for="xCoordinate">X Coordinate</label>
+        <input id="xCoordinate" class="form-control" @bind="XCoordinate" />
+    </div>
+    <div class="form-group mt-5">
+        <label for="yCoordinate">Y Coordinate</label>
+        <input id="yCoordinate" class="form-control" @bind="YCoordinate" />
+    </div>
+    <div class="form-group mt-5">
+        <label for="startDate">Start Date</label>
+        <input id="startDate" type="date" class="form-control" @bind="StartDate" />
+    </div>
+    <div class="form-group mt-5">
+        <label for="endDate">End Date</label>
+        <input id="endDate" type="date" class="form-control" @bind="EndDate" />
+    </div>
+    <div class="form-group mt-5">
+        <label for="businessId">Business ID</label>
+        <input id="businessId" class="form-control" @bind="BusinessId" />
+    </div>
+    <div class="form-group mt-5">
+        <label for="description">Description</label>
+        <input id="description" class="form-control" @bind="Description" />
+    </div>
+    @* <div class="form-group">
+        <label for="photo">Photo</label>
+        <input id="photo" type="file" @bind="newOccasion.Photo" />
+    </div> *@
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form> 
 
-@* 
-<MudCard>
-    <MudForm Model="@model" @ref="@form" Validation="@(orderValidator.ValidateValue)" ValidationDelay="0">
-        <MudCardContent>
-            <!-- Drop down menu to select business -->
-            <MudTd DataLabel="Business">
-                <MudForm Model="@context">
-                    <MudNumericField Label="Enter Business"
-                                     @bind-Value="context.Business"
-                                     Validation=@(orderDetailsValidator.ValidateValue)
-                                     For="(() => context.Business)" />
-                </MudForm>
-            </MudTd>
 
-            <MudTextField @bind-Value="model.Title"
-                          For="@(() => model.Title)"
-                          Immediate="true"
-                          Label="Event Title" />
 
-            <MudTextField @bind-Value="model.Description"
-                          For="@(() => model.Description)"
-                          Immediate="true"
-                          Label="Event Description" />
-
-            <MudTextField @bind-Value="model.Location"
-                          For="@(() => model.Location)"
-                          Immediate="true"
-                          Label="Address" />
-
-        </MudCardContent>
-        <MudCardContent Class="pa-0">
-
-            <MudTable Items="@model.OrderDetails" Hover="true" Breakpoint="Breakpoint.None" Dense="@true" Elevation="0">
-                <HeaderContent>
-                    <MudTh>Start Date</MudTh>
-                    <MudTh>End Date (optional)</MudTh>
-                </HeaderContent>
-                <RowTemplate>
-                    <MudTd DataLabel="Start Date">
-                        <MudDatePicker Label="Start Date" />
-                    </MudTd>
-                    <MudTd DataLabel="End Date">
-                        <MudDatePicker Label="End Date" />
-                    </MudTd>
-                </RowTemplate>
-            </MudTable>
-
-        </MudCardContent>
-    </MudForm>
-    <MudCardActions>
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(async () => await Submit())">Order</MudButton>
-    </MudCardActions>
-</MudCard>
 
 @code {
+    public AddOccasionRequest? newOccasion;
 
-    MudForm form;
+    public string errorMessage = "";
 
-    OccasianModelFluentValidator orderValidator = new OccasianModelFluentValidator();
+    public string Title { get; set; }
+    public decimal XCoordinate { get; set; }
+    public decimal YCoordinate { get; set; }
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
+    public int BusinessId { get; set; }
+    public string Description { get; set; }
 
-    OrderDetailsModelFluentValidator orderDetailsValidator = new OrderDetailsModelFluentValidator();
-
-    Occasion model = new Occasion();
-
-
-    private async Task Submit()
+    protected override async Task OnInitializedAsync()
     {
-        await form.Validate();
-
-        if (form.IsValid)
-        {
-            Snackbar.Add("Submited!");
-        }
+        newOccasion = new();
     }
 
-    /// <summary>
-    /// A standard AbstractValidator which contains multiple rules and can be shared with the back end API
-    /// </summary>
-    /// <typeparam name="OrderModel"></typeparam>
-    public class OccasianModelFluentValidator : AbstractValidator<OrderModel>
+    public async Task CreateNewOccasion()
     {
-        public OccasianModelFluentValidator()
+        try
         {
-            RuleFor(x => x.Title)
-                .NotEmpty();
+            await occasionService.AddOccasion(newOccasion);
 
-            RuleFor(x => x.Description)
-                .NotEmpty();
-
-            RuleFor(x => x.Location)
-                .NotEmpty();
-
-            RuleForEach(x => x.OrderDetails)
-                .SetValidator(new OrderDetailsModelFluentValidator());
+            // Clear the form
+            newOccasion = new AddOccasionRequest();
         }
-
-        private async Task<bool> IsUniqueAsync(string email)
+        catch (Exception ex)
         {
-            // Simulates a long running http call
-            await Task.Delay(2000);
-            return email.ToLower() != "test@test.com";
+            // Handle errors appropriately
+            errorMessage = ex.Message;
         }
-
-        public Func<object, string, Task<IEnumerable<string>>> ValidateValue => async (model, propertyName) =>
-        {
-            var result = await ValidateAsync(ValidationContext<OrderModel>.CreateWithOptions((OrderModel)model, x => x.IncludeProperties(propertyName)));
-            if (result.IsValid)
-                return Array.Empty<string>();
-            return result.Errors.Select(e => e.ErrorMessage);
-        };
-    }
-
-    /// <summary>
-    /// A standard AbstractValidator for the Collection Object
-    /// </summary>
-    /// <typeparam name="OrderDetailsModel"></typeparam>
-    public class OrderDetailsModelFluentValidator : AbstractValidator<OrderDetailsModel>
-    {
-        public OrderDetailsModelFluentValidator()
-        {
-            RuleFor(x => x.Description)
-                .NotEmpty()
-                .Length(1, 100);
-
-            RuleFor(x => x.Offer)
-                .GreaterThan(0)
-                .LessThan(999);
-        }
-
-        public Func<object, string, Task<IEnumerable<string>>> ValidateValue => async (model, propertyName) =>
-        {
-            var result = await ValidateAsync(ValidationContext<OrderDetailsModel>.CreateWithOptions((OrderDetailsModel)model, x => x.IncludeProperties(propertyName)));
-            if (result.IsValid)
-                return Array.Empty<string>();
-            return result.Errors.Select(e => e.ErrorMessage);
-        };
     }
 }
- *@

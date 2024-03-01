@@ -34,7 +34,6 @@ public class WebOccasionService : IOccasionService
         await context.Occasions.AddAsync(newOccasion);
         await context.SaveChangesAsync();
         return newOccasion;
-
     }
 
     public async Task<bool> DeleteOccasion(int id)
