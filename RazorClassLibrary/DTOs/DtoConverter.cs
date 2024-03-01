@@ -59,4 +59,15 @@ public static class DtoConverter
             Content = comment.CommentText
         };
     }
+
+    public static BundleDTO ToDto(this Bundle bundle) 
+    {
+        return new BundleDTO()
+        {
+            Id = bundle.Id,
+            EndDate = bundle.EndDate,
+            StartDate = bundle.StartDate,
+            //FinalPrice = bundle.BundleVouchers.Sum(x => x.)
+        };
+    }
 }
