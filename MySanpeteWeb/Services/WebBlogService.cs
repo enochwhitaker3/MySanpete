@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MySanpeteWeb.Data;
 using Npgsql.NameTranslation;
 using RazorClassLibrary.Data;
 using RazorClassLibrary.DTOs;
@@ -74,6 +73,7 @@ public class WebBlogService : IBlogService
         var context = await dbContextFactory.CreateDbContextAsync();
         var blog = await context.Blogs
             .Include(x => x.BlogComments)
+                .ThenInclude(x => x.Comment)
             .Include(x => x.BlogReactions)
                 .ThenInclude(x => x.Reaction)
             .Where(x => x.Id == id).FirstOrDefaultAsync();

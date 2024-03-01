@@ -60,6 +60,17 @@ public static class DtoConverter
         };
     }
 
+    public static PodcastDTO ToDto(this Podcast podcast)
+    {
+        return new PodcastDTO()
+        {
+            Id = podcast.Id,
+            URL = podcast.PodcastUrl,
+            Comments = podcast.PodcastComments.Select(x => x.Comment.ToDto()).ToList(),
+            Reactions = podcast.PodcastReactions.Select(x => x.Reaction).ToList(),
+        };
+    }
+
     public static BundleDTO ToDto(this Bundle bundle) 
     {
         return new BundleDTO()
