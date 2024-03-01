@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    volumes:
+      - ./database.sql:/docker-entrypoint-initdb.d/database.sql
+
+  mysanpeteweb:
+    build: .
+    ports:
+      - 6969:8080
+    environment:
+      - MySanpeteDb = user id= postgres; password=postgres; server=db; database= postgres;
+    depends_on: 
+      - db
+    
