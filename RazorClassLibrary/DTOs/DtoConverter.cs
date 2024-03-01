@@ -59,4 +59,15 @@ public static class DtoConverter
             Content = comment.CommentText
         };
     }
+
+    public static PodcastDTO ToDto(this Podcast podcast)
+    {
+        return new PodcastDTO()
+        {
+            Id = podcast.Id,
+            URL = podcast.PodcastUrl,
+            Comments = podcast.PodcastComments.Select(x => x.Comment.ToDto()).ToList(),
+            Reactions = podcast.PodcastReactions.Select(x => x.Reaction).ToList(),
+        };
+    }
 }
