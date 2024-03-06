@@ -1,0 +1,96 @@
+﻿@page "/add-voucher"
+@using RazorClassLibrary.Data
+@using RazorClassLibrary.Requests
+@using RazorClassLibrary.Services
+
+
+@inject IVoucherService voucherService
+
+<div class="form-container">
+    <h3>Admin Add Voucher</h3>
+    <form method="post" @onsubmit="CreateNewVoucher" class="mt-5">
+        <div class="form-group mt-5">
+            <label for="title">BusinessID</label>
+            <input id="title" class="form-control" @bind="BusinessId" />
+        </div>
+        <div class="form-group mt-5">
+            <label for="startDate">Start Date</label>
+            <input id="startDate" type="date" class="form-control" @bind="StartDate" />
+        </div>
+        <div class="form-group mt-5">
+            <label for="endDate">End Date</label>
+            <input id="endDate" type="date" class="form-control" @bind="EndDate" />
+        </div>
+        <div class="form-group mt-5">
+            <label for="title">Promo Code</label>
+            <input id="title" class="form-control" @bind="PromoCode" />
+        </div>
+        <div class="form-group mt-5">
+            <label for="title">Promo Code</label>
+            <input id="title" class="form-control" @bind="PromoCode" />
+        </div>
+        <div class="form-group mt-5">
+            <label for="title">Promo Description</label>
+            <input id="title" class="form-control" @bind="PromoDescription" />
+        </div>
+        <div class="form-group mt-5">
+            <label for="title">Promo Name</label>
+            <input id="title" class="form-control" @bind="PromoName" />
+        </div>
+        <div class="form-group mt-5">
+            <label for="title">Promo Stock</label>
+            <input id="title" class="form-control" @bind="PromoStock" />
+        </div>
+        <div class="form-group mt-5">
+            <label for="title">Retail Price</label>
+            <input id="title" class="form-control" @bind="RetailPrice" />
+        </div>
+        <div class="form-group mt-5">
+            <label for="title">Total Reclaimable</label>
+            <input id="title" class="form-control" @bind="TotalReclaimable" />
+        </div>
+
+        @* <div class="form-group">
+        <label for="photo">Photo</label>
+        <input id="photo" type="file" @bind="newOccasion.Photo" />
+        </div> *@
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+@code {
+    public AddVoucherRequest? newVoucher;
+
+    public string errorMessage = "";
+
+    public int BusinessId { get; set; }
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
+    public string PromoCode { get; set; }
+    public string PromoDescription { get; set; }
+    public string PromoName { get; set; }
+    public int PromoStock { get; set; }
+    public Decimal RetailPrice { get; set; }
+    public int TotalReclaimable { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        newVoucher = new();
+    }
+
+    public async Task CreateNewVoucher()
+    {
+        try
+        {
+            await voucherService.AddVoucher(newVoucher);
+
+            // Clear the form
+            newVoucher = new AddVoucherRequest();
+        }
+        catch (Exception ex)
+        {
+            // Handle errors appropriately
+            errorMessage = ex.Message;
+        }
+    }
+}

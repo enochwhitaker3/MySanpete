@@ -4,48 +4,47 @@
 @using RazorClassLibrary.Services
 
 
-@inject IOccasionService occasionService;
+@inject IOccasionService occasionService
 
-
-<h3>Admin Add Event</h3>
-<form method="post" @onsubmit="CreateNewOccasion" class="mt-5">
-    <div class="form-group mt-5">
-        <label for="title">Title</label>
-        <input id="title" class="form-control" @bind="Title" />
-    </div>
-    <div class="form-group mt-5">
-        <label for="xCoordinate">X Coordinate</label>
-        <input id="xCoordinate" class="form-control" @bind="XCoordinate" />
-    </div>
-    <div class="form-group mt-5">
-        <label for="yCoordinate">Y Coordinate</label>
-        <input id="yCoordinate" class="form-control" @bind="YCoordinate" />
-    </div>
-    <div class="form-group mt-5">
-        <label for="startDate">Start Date</label>
-        <input id="startDate" type="date" class="form-control" @bind="StartDate" />
-    </div>
-    <div class="form-group mt-5">
-        <label for="endDate">End Date</label>
-        <input id="endDate" type="date" class="form-control" @bind="EndDate" />
-    </div>
-    <div class="form-group mt-5">
-        <label for="businessId">Business ID</label>
-        <input id="businessId" class="form-control" @bind="BusinessId" />
-    </div>
-    <div class="form-group mt-5">
-        <label for="description">Description</label>
-        <input id="description" class="form-control" @bind="Description" />
-    </div>
-    @* <div class="form-group">
+<div class="form-container">
+    <h3>Admin Add Event</h3>
+    <form method="post" @onsubmit="CreateNewOccasion" class="mt-5">
+        <div class="form-group mt-5">
+            <label for="title">Title</label>
+            <input id="title" class="form-control" @bind="Title" />
+        </div>
+        <div class="form-group mt-5">
+            <label for="xCoordinate">X Coordinate</label>
+            <input id="xCoordinate" class="form-control" @bind="XCoordinate" />
+        </div>
+        <div class="form-group mt-5">
+            <label for="yCoordinate">Y Coordinate</label>
+            <input id="yCoordinate" class="form-control" @bind="YCoordinate" />
+        </div>
+        <div class="form-group mt-5">
+            <label for="startDate">Start Date</label>
+            <input id="startDate" type="date" class="form-control" @bind="StartDate" />
+        </div>
+        <div class="form-group mt-5">
+            <label for="endDate">End Date</label>
+            <input id="endDate" type="date" class="form-control" @bind="EndDate" />
+        </div>
+        <div class="form-group mt-5">
+            <label for="businessId">Business ID</label>
+            <input id="businessId" class="form-control" @bind="BusinessId" />
+        </div>
+        <div class="form-group mt-5">
+            <label for="description">Description</label>
+            <input id="description" class="form-control" @bind="Description" />
+        </div>
+        @* <div class="form-group">
         <label for="photo">Photo</label>
         <input id="photo" type="file" @bind="newOccasion.Photo" />
-    </div> *@
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form> 
+        </div> *@
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
 
-
-
+</div>
 
 @code {
     public AddOccasionRequest? newOccasion;

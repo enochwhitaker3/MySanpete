@@ -1,3 +1,34 @@
+.navbar {
+    background-color: transparent;
+    overflow: hidden;
+    width: 100%;
+    position: absolute;
+    top: 0;
+}
+
+    .navbar a {
+        float: left;
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 20px;
+        text-decoration: none;
+    }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+.content {
+    padding: 16px;
+    margin-top: 30px;
+    height: 800px; /* Used to show scrolling */
+}
+
+
+
+
 .page {
     position: relative;
     display: flex;

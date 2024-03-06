@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
+using MySanpeteWeb;
 using MySanpeteWeb.Components;
-using MySanpeteWeb.Data;
 using MySanpeteWeb.Services;
 using RazorClassLibrary.Services;
 
@@ -16,7 +16,9 @@ builder.Services.AddDbContextFactory<MySanpeteDbContext>(config => config.UseNpg
 builder.Services.AddMudServices();
 
 builder.Services.AddSingleton<IOccasionService, WebOccasionService>();
-
+builder.Services.AddSingleton<IBlogService, WebBlogService>();
+builder.Services.AddSingleton<IVoucherService, WebVoucherService>();
+builder.Services.AddSingleton<IBusinessService, WebBusinessService>();
 
 //builder.Services.AddAuthentication().AddGoogle(googleOptions =>
 //{
