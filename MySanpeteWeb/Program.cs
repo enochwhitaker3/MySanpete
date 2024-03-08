@@ -19,6 +19,7 @@ builder.Services.AddSingleton<IOccasionService, WebOccasionService>();
 builder.Services.AddSingleton<IBlogService, WebBlogService>();
 builder.Services.AddSingleton<IVoucherService, WebVoucherService>();
 builder.Services.AddSingleton<IBusinessService, WebBusinessService>();
+builder.Services.AddSingleton<IUserService, WebUserService>();
 
 //builder.Services.AddAuthentication().AddGoogle(googleOptions =>
 //{
@@ -46,3 +47,5 @@ app.MapRazorComponents<App>()
 
 
 app.Run();
+
+public partial class Program {}

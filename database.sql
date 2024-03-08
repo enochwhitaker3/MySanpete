@@ -1,3 +1,4 @@
+create role parkerswenson_25;
 --
 -- PostgreSQL database dump
 --

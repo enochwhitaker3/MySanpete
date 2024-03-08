@@ -15,7 +15,7 @@ public class WebUserService : IUserService
     public WebUserService(IDbContextFactory<MySanpeteDbContext> dbContextFactory, IConfiguration config)
     {
         this.dbContextFactory = dbContextFactory;
-        authstring = config["AuthString"] ?? throw new Exception("BWAH");
+        authstring = config["AuthString"] ?? "DefaultAuthString";
     }
     public async Task<UserDTO?> AddUser(string email)
     {
