@@ -31,6 +31,7 @@ public class MySanpeteFactory : WebApplicationFactory<Program>, IAsyncLifetime
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        var connection = _dbContainer.GetConnectionString();
         builder.ConfigureTestServices(services =>
         {
             services.RemoveAll(typeof(DbContextOptions<MySanpeteDbContext>));
