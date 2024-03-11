@@ -6,7 +6,7 @@
 
 <MudLayout>
 
-    <MudAppBar Elevation="0" Style="background-color:#FFFFFF; padding-top:4vh; justify-items:center;">
+@*     <MudAppBar Elevation="0" Style="background-color:transparent; padding-top:4vh; justify-items:center;">
         <MudHidden Breakpoint="Breakpoint.SmAndUp">
             <a href="/">
                 <MudImage Src="Images/My_Sanpete.png" Style="width:100px; height:100px; margin-bottom:4vh;" />
@@ -33,11 +33,18 @@
             <MudText Typo="Typo.h6">My Sanpete</MudText>
         </MudDrawerHeader>
         <NavMenu />
-    </MudDrawer>
+    </MudDrawer> *@
+    <div class="navbar">
+        <a href="#home">Home</a>
+        <a href="#news">News</a>
+        <a href="#contact">Contact</a>
+    </div>
     <MudMainContent>
         @Body
     </MudMainContent>
 </MudLayout>
+
+
 
 @code {
     bool _drawerOpen = false;

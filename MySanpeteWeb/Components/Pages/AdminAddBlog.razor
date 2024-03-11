@@ -1,0 +1,71 @@
+﻿@page "/add-blog"
+@using RazorClassLibrary.Data
+@using RazorClassLibrary.Requests
+@using RazorClassLibrary.Services
+
+
+@inject IBlogService blogService;
+
+<div class="form-container">
+    <h3>Admin Add Blog</h3>
+    <form method="post" @onsubmit="CreateNewBlog" class="mt-5">
+        <div class="form-group mt-5">
+            <label for="title">Title</label>
+            <input id="title" class="form-control" @bind="Title" />
+        </div>
+        <div class="form-group mt-5">
+            <label for="xCoordinate">Blog Content</label>
+            <input id="xCoordinate" class="form-control" @bind="Content" />
+        </div>
+        <div class="form-group mt-5">
+            <label for="yCoordinate">Author ID</label>
+            <input id="yCoordinate" class="form-control" @bind="AuthorId" />
+        </div>
+        <div class="form-group mt-5">
+            <label for="startDate">Allow Comments?</label><br />
+            <label for="radioTrue">Yes</label>
+            <input type="radio" id="radioTrue" name="myRadio" @onchange="@(e => Commentable = true)" checked="@(Commentable == true)" />
+            <label for="radioFalse">No</label>
+            <input type="radio" id="radioFalse" name="myRadio" @onchange="@(e => Commentable = false)" checked="@(Commentable == false)" />
+        </div>
+        @* <div class="form-group">
+        <label for="photo">Photo</label>
+        <input id="photo" type="file" @bind="newOccasion.Photo" />
+        </div> *@
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+</div>
+
+@code {
+    public AddBlogRequest newBlog;
+
+    public string errorMessage = "";
+
+    public string Title { get; set; }
+    public string Content { get; set; }
+    public int AuthorId { get; set; }
+    public bool Commentable { get; set; }
+    // public byte[] Photo { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        newBlog = new();
+    }
+
+    public async Task CreateNewBlog()
+    {
+        try
+        {
+            await blogService.AddBlog(newBlog);
+
+            // Clear the form
+            newBlog = new AddBlogRequest();
+        }
+        catch (Exception ex)
+        {
+            // Handle errors appropriately
+            errorMessage = ex.Message;
+        }
+    }
+}

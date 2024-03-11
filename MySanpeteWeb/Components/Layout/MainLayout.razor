@@ -1,12 +1,8 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider />
-<MudDialogProvider />
-<MudSnackbarProvider />
 
-<MudLayout>
-
-    <MudAppBar Elevation="0" Style="background-color:#FFFFFF; padding-top:4vh; justify-items:center;">
+@* 
+    <MudAppBar Elevation="0" Style="background-color:transparent; padding-top:4vh; justify-items:center;">
         <MudHidden Breakpoint="Breakpoint.SmAndUp">
             <a href="/">
                 <MudImage Src="Images/My_Sanpete.png" Style="width:100px; height:100px; margin-bottom:4vh;" />
@@ -33,17 +29,16 @@
             <MudText Typo="Typo.h6">My Sanpete</MudText>
         </MudDrawerHeader>
         <NavMenu />
-    </MudDrawer>
-    <MudMainContent>
-        @Body
-    </MudMainContent>
-</MudLayout>
+    </MudDrawer> *@
 
-@code {
-    bool _drawerOpen = false;
 
-    void DrawerToggle()
-    {
-        _drawerOpen = !_drawerOpen;
-    }
-}
+
+
+    <div class="page">
+        <main>
+            <NavMenu></NavMenu>
+
+            @Body
+
+        </main>
+    </div>
