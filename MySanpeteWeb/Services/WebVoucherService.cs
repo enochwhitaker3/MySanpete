@@ -3,6 +3,7 @@ using RazorClassLibrary.Data;
 using RazorClassLibrary.Requests;
 using RazorClassLibrary.Services;
 using RazorClassLibrary.DTOs;
+using System.Diagnostics;
 
 namespace MySanpeteWeb.Services;
 
@@ -14,9 +15,10 @@ public class WebVoucherService : IVoucherService
         this.dbContextFactory = dbContextFactory;
     }
 
-    public async Task AddVoucher(AddVoucherRequest request)
+    public async Task<VoucherDTO> AddVoucher(AddVoucherRequest request)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
+
         Voucher newVoucher = new Voucher()
         {
             BusinessId = request.BusinessId,
@@ -27,10 +29,29 @@ public class WebVoucherService : IVoucherService
             PromoName = request.PromoName ?? "",
             PromoStock = request.PromoStock,
             RetailPrice = request.RetailPrice,
-            TotalReclaimable = request.TotalReclaimable
+            TotalReclaimable = request.TotalReclaimable,
         };
-        await context.Vouchers.AddAsync(newVoucher);
-        await context.SaveChangesAsync();
+        if (newVoucher is not null)
+        {
+            if (newVoucher.EndDate < newVoucher.StartDate)
+            {
+                throw new Exception("voucher end date is before start date");
+            }
+
+            await context.Vouchers.AddAsync(newVoucher);
+            await context.SaveChangesAsync();
+
+            var newestVoucher = await context.Vouchers.Include(v => v.Business).FirstOrDefaultAsync(v => v.Id == newVoucher.Id);
+
+            if (newestVoucher is null)
+            {
+                throw new Exception("Voucher was created UNsuccesfully");
+            }
+
+            return newestVoucher.ToDto();
+        }
+
+        throw new Exception("Vocher was null and couldn't be created");
     }
 
     public async Task<bool> ClaimVoucher(int id)
@@ -47,22 +68,25 @@ public class WebVoucherService : IVoucherService
         return false;
     }
 
-    public async Task DeleteVoucher(int id)
+    public async Task<bool> DeleteVoucher(int id)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
         
-        var voucher = await context.Vouchers.Where(x => x.Id == id).FirstOrDefaultAsync();
+        var voucher = await context.Vouchers.Include(v => v.Business).Where(x => x.Id == id).FirstOrDefaultAsync();
         if (voucher != null) 
         { 
             context.Vouchers.Remove(voucher);
             await context.SaveChangesAsync();
+            return true;
         }
+
+        throw new Exception("Couldn't delete voucher");
     }
 
     public async Task<List<VoucherDTO>> GetAllBusinessVouchers(int businessId)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
-        var vouchers = await context.Vouchers.Where(x => x.BusinessId == businessId).ToListAsync();
+        var vouchers = await context.Vouchers.Include(v => v.Business).Where(x => x.BusinessId == businessId).ToListAsync();
         return vouchers.Select(x => x.ToDto()).ToList();
     }
 
@@ -76,7 +100,7 @@ public class WebVoucherService : IVoucherService
     public async Task<VoucherDTO> GetVoucher(int id)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
-        var voucher = await context.Vouchers.Where(x => x.Id == id).FirstOrDefaultAsync();
+        var voucher = await context.Vouchers.Include(v => v.Business).Where(x => x.Id == id).FirstOrDefaultAsync();
         if (voucher is not null)
         {
             return voucher.ToDto();
@@ -84,14 +108,13 @@ public class WebVoucherService : IVoucherService
         return new VoucherDTO();
     }
 
-    public async Task UpdateVoucher(Voucher voucher)
+    public async Task<VoucherDTO> UpdateVoucher(Voucher voucher)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
-        var voucherUnderChange = await context.Vouchers.Where(x => x.Id == voucher.Id).FirstOrDefaultAsync();
+        var voucherUnderChange = await context.Vouchers.Include(v => v.Business).Where(x => x.Id == voucher.Id).FirstOrDefaultAsync();
 
         if (voucherUnderChange is not null)
         {
-            voucherUnderChange.BusinessId = voucher.BusinessId;
             voucherUnderChange.StartDate = voucher.StartDate;
             voucherUnderChange.EndDate = voucher.EndDate;
             voucherUnderChange.PromoCode = voucher.PromoCode;
@@ -101,9 +124,10 @@ public class WebVoucherService : IVoucherService
             voucherUnderChange.RetailPrice = voucher.RetailPrice;
             voucherUnderChange.TotalReclaimable = voucher.TotalReclaimable;
         }
-        else { return; }
+        else { return new VoucherDTO(); }
 
         context.Vouchers.Update(voucherUnderChange);
         await context.SaveChangesAsync();
+        return voucherUnderChange.ToDto();
     }
 }

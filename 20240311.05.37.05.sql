@@ -4,7 +4,7 @@ create role parkerswenson_25;
 --
 
 -- Dumped from database version 12.17
--- Dumped by pg_dump version 16.1 (Debian 16.1-1.pgdg120+1)
+-- Dumped by pg_dump version 16.2 (Debian 16.2-1.pgdg120+2)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -597,6 +597,7 @@ COPY mysanpete.bundle_voucher (id, voucher_id, bundle_id, discount_price) FROM s
 --
 
 COPY mysanpete.business (id, business_name, address, logo) FROM stdin;
+1	Collaborative Music	123 Swag Street	\N
 \.
 
 
@@ -605,7 +606,7 @@ COPY mysanpete.business (id, business_name, address, logo) FROM stdin;
 --
 
 COPY mysanpete.end_user (id, user_name, user_role_id, photo, user_email, isactive, guid) FROM stdin;
-1	[Deleted]	1	\N	codebras2023@gmail.com	t	\N
+1	[Deleted]	1	\N	codebras2023@gmail.com	t	dc43835d-1738-1738-1738-ce90cc1209e3
 \.
 
 
@@ -737,14 +738,14 @@ SELECT pg_catalog.setval('mysanpete.bundle_voucher_id_seq', 1, false);
 -- Name: business_id_seq; Type: SEQUENCE SET; Schema: mysanpete; Owner: parkerswenson_25
 --
 
-SELECT pg_catalog.setval('mysanpete.business_id_seq', 1, false);
+SELECT pg_catalog.setval('mysanpete.business_id_seq', 1, true);
 
 
 --
 -- Name: end_user_id_seq; Type: SEQUENCE SET; Schema: mysanpete; Owner: parkerswenson_25
 --
 
-SELECT pg_catalog.setval('mysanpete.end_user_id_seq', 1, true);
+SELECT pg_catalog.setval('mysanpete.end_user_id_seq', 4, true);
 
 
 --
