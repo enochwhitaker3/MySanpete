@@ -1,0 +1,66 @@
+﻿@page "/add-podcast"
+@using RazorClassLibrary.Data
+@using RazorClassLibrary.Requests
+@using RazorClassLibrary.Services
+
+
+@inject IPodcastService podcastService;
+
+<div class="form-container">
+    <h3>Admin Add Podcast</h3>
+    <form method="post" @onsubmit="CreateNewPodcast" class="mt-5">
+        <div class="form-group mt-5">
+            <label for="title">URL</label>
+            <input id="title" class="form-control" @bind="URL" />
+        </div>
+        <div class="form-group mt-5">
+            <label for="xCoordinate">Podcast Name</label>
+            <input id="xCoordinate" class="form-control" @bind="PodcastName"/>
+        </div>
+        <div class="form-group mt-5">
+            <label for="startDate">Allow Comments?</label><br />
+            <label for="radioTrue">Yes</label>
+            <input type="radio" id="radioTrue" name="myRadio" @onchange="@(e => Commentable = true)" checked="@(Commentable == true)" />
+            <label for="radioFalse">No</label>
+            <input type="radio" id="radioFalse" name="myRadio" @onchange="@(e => Commentable = false)" checked="@(Commentable == false)" />
+        </div>
+        @* <div class="form-group">
+        <label for="photo">Photo</label>
+        <input id="photo" type="file" @bind="newOccasion.Photo" />
+        </div> *@
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+</div>
+
+@code {
+    public AddPodcastRequest newPodcast;
+
+    public string errorMessage = "";
+
+    public string URL { get; set; } = "";
+    public bool Commentable { get; set; }
+    public string PodcastName { get; set; } = "Default Name";
+    // public byte[] Photo { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        newPodcast = new();
+    }
+
+    public async Task CreateNewPodcast()
+    {
+        try
+        {
+            await podcastService.AddPodcast(newPodcast);
+
+            // Clear the form
+            newPodcast = new AddPodcastRequest();
+        }
+        catch (Exception ex)
+        {
+            // Handle errors appropriately
+            errorMessage = ex.Message;
+        }
+    }
+}
