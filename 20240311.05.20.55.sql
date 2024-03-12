@@ -605,7 +605,7 @@ COPY mysanpete.business (id, business_name, address, logo) FROM stdin;
 --
 
 COPY mysanpete.end_user (id, user_name, user_role_id, photo, user_email, isactive, guid) FROM stdin;
-1	[Deleted]	1	\N	codebras2023@gmail.com	t	\N
+1	[Deleted]	1	\N	codebras2023@gmail.com	t	dc43835d-1738-1738-1738-ce90cc1209e3
 \.
 
 
@@ -679,6 +679,7 @@ COPY mysanpete.user_occasion (id, user_id, occasion_id) FROM stdin;
 
 COPY mysanpete.user_role (id, role_name) FROM stdin;
 1	customer
+2	adminorsomething
 \.
 
 
@@ -744,7 +745,7 @@ SELECT pg_catalog.setval('mysanpete.business_id_seq', 1, false);
 -- Name: end_user_id_seq; Type: SEQUENCE SET; Schema: mysanpete; Owner: parkerswenson_25
 --
 
-SELECT pg_catalog.setval('mysanpete.end_user_id_seq', 1, true);
+SELECT pg_catalog.setval('mysanpete.end_user_id_seq', 4, true);
 
 
 --
