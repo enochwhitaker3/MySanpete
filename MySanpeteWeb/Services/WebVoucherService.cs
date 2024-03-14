@@ -35,7 +35,13 @@ public class WebVoucherService : IVoucherService
         {
             if (newVoucher.EndDate < newVoucher.StartDate)
             {
-                throw new Exception("voucher end date is before start date");
+                throw new Exception("Voucher end date is before start date");
+            }
+
+            var businessExists = await context.Businesses.AnyAsync(b => b.Id == request.BusinessId);
+            if (!businessExists)
+            {
+                throw new Exception("Business doesn't exist");
             }
 
             await context.Vouchers.AddAsync(newVoucher);
@@ -51,7 +57,7 @@ public class WebVoucherService : IVoucherService
             return newestVoucher.ToDto();
         }
 
-        throw new Exception("Vocher was null and couldn't be created");
+        throw new Exception("Voucher was null and couldn't be created");
     }
 
     public async Task<bool> ClaimVoucher(int id)
@@ -93,11 +99,11 @@ public class WebVoucherService : IVoucherService
     public async Task<List<VoucherDTO>> GetAllVouchers()
     {
         var context = await dbContextFactory.CreateDbContextAsync();
-        var vouchers = await context.Vouchers.ToListAsync();
+        var vouchers = await context.Vouchers.Include(v => v.Business).ToListAsync();
         return vouchers.Select(x => x.ToDto()).ToList();
     }
 
-    public async Task<VoucherDTO> GetVoucher(int id)
+    public async Task<VoucherDTO?> GetVoucher(int id)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
         var voucher = await context.Vouchers.Include(v => v.Business).Where(x => x.Id == id).FirstOrDefaultAsync();
@@ -105,10 +111,10 @@ public class WebVoucherService : IVoucherService
         {
             return voucher.ToDto();
         }
-        return new VoucherDTO();
+        return null;
     }
 
-    public async Task<VoucherDTO> UpdateVoucher(Voucher voucher)
+    public async Task<VoucherDTO?> UpdateVoucher(Voucher voucher)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
         var voucherUnderChange = await context.Vouchers.Include(v => v.Business).Where(x => x.Id == voucher.Id).FirstOrDefaultAsync();
@@ -124,7 +130,7 @@ public class WebVoucherService : IVoucherService
             voucherUnderChange.RetailPrice = voucher.RetailPrice;
             voucherUnderChange.TotalReclaimable = voucher.TotalReclaimable;
         }
-        else { return new VoucherDTO(); }
+        else { return null; }
 
         context.Vouchers.Update(voucherUnderChange);
         await context.SaveChangesAsync();

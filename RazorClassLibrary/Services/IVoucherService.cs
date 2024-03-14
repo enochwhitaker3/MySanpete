@@ -8,13 +8,13 @@ public interface IVoucherService
 {
     public Task<List<VoucherDTO>> GetAllVouchers();
 
-    public Task<VoucherDTO> GetVoucher(int id);
+    public Task<VoucherDTO?> GetVoucher(int id);
 
     public Task<List<VoucherDTO>> GetAllBusinessVouchers(int businessId);
 
     public Task<VoucherDTO> AddVoucher(AddVoucherRequest request);
 
-    public Task<VoucherDTO> UpdateVoucher(Voucher voucher);
+    public Task<VoucherDTO?> UpdateVoucher(Voucher voucher);
 
     public Task<bool> DeleteVoucher(int id);
 

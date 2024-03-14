@@ -48,6 +48,66 @@ public class VoucherTests : IClassFixture<MySanpeteFactory>
     }
 
     [Fact]
+    public async void EndDateCantBeBeforeStartDateTest()
+    {
+        using var scope = mySanpeteFactory.Services.CreateScope();
+        IVoucherService voucherService = scope.ServiceProvider.GetRequiredService<IVoucherService>();
+
+        AddVoucherRequest request = new AddVoucherRequest()
+        {
+            EndDate = new DateTime(2024, 3, 10).ToUniversalTime(),
+            PromoDescription = "Default Description",
+            StartDate = new DateTime(2024, 3, 12).ToUniversalTime(),
+            PromoCode = "1738",
+            PromoStock = 10,
+            PromoName = "Test Name",
+            RetailPrice = 5,
+            TotalReclaimable = 1,
+            BusinessId = 1,
+        };
+
+        await voucherService.Invoking(vs => vs.AddVoucher(request))
+            .Should()
+            .ThrowAsync<Exception>()
+            .Where(e => e.Message == "Voucher end date is before start date");
+    }
+
+    [Fact]
+    public async void BusinessDoesntExistTest()
+    {
+        using var scope = mySanpeteFactory.Services.CreateScope();
+        IVoucherService voucherService = scope.ServiceProvider.GetRequiredService<IVoucherService>();
+
+        AddVoucherRequest request = new AddVoucherRequest()
+        {
+            EndDate = new DateTime(2024, 3, 12).ToUniversalTime(),
+            PromoDescription = "Default Description",
+            StartDate = new DateTime(2024, 3, 10).ToUniversalTime(),
+            PromoCode = "1738",
+            PromoStock = 10,
+            PromoName = "Test Name",
+            RetailPrice = 5,
+            TotalReclaimable = 1,
+            BusinessId = 1000000,
+        };
+
+        await voucherService.Invoking(vs => vs.AddVoucher(request))
+           .Should()
+           .ThrowAsync<Exception>()
+           .Where(e => e.Message == "Business doesn't exist");
+    }
+
+    [Fact]
+    public async void VoucherDoesntExistTest()
+    {
+        using var scope = mySanpeteFactory.Services.CreateScope();
+        IVoucherService voucherService = scope.ServiceProvider.GetRequiredService<IVoucherService>();
+
+        var result = await voucherService.GetVoucher(1000000); 
+        result.Should().BeNull();   
+    }
+
+    [Fact]
     public async void DeleteVoucherTest()
     {
         using var scope = mySanpeteFactory.Services.CreateScope();
@@ -71,7 +131,7 @@ public class VoucherTests : IClassFixture<MySanpeteFactory>
 
         var voucherMaybe = await voucherService.GetVoucher(voucher.Id);
 
-        voucherMaybe.Should().NotBeNull();
+        voucherMaybe.Should().BeNull();
     }
 
     [Fact]
@@ -80,14 +140,10 @@ public class VoucherTests : IClassFixture<MySanpeteFactory>
         using var scope = mySanpeteFactory.Services.CreateScope();
         IVoucherService voucherService = scope.ServiceProvider.GetRequiredService<IVoucherService>();
 
-        try
-        {
-            var voucher = await voucherService.DeleteVoucher(10000);
-        }
-        catch(Exception ex) 
-        {
-            ex.Should().NotBeNull();
-        }
+        await voucherService.Invoking(vs => vs.DeleteVoucher(10000))
+            .Should()
+            .ThrowAsync<Exception>()
+            .Where(e => e.Message == "Couldn't delete voucher");
     }
 
     [Fact]

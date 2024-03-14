@@ -598,6 +598,7 @@ COPY mysanpete.bundle_voucher (id, voucher_id, bundle_id, discount_price) FROM s
 
 COPY mysanpete.business (id, business_name, address, logo) FROM stdin;
 1	Collaborative Music	123 Swag Street	\N
+2	Super Toads	456 Sweg Street	\N
 \.
 
 
