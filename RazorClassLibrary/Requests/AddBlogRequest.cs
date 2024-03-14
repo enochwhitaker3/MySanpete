@@ -8,8 +8,8 @@ namespace RazorClassLibrary.Requests;
 
 public class AddBlogRequest
 {
-    public string Title { get; set; } = "No Title";
-    public string Content { get; set; } = "No Content";
+    public string Title { get; set; } = "";
+    public string Content { get; set; } = "";
     public int AuthorId { get; set; }
     public bool Commentable { get; set; }
     public byte[]? Photo { get; set; }
