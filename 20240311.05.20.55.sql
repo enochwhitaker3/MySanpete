@@ -740,7 +740,7 @@ SELECT pg_catalog.setval('mysanpete.bundle_voucher_id_seq', 1, false);
 -- Name: business_id_seq; Type: SEQUENCE SET; Schema: mysanpete; Owner: parkerswenson_25
 --
 
-SELECT pg_catalog.setval('mysanpete.business_id_seq', 1, true);
+SELECT pg_catalog.setval('mysanpete.business_id_seq', 2, true);
 
 
 --
