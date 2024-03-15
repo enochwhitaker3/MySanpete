@@ -23,6 +23,8 @@ builder.Services.AddSingleton<IBlogService, WebBlogService>();
 builder.Services.AddSingleton<IVoucherService, WebVoucherService>();
 builder.Services.AddSingleton<IBusinessService, WebBusinessService>();
 builder.Services.AddSingleton<IUserService, WebUserService>();
+builder.Services.AddSingleton<IPodcastService, WebPodcastService>();
+builder.Services.AddSingleton<IRoleService, WebRoleService>();
 
 //builder.Services.AddAuthentication().AddGoogle(googleOptions =>
 //{

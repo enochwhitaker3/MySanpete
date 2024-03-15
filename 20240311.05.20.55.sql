@@ -4,7 +4,7 @@ create role parkerswenson_25;
 --
 
 -- Dumped from database version 12.17
--- Dumped by pg_dump version 16.1 (Debian 16.1-1.pgdg120+1)
+-- Dumped by pg_dump version 16.2 (Debian 16.2-1.pgdg120+2)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -597,6 +597,8 @@ COPY mysanpete.bundle_voucher (id, voucher_id, bundle_id, discount_price) FROM s
 --
 
 COPY mysanpete.business (id, business_name, address, logo) FROM stdin;
+1	Collaborative Music	123 Swag Street	\N
+2	Super Toads	456 Sweg Street	\N
 \.
 
 
@@ -738,7 +740,7 @@ SELECT pg_catalog.setval('mysanpete.bundle_voucher_id_seq', 1, false);
 -- Name: business_id_seq; Type: SEQUENCE SET; Schema: mysanpete; Owner: parkerswenson_25
 --
 
-SELECT pg_catalog.setval('mysanpete.business_id_seq', 1, false);
+SELECT pg_catalog.setval('mysanpete.business_id_seq', 2, true);
 
 
 --

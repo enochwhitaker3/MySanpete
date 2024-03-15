@@ -1,25 +1,21 @@
-﻿@page "/add-blog"
+﻿@page "/add-podcast"
 @using RazorClassLibrary.Data
 @using RazorClassLibrary.Requests
 @using RazorClassLibrary.Services
 
 
-@inject IBlogService blogService;
+@inject IPodcastService podcastService;
 
 <div class="form-container">
-    <h3>Admin Add Blog</h3>
-    <form method="post" @onsubmit="CreateNewBlog" class="mt-5">
+    <h3>Admin Add Podcast</h3>
+    <form method="post" @onsubmit="CreateNewPodcast" class="mt-5">
         <div class="form-group mt-5">
-            <label for="title">Title</label>
-            <input id="title" class="form-control" @bind="Title" />
+            <label for="title">URL</label>
+            <input id="title" class="form-control" @bind="URL" />
         </div>
         <div class="form-group mt-5">
-            <label for="xCoordinate">Blog Content</label>
-            <input id="xCoordinate" class="form-control" @bind="Content" />
-        </div>
-        <div class="form-group mt-5">
-            <label for="yCoordinate">Author ID</label>
-            <input id="yCoordinate" class="form-control" @bind="AuthorId" />
+            <label for="xCoordinate">Podcast Name</label>
+            <input id="xCoordinate" class="form-control" @bind="PodcastName"/>
         </div>
         <div class="form-group mt-5">
             <label for="startDate">Allow Comments?</label><br />
@@ -28,41 +24,38 @@
             <label for="radioFalse">No</label>
             <input type="radio" id="radioFalse" name="myRadio" @onchange="@(e => Commentable = false)" checked="@(Commentable == false)" />
         </div>
-       @*  <div class="form-group">
+        @* <div class="form-group">
         <label for="photo">Photo</label>
         <input id="photo" type="file" @bind="newOccasion.Photo" />
-        </div>  *@
+        </div> *@
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+
 </div>
 
 @code {
-    public AddBlogRequest? newBlog;
+    public AddPodcastRequest newPodcast;
 
     public string errorMessage = "";
 
-    public string? Title { get; set; }
-    public string? Content { get; set; }
-    public int AuthorId { get; set; }
+    public string URL { get; set; } = "";
     public bool Commentable { get; set; }
+    public string PodcastName { get; set; } = "Default Name";
     // public byte[] Photo { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        newBlog = new();
+        newPodcast = new();
     }
 
-    public async Task CreateNewBlog()
+    public async Task CreateNewPodcast()
     {
         try
         {
-            if (newBlog is not null)
-            {
-                await blogService.AddBlog(newBlog);
-                
-                // Clear the form
-                newBlog = new AddBlogRequest();
-            }
+            await podcastService.AddPodcast(newPodcast);
+
+            // Clear the form
+            newPodcast = new AddPodcastRequest();
         }
         catch (Exception ex)
         {
