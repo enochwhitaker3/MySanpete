@@ -28,22 +28,21 @@
             <label for="radioFalse">No</label>
             <input type="radio" id="radioFalse" name="myRadio" @onchange="@(e => Commentable = false)" checked="@(Commentable == false)" />
         </div>
-        @* <div class="form-group">
+       @*  <div class="form-group">
         <label for="photo">Photo</label>
         <input id="photo" type="file" @bind="newOccasion.Photo" />
-        </div> *@
+        </div>  *@
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
-
 </div>
 
 @code {
-    public AddBlogRequest newBlog;
+    public AddBlogRequest? newBlog;
 
     public string errorMessage = "";
 
-    public string Title { get; set; }
-    public string Content { get; set; }
+    public string? Title { get; set; }
+    public string? Content { get; set; }
     public int AuthorId { get; set; }
     public bool Commentable { get; set; }
     // public byte[] Photo { get; set; }
@@ -57,10 +56,13 @@
     {
         try
         {
-            await blogService.AddBlog(newBlog);
-
-            // Clear the form
-            newBlog = new AddBlogRequest();
+            if (newBlog is not null)
+            {
+                await blogService.AddBlog(newBlog);
+                
+                // Clear the form
+                newBlog = new AddBlogRequest();
+            }
         }
         catch (Exception ex)
         {

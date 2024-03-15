@@ -1,9 +1,10 @@
-﻿
-@* 
+﻿@using RazorClassLibrary.DTOs
+@using RazorClassLibrary.Services
+@inject IVoucherService voucherService
+@*
 <MudAvatar Rounded="true" Square="true" Size="Size.Large" Color="Color.Primary" Style="margin-top:100px;"><MudImage Src="Images/theater.jpg"></MudImage></MudAvatar> *@
 
-
-<MudCard Style="width: 225px; height:300px; border-radius: 20px;">
+@* <MudCard Style="width: 225px; height:300px; border-radius: 20px;">
     <MudCardContent>
         <MudCardMedia Image="Images/theater.jpg" Height="200" />
         <MudText Typo="Typo.h5">Old Paint</MudText>
@@ -14,10 +15,109 @@
         <MudButton Variant="Variant.Text" Color="Color.Primary">Share</MudButton>
         <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
     </MudCardActions>
-</MudCard>
+</MudCard> *@
+
+<div class="vouchers-content" style="margin-top: 200px; max-width: 1200px; margin-left: auto; margin-right: auto;">
+    <h1>Purchase Vouchers</h1>
+    <center><p>Shop Local!</p></center>
+    <div class="d-flex flex-row justify-content-center" style="max-width: 1200px;">
+        <div>
+            <a href="#">
+                <img class="business-logo"
+                     style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px;"
+                     src="https://s3-media0.fl.yelpcdn.com/bphoto/1MqOD2pSfkk3SnMhI3wWQQ/348s.jpg" />
+            </a>
+        </div>
+        <div>
+            <a href="#">
+                <img class="business-logo"
+                     style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px;"
+                     src="https://lh3.googleusercontent.com/p/AF1QipNhVuRpQ0ShYKi0HPDze9Ny49ymiUzoPDb-DPP0=s680-w680-h510" />
+            </a>
+        </div>
+        <div>
+            <a href="#">
+                <img class="business-logo"
+                     style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px;"
+                     src="https://asset.brandfetch.io/idPvg-ka_0/idKNuyVmpf.jpeg" />
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card m-2">
+                <div class="d-flex flex-row">
+                    <div class="col-md img-square-wrapper" style="padding: 0px;">
+                        <img class=""
+                             style="height: 100%; object-fit: cover; object-position: center;"
+                             src="https://fastly.picsum.photos/id/16/2500/1667.jpg?hmac=uAkZwYc5phCRNFTrV_prJ_0rP0EdwJaZ4ctje2bY7aE" alt="Staging Photo" width="200" />
+                    </div>
+                    <div class="col-md card-body">
+                        <h2 class="card-title">Buy One Get One on All Cookies and Cupcakes</h2>
+                        <p class="card-text">Good through 10-01-2024</p>
+                        <!-- Button trigger modal -->
+                        <a class="btn-snow bg-badger-blue" data-toggle="modal" data-target="#exampleModalLong">Purchase</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card m-2">
+                <div class="d-flex flex-row">
+                    <div class="col-md img-square-wrapper" style="padding: 0px;">
+                        <img class="" style="height: 100%; object-fit: cover; object-position: center;" src="https://fastly.picsum.photos/id/16/2500/1667.jpg?hmac=uAkZwYc5phCRNFTrV_prJ_0rP0EdwJaZ4ctje2bY7aE" alt="Staging Photo" width="200">
+                    </div>
+                    <div class="col-md card-body">
+                        <h2 class="card-title">10% off all Pizzas</h2>
+                        <p class="card-text">April 26, 2023 <wbr>11:30 AM to 12:20 PM</p>
+                        <!-- Button trigger modal -->
+                        <a class="btn-snow bg-badger-blue" data-toggle="modal" data-target="#exampleModalLong">More Information</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card m-2">
+                <div class="d-flex flex-row">
+                    <div class="col-md img-square-wrapper" style="padding: 0px;">
+                        <img class="" style="height: 100%; object-fit: cover; object-position: center;" src="https://fastly.picsum.photos/id/16/2500/1667.jpg?hmac=uAkZwYc5phCRNFTrV_prJ_0rP0EdwJaZ4ctje2bY7aE" alt="Staging Photo" width="200">
+                    </div>
+                    <div class="col-md card-body">
+                        <h2 class="card-title">Entrepreneurship Seminar Series</h2>
+                        <p class="card-text">April 26, 2023 <wbr>11:30 AM to 12:20 PM</p>
+                        <!-- Button trigger modal -->
+                        <a class="btn-snow bg-badger-blue" data-toggle="modal" data-target="#exampleModalLong">More Information</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card m-2">
+                <div class="d-flex flex-row">
+                    <div class="col-md img-square-wrapper" style="padding: 0px;">
+                        <img class="" style="height: 100%; object-fit: cover; object-position: center;" src="https://fastly.picsum.photos/id/16/2500/1667.jpg?hmac=uAkZwYc5phCRNFTrV_prJ_0rP0EdwJaZ4ctje2bY7aE" alt="Staging Photo" width="200">
+                    </div>
+                    <div class="col-md card-body">
+                        <h2 class="card-title">Entrepreneurship Seminar Series</h2>
+                        <p class="card-text">April 26, 2023 <wbr>11:30 AM to 12:20 PM</p>
+                        <!-- Button trigger modal -->
+                        <a class="btn-snow bg-badger-blue" data-toggle="modal" data-target="#exampleModalLong">More Information</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 
 
 @code {
+    public List<VoucherDTO> allVouchers { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+    }
 
 }
