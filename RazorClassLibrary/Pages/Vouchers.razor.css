@@ -8,15 +8,6 @@
     align-items: center; /* Vertically center */
 }
 
-.navbar-nav {
-    background-color: black !important;
-}
-
-.vouchers-content {
-    background-color: blue;
-}
-
-
 .content {
     position: absolute;
     top: 35%;
@@ -40,8 +31,6 @@
     font-family: 'Segoe UI';
     padding-left: 65px;
 }
-
-
 
 
 @media (max-width: 750px) {
