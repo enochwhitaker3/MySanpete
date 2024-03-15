@@ -16,7 +16,37 @@ public class WebOccasionService : IOccasionService
 
     public async Task<Occasion> AddOccasion(AddOccasionRequest request)
     {
-        var context = await dbContextFactory.CreateDbContextAsync();
+        if (request.BusinessId == 0)
+        {
+            throw new Exception("Occasions need a business");
+        }
+
+        if (request.Title is null)
+        {
+            throw new Exception("Occasions need a title");
+        }
+
+        if (request.Description is null)
+        {
+            throw new Exception("Occasions need a description");
+        }
+
+        if (request.EndDate < request.StartDate)
+        {
+            throw new Exception("The end date of the even needs to be after the start date");
+        }
+
+        if (request.XCoordinate is null)
+        {
+            throw new Exception("The occasion needs an X coordinate");
+        }
+
+        if (request.YCoordinate is null)
+        {
+            throw new Exception("The occasion needs an Y coordinate");
+        }
+
+        using var context = await dbContextFactory.CreateDbContextAsync();
 
         var newOccasion = new Occasion()
         {
