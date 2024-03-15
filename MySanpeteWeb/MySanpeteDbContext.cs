@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using RazorClassLibrary.Data;
 
 namespace MySanpeteWeb;
 
-public partial class MySanpeteDbContext : DbContext
+public partial class MySanpeteDbContext : IdentityDbContext
 {
     public MySanpeteDbContext()
     {

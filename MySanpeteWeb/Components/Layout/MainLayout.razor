@@ -1,44 +1,13 @@
 ﻿@inherits LayoutComponentBase
 
 
-@* 
-    <MudAppBar Elevation="0" Style="background-color:transparent; padding-top:4vh; justify-items:center;">
-        <MudHidden Breakpoint="Breakpoint.SmAndUp">
-            <a href="/">
-                <MudImage Src="Images/My_Sanpete.png" Style="width:100px; height:100px; margin-bottom:4vh;" />
-            </a>
-            <MudSpacer />
-            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Dark" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" Style="padding-bottom:5vh;" />
-        </MudHidden>
-        <MudHidden Breakpoint="Breakpoint.Xs">
-            <a href="/">
-                <MudImage Src="Images/My_Sanpete.png" Style="width:100px; height:100px; margin-bottom:4vh;" />
-            </a>            
-            <MudSpacer />
-            <MudNavLink Href="/businesses" Match="NavLinkMatch.All" Style="color:black; margin-left:0px; width:fit-content; padding-bottom:4vh;">Businesses</MudNavLink>
-            <MudNavLink Href="/blogs" Match="NavLinkMatch.All" Style="color:black; margin-left:0px; width:fit-content; padding-bottom:4vh;">Blogs</MudNavLink>
-            <MudNavLink Href="/podcasts" Match="NavLinkMatch.All" Style="color:black; margin-left:0px; width:fit-content; padding-bottom:4vh;">Podcast</MudNavLink>
-            <MudNavLink Href="/events" Match="NavLinkMatch.All" Style="color:black; margin-left:0px; width:fit-content; padding-bottom:4vh;">Events</MudNavLink>
-            <MudNavLink Href="/vouchers" Match="NavLinkMatch.All" Style="color:black; margin-left:0px; width:fit-content; padding-bottom:4vh;">Vouchers</MudNavLink>
-            <MudNavLink Href="/login" Match="NavLinkMatch.All" Style="color:black; margin-left:0px; width:fit-content; padding-bottom:4vh;">Log in</MudNavLink>
-        </MudHidden>
-    </MudAppBar>
 
-    <MudDrawer @bind-Open="_drawerOpen" Elevation="1" Anchor="Anchor.Right">
-        <MudDrawerHeader>
-            <MudText Typo="Typo.h6">My Sanpete</MudText>
-        </MudDrawerHeader>
-        <NavMenu />
-    </MudDrawer> *@
+<div class="page">
+    <main>
 
+        <NavMenu></NavMenu>
 
+        @Body
 
-
-    <div class="page">
-        <main>
-            <NavMenu></NavMenu>
-
-            @Body
-
-        </main>
-    </div>
+    </main>
+</div>

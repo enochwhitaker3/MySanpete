@@ -4,6 +4,7 @@ using MySanpeteWeb;
 using MySanpeteWeb.Components;
 using MySanpeteWeb.Services;
 using RazorClassLibrary.Services;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,8 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddDbContextFactory<MySanpeteDbContext>(config => config.UseNpgsql(builder.Configuration["MySanpeteDB"]));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<MySanpeteDbContext>();
 
 builder.Services.AddMudServices();
 
@@ -45,6 +48,7 @@ app.UseAntiforgery();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
+app.MapRazorPages();
 
 app.Run();
 
