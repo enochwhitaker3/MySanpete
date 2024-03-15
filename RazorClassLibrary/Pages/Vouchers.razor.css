@@ -1,3 +1,17 @@
+@font-face {
+    font-family: 'Nelphim';
+    src: url('Fonts/Nephilm.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Casual';
+    src: url('Fonts/Casual-Regular.ttf') format('truetype');
+}
+
+h2 {
+    font-family: Nelphim !important;
+}
+
 .banner {
     display: flex;
     background-color: #5EB0BF;
