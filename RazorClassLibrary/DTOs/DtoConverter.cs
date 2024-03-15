@@ -30,7 +30,7 @@ public static class DtoConverter
             LeftInStock = voucher.PromoStock - voucher.UserVouchers.Count(),
             RetailPrice = voucher.RetailPrice,
             AmmountReclaimable = voucher.TotalReclaimable,
-            Stock = voucher.PromoStock
+            Stock = voucher.PromoStock,
         };
     }
 

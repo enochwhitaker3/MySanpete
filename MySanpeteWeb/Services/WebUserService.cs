@@ -5,6 +5,7 @@ using RazorClassLibrary.DTOs;
 using RazorClassLibrary.Requests;
 using RazorClassLibrary.Services;
 using System.Runtime.InteropServices;
+using System.Net.Mail;
 
 namespace MySanpeteWeb.Services;
 
@@ -28,16 +29,41 @@ public class WebUserService : IUserService
             return null;
         }
 
+        //Make sure the email is valid
+        if(!IsValid(email))
+        {
+            return null;
+        }
+
+        Guid guid = Guid.NewGuid();
+
         var newUser = new EndUser()
         {
             UserEmail = email,
             UserRoleId = 1,
+            Guid = guid
         };
 
         await context.EndUsers.AddAsync(newUser);
         await context.SaveChangesAsync();
         return newUser.ToDto();
 
+    }
+
+    private static bool IsValid(string email)
+    {
+        var valid = true;
+
+        try
+        {
+            var emailAddress = new MailAddress(email);
+        }
+        catch
+        {
+            valid = false;
+        }
+
+        return valid;
     }
 
     public async Task<bool> DeleteUser(Guid guid)
@@ -97,9 +123,19 @@ public class WebUserService : IUserService
 
     public async Task<UserDTO?> PatchUser(UserDTO user)
     {
+        if (user.Username == null)
+        {
+            throw new Exception("Username cannot be null");
+        }
+
+        if (!IsValid(user.UserEmail!))
+        {
+            throw new Exception("Email was invalid");
+        }
+
         var context = await dbContextFactory.CreateDbContextAsync();
 
-        var databaseUser = await context.EndUsers.Where(u => u.Id == user.Id).FirstOrDefaultAsync();    
+        var databaseUser = await context.EndUsers.Where(u => u.Guid == user.Guid).FirstOrDefaultAsync();    
 
         if (databaseUser is null)
         {
@@ -132,6 +168,14 @@ public class WebUserService : IUserService
         {
             throw new Exception("No user found with given GUID");
         }
+
+        var rolesExists = await context.UserRoles.AnyAsync(r => r.Id == request.RoleId);
+
+        if(!rolesExists) 
+        {
+            throw new Exception($"No role found with given id {request.RoleId}");
+        }
+
 
         user.UserRoleId = request.RoleId;
 

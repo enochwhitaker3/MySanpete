@@ -24,8 +24,16 @@ public class WebBusinessService : IBusinessService
             Logo = request.Logo,
         };
 
+        if (business.Address == "")
+        {
+            throw new Exception("Can't make a business without an address");
+        }
+        if (business.BusinessName == "")
+        {
+            throw new Exception("Can't make a business without a name");
+        }
 
-        await context.AddAsync(business);
+        await context.Businesses.AddAsync(business);
         await context.SaveChangesAsync();
 
         return business;
