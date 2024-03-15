@@ -154,5 +154,40 @@ namespace MySanpeteTests
             result.Commentable.Should().BeTrue();   
             result.Title.Should().Be("Title");
         }
+
+        [Fact]
+        public async void GettingBlogSuccessfullyTest()
+        {
+            using var scope = mySanpeteFactory.Services.CreateScope();
+            IBlogService blogService = scope.ServiceProvider.GetRequiredService<IBlogService>();
+
+            AddBlogRequest request = new AddBlogRequest()
+            {
+                AuthorId = 1,
+                Commentable = true,
+                Content = "Blah blah blah",
+                Title = "Title",
+            };
+
+            var blog = await blogService.AddBlog(request);
+
+            var result = await blogService.GetBlog(blog!.Id);
+
+            result.Should().NotBeNull();
+            result!.Commentable.Should().BeTrue();
+            result!.Title.Should().Be("Title");
+            result.Content.Should().Be("Blah blah blah");
+        }
+
+        [Fact]
+        public async void GettingBlogThatDoesntExistFailsTest()
+        {
+            using var scope = mySanpeteFactory.Services.CreateScope();
+            IBlogService blogService = scope.ServiceProvider.GetRequiredService<IBlogService>();
+
+            var result = await blogService.GetBlog(1000000);
+
+            result.Should().BeNull();
+        }
     }
 }
