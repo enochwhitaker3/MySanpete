@@ -13,9 +13,16 @@ public class WebPodcastService : IPodcastService
     {
         this.dbContextFactory = dbContextFactory;
     }
+
     public async Task AddPodcast(AddPodcastRequest request)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
+
+        if (request.URL is null || request.URL == "" || !Uri.IsWellFormedUriString(request.URL, UriKind.Absolute))
+        {
+            throw new Exception("Podcasts requires a valid URL");
+        }
+
         Podcast podcast = new Podcast()
         {
             Commentable = request.Commentable,
