@@ -45,6 +45,7 @@ body, html {
 
 
 .blog-section {
+    background-color: #fcfcf8;
     display: flex;
     flex-direction: column;
     align-items: center;
