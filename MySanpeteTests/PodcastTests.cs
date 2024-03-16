@@ -21,21 +21,30 @@ public class PodcastTests : IClassFixture<MySanpeteFactory>
         mySanpeteFactory = factory;
     }
 
-    [Fact]
-    public async void GetAllPodcastsTest()
-    {
-        IPodcastService service = createService();
 
+
+    [Fact]
+    public async void GetPodcastPasses()
+    {
+        // Arrange
+        IPodcastService service = createService();
+        string podcastName = "name";
         AddPodcastRequest podcastRequest = new AddPodcastRequest()
         {
-            URL = "myurl.com",
+            URL = "https://www.google.com/",
             Commentable = true,
-            PodcastName = "name"
+            PodcastName = podcastName
         };
+        await service.AddPodcast(podcastRequest);
+        var podcasts = await service.GetAllPodcasts();
+        var podcast = podcasts.LastOrDefault();
 
-        var allPodcasts = await service.GetAllPodcasts();
+        // Act
+        var podcastFromService = await service.GetPodcast(podcast.Id);
+        string podFromServiceName = podcastFromService.Name;
 
-        allPodcasts.Count.Should().Be(1);
+        // Assert
+        podFromServiceName.Should().Be(podcastName);
     }
 
     [Fact]
@@ -47,7 +56,7 @@ public class PodcastTests : IClassFixture<MySanpeteFactory>
         int countBefore = podcasts.Count;
         AddPodcastRequest podcastRequest = new AddPodcastRequest()
         {
-            URL = "myurl.com",
+            URL = "https://www.google.com/",
             Commentable = true,
             PodcastName = "name"
         };
@@ -62,7 +71,7 @@ public class PodcastTests : IClassFixture<MySanpeteFactory>
     }
 
     [Fact]
-    public async void AddAPodcastWithoutURLFieldsFails()
+    public async void AddAPodcastWithoutURLFieldFails()
     {
         IPodcastService service = createService();
 
@@ -76,6 +85,41 @@ public class PodcastTests : IClassFixture<MySanpeteFactory>
             .Should()
             .ThrowAsync<Exception>()
             .Where(e => e.Message == "Podcasts requires a valid URL");
+    }
+
+    [Fact]
+    public async void AddAPodcastWithInvalidURLFieldFails()
+    {
+        IPodcastService service = createService();
+
+        AddPodcastRequest podcastRequest = new AddPodcastRequest()
+        {
+            URL = "NOT_A_REAL_URL",
+            Commentable = true,
+            PodcastName = "name"
+        };
+
+        await service.Invoking(vs => vs.AddPodcast(podcastRequest))
+            .Should()
+            .ThrowAsync<Exception>()
+            .Where(e => e.Message == "Podcasts requires a valid URL");
+    }
+
+    [Fact]
+    public async void DeleteAPodcastPass()
+    {
+        // Arrange
+        IPodcastService service = createService();
+        AddPodcastRequest podcastRequest = new AddPodcastRequest()
+        {
+            URL = "https://www.google.com/",
+            Commentable = true,
+            PodcastName = "name"
+        };
+        await service.AddPodcast(podcastRequest);
+
+        // Act
+        
     }
 
     public IPodcastService createService()

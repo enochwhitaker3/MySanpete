@@ -18,7 +18,7 @@ public class WebPodcastService : IPodcastService
     {
         var context = await dbContextFactory.CreateDbContextAsync();
 
-        if (request.URL is null || request.URL == "")
+        if (request.URL is null || request.URL == "" || !Uri.IsWellFormedUriString(request.URL, UriKind.Absolute))
         {
             throw new Exception("Podcasts requires a valid URL");
         }
