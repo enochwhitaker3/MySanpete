@@ -26,23 +26,20 @@ public class PodcastTests : IClassFixture<MySanpeteFactory>
     {
         // Arrange
         IPodcastService service = createService();
-        string podcastName = "name";
         AddPodcastRequest podcastRequest = new AddPodcastRequest()
         {
             URL = "https://www.google.com/",
             Commentable = true,
-            PodcastName = podcastName
+            PodcastName = "name"
         };
-        await service.AddPodcast(podcastRequest);
-        var podcasts = await service.GetAllPodcasts();
-        var podcast = podcasts.LastOrDefault();
+        var podcastCreated = await service.AddPodcast(podcastRequest);
 
         // Act
-        var podcastFromService = await service.GetPodcast(podcast.Id);
-        string podFromServiceName = podcastFromService.Name;
+        var podcastFromService = await service.GetPodcast(podcastCreated.Id);
 
         // Assert
-        podFromServiceName.Should().Be(podcastName);
+        podcastFromService.Name.Should().Be(podcastCreated.Name);
+        podcastFromService.URL.Should().Be(podcastCreated.URL);
     }
 
     [Fact]

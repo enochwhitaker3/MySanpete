@@ -14,7 +14,7 @@ public class WebPodcastService : IPodcastService
         this.dbContextFactory = dbContextFactory;
     }
 
-    public async Task AddPodcast(AddPodcastRequest request)
+    public async Task<PodcastDTO> AddPodcast(AddPodcastRequest request)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
 
@@ -31,9 +31,11 @@ public class WebPodcastService : IPodcastService
         };
         await context.Podcasts.AddAsync(podcast);
         await context.SaveChangesAsync();
+
+        return podcast.ToDto();
     }
 
-    public async Task DeletePodcast(int podcastId)
+    public async Task<bool> DeletePodcast(int podcastId)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
         var dub = await context.Podcasts.Where(x => x.Id == podcastId).FirstOrDefaultAsync();
@@ -41,6 +43,11 @@ public class WebPodcastService : IPodcastService
         {
             context.Podcasts.Remove(dub);
             await context.SaveChangesAsync();
+            return true;
+        }
+        else
+        {
+            return false;   
         }
     }
 
@@ -63,8 +70,8 @@ public class WebPodcastService : IPodcastService
                 .ThenInclude(x => x.Comment)  // DUSTY COMMENT not sure about this line 
               .Include(x => x.PodcastReactions)
                 .ThenInclude(x => x.Reaction)
-              .Select(x => x.ToDto())
               .Where(x => x.Id == podcastId)
+              .Select(x => x.ToDto())
               .FirstOrDefaultAsync();
 
         if (podcast != null)

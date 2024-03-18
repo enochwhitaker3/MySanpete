@@ -9,6 +9,6 @@ public interface IPodcastService
 {
     public Task<List<PodcastDTO>> GetAllPodcasts();
     public Task<PodcastDTO> GetPodcast(int podcastId);
-    public Task AddPodcast(AddPodcastRequest request);
-    public Task DeletePodcast(int podcastId);
+    public Task<PodcastDTO> AddPodcast(AddPodcastRequest request);
+    public Task<bool> DeletePodcast(int podcastId);
 }
