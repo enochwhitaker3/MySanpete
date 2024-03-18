@@ -111,10 +111,13 @@ public class PodcastTests : IClassFixture<MySanpeteFactory>
             Commentable = true,
             PodcastName = "name"
         };
-        await service.AddPodcast(podcastRequest);
+        var podcastAdded = await service.AddPodcast(podcastRequest);
 
         // Act
-        
+        bool success = await service.DeletePodcast(podcastAdded.Id);
+
+        // Assert
+        success.Should().BeTrue();
     }
 
     public IPodcastService createService()
