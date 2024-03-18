@@ -21,8 +21,6 @@ public class PodcastTests : IClassFixture<MySanpeteFactory>
         mySanpeteFactory = factory;
     }
 
-
-
     [Fact]
     public async void GetPodcastPasses()
     {
