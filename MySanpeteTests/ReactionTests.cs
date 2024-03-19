@@ -30,19 +30,13 @@ public class ReactionTests : IClassFixture<MySanpeteFactory>
         IReactionService service = createService();
         IUserService userService = createUserService();
         IBlogService blogService = createBlogService();
+
         Guid userGuid = new("dc43835d-1738-1738-1738-ce90cc1209e3");    // Admin guid
-        var user = await userService.GetUser(userGuid);
+        var user = await userService.GetUser(userGuid) ?? throw new Exception("Creating user for the AddBlogReactionPasses test failed.");
         byte[] photo = new byte[1];
-        if (user == null)
-        {
-            throw new Exception("Creating user for the AddBlogReactionPasses test failed.");
-        }
-        AddBlogRequest blogRequest = new() { AuthorId = user.Id, Commentable = true, Content="<p>Hello</p>", Photo= photo, Title="Title" };
-        var addedBlog = await blogService.AddBlog(blogRequest);
-        if (addedBlog == null)
-        {
-            throw new Exception("Creating new blog for the AddBlogReactionPasses test failed.");
-        }
+
+        AddBlogRequest blogRequest = new() { AuthorId = user.Id, Commentable = true, Content = "<p>Hello</p>", Photo = photo, Title = "Title" };
+        var addedBlog = await blogService.AddBlog(blogRequest) ?? throw new Exception("Creating new blog for the AddBlogReactionPasses test failed.");
         AddReactionRequest request = new()
         {
             ContentId = addedBlog.Id,
@@ -55,7 +49,7 @@ public class ReactionTests : IClassFixture<MySanpeteFactory>
 
         // Assert
         newBlog.BlogId.Should().Be(addedBlog.Id);
-        newBlog.UserId.Should().Be(user.Id);  
+        newBlog.UserId.Should().Be(user.Id);
     }
 
     [Fact]
@@ -172,7 +166,7 @@ public class ReactionTests : IClassFixture<MySanpeteFactory>
         var result = await service.DeletePodReaction(-1); // invalid id
 
         // Assert
-        result.Should().BeFalse();    
+        result.Should().BeFalse();
     }
 
     public IReactionService createService()

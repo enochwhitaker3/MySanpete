@@ -21,7 +21,7 @@ public class WebBundleService : IBundleService
     {
         using var context = await dbContextFactory.CreateDbContextAsync();
 
-        if(request.Name is null || request.StartDate is null || request.EndDate is null || request.Vouchers is null )
+        if (request.Name is null || request.StartDate is null || request.EndDate is null || request.Vouchers is null)
         {
             throw new Exception("Insufficient Request");
         }
@@ -37,15 +37,15 @@ public class WebBundleService : IBundleService
         await context.SaveChangesAsync();
 
         var bundleVouchers = request.Vouchers
-                                .Select(x => new BundleVoucher() 
+                                .Select(x => new BundleVoucher()
                                 {
-                                    BundleId = newBundle.Id, 
-                                    DiscountPrice = x.RetailPrice, 
+                                    BundleId = newBundle.Id,
+                                    DiscountPrice = x.RetailPrice,
                                     VoucherId = x.Id
                                 })
                                 .ToList();
 
-        foreach(var newBundleVoucher in bundleVouchers)
+        foreach (var newBundleVoucher in bundleVouchers)
         {
             context.BundleVouchers.Add(newBundleVoucher);
         }
@@ -62,12 +62,12 @@ public class WebBundleService : IBundleService
                                     .ThenInclude(x => x.Voucher)
                                 .FirstOrDefaultAsync(x => x.Id == bundleId);
 
-        if(bundleToDelete is null)
+        if (bundleToDelete is null)
         {
             throw new Exception("Can't delete bundle that doesn't exist");
         }
 
-        foreach(var bundleVoucher in bundleToDelete.BundleVouchers)
+        foreach (var bundleVoucher in bundleToDelete.BundleVouchers)
         {
             context.BundleVouchers.Remove(bundleVoucher);
         }
@@ -83,8 +83,8 @@ public class WebBundleService : IBundleService
         using var context = await dbContextFactory.CreateDbContextAsync();
 
         var bundles = await context.Bundles
-                        .Include (x => x.BundleVouchers)
-                            .ThenInclude (x => x.Voucher)
+                        .Include(x => x.BundleVouchers)
+                            .ThenInclude(x => x.Voucher)
                         .Select(x => x.ToDto())
                         .ToListAsync();
 
@@ -101,7 +101,7 @@ public class WebBundleService : IBundleService
                             .ThenInclude(x => x.Voucher)
                         .FirstOrDefaultAsync(x => x.Id == bundleId);
 
-        if(bundle is null)
+        if (bundle is null)
         {
             throw new Exception("Can't find bundle");
         }
@@ -121,14 +121,14 @@ public class WebBundleService : IBundleService
                                      .ThenInclude(b => b!.UserVouchers)
                                    .FirstOrDefaultAsync(b => b.Id == request.BundleId);
 
-        if(bundleToPurchase is null)
+        if (bundleToPurchase is null)
         {
             throw new Exception("Cannot purcahse bundle that doesn't exist");
         }
 
         var userToPurchase = await context.EndUsers.FirstOrDefaultAsync(u => u.Guid == request.UserId);
 
-        if(userToPurchase is null) 
+        if (userToPurchase is null)
         {
             throw new Exception("Cannot purchase a bundle for a user that doesn't exist");
         }
@@ -144,10 +144,10 @@ public class WebBundleService : IBundleService
             UserId = userToPurchase.Id,
             TimesClaimd = 0,
             VoucherId = bv.VoucherId ?? throw new Exception("The voucher id was not found")
-            
+
         });
 
-        foreach(var purchase in purchases)
+        foreach (var purchase in purchases)
         {
             context.UserVouchers.Add(purchase);
         }

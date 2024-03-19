@@ -24,13 +24,13 @@ public class WebUserService : IUserService
 
         //Check if user doesn't exist
         var isExists = await context.EndUsers.AnyAsync(u => u.UserEmail == email);
-        if(isExists)
+        if (isExists)
         {
             return null;
         }
 
         //Make sure the email is valid
-        if(!IsValid(email))
+        if (!IsValid(email))
         {
             return null;
         }
@@ -88,7 +88,7 @@ public class WebUserService : IUserService
     {
         var context = await dbContextFactory.CreateDbContextAsync();
 
-        var userList = await context.EndUsers.Select(u => u.ToDto()).ToListAsync(); 
+        var userList = await context.EndUsers.Select(u => u.ToDto()).ToListAsync();
 
         return userList;
     }
@@ -113,7 +113,7 @@ public class WebUserService : IUserService
 
         var user = await context.EndUsers.Where(u => u.Guid == guid).FirstOrDefaultAsync();
 
-        if(user is null)
+        if (user is null)
         {
             return null;
         }
@@ -135,7 +135,7 @@ public class WebUserService : IUserService
 
         var context = await dbContextFactory.CreateDbContextAsync();
 
-        var databaseUser = await context.EndUsers.Where(u => u.Guid == user.Guid).FirstOrDefaultAsync();    
+        var databaseUser = await context.EndUsers.Where(u => u.Guid == user.Guid).FirstOrDefaultAsync();
 
         if (databaseUser is null)
         {
@@ -145,7 +145,7 @@ public class WebUserService : IUserService
         databaseUser.UserName = user.Username;
         databaseUser.UserEmail = user.UserEmail!;
         databaseUser.Photo = user.Photo;
- 
+
         context.Update(databaseUser);
         await context.SaveChangesAsync();
 
@@ -156,22 +156,22 @@ public class WebUserService : IUserService
     {
         var context = await dbContextFactory.CreateDbContextAsync();
 
-        if(request.AuthString != authstring)
+        if (request.AuthString != authstring)
         {
             throw new Exception("You're not allowed here");
         }
-        
+
 
         var user = await context.EndUsers.Where(u => u.Guid == request.UserId).FirstOrDefaultAsync();
 
-        if(user is null) 
+        if (user is null)
         {
             throw new Exception("No user found with given GUID");
         }
 
         var rolesExists = await context.UserRoles.AnyAsync(r => r.Id == request.RoleId);
 
-        if(!rolesExists) 
+        if (!rolesExists)
         {
             throw new Exception($"No role found with given id {request.RoleId}");
         }
@@ -181,7 +181,7 @@ public class WebUserService : IUserService
 
         context.Update(user);
         await context.SaveChangesAsync();
-        
+
         return true;
     }
 }

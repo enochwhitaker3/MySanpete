@@ -14,7 +14,7 @@ public class WebReviewService : IReviewService
     }
     public async Task<Review> AddReview(AddReviewRequest request)
     {
-        if(request.Text is null || request.Stars < 0 || request.Stars > 5)
+        if (request.Text is null || request.Stars < 0 || request.Stars > 5)
         {
             throw new Exception("Sommething went wrong with your request");
         }
@@ -23,7 +23,7 @@ public class WebReviewService : IReviewService
 
         var userMakingReview = await context.EndUsers.FirstOrDefaultAsync(u => u.Guid == request.UserGuid);
 
-        if(userMakingReview is null) 
+        if (userMakingReview is null)
         {
             throw new Exception("Cannot create review from an incorrect user");
         }
@@ -55,7 +55,7 @@ public class WebReviewService : IReviewService
 
         var reviewToDelete = await context.Reviews.FirstOrDefaultAsync(r => r.Id == reviewId);
 
-        if (reviewToDelete is null) 
+        if (reviewToDelete is null)
         {
             throw new Exception("Cannot delete something that doens't exist");
         }

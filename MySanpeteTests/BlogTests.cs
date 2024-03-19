@@ -125,7 +125,7 @@ namespace MySanpeteTests
 
             var result = await blogService.DeleteBlog(1000000);
 
-            result.Should().BeFalse();  
+            result.Should().BeFalse();
         }
 
         [Fact]
@@ -151,7 +151,7 @@ namespace MySanpeteTests
             result.Should().NotBeNull();
 
             result!.Content.Should().Be("Woah new content");
-            result.Commentable.Should().BeTrue();   
+            result.Commentable.Should().BeTrue();
             result.Title.Should().Be("Title");
         }
 

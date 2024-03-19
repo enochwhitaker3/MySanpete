@@ -22,7 +22,7 @@ public class WebReactionService : IReactionService
         var blog = await context.Blogs.FirstOrDefaultAsync(b => b.Id == request.ContentId);
         var user = await context.EndUsers.FirstOrDefaultAsync(u => u.Guid == request.UserGuid);
 
-        if(reaction is null || blog is null || user is null)
+        if (reaction is null || blog is null || user is null)
         {
             throw new Exception("reaction or blog or user is null in the request");
         }

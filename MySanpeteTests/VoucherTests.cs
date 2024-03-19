@@ -103,8 +103,8 @@ public class VoucherTests : IClassFixture<MySanpeteFactory>
         using var scope = mySanpeteFactory.Services.CreateScope();
         IVoucherService voucherService = scope.ServiceProvider.GetRequiredService<IVoucherService>();
 
-        var result = await voucherService.GetVoucher(1000000); 
-        result.Should().BeNull();   
+        var result = await voucherService.GetVoucher(1000000);
+        result.Should().BeNull();
     }
 
     [Fact]
@@ -172,9 +172,9 @@ public class VoucherTests : IClassFixture<MySanpeteFactory>
 
         Voucher newVoucher = new Voucher()
         {
-            PromoName= voucher.PromoName,
+            PromoName = voucher.PromoName,
             EndDate = voucher.EndDate,
-            StartDate = voucher.StartDate,  
+            StartDate = voucher.StartDate,
             PromoDescription = voucher.PromoDescription!,
             PromoCode = voucher.PromoCode!,
             PromoStock = voucher.Stock,

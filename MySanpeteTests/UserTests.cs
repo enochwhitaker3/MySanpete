@@ -290,7 +290,7 @@ public class UserTests : IClassFixture<MySanpeteFactory>
         };
 
         var result = await userService.SetRole(request);
-        
+
         result.Should().Be(true);
     }
 
