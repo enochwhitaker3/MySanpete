@@ -17,6 +17,11 @@ public class WebCommentService : ICommentService
     {
         var context = await dbContextFactory.CreateDbContextAsync();
 
+        if (request.content == "" || request.content is null)
+        {
+            throw new Exception("A comment needs content");
+        }
+
         var blogExists = await context.Blogs.AnyAsync(b => b.Id == request.contentId);
         if(!blogExists) 
         {
@@ -64,6 +69,11 @@ public class WebCommentService : ICommentService
     public async Task<bool> AddPodcastComment(AddCommentRequest request)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
+
+        if (request.content == "" || request.content is null)
+        {
+            throw new Exception("A comment needs content");
+        }
 
         var podExists = await context.Podcasts.AnyAsync(b => b.Id == request.contentId);
         if (!podExists)
