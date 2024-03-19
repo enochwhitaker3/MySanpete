@@ -47,7 +47,7 @@
     public bool Commentable { get; set; }
     // public byte[] Photo { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         newBlog = new();
     }

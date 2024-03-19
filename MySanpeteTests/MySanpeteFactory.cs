@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using  Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Testcontainers.PostgreSql;
 
 namespace MySanpeteTests;
@@ -44,7 +44,7 @@ public class MySanpeteFactory : WebApplicationFactory<Program>, IAsyncLifetime
     }
 
 
-    public async Task DisposeAsync()
+    public new async Task DisposeAsync()
     {
         await _dbContainer.StopAsync();
     }

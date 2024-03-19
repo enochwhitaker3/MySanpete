@@ -16,12 +16,12 @@ public class WebBlogService : IBlogService
     }
     public async Task<BlogDTO?> AddBlog(AddBlogRequest request)
     {
-        if(request.Title == "")
+        if (request.Title == "")
         {
             throw new Exception("Blog cannot be made with no title");
         }
 
-        if(request.Content == "")
+        if (request.Content == "")
         {
             throw new Exception("Blog cannot be made with no content");
         }
@@ -63,7 +63,7 @@ public class WebBlogService : IBlogService
     public async Task<bool> DeleteBlog(int id)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
-        var bud = await context.Blogs.Where(x => x.Id == id).FirstOrDefaultAsync();   
+        var bud = await context.Blogs.Where(x => x.Id == id).FirstOrDefaultAsync();
         if (bud != null)
         {
             context.Blogs.Remove(bud);

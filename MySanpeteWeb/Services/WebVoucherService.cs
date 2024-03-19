@@ -77,10 +77,10 @@ public class WebVoucherService : IVoucherService
     public async Task<bool> DeleteVoucher(int id)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
-        
+
         var voucher = await context.Vouchers.Include(v => v.Business).Where(x => x.Id == id).FirstOrDefaultAsync();
-        if (voucher != null) 
-        { 
+        if (voucher != null)
+        {
             context.Vouchers.Remove(voucher);
             await context.SaveChangesAsync();
             return true;

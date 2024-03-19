@@ -23,22 +23,22 @@ public class WebCommentService : ICommentService
         }
 
         var blogExists = await context.Blogs.AnyAsync(b => b.Id == request.contentId);
-        if(!blogExists) 
+        if (!blogExists)
         {
             return false;
         }
 
-        if(request.replyId is not null)
+        if (request.replyId is not null)
         {
             var commentExists = await context.UserComments.AnyAsync(bc => bc.Id == request.replyId);
-            if(!commentExists) 
+            if (!commentExists)
             {
                 return false;
             }
         }
 
         var user = await context.EndUsers.Where(u => u.Guid == request.userGuid).FirstOrDefaultAsync();
-        if(user is null)
+        if (user is null)
         {
             return false;
         }
@@ -128,9 +128,9 @@ public class WebCommentService : ICommentService
             .Include(u => u.Comment)
             .FirstOrDefaultAsync(bc => bc.Id == id);
 
-        if(bcud is null)
-        { 
-            return false; 
+        if (bcud is null)
+        {
+            return false;
         }
 
         bcud.Comment.CommentText = "[Redacted]";

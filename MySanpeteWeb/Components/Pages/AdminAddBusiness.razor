@@ -31,11 +31,11 @@
 
     public string errorMessage = "";
 
-    public string Name { get; set; }
-    public string Address { get; set; }
+    public string? Name { get; set; }
+    public string? Address { get; set; }
     // public byte[]? Logo { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         newBusiness = new();
     }
@@ -44,10 +44,13 @@
     {
         try
         {
-            await businessService.AddBusiness(newBusiness);
+            if (newBusiness != null)
+            {
+                await businessService.AddBusiness(newBusiness);
 
-            // Clear the form
-            newBusiness = new AddBusinessRequest();
+                // Clear the form
+                newBusiness = new AddBusinessRequest();
+            }
         }
         catch (Exception ex)
         {
