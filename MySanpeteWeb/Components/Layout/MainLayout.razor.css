@@ -1,4 +1,7 @@
 
+body {
+    background-color: #fcfcf8;
+}
 
 .content {
     padding: 16px;
@@ -13,6 +16,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    background-color: #fcfcf8;
 }
 
 main {
