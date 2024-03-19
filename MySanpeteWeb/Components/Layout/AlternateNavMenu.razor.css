@@ -47,16 +47,16 @@
 
 
 .navbar-dark .navbar-nav .nav-link {
-    color: white!important;
+    color: white !important;
 }
 
 .navbar-dark .navbar-toggler {
-    color: white!important;
+    color: white !important;
     border-color: transparent;
 }
 
 .navbar-toggler:focus {
     text-decoration: none;
-    outline: 0;
+    outline: 0;  63	74	73
     box-shadow:none;
 }
