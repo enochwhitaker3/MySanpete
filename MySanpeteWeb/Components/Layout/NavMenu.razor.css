@@ -15,13 +15,13 @@
     width: 100%;
     position: absolute;
     top: 0;
-    z-index:1;
+    z-index: 1;
 }
 
     .navbar a {
         float: left;
         display: block;
-        color: white;
+        color: #3f4a49;
         text-align: center;
         padding: 14px 20px;
         text-decoration: none;
@@ -35,28 +35,31 @@
 
 .navbar-brand {
     font-family: Casual;
-    font-size:1.5rem;
+    font-size: 1.5rem;
 }
 
+    .navbar-brand:hover {
+        color: #3f4a49;
+    }
 
 .nav-item {
     font-family: Casual;
-    font-size:1.25rem;
-    color:white!important;
+    font-size: 1.25rem;
+    color: #3f4a49 !important;
 }
 
 
 .navbar-dark .navbar-nav .nav-link {
-    color: white!important;
+    color: #3f4a49 !important;
 }
 
 .navbar-dark .navbar-toggler {
-    color: white!important;
+    color: #3f4a49 !important;
     border-color: transparent;
 }
 
 .navbar-toggler:focus {
     text-decoration: none;
     outline: 0;
-    box-shadow:none;
+    box-shadow: none;
 }
