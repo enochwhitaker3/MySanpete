@@ -5,6 +5,7 @@ using RazorClassLibrary.Pages;
 using RazorClassLibrary.Requests;
 using RazorClassLibrary.Services;
 using System.Runtime.InteropServices;
+using System.Threading.RateLimiting;
 
 namespace MySanpeteWeb.Services;
 
@@ -41,7 +42,7 @@ public class WebBundleService : IBundleService
                                 {
                                     BundleId = newBundle.Id, 
                                     DiscountPrice = x.RetailPrice, 
-                                    VoucherId = x.Id
+                                    VoucherId = x.Id,
                                 })
                                 .ToList();
 
@@ -50,7 +51,12 @@ public class WebBundleService : IBundleService
             context.BundleVouchers.Add(newBundleVoucher);
         }
         await context.SaveChangesAsync();
-        return (await context.Bundles.FirstOrDefaultAsync(x => x.Id == newBundle.Id))!.ToDto();
+        var bundle = await context.Bundles
+            .Include(x => x.BundleVouchers)
+                .ThenInclude(x => x.Voucher)
+                    .ThenInclude(x => x.Business)
+            .FirstOrDefaultAsync(x => x.Id == newBundle.Id);
+        return bundle!.ToDto();
     }
 
     public async Task<bool> DeleteBundle(int bundleId)
@@ -85,6 +91,7 @@ public class WebBundleService : IBundleService
         var bundles = await context.Bundles
                         .Include (x => x.BundleVouchers)
                             .ThenInclude (x => x.Voucher)
+                                .ThenInclude(x => x!.Business)
                         .Select(x => x.ToDto())
                         .ToListAsync();
 
@@ -99,6 +106,7 @@ public class WebBundleService : IBundleService
         var bundle = await context.Bundles
                         .Include(x => x.BundleVouchers)
                             .ThenInclude(x => x.Voucher)
+                                .ThenInclude(x => x.Business)
                         .FirstOrDefaultAsync(x => x.Id == bundleId);
 
         if(bundle is null)
@@ -123,7 +131,7 @@ public class WebBundleService : IBundleService
 
         if(bundleToPurchase is null)
         {
-            throw new Exception("Cannot purcahse bundle that doesn't exist");
+            throw new Exception("Cannot purchase bundle that doesn't exist");
         }
 
         var userToPurchase = await context.EndUsers.FirstOrDefaultAsync(u => u.Guid == request.UserId);
@@ -133,7 +141,7 @@ public class WebBundleService : IBundleService
             throw new Exception("Cannot purchase a bundle for a user that doesn't exist");
         }
 
-        //Ping stripe and make sure the database has a new. 
+        //TODO: Ping stripe and make sure the database has a new. 
 
         var purchases = bundleToPurchase.BundleVouchers.Select(bv => new UserVoucher()
         {
@@ -156,8 +164,69 @@ public class WebBundleService : IBundleService
         return true;
     }
 
-    public Task<BundleDTO> UpdateBundle(BundleDTO bundle)
+    public async Task<BundleDTO> UpdateBundle(BundleDTO bundle)
     {
-        throw new NotImplementedException();
+        using var context = await dbContextFactory.CreateDbContextAsync();
+
+        if (bundle.EndDate is null)
+        {
+            throw new Exception("End date for the occasion needs a value");
+        }
+
+        if (bundle.StartDate is null)
+        {
+            throw new Exception("Start date for the occasion needs a value");
+        }
+
+        if (bundle.EndDate < bundle.StartDate) 
+        {
+            throw new Exception("End date needs to be after the start date");
+        }
+
+        if (bundle.Name is null || bundle.Name == "") 
+        {
+            throw new Exception("Name needs a value for the occasion");
+        }
+
+        var buc = new Bundle()
+        {
+            EndDate = bundle.EndDate,
+            StartDate = bundle.StartDate,
+            BundleName = bundle.Name,
+            Id = bundle.Id,
+        };
+
+        context.Bundles.Update(buc);
+
+        var rangeToDelete = await context.BundleVouchers.Where(x => x.BundleId == buc.Id).ToListAsync();
+
+        context.BundleVouchers.RemoveRange(rangeToDelete);
+
+        if(bundle.Vouchers is not null)
+        {
+            var bundleVouchers = bundle.Vouchers
+                                   .Select(x => new BundleVoucher()
+                                   {
+                                       BundleId = buc.Id,
+                                       DiscountPrice = x.RetailPrice,
+                                       VoucherId = x.Id,
+                                   })
+                                   .ToList();
+
+            foreach (var newBundleVoucher in bundleVouchers)
+            {
+                context.BundleVouchers.Add(newBundleVoucher);
+            }
+
+            await context.SaveChangesAsync();
+        }
+
+        var newBundle = await context.Bundles
+            .Include(x => x.BundleVouchers)
+                .ThenInclude(x => x.Voucher)
+                    .ThenInclude(x => x.Business)
+            .FirstOrDefaultAsync(x => x.Id == buc.Id);
+
+        return newBundle!.ToDto();
     }
 }

@@ -75,6 +75,7 @@ public static class DtoConverter
     {
         return new BundleDTO()
         {
+            Name = bundle.BundleName,
             Id = bundle.Id,
             EndDate = bundle.EndDate,
             StartDate = bundle.StartDate,
