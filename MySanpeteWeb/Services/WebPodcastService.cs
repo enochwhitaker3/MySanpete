@@ -63,8 +63,8 @@ public class WebPodcastService : IPodcastService
                 .ThenInclude(x => x.Comment)  // DUSTY COMMENT not sure about this line 
               .Include(x => x.PodcastReactions)
                 .ThenInclude(x => x.Reaction)
-              .Select(x => x.ToDto())
               .Where(x => x.Id == podcastId)
+              .Select(x => x.ToDto())
               .FirstOrDefaultAsync();
 
         if (podcast != null)
