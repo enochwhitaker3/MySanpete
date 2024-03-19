@@ -44,7 +44,7 @@ public class MySanpeteFactory : WebApplicationFactory<Program>, IAsyncLifetime
     }
 
 
-    public async Task DisposeAsync()
+    public new async Task DisposeAsync()
     {
         await _dbContainer.StopAsync();
     }

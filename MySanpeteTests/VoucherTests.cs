@@ -167,7 +167,7 @@ public class VoucherTests : IClassFixture<MySanpeteFactory>
 
         var voucher = await voucherService.AddVoucher(request);
         voucher = await voucherService.GetVoucher(voucher.Id);
-
+        if (voucher == null) { throw new Exception("Something went wrong getting voucher in UpdateVoucherTest"); }
         voucher.PromoName = "New Test Name";
 
         Voucher newVoucher = new Voucher()
@@ -175,8 +175,8 @@ public class VoucherTests : IClassFixture<MySanpeteFactory>
             PromoName= voucher.PromoName,
             EndDate = voucher.EndDate,
             StartDate = voucher.StartDate,  
-            PromoDescription = voucher.PromoDescription,
-            PromoCode = voucher.PromoCode,
+            PromoDescription = voucher.PromoDescription!,
+            PromoCode = voucher.PromoCode!,
             PromoStock = voucher.Stock,
             RetailPrice = voucher.RetailPrice,
             TotalReclaimable = voucher.AmmountReclaimable,
@@ -187,7 +187,7 @@ public class VoucherTests : IClassFixture<MySanpeteFactory>
         var updatedVoucher = await voucherService.UpdateVoucher(newVoucher);
 
         updatedVoucher.Should().NotBeNull();
-        updatedVoucher.PromoName.Should().Be("New Test Name");
+        updatedVoucher!.PromoName.Should().Be("New Test Name");
     }
 
     [Fact]

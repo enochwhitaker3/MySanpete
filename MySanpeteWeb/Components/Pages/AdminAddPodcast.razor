@@ -34,7 +34,7 @@
 </div>
 
 @code {
-    public AddPodcastRequest newPodcast;
+    public AddPodcastRequest? newPodcast;
 
     public string errorMessage = "";
 
@@ -43,7 +43,7 @@
     public string PodcastName { get; set; } = "Default Name";
     // public byte[] Photo { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         newPodcast = new();
     }
@@ -52,10 +52,13 @@
     {
         try
         {
-            await podcastService.AddPodcast(newPodcast);
+            if (newPodcast is not null)
+            {
+                await podcastService.AddPodcast(newPodcast);
 
-            // Clear the form
-            newPodcast = new AddPodcastRequest();
+                // Clear the form
+                newPodcast = new AddPodcastRequest();
+            }
         }
         catch (Exception ex)
         {

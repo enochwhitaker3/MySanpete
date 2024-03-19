@@ -118,7 +118,7 @@ public class WebBundleService : IBundleService
         var bundleToPurchase = await context.Bundles
                                    .Include(b => b.BundleVouchers)
                                     .ThenInclude(b => b.Voucher)
-                                     .ThenInclude(b => b.UserVouchers)
+                                     .ThenInclude(b => b!.UserVouchers)
                                    .FirstOrDefaultAsync(b => b.Id == request.BundleId);
 
         if(bundleToPurchase is null)

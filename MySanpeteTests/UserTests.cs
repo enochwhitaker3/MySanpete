@@ -245,7 +245,7 @@ public class UserTests : IClassFixture<MySanpeteFactory>
         {
             await userService.PatchUser(userUnderTest);
         }
-        catch(Exception ex)
+        catch
         {
             return;
         }
