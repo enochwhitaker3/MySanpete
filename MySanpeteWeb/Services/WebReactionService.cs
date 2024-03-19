@@ -75,7 +75,7 @@ public class WebReactionService : IReactionService
         var doesExist = await context.BlogReactions.Where(b => b.Id == id).FirstOrDefaultAsync();
         if (doesExist is null)
         {
-            throw new Exception("No reactions found with given ID");
+            return false;
         }
 
         context.BlogReactions.Remove(doesExist);

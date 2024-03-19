@@ -22,7 +22,6 @@ public class ReactionTests : IClassFixture<MySanpeteFactory>
         mySanpeteFactory = factory;
     }
 
-
     [Fact]
     public async Task AddBlogReactionPasses()
     {
@@ -59,19 +58,13 @@ public class ReactionTests : IClassFixture<MySanpeteFactory>
         IReactionService service = createService();
         IUserService userService = createUserService();
         IBlogService blogService = createBlogService();
+
         Guid userGuid = new("dc43835d-1738-1738-1738-ce90cc1209e3");    // Admin guid
-        var user = await userService.GetUser(userGuid);
+        var user = await userService.GetUser(userGuid) ?? throw new Exception("Creating user for the AddBlogReactionPasses test failed.");
+
         byte[] photo = new byte[1];
-        if (user == null)
-        {
-            throw new Exception("Creating user for the AddBlogReactionPasses test failed.");
-        }
         AddBlogRequest blogRequest = new() { AuthorId = user.Id, Commentable = true, Content = "<p>Hello</p>", Photo = photo, Title = "Title" };
-        var addedBlog = await blogService.AddBlog(blogRequest);
-        if (addedBlog == null)
-        {
-            throw new Exception("Creating new blog for the AddBlogReactionPasses test failed.");
-        }
+        var addedBlog = await blogService.AddBlog(blogRequest) ?? throw new Exception("Creating new blog for the AddBlogReactionPasses test failed.");
         AddReactionRequest request = new()
         {
             ContentId = addedBlog.Id,
@@ -88,18 +81,45 @@ public class ReactionTests : IClassFixture<MySanpeteFactory>
     }
 
     [Fact]
+    public async Task RemoveBlogReactionInvalidIdFails()
+    {
+        // Arrange
+        IReactionService service = createService();
+        IUserService userService = createUserService();
+        IBlogService blogService = createBlogService();
+
+        Guid userGuid = new("dc43835d-1738-1738-1738-ce90cc1209e3");    // Admin guid
+        var user = await userService.GetUser(userGuid) ?? throw new Exception("Creating user for the AddBlogReactionPasses test failed.");
+
+        byte[] photo = new byte[1];
+        AddBlogRequest blogRequest = new() { AuthorId = user.Id, Commentable = true, Content = "<p>Hello</p>", Photo = photo, Title = "Title" };
+        var addedBlog = await blogService.AddBlog(blogRequest) ?? throw new Exception("Creating new blog for the AddBlogReactionPasses test failed.");
+        AddReactionRequest request = new()
+        {
+            ContentId = addedBlog.Id,
+            Unicode = "U+1F44D",
+            UserGuid = userGuid,
+        };
+        await service.AddBlogReaction(request);
+
+        // Act
+        var result = await service.DeleteBlogReaction(-1);      // Invalid id
+
+        // Assert
+        result.Should().BeFalse();
+    }
+
+    [Fact]
     public async Task AddPodcastReactionPasses()
     {
         // Arrange
         IReactionService service = createService();
         IUserService userService = createUserService();
         IPodcastService podcastService = createPodcastService();
+
         Guid userGuid = new("dc43835d-1738-1738-1738-ce90cc1209e3");
-        var user = await userService.GetUser(userGuid);
-        if (user == null)
-        {
-            throw new Exception("Creating user for the AddBlogReactionPasses test failed.");
-        }
+        var user = await userService.GetUser(userGuid) ?? throw new Exception("Creating user for the AddBlogReactionPasses test failed.");
+
         AddPodcastRequest podRequest = new() { URL = "https://www.google.com/", Commentable = true, PodcastName = "Name" };
         var addedPodcast = await podcastService.AddPodcast(podRequest);
         AddReactionRequest request = new()
@@ -124,8 +144,10 @@ public class ReactionTests : IClassFixture<MySanpeteFactory>
         IReactionService service = createService();
         IUserService userService = createUserService();
         IPodcastService podService = createPodcastService();
+
         Guid userGuid = new("dc43835d-1738-1738-1738-ce90cc1209e3");    // Admin guid
         var user = await userService.GetUser(userGuid);
+
         AddPodcastRequest podRequest = new() { URL = "https://www.google.com/", Commentable = true, PodcastName = "Name" };
         var addedPodcast = await podService.AddPodcast(podRequest);
         AddReactionRequest request = new()
@@ -151,7 +173,7 @@ public class ReactionTests : IClassFixture<MySanpeteFactory>
         IUserService userService = createUserService();
         IPodcastService podService = createPodcastService();
         Guid userGuid = new("dc43835d-1738-1738-1738-ce90cc1209e3");    // Admin guid
-        var user = await userService.GetUser(userGuid);
+
         AddPodcastRequest podRequest = new() { URL = "https://www.google.com/", Commentable = true, PodcastName = "Name" };
         var addedPodcast = await podService.AddPodcast(podRequest);
         AddReactionRequest request = new()
