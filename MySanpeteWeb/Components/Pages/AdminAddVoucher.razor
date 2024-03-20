@@ -2,94 +2,181 @@
 @using RazorClassLibrary.Data
 @using RazorClassLibrary.Requests
 @using RazorClassLibrary.Services
-
-
 @inject IVoucherService voucherService
+@inject IBusinessService businessService
 
 <div class="form-container">
     <h3>Admin Add Voucher</h3>
-    <form method="post" @onsubmit="CreateNewVoucher" class="mt-5">
+    <form class="mt-5" onsubmit="return false">
         <div class="form-group mt-5">
             <label for="title">BusinessID</label>
-            <input id="title" class="form-control" @bind="BusinessId" />
+            <select id="title" class="form-control" @bind="BusinessName" required>
+                @if (AllBusinesses is not null)
+                {
+                    <option value="">Choose a business</option>
+                    @foreach (var business in AllBusinesses)
+                    {
+                        <option value="@business.BusinessName">@business.BusinessName</option>
+                    }
+                }
+            </select>
         </div>
         <div class="form-group mt-5">
             <label for="startDate">Start Date</label>
-            <input id="startDate" type="date" class="form-control" @bind="StartDate" />
+            <input id="startDate" type="datetime-local" class="form-control" @bind="StartDate" required />
         </div>
         <div class="form-group mt-5">
             <label for="endDate">End Date</label>
-            <input id="endDate" type="date" class="form-control" @bind="EndDate" />
+            <input id="endDate" type="datetime-local" class="form-control" @bind="EndDate" required />
         </div>
         <div class="form-group mt-5">
             <label for="title">Promo Code</label>
-            <input id="title" class="form-control" @bind="PromoCode" />
+            <input id="title" class="form-control" @bind="PromoCode" required />
         </div>
         <div class="form-group mt-5">
             <label for="title">Promo Description</label>
-            <input id="title" class="form-control" @bind="PromoDescription" />
+            <input id="title" class="form-control" @bind="PromoDescription" required />
         </div>
         <div class="form-group mt-5">
             <label for="title">Promo Name</label>
-            <input id="title" class="form-control" @bind="PromoName" />
+            <input id="title" class="form-control" @bind="PromoName" required />
         </div>
         <div class="form-group mt-5">
             <label for="title">Promo Stock</label>
-            <input id="title" class="form-control" @bind="PromoStock" />
+            <input id="title" class="form-control" @bind="PromoStock" required />
         </div>
         <div class="form-group mt-5">
             <label for="title">Retail Price</label>
-            <input id="title" class="form-control" @bind="RetailPrice" />
+            <input id="title" class="form-control" @bind="RetailPrice" required />
         </div>
         <div class="form-group mt-5">
             <label for="title">Total Reclaimable</label>
-            <input id="title" class="form-control" @bind="TotalReclaimable" />
+            <input id="title" class="form-control" @bind="TotalReclaimable" required />
         </div>
-
-        @* <div class="form-group">
-        <label for="photo">Photo</label>
-        <input id="photo" type="file" @bind="newOccasion.Photo" />
-        </div> *@
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="form-group">
+            <label for="photo">Photo</label>
+            <input id="photo" type="file" />
+        </div>
+        @if (errorMessage == "")
+        {
+            <button type="submit" class="btn btn-primary" @onclick="CreateNewVoucher">Submit</button>
+        }
+        else
+        {
+            <div class="alert alert-danger">
+                <p>Please fix the error to submit the form</p>
+                <p>@errorMessage</p>
+                <button type="submit" class="btn btn-primary" @onclick="CreateNewVoucher">Submit</button>
+            </div>
+        }
     </form>
 </div>
 
 @code {
     public AddVoucherRequest? newVoucher;
+    public Business selectedBusiness { get; set; } = new();
 
     public string errorMessage = "";
 
-    public int BusinessId { get; set; }
-    public DateTime StartDate { get; set; }
-    public DateTime EndDate { get; set; }
-    public string? PromoCode { get; set; }
-    public string? PromoDescription { get; set; }
-    public string? PromoName { get; set; }
+    public string BusinessName { get; set; } = "";
+    public DateTime StartDate { get; set; } = DateTime.Today.ToUniversalTime();
+    public DateTime EndDate { get; set; } = DateTime.Today.ToUniversalTime();
+    public string? PromoCode { get; set; } = "Default Promo";
+    public string? PromoDescription { get; set; } = "Default Description";
+    public string? PromoName { get; set; } = "Default Promo Name";
     public int PromoStock { get; set; }
     public Decimal RetailPrice { get; set; }
     public int TotalReclaimable { get; set; }
 
-    protected override void OnInitialized()
+    public IEnumerable<Business>? AllBusinesses { get; set; }
+
+    protected override async Task OnInitializedAsync()
     {
         newVoucher = new();
+
+        AllBusinesses = await businessService.GetAllBusinesses();
     }
 
     public async Task CreateNewVoucher()
     {
         try
         {
-            if (newVoucher is not null)
+            if (PromoCode is null || PromoDescription is null || PromoName is null)
             {
-                await voucherService.AddVoucher(newVoucher);
+                throw new Exception("You need to fully fill out all the details for the Promo");
+            }
 
-                // Clear the form
-                newVoucher = new AddVoucherRequest();
+            if (PromoCode == "Default Promo")
+            {
+                throw new Exception("You need to change the promo code from the default");
+            }
+
+            if (PromoDescription == "Default Description")
+            {
+                throw new Exception("You need to change the promo description from the default");
+            }
+
+            if (PromoName == "Default Promo Name")
+            {
+                throw new Exception("You need to change the promo name from the default");
+            }
+
+            if (PromoStock <= 0)
+            {
+                throw new Exception("You need to give promo stock a value above 0");
+            }
+
+            if (RetailPrice <= 0)
+            {
+                throw new Exception("You need to give retail price a value above 0");
+            }
+
+            if (TotalReclaimable <= 0)
+            {
+                throw new Exception("You need to give total reclaimable to a value above 0");
+            }
+
+            selectedBusiness = AllBusinesses.Where(x => x.BusinessName == BusinessName).FirstOrDefault();
+
+            if (selectedBusiness is null)
+            {
+                throw new Exception("You need to select a business for this voucher");
+            }
+
+            newVoucher = new AddVoucherRequest()
+                {
+                    BusinessId = selectedBusiness.Id,
+                    StartDate = StartDate.ToUniversalTime(),
+                    EndDate = EndDate.ToUniversalTime(),
+                    PromoCode = PromoCode,
+                    PromoDescription = PromoDescription,
+                    PromoName = PromoName,
+                    PromoStock = PromoStock,
+                    RetailPrice = RetailPrice,
+                    TotalReclaimable = TotalReclaimable
+                };
+
+            try
+            {
+                if (newVoucher is not null)
+                {
+                    await voucherService.AddVoucher(newVoucher);
+
+                    // Clear the form
+                    newVoucher = new AddVoucherRequest();
+                    errorMessage = "";
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle errors appropriately
+                errorMessage = ex.Message;
             }
         }
         catch (Exception ex)
         {
-            // Handle errors appropriately
             errorMessage = ex.Message;
         }
+
     }
 }

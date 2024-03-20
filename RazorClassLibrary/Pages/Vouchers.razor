@@ -27,71 +27,117 @@
                      src="https://asset.brandfetch.io/idPvg-ka_0/idKNuyVmpf.jpeg" />
             </a>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card m-2">
-                <div class="d-flex flex-row">
-                    <div class="col-md img-square-wrapper" style="padding: 0px;">
-                        <img class=""
-                             style="height: 100%; object-fit: cover; object-position: center;"
-                             src="https://fastly.picsum.photos/id/16/2500/1667.jpg?hmac=uAkZwYc5phCRNFTrV_prJ_0rP0EdwJaZ4ctje2bY7aE" alt="Staging Photo" width="200" />
-                    </div>
-                    <div class="col-md card-body">
-                        <h2 class="card-title" style="font-family: Nelphim !important;">Buy One Get One on All Cookies and Cupcakes</h2>
-                        <p class="card-text">Good through 10-01-2024</p>
-                        <!-- Button trigger modal -->
-                        <a class="btn-snow" data-toggle="modal" data-target="#exampleModalLong">Purchase</a>
-                    </div>
-                </div>
-            </div>
+        <div>
+            <a href="#">
+                <img class="business-logo"
+                     style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px;"
+                     src="https://asset.brandfetch.io/idPvg-ka_0/idKNuyVmpf.jpeg" />
+            </a>
         </div>
-        <div class="col-md-6">
-            <div class="card m-2">
-                <div class="d-flex flex-row">
-                    <div class="col-md img-square-wrapper" style="padding: 0px;">
-                        <img class="" style="height: 100%; object-fit: cover; object-position: center;" src="https://fastly.picsum.photos/id/16/2500/1667.jpg?hmac=uAkZwYc5phCRNFTrV_prJ_0rP0EdwJaZ4ctje2bY7aE" alt="Staging Photo" width="200">
-                    </div>
-                    <div class="col-md card-body">
-                        <h2 class="card-title"><span>10</span><span style="font-family: Casual !important;">% off all Pizzas</span></h2>
-                        <p class="card-text">April 26, 2023 <wbr>11:30 AM to 12:20 PM</p>
-                        <!-- Button trigger modal -->
-                        <a class="btn-snow" data-toggle="modal" data-target="#exampleModalLong">More Information</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card m-2">
-                <div class="d-flex flex-row">
-                    <div class="col-md img-square-wrapper" style="padding: 0px;">
-                        <img class="" style="height: 100%; object-fit: cover; object-position: center;" src="https://fastly.picsum.photos/id/16/2500/1667.jpg?hmac=uAkZwYc5phCRNFTrV_prJ_0rP0EdwJaZ4ctje2bY7aE" alt="Staging Photo" width="200">
-                    </div>
-                    <div class="col-md card-body">
-                        <h2 class="card-title" style="font-family: Casual !important;">Entrepreneurship Seminar Series</h2>
-                        <p class="card-text">April 26, 2023 <wbr>11:30 AM to 12:20 PM</p>
-                        <!-- Button trigger modal -->
-                        <a class="btn-snow" data-toggle="modal" data-target="#exampleModalLong">More Information</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card m-2">
-                <div class="d-flex flex-row">
-                    <div class="col-md img-square-wrapper" style="padding: 0px;">
-                        <img class="" style="height: 100%; object-fit: cover; object-position: center;" src="https://fastly.picsum.photos/id/16/2500/1667.jpg?hmac=uAkZwYc5phCRNFTrV_prJ_0rP0EdwJaZ4ctje2bY7aE" alt="Staging Photo" width="200">
-                    </div>
-                    <div class="col-md card-body">
-                        <h2 class="card-title" style="font-family: Casual !important;">Entrepreneurship Seminar Series</h2>
-                        <p class="card-text">April 26, 2023 <wbr>11:30 AM to 12:20 PM</p>
-                        <!-- Button trigger modal -->
-                        <a class="btn-snow" data-toggle="modal" data-target="#exampleModalLong">More Information</a>
-                    </div>
-                </div>
-            </div>
+        <div>
+            <a href="#">
+                <img class="business-logo"
+                     style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px;"
+                     src="https://asset.brandfetch.io/idPvg-ka_0/idKNuyVmpf.jpeg" />
+            </a>
         </div>
     </div>
+
+    @if (allVouchers is not null)
+    {
+        @foreach (var voucher in allVouchers)
+        {
+            <div class="col-md-6">
+                <div class="card m-2">
+                    <div class="d-flex flex-row">
+                        <div class="col-md img-square-wrapper" style="padding: 0px;">
+                            <img class=""
+                                 style="height: 100%; object-fit: cover; object-position: center;"
+                                 src="https://fastly.picsum.photos/id/16/2500/1667.jpg?hmac=uAkZwYc5phCRNFTrV_prJ_0rP0EdwJaZ4ctje2bY7aE" alt="Staging Photo" width="200" />
+                        </div>
+                        <div class="col-md card-body">
+                            <h2 class="card-title" style="font-family: Nelphim !important;">Buy One Get One on All Cookies and Cupcakes</h2>
+                            <p class="card-text">Good through 10-01-2024</p>
+                            <!-- Button trigger modal -->
+                            <a class="btn-snow" data-toggle="modal" data-target="#exampleModalLong">Purchase</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="alert alert-info">
+            <p>Sorry No Vouchers At This Point</p>
+        </div>
+
+    }
+
+    @*  <div class="row">
+    <div class="col-md-6">
+    <div class="card m-2">
+    <div class="d-flex flex-row">
+    <div class="col-md img-square-wrapper" style="padding: 0px;">
+    <img class=""
+    style="height: 100%; object-fit: cover; object-position: center;"
+    src="https://fastly.picsum.photos/id/16/2500/1667.jpg?hmac=uAkZwYc5phCRNFTrV_prJ_0rP0EdwJaZ4ctje2bY7aE" alt="Staging Photo" width="200" />
+    </div>
+    <div class="col-md card-body">
+    <h2 class="card-title" style="font-family: Nelphim !important;">Buy One Get One on All Cookies and Cupcakes</h2>
+    <p class="card-text">Good through 10-01-2024</p>
+    <!-- Button trigger modal -->
+    <a class="btn-snow" data-toggle="modal" data-target="#exampleModalLong">Purchase</a>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div class="col-md-6">
+    <div class="card m-2">
+    <div class="d-flex flex-row">
+    <div class="col-md img-square-wrapper" style="padding: 0px;">
+    <img class="" style="height: 100%; object-fit: cover; object-position: center;" src="https://fastly.picsum.photos/id/16/2500/1667.jpg?hmac=uAkZwYc5phCRNFTrV_prJ_0rP0EdwJaZ4ctje2bY7aE" alt="Staging Photo" width="200">
+    </div>
+    <div class="col-md card-body">
+    <h2 class="card-title"><span>10</span><span style="font-family: Casual !important;">% off all Pizzas</span></h2>
+    <p class="card-text">April 26, 2023 <wbr>11:30 AM to 12:20 PM</p>
+    <!-- Button trigger modal -->
+    <a class="btn-snow" data-toggle="modal" data-target="#exampleModalLong">More Information</a>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div class="col-md-6">
+    <div class="card m-2">
+    <div class="d-flex flex-row">
+    <div class="col-md img-square-wrapper" style="padding: 0px;">
+    <img class="" style="height: 100%; object-fit: cover; object-position: center;" src="https://fastly.picsum.photos/id/16/2500/1667.jpg?hmac=uAkZwYc5phCRNFTrV_prJ_0rP0EdwJaZ4ctje2bY7aE" alt="Staging Photo" width="200">
+    </div>
+    <div class="col-md card-body">
+    <h2 class="card-title" style="font-family: Casual !important;">Entrepreneurship Seminar Series</h2>
+    <p class="card-text">April 26, 2023 <wbr>11:30 AM to 12:20 PM</p>
+    <!-- Button trigger modal -->
+    <a class="btn-snow" data-toggle="modal" data-target="#exampleModalLong">More Information</a>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div class="col-md-6">
+    <div class="card m-2">
+    <div class="d-flex flex-row">
+    <div class="col-md img-square-wrapper" style="padding: 0px;">
+    <img class="" style="height: 100%; object-fit: cover; object-position: center;" src="https://fastly.picsum.photos/id/16/2500/1667.jpg?hmac=uAkZwYc5phCRNFTrV_prJ_0rP0EdwJaZ4ctje2bY7aE" alt="Staging Photo" width="200">
+    </div>
+    <div class="col-md card-body">
+    <h2 class="card-title" style="font-family: Casual !important;">Entrepreneurship Seminar Series</h2>
+    <p class="card-text">April 26, 2023 <wbr>11:30 AM to 12:20 PM</p>
+    <!-- Button trigger modal -->
+    <a class="btn-snow" data-toggle="modal" data-target="#exampleModalLong">More Information</a>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div> *@
 
 </div>
 

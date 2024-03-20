@@ -13,7 +13,14 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddDbContextFactory<MySanpeteDbContext>(config => config.UseNpgsql(builder.Configuration["MySanpeteDB"]));
 
+
+
 builder.Services.AddMudServices();
+
+builder.Services.AddAntiforgery(options => { 
+    options.Cookie.Expiration = TimeSpan.Zero;
+    options.SuppressXFrameOptionsHeader = true;
+});
 
 builder.Services.AddSingleton<IOccasionService, WebOccasionService>();
 builder.Services.AddSingleton<IBlogService, WebBlogService>();
@@ -42,9 +49,12 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseRouting();
+
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
