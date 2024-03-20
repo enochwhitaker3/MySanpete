@@ -8,6 +8,10 @@
     src: url('Fonts/Casual-Regular.ttf') format('truetype');
 }
 
+body {
+    background-color: #fcfcf8;
+}
+
 
 .navbar {
     background-color: transparent;

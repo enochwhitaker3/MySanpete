@@ -9,9 +9,6 @@ body {
     height: 800px; /* Used to show scrolling */
 }
 
-
-
-
 .page {
     position: relative;
     display: flex;
