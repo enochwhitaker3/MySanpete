@@ -11,13 +11,9 @@
 <div class="form-container">
     <h3>Admin Add Blog</h3>
     <form method="post" @onsubmit="CreateNewBlog" class="mt-5">
-       @*  <div class="form-group mt-5">
-            <label for="yCoordinate">Author ID</label>
-            <input id="yCoordinate" class="form-control" @bind="AuthorId" />
-        </div> *@
         <div class="form-group mt-5">
-            <label for="title">Author</label>
-            <select id="title" class="form-control" @bind="AuthorId" required>
+            <label for="author">Author</label>
+            <select id="author" class="form-control" @bind="AuthorId" required>
                 @if (PotentialAuthors is not null)
                 {
                     <option value="">Choose the author...</option>
@@ -31,60 +27,63 @@
         <div class="form-group mt-5">
             <label for="startDate">Allow Comments?</label><br />
             <label for="radioTrue">Yes</label>
-            <input type="radio" id="radioTrue" name="myRadio" @onchange="@(e => Commentable = true)" checked="@(Commentable == true)" />
+            <input type="radio" id="radioTrue" name="myRadio" @onchange="@(e => Commentable = true)" checked="@(Commentable == true)"/>
             <label for="radioFalse">No</label>
             <input type="radio" id="radioFalse" name="myRadio" @onchange="@(e => Commentable = false)" checked="@(Commentable == false)" />
         </div>
-        @*  <div class="form-group">
-        <label for="photo">Photo</label>
-        <input id="photo" type="file" @bind="newOccasion.Photo" />
-        </div>  *@
+        <div class="form-group">
+            <label for="photo">Add a Thumnail Image</label>
+            <small style="color: darkgray;"><br />Recommended image size of 500 X 750 pixels. If no image is provided, MySanpete Logo will be displayed.<br /></small>
+            <InputFile OnChange="SaveFile"></InputFile>
+        </div>
 
         <div class="form-group mt-5">
             <label for="title">Title</label>
             <input id="title" class="form-control" @bind="Title" />
         </div>
 
-    <BlazoredTextEditor @ref="@QuillHtml">
-        <ToolbarContent>
-            <select class="ql-header">
-                <option selected=""></option>
-                <option value="1"></option>
-                <option value="2"></option>
-                <option value="3"></option>
-                <option value="4"></option>
-                <option value="5"></option>
-            </select>
-            <span class="ql-formats">
-                <button class="ql-bold"></button>
-                <button class="ql-italic"></button>
-                <button class="ql-underline"></button>
-                <button class="ql-strike"></button>
-            </span>
-            <span class="ql-formats">
-                <select class="ql-color"></select>
-                <select class="ql-background"></select>
-            </span>
-            <span class="ql-formats">
-                <button class="ql-list" value="ordered"></button>
-                <button class="ql-list" value="bullet"></button>
-            </span>
-            <span class="ql-formats">
-                <button class="ql-link"></button>
-            </span>
-        </ToolbarContent>
-        <EditorContent>
-            
-        </EditorContent>
-    </BlazoredTextEditor>
+        <BlazoredTextEditor @ref="@QuillHtml">
+            <ToolbarContent>
+                <select class="ql-header">
+                    <option selected=""></option>
+                    <option value="1"></option>
+                    <option value="2"></option>
+                    <option value="3"></option>
+                    <option value="4"></option>
+                    <option value="5"></option>
+                </select>
+                <span class="ql-formats">
+                    <button class="ql-bold"></button>
+                    <button class="ql-italic"></button>
+                    <button class="ql-underline"></button>
+                    <button class="ql-strike"></button>
+                </span>
+                <span class="ql-formats">
+                    <select class="ql-color"></select>
+                    <select class="ql-background"></select>
+                </span>
+                <span class="ql-formats">
+                    <button class="ql-list" value="ordered"></button>
+                    <button class="ql-list" value="bullet"></button>
+                </span>
+                <span class="ql-formats">
+                    <button class="ql-link"></button>
+                </span>
+            </ToolbarContent>
+            <EditorContent>
+
+            </EditorContent>
+        </BlazoredTextEditor>
         <button type="submit" class="btn btn-primary mt-5">Add Blog</button>
+        <button class="btn btn-secondary mt-5" @onclick="GetHTML">Generate Preview</button>
     </form>
-        <button class="btn btn-outline" @onclick="GetHTML">Generate Preview</button>
 </div>
 
 <div>
     @if (QuillHTMLContent is not null)
     {
+        <h1>@Title</h1>
+        <p></p>
         @((MarkupString)QuillHTMLContent)
     }
 </div>
@@ -103,7 +102,7 @@
     public bool Commentable { get; set; }
 
     public string? Message { get; set; }
-    // public byte[] Photo { get; set; }
+    public byte[]? ImageBytes { get; set; }
 
     public List<UserDTO> PotentialAuthors { get; set; }
 
@@ -120,6 +119,7 @@
         newBlog.AuthorId = AuthorId;
         newBlog.Content = QuillHTMLContent;
         newBlog.Commentable = Commentable;
+        newBlog.Photo = ImageBytes;
 
         try
         {
@@ -129,7 +129,7 @@
 
                 if (returnBlog is not null)
                 {
-                    
+
                 }
             }
         }
@@ -144,6 +144,18 @@
     {
         QuillHTMLContent = await this.QuillHtml.GetHTML();
         StateHasChanged();
+    }
+
+
+    public async Task SaveFile(InputFileChangeEventArgs e)
+    {
+        IBrowserFile file = e.GetMultipleFiles(1).Single();
+
+        using (var ms = new MemoryStream())
+        {
+            await file.OpenReadStream().CopyToAsync(ms);
+            ImageBytes = ms.ToArray();
+        }
     }
 
 }
