@@ -14,7 +14,7 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddDbContextFactory<MySanpeteDbContext>(config => config.UseNpgsql(builder.Configuration["MySanpeteDB"]));
 
-
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<MySanpeteDbContext>();
 
 builder.Services.AddMudServices();
 
