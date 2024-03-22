@@ -11,17 +11,17 @@
     <form class="mt-5">
         <div class="form-group mt-5">
             <label for="title">Name</label>
-            <input id="title" class="form-control" @bind="InputName" required />
+            <input id="title" class="form-control" @bind="Name" required />
         </div>
         <div class="form-group mt-5">
             <label for="title">Address</label>
-            <input id="title" class="form-control" @bind="InputAddress" required/>
+            <input id="title" class="form-control" @bind="Address" required />
         </div>
-       @*  <div class="form-group">
-            <label for="photo">Logo</label>
-        <input id="photo" type="file" @bind="InputLogo" />
-        </div> *@
-        <button class="btn btn-primary" @onclick="CreateNewBusiness">Submit</button>
+        <div class="form-group">
+            <label for="photo">Photo</label>
+            <InputFile OnChange="SaveFile"></InputFile>
+        </div>
+        <button type="submit" class="btn btn-primary" @onclick="CreateNewBusiness">Submit</button>
     </form>
 </div>
 
@@ -30,9 +30,10 @@
 
     public string errorMessage = "";
 
-    public string? InputName { get; set; } = "";
-    public string? InputAddress { get; set; } = "";
-    public byte[]? InputLogo { get; set; } = new byte[1];
+    public string? Name { get; set; }
+    public string? Address { get; set; }
+    public byte[]? ImageBytes { get; set; }
+
 
     protected override void OnInitialized()
     {
@@ -41,8 +42,46 @@
 
     public AddBusinessRequest CreateRequest()
     {
-        AddBusinessRequest newrequest =  new() { Name = InputName, Address = InputAddress, Logo = InputLogo };
-        return newrequest;
+        if (Name is null)
+        {
+            throw new Exception("The business needs to have a name");
+        }
+        if (Address is null)
+        {
+            throw new Exception("The business needs to have an address");
+        }
+        if (ImageBytes is not null)
+        {
+            AddBusinessRequest newrequest = new()
+            {
+                Name = Name,
+                Address = Address,
+                Logo = ImageBytes
+            };
+
+            return newrequest;
+        }
+        else
+        {
+            AddBusinessRequest newrequest = new()
+            {
+                Name = Name,
+                Address = Address,
+            };
+
+            return newrequest;
+        }
+    }
+
+    public async Task SaveFile(InputFileChangeEventArgs e)
+    {
+        IBrowserFile file = e.GetMultipleFiles(1).Single();
+
+        using (var ms = new MemoryStream())
+        {
+            await file.OpenReadStream().CopyToAsync(ms);
+            ImageBytes = ms.ToArray();
+        }
     }
 
     public async Task CreateNewBusiness()
@@ -55,7 +94,7 @@
                 await businessService.AddBusiness(request);
 
                 // Clear the form
-                //request = new AddBusinessRequest();
+                request = new AddBusinessRequest();
             }
         }
         catch (Exception ex)
