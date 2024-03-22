@@ -14,9 +14,14 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddDbContextFactory<MySanpeteDbContext>(config => config.UseNpgsql(builder.Configuration["MySanpeteDB"]));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<MySanpeteDbContext>();
+
 
 builder.Services.AddMudServices();
+
+builder.Services.AddAntiforgery(options => { 
+    options.Cookie.Expiration = TimeSpan.Zero;
+    options.SuppressXFrameOptionsHeader = true;
+});
 
 builder.Services.AddSingleton<IOccasionService, WebOccasionService>();
 builder.Services.AddSingleton<IBlogService, WebBlogService>();
@@ -25,7 +30,9 @@ builder.Services.AddSingleton<IBusinessService, WebBusinessService>();
 builder.Services.AddSingleton<IUserService, WebUserService>();
 builder.Services.AddSingleton<IPodcastService, WebPodcastService>();
 builder.Services.AddSingleton<IRoleService, WebRoleService>();
+builder.Services.AddSingleton<IReactionService, WebReactionService>();
 builder.Services.AddSingleton<ICommentService, WebCommentService>();
+builder.Services.AddSingleton<IBundleService, WebBundleService>();  
 
 //builder.Services.AddAuthentication().AddGoogle(googleOptions =>
 //{
@@ -43,9 +50,12 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseRouting();
+
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
@@ -55,4 +65,4 @@ app.MapRazorPages();
 
 app.Run();
 
-public partial class Program {}
+public partial class Program { }

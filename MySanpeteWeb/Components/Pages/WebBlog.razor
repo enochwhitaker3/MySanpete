@@ -1,0 +1,9 @@
+﻿@page "/read-blog/{blogId:int}"
+
+<RazorClassLibrary.Pages.Blog blogId="@blogId"></RazorClassLibrary.Pages.Blog>
+
+
+@code {
+    [Parameter]
+    public int blogId { get; set; }
+}

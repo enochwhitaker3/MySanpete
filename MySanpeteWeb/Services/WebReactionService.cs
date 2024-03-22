@@ -16,11 +16,13 @@ public class WebReactionService : IReactionService
     {
         var context = await dbContextFactory.CreateDbContextAsync();
 
+        var reactions = await context.Reactions.ToListAsync();
+
         var reaction = await context.Reactions.FirstOrDefaultAsync(r => r.Unicode == request.Unicode);
         var blog = await context.Blogs.FirstOrDefaultAsync(b => b.Id == request.ContentId);
         var user = await context.EndUsers.FirstOrDefaultAsync(u => u.Guid == request.UserGuid);
 
-        if(reaction is null || blog is null || user is null)
+        if (reaction is null || blog is null || user is null)
         {
             throw new Exception("reaction or blog or user is null in the request");
         }
@@ -31,6 +33,9 @@ public class WebReactionService : IReactionService
             BlogId = blog.Id,
             UserId = user.Id,
         };
+
+        await context.BlogReactions.AddAsync(blogReaction);
+        await context.SaveChangesAsync();
 
         return blogReaction;
     }
@@ -55,6 +60,9 @@ public class WebReactionService : IReactionService
             UserId = user.Id,
         };
 
+        await context.PodcastReactions.AddAsync(podReaction);
+        await context.SaveChangesAsync();
+
         return podReaction;
     }
 
@@ -62,10 +70,12 @@ public class WebReactionService : IReactionService
     {
         var context = await dbContextFactory.CreateDbContextAsync();
 
+        var all = await context.BlogReactions.ToListAsync();
+
         var doesExist = await context.BlogReactions.Where(b => b.Id == id).FirstOrDefaultAsync();
         if (doesExist is null)
         {
-            throw new Exception("No reactions found with given ID");
+            return false;
         }
 
         context.BlogReactions.Remove(doesExist);
@@ -81,7 +91,7 @@ public class WebReactionService : IReactionService
         var doesExist = await context.PodcastReactions.Where(p => p.Id == id).FirstOrDefaultAsync();
         if (doesExist is null)
         {
-            throw new Exception("No reactions found with given ID");
+            return false;
         }
 
         context.PodcastReactions.Remove(doesExist);
@@ -89,4 +99,5 @@ public class WebReactionService : IReactionService
 
         return true;
     }
+
 }

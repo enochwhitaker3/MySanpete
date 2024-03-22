@@ -1,25 +1,32 @@
 ﻿@page "/add-blog"
+@using Blazored.TextEditor
 @using RazorClassLibrary.Data
 @using RazorClassLibrary.Requests
 @using RazorClassLibrary.Services
 
-
+@inject IUserService userService;
 @inject IBlogService blogService;
+
 
 <div class="form-container">
     <h3>Admin Add Blog</h3>
     <form method="post" @onsubmit="CreateNewBlog" class="mt-5">
-        <div class="form-group mt-5">
-            <label for="title">Title</label>
-            <input id="title" class="form-control" @bind="Title" />
-        </div>
-        <div class="form-group mt-5">
-            <label for="xCoordinate">Blog Content</label>
-            <input id="xCoordinate" class="form-control" @bind="Content" />
-        </div>
-        <div class="form-group mt-5">
+       @*  <div class="form-group mt-5">
             <label for="yCoordinate">Author ID</label>
             <input id="yCoordinate" class="form-control" @bind="AuthorId" />
+        </div> *@
+        <div class="form-group mt-5">
+            <label for="title">Author</label>
+            <select id="title" class="form-control" @bind="AuthorId" required>
+                @if (PotentialAuthors is not null)
+                {
+                    <option value="">Choose the author...</option>
+                    @foreach (var author in PotentialAuthors)
+                    {
+                        <option value="@author.Id">@author.Username</option>
+                    }
+                }
+            </select>
         </div>
         <div class="form-group mt-5">
             <label for="startDate">Allow Comments?</label><br />
@@ -28,15 +35,64 @@
             <label for="radioFalse">No</label>
             <input type="radio" id="radioFalse" name="myRadio" @onchange="@(e => Commentable = false)" checked="@(Commentable == false)" />
         </div>
-       @*  <div class="form-group">
+        @*  <div class="form-group">
         <label for="photo">Photo</label>
         <input id="photo" type="file" @bind="newOccasion.Photo" />
         </div>  *@
-        <button type="submit" class="btn btn-primary">Submit</button>
+
+        <div class="form-group mt-5">
+            <label for="title">Title</label>
+            <input id="title" class="form-control" @bind="Title" />
+        </div>
+
+    <BlazoredTextEditor @ref="@QuillHtml">
+        <ToolbarContent>
+            <select class="ql-header">
+                <option selected=""></option>
+                <option value="1"></option>
+                <option value="2"></option>
+                <option value="3"></option>
+                <option value="4"></option>
+                <option value="5"></option>
+            </select>
+            <span class="ql-formats">
+                <button class="ql-bold"></button>
+                <button class="ql-italic"></button>
+                <button class="ql-underline"></button>
+                <button class="ql-strike"></button>
+            </span>
+            <span class="ql-formats">
+                <select class="ql-color"></select>
+                <select class="ql-background"></select>
+            </span>
+            <span class="ql-formats">
+                <button class="ql-list" value="ordered"></button>
+                <button class="ql-list" value="bullet"></button>
+            </span>
+            <span class="ql-formats">
+                <button class="ql-link"></button>
+            </span>
+        </ToolbarContent>
+        <EditorContent>
+            
+        </EditorContent>
+    </BlazoredTextEditor>
+        <button type="submit" class="btn btn-primary mt-5">Add Blog</button>
     </form>
+        <button class="btn btn-outline" @onclick="GetHTML">Generate Preview</button>
+</div>
+
+<div>
+    @if (QuillHTMLContent is not null)
+    {
+        @((MarkupString)QuillHTMLContent)
+    }
 </div>
 
 @code {
+    BlazoredTextEditor QuillHtml;
+
+    string QuillHTMLContent;
     public AddBlogRequest? newBlog;
 
     public string errorMessage = "";
@@ -45,23 +101,36 @@
     public string? Content { get; set; }
     public int AuthorId { get; set; }
     public bool Commentable { get; set; }
+
+    public string? Message { get; set; }
     // public byte[] Photo { get; set; }
+
+    public List<UserDTO> PotentialAuthors { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+        PotentialAuthors = await userService.GetAllUsers();
         newBlog = new();
     }
 
     public async Task CreateNewBlog()
     {
+        GetHTML();
+        newBlog.Title = Title;
+        newBlog.AuthorId = AuthorId;
+        newBlog.Content = QuillHTMLContent;
+        newBlog.Commentable = Commentable;
+
         try
         {
             if (newBlog is not null)
             {
-                await blogService.AddBlog(newBlog);
-                
-                // Clear the form
-                newBlog = new AddBlogRequest();
+                var returnBlog = await blogService.AddBlog(newBlog);
+
+                if (returnBlog is not null)
+                {
+                    
+                }
             }
         }
         catch (Exception ex)
@@ -70,4 +139,11 @@
             errorMessage = ex.Message;
         }
     }
+
+    public async void GetHTML()
+    {
+        QuillHTMLContent = await this.QuillHtml.GetHTML();
+        StateHasChanged();
+    }
+
 }

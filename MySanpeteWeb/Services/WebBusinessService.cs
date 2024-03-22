@@ -15,10 +15,10 @@ public class WebBusinessService : IBusinessService
     }
     public async Task<Business?> AddBusiness(AddBusinessRequest request)
     {
-       var context = await dbContextFactory.CreateDbContextAsync();
+        var context = await dbContextFactory.CreateDbContextAsync();
 
-        Business business = new Business 
-        { 
+        Business business = new Business
+        {
             BusinessName = request.Name,
             Address = request.Address,
             Logo = request.Logo,
@@ -45,7 +45,7 @@ public class WebBusinessService : IBusinessService
 
         var bud = await context.Businesses.Where(b => b.Id == id).FirstOrDefaultAsync();
 
-        if(bud is null)
+        if (bud is null)
         {
             return false;
         }
@@ -69,7 +69,7 @@ public class WebBusinessService : IBusinessService
     {
         var context = await dbContextFactory.CreateDbContextAsync();
 
-        var business = await context.Businesses.Where(b => b.Id ==id).FirstOrDefaultAsync();
+        var business = await context.Businesses.Where(b => b.Id == id).FirstOrDefaultAsync();
 
         if (business is null)
         {
@@ -85,7 +85,7 @@ public class WebBusinessService : IBusinessService
 
         var buc = await context.Businesses.Where(b => b.Id == business.Id).FirstOrDefaultAsync();
 
-        if (buc is null) 
+        if (buc is null)
         {
             throw new Exception("No business found with given ID");
         }

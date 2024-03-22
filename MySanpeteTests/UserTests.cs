@@ -245,7 +245,7 @@ public class UserTests : IClassFixture<MySanpeteFactory>
         {
             await userService.PatchUser(userUnderTest);
         }
-        catch(Exception ex)
+        catch
         {
             return;
         }
@@ -290,7 +290,7 @@ public class UserTests : IClassFixture<MySanpeteFactory>
         };
 
         var result = await userService.SetRole(request);
-        
+
         result.Should().Be(true);
     }
 

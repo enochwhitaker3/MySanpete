@@ -71,10 +71,11 @@ public static class DtoConverter
         };
     }
 
-    public static BundleDTO ToDto(this Bundle bundle) 
+    public static BundleDTO ToDto(this Bundle bundle)
     {
         return new BundleDTO()
         {
+            Name = bundle.BundleName,
             Id = bundle.Id,
             EndDate = bundle.EndDate,
             StartDate = bundle.StartDate,

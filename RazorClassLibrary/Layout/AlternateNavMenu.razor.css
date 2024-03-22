@@ -1,4 +1,4 @@
-﻿@font-face {
+@font-face {
     font-family: 'Nelphim';
     src: url('Fonts/Nephilm.otf') format('opentype');
 }
@@ -15,7 +15,7 @@
     width: 100%;
     position: absolute;
     top: 0;
-    z-index: 1;
+    z-index:1;
 }
 
     .navbar a {
@@ -35,14 +35,14 @@
 
 .navbar-brand {
     font-family: Casual;
-    font-size: 1.5rem;
+    font-size:1.5rem;
 }
 
 
 .nav-item {
     font-family: Casual;
-    font-size: 1.25rem;
-    color: white !important;
+    font-size:1.25rem;
+    color:white!important;
 }
 
 
@@ -57,6 +57,6 @@
 
 .navbar-toggler:focus {
     text-decoration: none;
-    outline: 0;
-    box-shadow: none;
+    outline: 0;  63	74	73
+    box-shadow:none;
 }

@@ -51,15 +51,15 @@
 
     public string errorMessage = "";
 
-    public string Title { get; set; }
+    public string? Title { get; set; }
     public decimal XCoordinate { get; set; }
     public decimal YCoordinate { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public int BusinessId { get; set; }
-    public string Description { get; set; }
+    public string? Description { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         newOccasion = new();
     }
@@ -68,10 +68,14 @@
     {
         try
         {
-            await occasionService.AddOccasion(newOccasion);
 
-            // Clear the form
-            newOccasion = new AddOccasionRequest();
+            if (newOccasion is not null)
+            {
+                await occasionService.AddOccasion(newOccasion);
+
+                // Clear the form
+                newOccasion = new AddOccasionRequest();
+            }
         }
         catch (Exception ex)
         {
