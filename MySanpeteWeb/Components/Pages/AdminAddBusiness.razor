@@ -17,10 +17,10 @@
             <label for="title">Address</label>
             <input id="title" class="form-control" @bind="Address" />
         </div>
-        @* <div class="form-group">
-        <label for="photo">Logo</label>
-        <input id="photo" type="file" @bind="newOccasion.Photo" />
-        </div> *@
+        <div class="form-group">
+            <label for="photo">Photo</label>
+            <InputFile OnChange="SaveFile"></InputFile>
+        </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 
@@ -33,11 +33,23 @@
 
     public string? Name { get; set; }
     public string? Address { get; set; }
-    // public byte[]? Logo { get; set; }
+    public byte[]? imageBytes { get; set; }
+
 
     protected override void OnInitialized()
     {
         newBusiness = new();
+    }
+
+    public async Task SaveFile(InputFileChangeEventArgs e)
+    {
+        IBrowserFile file = e.GetMultipleFiles(1).Single();
+
+        using (var ms = new MemoryStream())
+        {
+            await file.OpenReadStream().CopyToAsync(ms);
+            imageBytes = ms.ToArray();
+        }
     }
 
     public async Task CreateNewBusiness()
