@@ -53,10 +53,6 @@
             <label for="title">Total Reclaimable</label>
             <input id="title" class="form-control" @bind="TotalReclaimable" required />
         </div>
-        <div class="form-group">
-            <label for="photo">Photo</label>
-            <input id="photo" type="file" />
-        </div>
         @if (errorMessage == "")
         {
             <button type="submit" class="btn btn-primary" @onclick="CreateNewVoucher">Submit</button>
@@ -143,18 +139,19 @@
                 throw new Exception("You need to select a business for this voucher");
             }
 
+
             newVoucher = new AddVoucherRequest()
-                {
-                    BusinessId = selectedBusiness.Id,
-                    StartDate = StartDate.ToUniversalTime(),
-                    EndDate = EndDate.ToUniversalTime(),
-                    PromoCode = PromoCode,
-                    PromoDescription = PromoDescription,
-                    PromoName = PromoName,
-                    PromoStock = PromoStock,
-                    RetailPrice = RetailPrice,
-                    TotalReclaimable = TotalReclaimable
-                };
+            {
+                BusinessId = selectedBusiness.Id,
+                StartDate = StartDate.ToUniversalTime(),
+                EndDate = EndDate.ToUniversalTime(),
+                PromoCode = PromoCode,
+                PromoDescription = PromoDescription,
+                PromoName = PromoName,
+                PromoStock = PromoStock,
+                RetailPrice = RetailPrice,
+                TotalReclaimable = TotalReclaimable,
+            };
 
             try
             {
