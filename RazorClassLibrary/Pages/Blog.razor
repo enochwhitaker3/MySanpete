@@ -1,0 +1,27 @@
+﻿@using RazorClassLibrary.DTOs
+@using Blazored.TextEditor
+
+@inject IBlogService service;
+
+@if(blog is not null && blog.Content is not null)
+{
+    @((MarkupString)blog.Content)
+}
+else
+{
+    <p>Loading...</p>
+}
+
+@code {
+    [Parameter]
+    public int blogId { get; set; }
+
+    public BlogDTO? blog { get; set; }
+
+    public string ParsedContent { get; set; } = "no content";
+
+    protected override async Task OnInitializedAsync()
+    {
+        blog = await service.GetBlog(blogId);
+    }
+}
