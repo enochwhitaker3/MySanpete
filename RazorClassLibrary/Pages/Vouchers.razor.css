@@ -8,37 +8,49 @@
     src: url('Fonts/Casual-Regular.ttf') format('truetype');
 }
 
+@font-face {
+    font-family: 'Gotu';
+    src: url('Fonts/Gotu-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Tenor';
+    src: url('Fonts/TenorSans-Regular.ttf') format('truetype');
+}
+/*justify-content: center;*/ /* Horizontally center */
+/*align-items: center;*/ /* Vertically center */
+
 h2 {
     font-family: Nelphim !important;
 }
 
-.banner {
-    display: flex;
-    background-color: #5EB0BF;
+.main-section {
+    position: relative;
     width: 100%;
-    height: 300px;
-    padding: 10px 0;
-    justify-content: center; /* Horizontally center */
-    align-items: center; /* Vertically center */
+    height: 100vh;
+}
+
+.full-screen-image {
+    width: 100%;
+    height: 40vh;
+    object-fit: cover;
+    object-position: center;
 }
 
 .content {
     position: absolute;
-    top: 35%;
+    top: 15%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1;
-    padding: 20px;
-    border-radius: 10px;
-    color: white;
+    transform: translate(-50%, -40%);
+    text-align: center;
+    color: white; /* Adjust text color as needed */
 }
 
 .title {
-    font-size: 50px;
-    font-family: 'Segoe UI';
-    font-weight: bold;
-    margin-bottom: 25px;
+    font-size: 60px;
+    font-family: Casual;
 }
+
 
 .undertitle {
     font-size: large;
