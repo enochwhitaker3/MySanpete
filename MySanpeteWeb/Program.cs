@@ -5,6 +5,11 @@ using MySanpeteWeb.Components;
 using MySanpeteWeb.Services;
 using RazorClassLibrary.Services;
 using Microsoft.AspNetCore.Identity;
+using Auth0.AspNetCore.Authentication;
+using System.Runtime.CompilerServices;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +19,20 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddDbContextFactory<MySanpeteDbContext>(config => config.UseNpgsql(builder.Configuration["MySanpeteDB"]));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<MySanpeteDbContext>();
+var CheckSameSite = (CookieOptions options) =>
+{
+    if (options.SameSite == SameSiteMode.None && options.Secure == false)
+    {
+        options.SameSite = SameSiteMode.Unspecified;
+    }
+};
+
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    options.MinimumSameSitePolicy = SameSiteMode.Unspecified;
+    options.OnAppendCookie = cookieContext => CheckSameSite(cookieContext.CookieOptions);
+    options.OnDeleteCookie = cookieContext => CheckSameSite(cookieContext.CookieOptions);
+});
 
 builder.Services.AddMudServices();
 
@@ -23,6 +41,7 @@ builder.Services.AddAntiforgery(options => {
     options.SuppressXFrameOptionsHeader = true;
 });
 
+builder.Services.AddRazorPages();
 builder.Services.AddSingleton<IOccasionService, WebOccasionService>();
 builder.Services.AddSingleton<IBlogService, WebBlogService>();
 builder.Services.AddSingleton<IVoucherService, WebVoucherService>();
@@ -32,15 +51,27 @@ builder.Services.AddSingleton<IPodcastService, WebPodcastService>();
 builder.Services.AddSingleton<IRoleService, WebRoleService>();
 builder.Services.AddSingleton<IReactionService, WebReactionService>();
 builder.Services.AddSingleton<ICommentService, WebCommentService>();
-builder.Services.AddSingleton<IBundleService, WebBundleService>();  
+builder.Services.AddSingleton<IBundleService, WebBundleService>();
 
 //builder.Services.AddAuthentication().AddGoogle(googleOptions =>
 //{
 //    googleOptions.ClientId = builder.Configuration["GoogleClientId"] ?? throw new Exception("BWAH");
 //    googleOptions.ClientSecret = builder.Configuration["GoogleClientSecret"] ?? throw new Exception("BWAH");
 //});
+builder.Services.AddAuth0WebAppAuthentication(options =>
+{
+    options.Domain = builder.Configuration["Auth0:Domain"] ?? throw new Exception("Auth0 domain missing");
+    options.ClientId = builder.Configuration["Auth0:ClientId"] ?? throw new Exception("Auth0 clientid is missing");
+});
+
+builder.Services.AddControllersWithViews();
+
 
 var app = builder.Build();
+
+app.UseRouting();
+
+app.UseHttpsRedirection();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -50,18 +81,40 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseRouting();
-
-app.UseHttpsRedirection();
-
 app.UseStaticFiles();
 
 app.UseAntiforgery();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+
+app.MapGet("/Account/Login", async (HttpContext httpContext, string redirectUri = "/") =>
+{
+    var authenticationProperties = new LoginAuthenticationPropertiesBuilder()
+            .WithRedirectUri(redirectUri)
+            .Build();
+
+    await httpContext.ChallengeAsync(Auth0Constants.AuthenticationScheme, authenticationProperties);
+});
+
+app.MapGet("/Account/Logout", async (HttpContext httpContext, string redirectUri = "/") =>
+{
+    var authenticationProperties = new LogoutAuthenticationPropertiesBuilder()
+            .WithRedirectUri(redirectUri)
+            .Build();
+
+    await httpContext.SignOutAsync(Auth0Constants.AuthenticationScheme, authenticationProperties);
+    await httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+});
+
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
 app.MapRazorPages();
+
+
 
 app.Run();
 

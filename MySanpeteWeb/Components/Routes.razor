@@ -1,8 +1,9 @@
-﻿@using RazorClassLibrary.Pages
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using RazorClassLibrary.Pages
 
 <Router AppAssembly="@typeof(Program).Assembly">
     <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(RazorClassLibrary.Layout.MainLayout)" />
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(RazorClassLibrary.Layout.MainLayout)" />
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>
 </Router>
