@@ -8,12 +8,12 @@
 @inject IBundleService bundleService
 @inject IVoucherService voucherService
 
-<div class="form-container">
+<div class="form-container" onsubmit="return false">
     <h3>Admin Add Bundle</h3>
     <form class="mt-5">
         <div class="form-group mt-5">
             <label for="name">Name</label>
-            <input id="name" class="form-control" @bind="Name" required/>
+            <input id="name" class="form-control" @bind="Name" required />
         </div>
         <div class="form-group mt-5">
             <label for="startDate">Start Date</label>
@@ -23,9 +23,47 @@
             <label for="endDate">End Date</label>
             <input id="endDate" type="datetime-local" class="form-control" @bind="EndDate" required />
         </div>
+        @if (AllVouchers?.Count() > 0)
+        {
+            @foreach (var v in SelectedVouchers)
+            {
+                <div class="form-group mt-5">
+                    <ul>
+                        <li>@v.PromoName</li>
+                        <button class="btn btn-danger" @onclick="() => RemoveVoucher(v)">Remove</button>
+                    </ul>
+                </div>
+            }
+        }
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#voucherPopup">+ Add Voucher</button>
+
+        <div class="modal fade" id="voucherPopup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add Voucher</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        @foreach (var voucher in AllVouchers!)
+                        {
+                            <br />
+
+                            <button type="button" class="btn btn-secondary my-3" @onclick="() => AddVoucher(voucher.Id)" data-dismiss="modal">@voucher.PromoName, @voucher.Id</button>
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         @if (errorMessage == "")
         {
-            <button type="submit" class="btn btn-primary" @onsubmit="CreateNewBundle">Submit</button>
+            <button type="submit" class="btn btn-primary" @onclick="CreateNewBundle">Submit</button>
         }
         else
         {
@@ -35,33 +73,82 @@
                 <button type="submit" class="btn btn-primary" @onclick="CreateNewBundle">Submit</button>
             </div>
         }
+
     </form>
 
 </div>
 
 @code {
-    public string Name { get; set; } = "";
+    public string Name { get; set; } = "Default Name";
     public DateTime StartDate { get; set; } = DateTime.Today.ToUniversalTime();
     public DateTime EndDate { get; set; } = DateTime.Today.ToUniversalTime();
+    public List<VoucherDTO> SelectedVouchers { get; set; } = new();
 
-    public IEnumerable<VoucherDTO>? allVouchers { get; set; }
+    public List<VoucherDTO>? AllVouchers { get; set; } = new();
 
     public string errorMessage = "";
 
     protected override async Task OnInitializedAsync()
     {
-        allVouchers = await voucherService.GetAllVouchers();
+        AllVouchers = await voucherService.GetAllVouchers();
     }
 
     public async Task CreateNewBundle()
     {
         try
         {
+            if (Name is null || Name == "Default Name")
+            {
+                throw new Exception("You need to give a name for the bundle or change it from the default one");
+            }
 
+            if (EndDate < StartDate)
+            {
+                throw new Exception("The end date for the bundle needs to be more in the future than the start date");
+            }
+
+            if (SelectedVouchers.Count <= 1)
+            {
+                throw new Exception("You need to select 2 or more voucher for a bundle");
+            }
+
+            AddBundleRequest request = new AddBundleRequest()
+                {
+                    EndDate = EndDate.ToUniversalTime(),
+                    StartDate = StartDate.ToUniversalTime(),
+                    Name = Name,
+                    Vouchers = SelectedVouchers
+                };
+
+            await bundleService.AddNewBundle(request);
+            errorMessage = "";
+            ReloadPage();
         }
-        catch
+        catch (Exception ex)
         {
-            
+            errorMessage = ex.Message;
         }
+    }
+
+    public void AddVoucher(int selectedVoucherId)
+    {
+        VoucherDTO? selectedVoucher = AllVouchers!.Where(x => x.Id == selectedVoucherId).FirstOrDefault();
+        if (selectedVoucher is not null)
+        {
+            SelectedVouchers.Add(selectedVoucher);
+        }
+    }
+
+    public void RemoveVoucher(VoucherDTO voucher)
+    {
+        SelectedVouchers.Remove(voucher);
+    }
+
+    public void ReloadPage()
+    {
+        Name = "Default Name";
+        StartDate = DateTime.Today.ToUniversalTime();
+        EndDate = DateTime.Today.ToUniversalTime();
+        SelectedVouchers = new();
     }
 }
