@@ -4,6 +4,7 @@ using MySanpeteWeb;
 using MySanpeteWeb.Components;
 using MySanpeteWeb.Services;
 using RazorClassLibrary.Services;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,8 @@ builder.Services.AddRazorComponents()
 builder.Services.AddDbContextFactory<MySanpeteDbContext>(config => config.UseNpgsql(builder.Configuration["MySanpeteDB"]));
 
 
+StripeConfiguration.ApiKey = builder.Configuration["STRIPE_SECRET_KEY"];
+//builder.Services.Configure<StripeOptions>
 
 builder.Services.AddMudServices();
 
