@@ -9,11 +9,6 @@
 }
 
 @font-face {
-    font-family: 'Gotu';
-    src: url('Fonts/Gotu-Regular.ttf') format('truetype');
-}
-
-@font-face {
     font-family: 'Tenor';
     src: url('Fonts/TenorSans-Regular.ttf') format('truetype');
 }
