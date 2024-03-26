@@ -1,6 +1,7 @@
 ﻿@using RazorClassLibrary.DTOs
 @using RazorClassLibrary.Services
 @inject IVoucherService voucherService
+@inject NavigationManager NavMan
 
 
 
@@ -52,113 +53,38 @@
 
 
 
-        <div class="card-container row" style="max-width: 1200px; margin-left: auto; margin-right: auto">
-            <div class="col-md-6">
-                <div class="card m-2 rounded-3 shadow">
-                    <div class="d-flex flex-row">
-                        <div class="col-md img-square-wrapper rounded" style="padding: 0px;">
-                            <a href="#">
-                                <img class="business-logo"
-                                     style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px;"
-                                     src="Images/theater.png" />
-                            </a>
-                        </div>
-                        <div class="col-md card-body">
-                            <h2 class="card-title">Free Large Drink with Purchase of Popcorn</h2>
-                            <p class="card-text">Good through 6-24-2024</p>
-                            <!-- Button trigger modal -->
-                            <div class="button">
-                                <div class="button-wrapper">
-                                    <div class="text">Buy Now</div>
-                                    <span class="icon">
-                                        <svg viewBox="0 0 16 16" class="bi bi-cart2" fill="currentColor" height="16" width="16" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"></path>
-                                        </svg>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card m-2 rounded-3 shadow">
-                    <div class="d-flex flex-row">
-                        <div class="col-md img-square-wrapper rounded" style="padding: 0px;">
-                            <a href="#">
-                                <img class="business-logo"
-                                     style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px;"
-                                     src="https://asset.brandfetch.io/idPvg-ka_0/idKNuyVmpf.jpeg" />
-                            </a>
-                        </div>
-                        <div class="col-md card-body">
-                            <h2 class="card-title">Buy One Get One Large Pizza</h2>
-                            <p class="card-text">Good through 3-30-2024</p>
-                            <!-- Button trigger modal -->
-                            <div class="button">
-                                <div class="button-wrapper">
-                                    <div class="text">Buy Now</div>
-                                    <span class="icon">
-                                        <svg viewBox="0 0 16 16" class="bi bi-cart2" fill="currentColor" height="16" width="16" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"></path>
-                                        </svg>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card m-2 rounded-3 shadow">
-                    <div class="d-flex flex-row">
-                        <div class="col-md img-square-wrapper rounded" style="padding: 0px;">
-                            <a href="#">
-                                <img class="business-logo"
-                                     style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px;"
-                                     src="https://logodownload.org/wp-content/uploads/2020/05/wendys-logo-6.png" />
-                            </a>
-                        </div>
-                        <div class="col-md card-body">
-                            <h2 class="card-title">50% Off 20 Piece Nuggets</h2>
-                            <p class="card-text">Good through 4-17-2024</p>
-                            <!-- Button trigger modal -->
-                            <div class="button">
-                                <div class="button-wrapper">
-                                    <div class="text">Buy Now</div>
-                                    <span class="icon">
-                                        <svg viewBox="0 0 16 16" class="bi bi-cart2" fill="currentColor" height="16" width="16" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"></path>
-                                        </svg>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-
-@*             @if (allVouchers is not null)
+        <div class="card-container row mt-5" style="max-width: 1200px; margin-left: auto; margin-right: auto">
+            @if (allVouchers is not null)
             {
                 @foreach (var voucher in allVouchers)
                 {
-                    <div class="col-md-6">
+                    <div class="col-md-6 p-3">
                         <div class="card m-2 rounded-3 shadow">
                             <div class="d-flex flex-row">
                                 <div class="col-md img-square-wrapper rounded" style="padding: 0px;">
                                     <a href="#">
                                         <img class="business-logo"
-                                             style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px;"
-                                             src="https://asset.brandfetch.io/idPvg-ka_0/idKNuyVmpf.jpeg" />
+                                        style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px;"
+                                        src="Images/theater.png" />
                                     </a>
                                 </div>
                                 <div class="col-md card-body">
-                                    <h2 class="card-title">Buy One Get One on All Cookies and Cupcakes</h2>
-                                    <p class="card-text">Good through 10-01-2024</p>
+                                    <h2 class="card-title">@voucher.PromoName</h2>
+                                    @if(voucher.EndDate is not null)
+                                    {
+                                        <p class="card-text">Good through @voucher.EndDate</p>
+                                    }
                                     <!-- Button trigger modal -->
-                                    <a class="btn-snow" data-toggle="modal" data-target="#exampleModalLong">Purchase</a>
+                                    <div class="button" @onclick="() => GoToDetailsPage(voucher.Id)">
+                                        <div class="button-wrapper">
+                                            <div class="text">Buy Now</div>
+                                            <span class="icon">
+                                                <svg viewBox="0 0 16 16" class="bi bi-cart2" fill="currentColor" height="16" width="16" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"></path>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -168,10 +94,11 @@
             else
             {
                 <div class="alert alert-info">
-                    <p>Sorry No Vouchers At This Point</p>
+                    <p>Sorry, there are no vouchers currently. </p>
                 </div>
 
-            } *@
+            }
+          
         </div>
     </div>
 </div>
@@ -186,6 +113,11 @@
     protected override async Task OnInitializedAsync()
     {
         allVouchers = await voucherService.GetAllVouchers();
+    }
+
+    public void GoToDetailsPage(int id)
+    {
+        NavMan.NavigateTo($"/view-voucher/{id}");
     }
 
 }
