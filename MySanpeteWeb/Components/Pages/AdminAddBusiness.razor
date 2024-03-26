@@ -1,34 +1,58 @@
-﻿@page "/add-business"
+﻿@page "/add-business/{Success}"
+@page "/add-business"
+
 @using RazorClassLibrary.Data
 @using RazorClassLibrary.Requests
 @using RazorClassLibrary.Services
 
-
 @inject IBusinessService businessService
+@inject NavigationManager navManager
 
 <div class="form-container">
     <h3>Admin Add Business</h3>
-    <form class="mt-5">
-        <div class="form-group mt-5">
-            <label for="title">Name</label>
-            <input id="title" class="form-control" @bind="Name" required />
-        </div>
-        <div class="form-group mt-5">
-            <label for="title">Address</label>
-            <input id="title" class="form-control" @bind="Address" required />
-        </div>
-        <div class="form-group">
-            <label for="photo">Photo</label>
-            <InputFile OnChange="SaveFile"></InputFile>
-        </div>
+    <div class="form-group mt-5">
+        <label for="title">Name</label>
+        <input id="title" class="form-control" @bind="Name" required />
+    </div>
+    <div class="form-group mt-5">
+        <label for="title">Address</label>
+        <input id="title" class="form-control" @bind="Address" required />
+    </div>
+    <div class="form-group">
+        <label for="photo">Photo</label>
+        <InputFile OnChange="SaveFile"></InputFile>
+    </div>
+    @if (errorMessage == "")
+    {
         <button type="submit" class="btn btn-primary" @onclick="CreateNewBusiness">Submit</button>
-    </form>
+    }
+    else
+    {
+        <div class="alert alert-danger">
+            <p>Please fix the error to submit the form</p>
+            <p>@errorMessage</p>
+            <button type="submit" class="btn btn-primary" @onclick="CreateNewBusiness">Submit</button>
+        </div>
+    }
+
+    @if (Success == "true")
+    {
+        <div class="alert-success alert alert-dismissible fade show" role="alert" @onclick="ChangeSuccess">
+            <p>You successfully added the new business!</p>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+
 </div>
 
 @code {
     public AddBusinessRequest? newBusiness = new();
 
     public string errorMessage = "";
+    [Parameter]
+    public string? Success { get; set; }
 
     public string? Name { get; set; }
     public string? Address { get; set; }
@@ -42,35 +66,47 @@
 
     public AddBusinessRequest CreateRequest()
     {
-        if (Name is null)
+        try
         {
-            throw new Exception("The business needs to have a name");
-        }
-        if (Address is null)
-        {
-            throw new Exception("The business needs to have an address");
-        }
-        if (ImageBytes is not null)
-        {
-            AddBusinessRequest newrequest = new()
+            if (Name is null)
             {
-                Name = Name,
-                Address = Address,
-                Logo = ImageBytes
-            };
+                throw new Exception("The business needs to have a name");
+            }
 
-            return newrequest;
-        }
-        else
-        {
-            AddBusinessRequest newrequest = new()
+            if (Address is null)
             {
-                Name = Name,
-                Address = Address,
-            };
+                throw new Exception("The business needs to have an address");
+            }
 
-            return newrequest;
+            if (ImageBytes is not null)
+            {
+                AddBusinessRequest newrequest = new()
+                {
+                    Name = Name,
+                    Address = Address,
+                    Logo = ImageBytes
+                };
+
+                return newrequest;
+            }
+            else
+            {
+                AddBusinessRequest newrequest = new()
+                    {
+                        Name = Name,
+                        Address = Address,
+                    };
+
+                return newrequest;
+            }
         }
+        catch (Exception ex)
+        {
+            // Handle errors appropriately
+            errorMessage = ex.Message;
+        }
+
+        return new AddBusinessRequest();
     }
 
     public async Task SaveFile(InputFileChangeEventArgs e)
@@ -87,14 +123,19 @@
     public async Task CreateNewBusiness()
     {
         AddBusinessRequest request = CreateRequest();
+
         try
         {
             if (request != null)
             {
                 await businessService.AddBusiness(request);
 
-                // Clear the form
-                request = new AddBusinessRequest();
+                Success = "true";
+                ReloadPage();
+            }
+            else
+            {
+                throw new Exception("Whoops something didn't work right");
             }
         }
         catch (Exception ex)
@@ -102,5 +143,15 @@
             // Handle errors appropriately
             errorMessage = ex.Message;
         }
+    }
+
+    public void ReloadPage()
+    {
+        navManager.NavigateTo($"/add-business/{Success}", true);
+    }
+
+    public void ChangeSuccess()
+    {
+        Success = "false";
     }
 }

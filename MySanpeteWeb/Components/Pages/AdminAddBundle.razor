@@ -1,4 +1,5 @@
-﻿@page "/add-bundle"
+﻿@page "/add-bundle/{Success}"
+@page "/add-bundle"
 
 @using RazorClassLibrary.DTOs
 @using RazorClassLibrary.Data
@@ -7,6 +8,7 @@
 
 @inject IBundleService bundleService
 @inject IVoucherService voucherService
+@inject NavigationManager navManager;
 
 <div class="form-container" onsubmit="return false">
     <h3>Admin Add Bundle</h3>
@@ -60,7 +62,7 @@
                                 @foreach (var voucher in AllVouchers!)
                                 {
                                     <tr @onclick="() => AddVoucher(voucher.Id)" data-dismiss="modal">
-                                        <td >@voucher.PromoName</td>
+                                        <td>@voucher.PromoName</td>
                                         <td>@voucher.BusinessName</td>
                                         <td>@voucher.StartDate</td>
                                         <td>@voucher.EndDate</td>
@@ -91,9 +93,22 @@
 
     </form>
 
+    @if (Success == "true")
+    {
+        <div class="alert-success alert alert-dismissible fade show" role="alert" @onclick="ChangeSuccess">
+            <p>You successfully added the last bundle!</p>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+
 </div>
 
 @code {
+    [Parameter]
+    public string? Success { get; set; }
+
     public string Name { get; set; } = "Default Name";
     public DateTime StartDate { get; set; } = DateTime.Today.ToUniversalTime();
     public DateTime EndDate { get; set; } = DateTime.Today.ToUniversalTime();
@@ -106,7 +121,7 @@
     protected override async Task OnInitializedAsync()
     {
         AllVouchers = await voucherService.GetAllVouchers();
-        AllVouchers = AllVouchers.Where(x => x.EndDate > DateTime.Today.ToUniversalTime() || x.EndDate is null ).ToList();
+        AllVouchers = AllVouchers.Where(x => x.EndDate > DateTime.Today.ToUniversalTime() || x.EndDate is null).ToList();
     }
 
     public async Task CreateNewBundle()
@@ -138,6 +153,7 @@
 
             await bundleService.AddNewBundle(request);
             errorMessage = "";
+            Success = "true";
             ReloadPage();
         }
         catch (Exception ex)
@@ -162,9 +178,11 @@
 
     public void ReloadPage()
     {
-        Name = "Default Name";
-        StartDate = DateTime.Today.ToUniversalTime();
-        EndDate = DateTime.Today.ToUniversalTime();
-        SelectedVouchers = new();
+        navManager.NavigateTo($"/add-bundle/{Success}", true);
+    }
+
+    public void ChangeSuccess()
+    {
+        Success = "false";
     }
 }

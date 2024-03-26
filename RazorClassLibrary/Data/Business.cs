@@ -13,6 +13,10 @@ public partial class Business
 
     public byte[]? Logo { get; set; }
 
+    public string? PhoneNumber { get; set; }
+
+    public string? Website { get; set; }
+
     public virtual ICollection<Occasion> Occasions { get; set; } = new List<Occasion>();
 
     public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();

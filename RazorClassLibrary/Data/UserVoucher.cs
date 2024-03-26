@@ -23,6 +23,8 @@ public partial class UserVoucher
 
     public DateTime? PurchaseDate { get; set; }
 
+    public string? PromoCode { get; set; }
+
     public virtual EndUser User { get; set; } = null!;
 
     public virtual Voucher Voucher { get; set; } = null!;
