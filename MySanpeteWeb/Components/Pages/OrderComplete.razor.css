@@ -1,0 +1,15 @@
+﻿.container {
+    height: 100vh;
+    width: 100vw;
+}
+
+.content {
+    margin: auto;
+    width: 30%;
+    text-align: center;
+    margin-top: 100px;
+}
+
+.content h2 {
+    font-weight: bolder;
+}
