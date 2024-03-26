@@ -1,15 +1,19 @@
-﻿@page "/add-voucher"
+﻿@page "/add-voucher/{Success}"
+@page "/add-voucher"
+
 @using RazorClassLibrary.Data
 @using RazorClassLibrary.Requests
 @using RazorClassLibrary.Services
+
 @inject IVoucherService voucherService
 @inject IBusinessService businessService
+@inject NavigationManager navManager;
 
 <div class="form-container">
     <h3>Admin Add Voucher</h3>
     <form class="mt-5" onsubmit="return false">
         <div class="form-group mt-5">
-            <label for="title">BusinessID</label>
+            <label for="title">Business Name</label>
             <select id="title" class="form-control" @bind="BusinessName" required>
                 @if (AllBusinesses is not null)
                 {
@@ -42,15 +46,15 @@
             <input id="title" class="form-control" @bind="PromoName" required />
         </div>
         <div class="form-group mt-5">
-            <label for="title">Promo Stock</label>
+            <label for="title">Promo Stock (Leave 0 for no limit)</label>
             <input id="title" class="form-control" @bind="PromoStock" required />
         </div>
         <div class="form-group mt-5">
-            <label for="title">Retail Price</label>
+            <label for="title">Retail Price (Leave 0 for no limit)</label>
             <input id="title" class="form-control" @bind="RetailPrice" required />
         </div>
         <div class="form-group mt-5">
-            <label for="title">Total Reclaimable</label>
+            <label for="title">Total Reclaimable (Leave 0 for no limit)</label>
             <input id="title" class="form-control" @bind="TotalReclaimable" required />
         </div>
         @if (errorMessage == "")
@@ -66,6 +70,17 @@
             </div>
         }
     </form>
+
+    @if (Success == "true")
+    {
+        <div class="alert-success alert alert-dismissible fade show" role="alert" @onclick="ChangeSuccess">
+            <p>You successfully added the last voucher!</p>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+
 </div>
 
 @code {
@@ -73,6 +88,8 @@
     public Business selectedBusiness { get; set; } = new();
 
     public string errorMessage = "";
+    [Parameter]
+    public string? Success { get; set; } 
 
     public string BusinessName { get; set; } = "";
     public DateTime StartDate { get; set; } = DateTime.Today.ToUniversalTime();
@@ -117,24 +134,24 @@
                 throw new Exception("You need to change the promo name from the default");
             }
 
-            if (PromoStock <= 0)
+            if (PromoStock < 0)
             {
-                throw new Exception("You need to give promo stock a value above 0");
+                throw new Exception("You need to give promo stock a value above or equal to 0");
             }
 
-            if (RetailPrice <= 0)
+            if (RetailPrice < 0)
             {
-                throw new Exception("You need to give retail price a value above 0");
+                throw new Exception("You need to give retail price a value above or equal to 0");
             }
 
-            if (TotalReclaimable <= 0)
+            if (TotalReclaimable < 0)
             {
-                throw new Exception("You need to give total reclaimable to a value above 0");
+                throw new Exception("You need to give total reclaimable to a value above or equal to 0");
             }
 
             if (EndDate <= StartDate)
             {
-                throw new Exception("");
+                throw new Exception("You need to make the end date further in the future than the start date");
             }
 
             selectedBusiness = AllBusinesses.Where(x => x.BusinessName == BusinessName).FirstOrDefault();
@@ -167,6 +184,13 @@
                     // Clear the form
                     newVoucher = new AddVoucherRequest();
                     errorMessage = "";
+
+                    Success = "true";
+                    ReloadPage();
+                }
+                else
+                {
+                    throw new Exception("Whoops something didn't work");
                 }
             }
             catch (Exception ex)
@@ -179,6 +203,15 @@
         {
             errorMessage = ex.Message;
         }
+    }
 
+    public void ReloadPage()
+    {
+        navManager.NavigateTo($"/add-voucher/{Success}", true);
+    }
+
+    public void ChangeSuccess()
+    {
+        Success = "false";
     }
 }
