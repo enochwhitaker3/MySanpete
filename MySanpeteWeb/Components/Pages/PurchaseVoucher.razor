@@ -1,0 +1,54 @@
+﻿@page "/purchase-voucher"
+@using Stripe.Checkout
+@inject NavigationManager NavMan
+
+<h3>Purchase Voucher</h3>
+
+<section class="border p-4 bg-light">
+    <h2>£49</h2>
+    <p>While stocks last!</p>
+
+    <form method="post" @formname="checkout" @onsubmit="Checkout">
+        <button type="submit" class="btn btn-primary">
+            Place Order
+        </button>
+        <AntiforgeryToken />
+    </form>
+
+</section>
+
+@code {
+
+
+    private async Task Checkout()
+    {
+        var domain = "https://localhost:7059"; // TODO change when we post to azure
+        var options = new SessionCreateOptions
+            {
+                LineItems = new List<SessionLineItemOptions>
+            {
+                new()
+                {
+                    // Provide the exact Price ID (for example, price_1234) of the product you want to sell
+                    Price = "price_1OyLIuDb4weiXajfjif0Porn",
+                    Quantity = 1,
+                },
+            },
+                Mode = "payment",
+                SuccessUrl = domain + "/OrderComplete",
+                CancelUrl = domain + "/OrderAbandoned"
+            };
+        try
+        {
+
+            var service = new SessionService();
+            var session = await service.CreateAsync(options);
+            NavMan.NavigateTo(session.Url);
+        }
+        catch(Exception ex)
+        {
+            
+        }
+    }
+
+}
