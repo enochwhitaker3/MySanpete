@@ -4,7 +4,6 @@
 @inject NavigationManager NavMan
 
 
-
 <div class="main-section">
     <div class="content">
         <div class="title">
@@ -50,8 +49,6 @@
                 </a>
             </div>
         </div>
-
-
 
         <div class="card-container row mt-5" style="max-width: 1200px; margin-left: auto; margin-right: auto">
             @if (allVouchers is not null)
@@ -102,10 +99,6 @@
         </div>
     </div>
 </div>
-
-
-
-
 
 @code {
     public List<VoucherDTO> allVouchers { get; set; } = new();
