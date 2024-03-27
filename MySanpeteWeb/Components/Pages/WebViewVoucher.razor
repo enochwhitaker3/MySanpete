@@ -1,0 +1,8 @@
+﻿@page "/view-voucher/{voucherId:int}"
+
+<RazorClassLibrary.Pages.ViewVoucher voucherId="@voucherId"></RazorClassLibrary.Pages.ViewVoucher>
+
+@code {
+    [Parameter]
+    public int voucherId { get; set; }
+}

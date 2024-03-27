@@ -16,6 +16,9 @@ namespace MySanpeteMobile.WinUI
         /// </summary>
         public App()
         {
+            if (Auth0.OidcClient.Platforms.Windows.Activator.Default.CheckRedirectionActivation())
+                return;
+
             this.InitializeComponent();
         }
 
