@@ -170,6 +170,7 @@ public partial class MySanpeteDbContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Address).HasColumnName("address");
             entity.Property(e => e.BusinessName).HasColumnName("business_name");
+            entity.Property(e => e.Email).HasColumnName("email");
             entity.Property(e => e.Logo).HasColumnName("logo");
             entity.Property(e => e.PhoneNumber).HasColumnName("phone_number");
             entity.Property(e => e.Website).HasColumnName("website");
@@ -182,6 +183,7 @@ public partial class MySanpeteDbContext : DbContext
             entity.ToTable("end_user", "mysanpete");
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Authid).HasColumnName("authid");
             entity.Property(e => e.Guid).HasColumnName("guid");
             entity.Property(e => e.Isactive)
                 .HasDefaultValue(true)

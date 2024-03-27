@@ -65,6 +65,7 @@ builder.Services.AddAuth0WebAppAuthentication(options =>
 {
     options.Domain = builder.Configuration["Domain"] ?? throw new Exception("Auth0 domain missing");
     options.ClientId = builder.Configuration["ClientId"] ?? throw new Exception("Auth0 clientid is missing");
+    options.AccessDeniedPath = "/";
 });
 
 builder.Services.AddControllersWithViews();

@@ -19,6 +19,8 @@ public partial class EndUser
 
     public Guid? Guid { get; set; }
 
+    public string? Authid { get; set; }
+
     public virtual ICollection<BlogReaction> BlogReactions { get; set; } = new List<BlogReaction>();
 
     public virtual ICollection<Blog> Blogs { get; set; } = new List<Blog>();
