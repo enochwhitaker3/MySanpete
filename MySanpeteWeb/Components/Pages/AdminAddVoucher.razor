@@ -8,6 +8,8 @@
 @inject IVoucherService voucherService
 @inject IBusinessService businessService
 @inject NavigationManager navManager;
+@attribute [Authorize(Roles = "Admin")]
+
 
 <div class="form-container">
     <h3>Admin Add Voucher</h3>
@@ -108,6 +110,7 @@
         newVoucher = new();
 
         AllBusinesses = await businessService.GetAllBusinesses();
+
     }
 
     public async Task CreateNewVoucher()

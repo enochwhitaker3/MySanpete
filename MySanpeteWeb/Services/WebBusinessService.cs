@@ -22,6 +22,8 @@ public class WebBusinessService : IBusinessService
             BusinessName = request.Name,
             Address = request.Address,
             Logo = request.Logo,
+            Website = request.WebURL,
+            PhoneNumber = request.PhoneNum
         };
 
         if (business.Address == "")
@@ -31,6 +33,14 @@ public class WebBusinessService : IBusinessService
         if (business.BusinessName == "")
         {
             throw new Exception("Can't make a business without a name");
+        }
+        if (business.PhoneNumber == "")
+        {
+            throw new Exception("Can't make a business without a phone number");
+        }
+        if (business.Website == "")
+        {
+            throw new Exception("Can't make a business without a website");
         }
 
         await context.Businesses.AddAsync(business);

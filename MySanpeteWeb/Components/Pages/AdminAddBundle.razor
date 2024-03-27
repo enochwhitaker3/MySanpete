@@ -9,6 +9,7 @@
 @inject IBundleService bundleService
 @inject IVoucherService voucherService
 @inject NavigationManager navManager;
+@attribute [Authorize(Roles = "Admin")]
 
 <div class="form-container" onsubmit="return false">
     <h3>Admin Add Bundle</h3>
