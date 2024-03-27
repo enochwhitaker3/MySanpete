@@ -1,0 +1,84 @@
+﻿@page "/admin"
+@attribute [Authorize]
+
+@inject NavigationManager navManager
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Page Name</th>
+            <th scope="col">Page Link</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr @onclick="GoToBlogsPage">
+            <td>Add Blogs</td>
+            <td>
+                <button class="btn-light" @onclick="GoToBlogsPage">Blogs</button>
+            </td>
+        </tr>
+        <tr @onclick="GoToBundlePage">
+            <td>Add Bundles</td>
+            <td>
+                <button class="btn-light" @onclick="GoToBundlePage">Bundles</button>
+            </td>
+        </tr>
+        <tr @onclick="GoToBusinessPage">
+            <td>Add Businesses</td>
+            <td>
+                <button class="btn-light" @onclick="GoToBusinessPage">Business</button>
+            </td>
+        </tr>
+        <tr @onclick="GoToEventPage">
+            <td>Add Events</td>
+            <td>
+                <button class="btn-light" @onclick="GoToEventPage">Events</button>
+            </td>
+        </tr>
+        <tr @onclick="GoToPodcastPage">
+            <td>Add Podcasts</td>
+            <td>
+                <button class="btn-light" @onclick="GoToPodcastPage">Podcasts</button>
+            </td>
+        </tr>
+        <tr @onclick="GoToVoucherPage">
+            <td>Add Vouchers</td>
+            <td>
+                <button class="btn-light" @onclick="GoToVoucherPage">Vouchers</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+@code {
+
+    public void GoToBlogsPage()
+    {
+        navManager.NavigateTo("/add-blog", true);
+    }
+
+    public void GoToBundlePage()
+    {
+        navManager.NavigateTo("/add-bundle", true);
+    }
+
+    public void GoToBusinessPage()
+    {
+        navManager.NavigateTo("/add-business", true);
+    }
+
+    public void GoToEventPage()
+    {
+        navManager.NavigateTo("/add-event", true);
+    }
+
+    public void GoToPodcastPage()
+    {
+        navManager.NavigateTo("/add-podcast", true);
+    }
+
+    public void GoToVoucherPage()
+    {
+        navManager.NavigateTo("/add-voucher", true);
+    }
+}
