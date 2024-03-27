@@ -2,9 +2,11 @@
 @page "/vouchers"
 
 @using RazorClassLibrary.DTOs
+@using RazorClassLibrary.Data
 @using RazorClassLibrary.Services
 @inject IVoucherService voucherService
 @inject NavigationManager NavMan
+@inject IBusinessService businessService
 
 
 <div class="main-section">
@@ -16,45 +18,49 @@
     <img class="full-screen-image" src="Images/social_gathering.jpg" alt="Image">
     <div class="vouchers-content" style="max-width: 100vw; margin-left: auto; margin-right: auto; background-color:#fcfcf8; justify-content: center;">
         <div class="d-flex flex-row justify-content-center flex-wrap" style="max-width: 100vw;">
-            <div>
-                <a href="#">
-                    <img class="business-logo"
-                         style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px;"
-                         src="https://s3-media0.fl.yelpcdn.com/bphoto/1MqOD2pSfkk3SnMhI3wWQQ/348s.jpg" />
-                </a>
-            </div>
-            <div>
-                <a href="#">
-                    <img class="business-logo"
-                         style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px;"
-                         src="Images/theater.png" />
-                </a>
-            </div>
-            <div>
-                <a href="#">
-                    <img class="business-logo"
-                         style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px;"
-                         src="https://asset.brandfetch.io/idPvg-ka_0/idKNuyVmpf.jpeg" />
-                </a>
-            </div>
-            <div>
-                <a href="#">
-                    <img class="business-logo"
-                         style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px;"
-                         src="https://e7.pngegg.com/pngimages/676/74/png-clipart-fast-food-mcdonald-s-logo-golden-arches-restaurant-mcdonalds-mcdonald-s-logo-miscellaneous-food.png" />
-                </a>
-            </div>
-            <div>
-                <a href="#">
-                    <img class="business-logo"
-                         style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px;"
-                         src="https://logodownload.org/wp-content/uploads/2020/05/wendys-logo-6.png" />
-                </a>
-            </div>
+            @if (!isLoading)
+            {
+                @if (allBusinesses is not null)
+                {
+                    @foreach (var b in allBusinesses)
+                    {
+                        @if (b.Logo is not null)
+                        {
+
+                            <div>
+                                <a href="#">
+                                    <img class="business-logo"
+                                         style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px;"
+                                         src="@ByteArrayToImage(b.Logo)" alt="@b.BusinessName" title="@b.BusinessName"/>
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div>
+                                <a href="#">
+                                    <div class="business-logo"
+                                         style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px; color: white; background-color: dimgray;">
+                                        <p class="text-center align-content-center">@b.BusinessName</p>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+                    }
+                }
+            }
+            else
+            {
+                <p>Loading ...</p>
+            }
         </div>
 
         <div class="card-container row mt-5" style="max-width: 1200px; margin-left: auto; margin-right: auto">
-            @if (allVouchers is not null)
+            @if(!isLoading)
+            {
+                
+          
+            @if (allVouchers.Count > 0)
             {
                 @foreach (var voucher in allVouchers)
                 {
@@ -77,7 +83,7 @@
                                     <!-- Button trigger modal -->
                                     <div class="button" @onclick="() => GoToDetailsPage(voucher.Id)">
                                         <div class="button-wrapper">
-                                            <div class="text">Buy Now</div>
+                                            <div class="text">View</div>
                                             <span class="icon">
                                                 <svg viewBox="0 0 16 16" class="bi bi-cart2" fill="currentColor" height="16" width="16" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"></path>
@@ -96,7 +102,7 @@
                 <div class="alert alert-info">
                     <p>Sorry, there are no vouchers currently. </p>
                 </div>
-
+                }
             }
 
         </div>
@@ -105,15 +111,29 @@
 
 @code {
     public List<VoucherDTO> allVouchers { get; set; } = new();
+    public List<Business> allBusinesses { get; set; }
+    public bool isLoading { get; set; } = true;
 
     protected override async Task OnInitializedAsync()
     {
+        isLoading = true;
         allVouchers = await voucherService.GetAllVouchers();
+        allVouchers = allVouchers.Where(x => x.EndDate >= DateTime.UtcNow).ToList();
+        allBusinesses = await businessService.GetAllBusinesses();
+        isLoading = false;
     }
 
     public void GoToDetailsPage(int id)
     {
         NavMan.NavigateTo($"/view-voucher/{id}");
+    }
+
+    public string ByteArrayToImage(byte[] array)
+    {
+        isLoading = true;
+        string imageString = Convert.ToBase64String(array);
+        isLoading = false;
+        return string.Format("data:image/png;base64,{0}", imageString);
     }
 
 }
