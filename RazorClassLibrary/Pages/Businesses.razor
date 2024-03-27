@@ -3,80 +3,36 @@
 <div class="main-section">
     <div class="section-title">Businesses</div>
 
-@*     @if (AllBusinesses is not null)
+
+</div>
+
+
+<div class="business-container row mx-auto mt-10" style="width: 1800px;">
+    @if (AllBusinesses is not null)
     {
         @foreach (var b in AllBusinesses)
         {
-            <div class="m-5 p-5" style="background-color: white;">
-                <div class="row">
-                    <div class="col-md-3">
-                        <img class="img img-fluid" src="https://asset.brandfetch.io/idPvg-ka_0/idKNuyVmpf.jpeg" />
-                    </div>
-                    <div class="col-md-9">
-                        <h2>@b.BusinessName</h2>
-                        <p>@b.Address</p>
-                        <button class="btn-primary">View Deals</button>
+            <div class="col-md-3">
+                <div class="card h-100">
+                    @if (b.Logo is null)
+                    {
+                        <img class="card-img-top rounded-circle m-5"
+                             src="https://i.fbcd.co/products/resized/resized-750-500/b456fb3c430f2ac383cae48c4f8e0c037e0ecaf072d2607320a3252c38fc90de.webp" />
+                    }
+                    else
+                    {
+                        <img class="card-img-top rounded-circle m-5" 
+                             src="@ConvertImage(b.Logo)" />
+                    }
+                    <div class="card-body mt-3 mb-15">
+                        <h2 class="card-text">@b.BusinessName</h2>
+                        <p class="card-text">@b.Address</p>
                     </div>
                 </div>
             </div>
         }
-    } *@
+    }
 </div>
-
-<div class="">
-
-
-</div>
-
-<div class="business-container row mx-auto mt-10" style="width: 1800px;">
-    <div class="col-md-3">
-        <div class="card h-100">
-            <img class="card-img-top rounded-circle m-5"
-                 src="https://asset.brandfetch.io/idPvg-ka_0/idKNuyVmpf.jpeg" />
-            <div class="card-body mt-3 mb-15">
-                <h2 class="card-text">Little Caesars Pizza</h2>
-                <p class="card-text">462 N Main St. Ephraim, UT</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Card 2 -->
-    <div class="col-md-3">
-        <div class="card h-100">
-            <img class="card-img-top rounded-circle m-5 border border-dark"
-                 src="https://www.provotownecentre.com/media/v1/182/2023/04/Chat-Chat-Boba_Logo.jpg" />
-            <div class="card-body mt-3 mb-15">
-                <h2 class="card-text">Chat Chat Boba</h2>
-                <p class="card-text">9 N Main St, Ephraim, UT</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Card 3 -->
-    <div class="col-md-3">
-        <div class="card h-100">
-            <img class="card-img-top rounded-circle m-5"
-                 src="https://e7.pngegg.com/pngimages/676/74/png-clipart-fast-food-mcdonald-s-logo-golden-arches-restaurant-mcdonalds-mcdonald-s-logo-miscellaneous-food.png" />
-            <div class="card-body mt-3 mb-15">
-                <h2 class="card-text">McDonald's</h2>
-                <p class="card-text">549 S Main St, Ephraim, UT</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Card 4 -->
-    <div class="col-md-3">
-        <div class="card h-100">
-            <img class="card-img-top rounded-circle m-5"
-                 src="https://logodownload.org/wp-content/uploads/2020/05/wendys-logo-6.png" />
-            <div class="card-body mt-3 mb-15">
-                <h2 class="card-text">Wendy's</h2>
-                <p class="card-text">747 S Main St, Ephraim, UT</p>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 
 
@@ -97,5 +53,13 @@
     {
         AllBusinesses = await service.GetAllBusinesses();
     }
+
+    public string ConvertImage(byte[] byte_array)
+    {
+        string base64String = Convert.ToBase64String(byte_array);
+        return string.Format("data:image/png;base64,{0}", base64String); ;
+    }
+
+    
 
 }
