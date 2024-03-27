@@ -6,7 +6,7 @@ using RazorClassLibrary.Data;
 
 namespace MySanpeteWeb;
 
-public partial class MySanpeteDbContext : IdentityDbContext
+public partial class MySanpeteDbContext : DbContext
 {
     public MySanpeteDbContext()
     {
