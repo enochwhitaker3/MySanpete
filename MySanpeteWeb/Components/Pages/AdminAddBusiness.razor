@@ -55,8 +55,8 @@
     [Parameter]
     public string? Success { get; set; }
 
-    public string? Name { get; set; }
-    public string? Address { get; set; }
+    public string? Name { get; set; } = "Default Name";
+    public string? Address { get; set; } = "Default Address";
     public byte[]? ImageBytes { get; set; }
 
 
@@ -69,12 +69,12 @@
     {
         try
         {
-            if (Name is null)
+            if (Name is null || Name == "Default Name")
             {
                 throw new Exception("The business needs to have a name");
             }
 
-            if (Address is null)
+            if (Address is null || Address == "Default Address")
             {
                 throw new Exception("The business needs to have an address");
             }
