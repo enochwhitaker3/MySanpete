@@ -8,7 +8,7 @@
 @inject IOccasionService occasionService
 @inject IBusinessService businessService
 @inject NavigationManager navManager
-@attribute [Authorize]
+@attribute [Authorize(Roles = "Admin")]
 
 <div class="form-container">
     <h3>Admin Add Event</h3>

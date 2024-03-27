@@ -63,8 +63,8 @@ builder.Services.AddSingleton<IBundleService, WebBundleService>();
 //});
 builder.Services.AddAuth0WebAppAuthentication(options =>
 {
-    options.Domain = builder.Configuration["Auth0:Domain"] ?? throw new Exception("Auth0 domain missing");
-    options.ClientId = builder.Configuration["Auth0:ClientId"] ?? throw new Exception("Auth0 clientid is missing");
+    options.Domain = builder.Configuration["Domain"] ?? throw new Exception("Auth0 domain missing");
+    options.ClientId = builder.Configuration["ClientId"] ?? throw new Exception("Auth0 clientid is missing");
 });
 
 builder.Services.AddControllersWithViews();

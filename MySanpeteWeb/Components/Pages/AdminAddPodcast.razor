@@ -7,7 +7,7 @@
 
 @inject IPodcastService podcastService
 @inject NavigationManager navManager
-@attribute [Authorize]
+@attribute [Authorize(Roles ="Admin")]
 
 <div class="form-container">
     <h3>Admin Add Podcast</h3>

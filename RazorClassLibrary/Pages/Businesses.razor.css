@@ -34,7 +34,8 @@ body, html {
 .card {
     margin-bottom: 20px;
     align-items:center;
-    margin:2%
+    margin:2%;
+    transition: transform 0.3s ease;
 }
 
     .card img {
@@ -43,6 +44,12 @@ body, html {
         object-fit: cover;
         object-position: center;
     }
+
+    .card:hover {
+        transform: translateY(-10px);
+        cursor: pointer;
+    }
+
 
 
 
