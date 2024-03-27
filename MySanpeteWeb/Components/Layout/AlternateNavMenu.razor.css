@@ -57,6 +57,8 @@
 
 .navbar-toggler:focus {
     text-decoration: none;
-    outline: 0;  63	74	73
+    outline: 0; 
     box-shadow:none;
 }
+
+
