@@ -4,6 +4,7 @@
 @using RazorClassLibrary.Data
 @using RazorClassLibrary.Requests
 @using RazorClassLibrary.Services
+@using Stripe
 
 @inject IVoucherService voucherService
 @inject IBusinessService businessService
@@ -40,12 +41,12 @@
             <input id="title" class="form-control" @bind="PromoCode" required />
         </div>
         <div class="form-group mt-5">
-            <label for="title">Promo Description</label>
-            <input id="title" class="form-control" @bind="PromoDescription" required />
-        </div>
-        <div class="form-group mt-5">
             <label for="title">Promo Name</label>
             <input id="title" class="form-control" @bind="PromoName" required />
+        </div>
+        <div class="form-group mt-5">
+            <label for="title">Promo Description</label>
+            <input id="title" class="form-control" @bind="PromoDescription" required />
         </div>
         <div class="form-group mt-5">
             <label for="title">Promo Stock (Leave 0 for no limit)</label>
@@ -178,10 +179,14 @@
                 TotalReclaimable = TotalReclaimable,
             };
 
+
+
             try
             {
                 if (newVoucher is not null)
                 {
+                    AddProductToStripe();
+
                     await voucherService.AddVoucher(newVoucher);
 
                     // Clear the form
@@ -217,4 +222,26 @@
     {
         Success = "false";
     }
+
+    public void AddProductToStripe()
+    {
+        var options = new ProductCreateOptions { Name = PromoName, Description = PromoDescription };
+        var service = new ProductService();
+        service.Create(options);
+    }
+
+    public string ByteArrayToImage()
+    {
+        try
+        {
+            string imageString = Convert.ToBase64String(selectedBusiness.Logo);
+            return string.Format("data:image/png;base64,{0}", imageString);
+
+        }
+        catch (Exception ex)
+        {
+            return "";
+        }
+    }
+
 }
