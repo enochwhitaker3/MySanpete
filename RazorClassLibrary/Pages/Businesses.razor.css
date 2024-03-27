@@ -1,41 +1,64 @@
-.banner {
-    display: flex;
-    background-color: #5EB0BF;
-    width: 100%;
-    height: 300px;
-    padding: 10px 0;
-    justify-content: center; /* Horizontally center */
-    align-items: center; /* Vertically center */
+@font-face {
+    font-family: 'Nelphim';
+    src: url('Fonts/Nephilm.otf') format('opentype');
 }
 
-.content {
-    position: absolute;
-    top: 35%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1;
-    padding: 20px;
-    border-radius: 10px;
-    color: white;
+@font-face {
+    font-family: 'Casual';
+    src: url('Fonts/Casual-Regular.ttf') format('truetype');
 }
 
-.title {
-    font-size: 50px;
-    font-family: 'Segoe UI';
-    font-weight: bold;
-    margin-bottom: 25px;
+@font-face {
+    font-family: 'Tenor';
+    src: url('Fonts/TenorSans-Regular.ttf') format('truetype');
 }
 
-.undertitle {
-    font-size: large;
-    font-family: 'Segoe UI';
-    padding-left: 65px;
+body {
+    background-color: #fcfcf8;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.section-title {
+    /*    margin-top: 50px;*/
+    font-size: 70px;
+    font-family: Tenor;
+    text-align: center;
 }
 
 
-@media (max-width: 750px) {
-    .content {
-        width: 450px;
-        margin-left: 25px;
+.card {
+    margin-bottom: 20px;
+    align-items:center;
+    margin:2%
+}
+
+    .card img {
+        width: 50%;
+        height: auto;
+        object-fit: cover;
+        object-position: center;
     }
+
+
+
+.card-body {
+    text-align: center;
+    font-family: Tenor;
 }
+    .card-body p {
+        margin-top: 15px;
+        margin-bottom: 5px;
+        font-size: 20px;
+        color: #828181;
+    }
+    .card-body h2 {
+        font-size: 25px;
+        font-weight: bold;
+    }
+
+

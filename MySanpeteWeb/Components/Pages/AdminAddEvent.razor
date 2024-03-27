@@ -1,80 +1,196 @@
-﻿@page "/add-event"
+﻿@page "/add-event/{Success}"
+@page "/add-event"
+
 @using RazorClassLibrary.Data
 @using RazorClassLibrary.Requests
 @using RazorClassLibrary.Services
 
-
 @inject IOccasionService occasionService
+@inject IBusinessService businessService
+@inject NavigationManager navManager
 
 <div class="form-container">
     <h3>Admin Add Event</h3>
-    <form method="post" @onsubmit="CreateNewOccasion" class="mt-5">
-        <div class="form-group mt-5">
-            <label for="title">Title</label>
-            <input id="title" class="form-control" @bind="Title" />
-        </div>
-        <div class="form-group mt-5">
-            <label for="xCoordinate">X Coordinate</label>
-            <input id="xCoordinate" class="form-control" @bind="XCoordinate" />
-        </div>
-        <div class="form-group mt-5">
-            <label for="yCoordinate">Y Coordinate</label>
-            <input id="yCoordinate" class="form-control" @bind="YCoordinate" />
-        </div>
-        <div class="form-group mt-5">
-            <label for="startDate">Start Date</label>
-            <input id="startDate" type="date" class="form-control" @bind="StartDate" />
-        </div>
-        <div class="form-group mt-5">
-            <label for="endDate">End Date</label>
-            <input id="endDate" type="date" class="form-control" @bind="EndDate" />
-        </div>
-        <div class="form-group mt-5">
-            <label for="businessId">Business ID</label>
-            <input id="businessId" class="form-control" @bind="BusinessId" />
-        </div>
-        <div class="form-group mt-5">
-            <label for="description">Description</label>
-            <input id="description" class="form-control" @bind="Description" />
-        </div>
-        @* <div class="form-group">
+    <div class="form-group mt-5">
+        <label for="title">Title</label>
+        <input id="title" class="form-control" @bind="Title" required />
+    </div>
+    <div class="form-group mt-5">
+        <label for="title">Business Name</label>
+        <select id="title" class="form-control" @bind="BusinessName" required>
+            @if (AllBusinesses is not null)
+            {
+                <option value="">Choose a business</option>
+                @foreach (var business in AllBusinesses)
+                {
+                    <option value="@business.BusinessName">@business.BusinessName</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="form-group mt-5">
+        <label for="xCoordinate">X Coordinate</label>
+        <input id="xCoordinate" class="form-control" @bind="XCoordinate" required />
+    </div>
+    <div class="form-group mt-5">
+        <label for="yCoordinate">Y Coordinate</label>
+        <input id="yCoordinate" class="form-control" @bind="YCoordinate" required />
+    </div>
+    <div class="form-group mt-5">
+        <label for="description">Description</label>
+        <input id="description" class="form-control" @bind="Description" required />
+    </div>
+    <div class="form-group mt-5">
+        <label for="startDate">Start Date</label>
+        <input id="startDate" type="datetime-local" class="form-control" @bind="StartDate" required />
+    </div>
+    <div class="form-group mt-5">
+        <label for="endDate">End Date</label>
+        <input id="endDate" type="datetime-local" class="form-control" @bind="EndDate" required />
+    </div>
+    <div class="form-group">
         <label for="photo">Photo</label>
-        <input id="photo" type="file" @bind="newOccasion.Photo" />
-        </div> *@
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+        <InputFile OnChange="SaveFile"></InputFile>
+    </div>
+    @if (errorMessage == "")
+    {
+        <button type="submit" class="btn btn-primary" @onclick="CreateNewOccasion">Submit</button>
+    }
+    else
+    {
+        <div class="alert alert-danger">
+            <p>Please fix the error to submit the form</p>
+            <p>@errorMessage</p>
+            <button type="submit" class="btn btn-primary" @onclick="CreateNewOccasion">Submit</button>
+        </div>
+    }
+
+    @if (Success == "true")
+    {
+        <div class="alert-success alert alert-dismissible fade show" role="alert" @onclick="ChangeSuccess">
+            <p>You successfully added the new business!</p>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
 
 </div>
 
 @code {
-    public AddOccasionRequest? newOccasion;
+    public AddOccasionRequest? newOccasion = new();
+    public IEnumerable<Business>? AllBusinesses { get; set; }
+    public Business selectedBusiness { get; set; } = new();
 
     public string errorMessage = "";
+    [Parameter]
+    public string? Success { get; set; }
 
-    public string? Title { get; set; }
-    public decimal XCoordinate { get; set; }
-    public decimal YCoordinate { get; set; }
-    public DateTime StartDate { get; set; }
-    public DateTime EndDate { get; set; }
-    public int BusinessId { get; set; }
-    public string? Description { get; set; }
+    public string? Title { get; set; } = "Default Title";
+    public decimal XCoordinate { get; set; } = 0M;
+    public decimal YCoordinate { get; set; } = 0M;
+    public DateTime StartDate { get; set; } = DateTime.Today.ToUniversalTime();
+    public DateTime EndDate { get; set; } = DateTime.Today.ToUniversalTime();
+    public string? BusinessName { get; set; }
+    public string? Description { get; set; } = "Default Description";
+    public byte[]? ImageBytes { get; set; }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        newOccasion = new();
+        AllBusinesses = await businessService.GetAllBusinesses();
+    }
+
+    public async Task SaveFile(InputFileChangeEventArgs e)
+    {
+        IBrowserFile file = e.GetMultipleFiles(1).Single();
+
+        using (var ms = new MemoryStream())
+        {
+            await file.OpenReadStream().CopyToAsync(ms);
+            ImageBytes = ms.ToArray();
+        }
+    }
+
+    public AddOccasionRequest CreateRequest()
+    {
+        try
+        {
+            if (Title is null || Title == "Default Title")
+            {
+                throw new Exception("The event needs to have a title");
+            }
+
+            if (EndDate <= StartDate)
+            {
+                throw new Exception("The end date needs to be further in the future than the start date");
+            }
+
+            selectedBusiness = AllBusinesses.Where(x => x.BusinessName == BusinessName).FirstOrDefault();
+
+            if (selectedBusiness is null)
+            {
+                throw new Exception("You need to select a business for this event");
+            }
+
+            if (Description is null || Description == "Default Description")
+            {
+                throw new Exception("The event needs to have a description");
+            }
+
+            if (ImageBytes is not null)
+            {
+                AddOccasionRequest request = new()
+                {
+                    Title = Title,
+                    BusinessId = selectedBusiness.Id,
+                    Description = Description,
+                    EndDate = EndDate.ToUniversalTime(),
+                    StartDate = StartDate.ToUniversalTime(),
+                    XCoordinate = XCoordinate,
+                    YCoordinate = YCoordinate,
+                    Photo = ImageBytes
+                };
+
+                return request;
+            }
+            else
+            {
+                AddOccasionRequest request = new()
+                {
+                    Title = Title,
+                    BusinessId = selectedBusiness.Id,
+                    Description = Description,
+                    EndDate = EndDate.ToUniversalTime(),
+                    StartDate = StartDate.ToUniversalTime(),
+                    XCoordinate = XCoordinate,
+                    YCoordinate = YCoordinate
+                };
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+
+        return new AddOccasionRequest();
     }
 
     public async Task CreateNewOccasion()
     {
+        newOccasion = CreateRequest();
+
         try
         {
-
             if (newOccasion is not null)
             {
                 await occasionService.AddOccasion(newOccasion);
 
-                // Clear the form
-                newOccasion = new AddOccasionRequest();
+                Success = "true";
+                ReloadPage();
+            }
+            else
+            {
+                throw new Exception("Whoops something didn't work right");
             }
         }
         catch (Exception ex)
@@ -82,5 +198,15 @@
             // Handle errors appropriately
             errorMessage = ex.Message;
         }
+    }
+
+    public void ReloadPage()
+    {
+        navManager.NavigateTo($"/add-event/{Success}", true);
+    }
+
+    public void ChangeSuccess()
+    {
+        Success = "false";
     }
 }

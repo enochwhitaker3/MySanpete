@@ -9,11 +9,6 @@
 }
 
 @font-face {
-    font-family: 'Gotu';
-    src: url('Fonts/Gotu-Regular.ttf') format('truetype');
-}
-
-@font-face {
     font-family: 'Tenor';
     src: url('Fonts/TenorSans-Regular.ttf') format('truetype');
 }
@@ -30,7 +25,7 @@ body, html {
 
 .featured-blogs {
     background-color: #fcfcf8;
-    width: 100vw;
+    width: 100%;
     height: 100vh;
 }
 
@@ -45,6 +40,13 @@ body, html {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    padding-bottom:5%;
+}
+
+.rest-blogs {
+    background-color: #fcfcf8;
+    width: 100%;
+    height: 100vh;
 }
 
 .blogs-container {
@@ -54,10 +56,20 @@ body, html {
 }
 .blog{
     width: 307px;
-    margin-right: 2%;
-    margin-left: 2%;
+    margin: 2%;
 }
+    .blog h1 {
+        margin-top: 15px;
+        font-size: 20px;
+        text-decoration: underline;
+    }
 
+.blog-main-image {
+    height: 460px;
+    width: 307px;
+    object-fit: cover;
+    object-position: center;
+}
 
 .featured-blogs-post-one {
     width: 900px;
@@ -78,12 +90,6 @@ body, html {
     object-position: center;
 }
 
-.blog-main-image {
-    height: 460px;
-    width: 307px;
-    object-fit: cover;
-    object-position: center;
-}
 
 
 .main-text {
@@ -117,17 +123,9 @@ body, html {
         font-size: 25px;
         font-weight: bold;
     }
-    .sub-text h1 {
-        margin-top:15px;
-        font-size: 20px;
-        text-decoration: underline;
-    }
 
-.rest-blogs {
-    background-color: #fcfcf8;
-    width: 100%;
-    height: 100vh;
-}
+
+
 
 
 @media screen and (max-width: 2100px) {
@@ -153,9 +151,6 @@ body, html {
         text-align: center;
     }
 
-    .featured-blogs-container {
-        /*margin-top: 2%;*/
-    }
 
     .featured-blogs-post-one {
         width: 700px;
@@ -170,6 +165,23 @@ body, html {
     }
     .btn {
         margin-top: 4%
+    }
+    .blog {
+        width: 250px;
+        margin: 2%;
+    }
+
+        .blog h1 {
+            margin-top: 15px;
+            font-size: 20px;
+            text-decoration: underline;
+        }
+
+    .blog-main-image {
+        height: 375px;
+        width: 250px;
+        object-fit: cover;
+        object-position: center;
     }
 }
 
@@ -199,9 +211,6 @@ body, html {
         text-align: center;
     }
 
-    .featured-blogs-container {
-/*        margin-top: 2%;*/
-    }
 
     .featured-blogs-post-one {
         width: 500px;
@@ -217,13 +226,10 @@ body, html {
     .btn {
         margin-top: 4% !important;
     }
+
 }
 
 @media screen and (max-width: 1175px) {
-    .section-title {
-        margin-top: 175px;
-    }
-
     .featured-main-image {
         height: 275px;
         width: 450px;
@@ -245,9 +251,6 @@ body, html {
         text-align: center;
     }
 
-    .featured-blogs-container {
-        margin-top: 6%;
-    }
 
     .featured-blogs-post-one {
         width: 450px;
@@ -260,13 +263,38 @@ body, html {
         margin-top: 4%;
         margin-left: 4%;
     }
-}
-
-@media screen and (max-width: 991px) {
-    .section-title {
-        margin-top: 75px;
+    .blog {
+        width: 175px;
+        margin: 2%;
     }
 
+        .blog h1 {
+            margin-top: 15px;
+            font-size: 20px;
+            text-decoration: underline;
+        }
+
+    .blog-main-image {
+        height: 262px;
+        width: 175px;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .sub-text p {
+        margin-top: 15px;
+        margin-bottom: 5px;
+        font-size: 15px;
+        color: #828181;
+    }
+
+    .sub-text h2 {
+        font-size: 20px;
+        font-weight: bold;
+    }
+}
+
+@media screen and (max-width: 991px) and (max-height:700px) {
     .featured-main-image {
         height: 305px;
         width: 500px;
@@ -288,10 +316,6 @@ body, html {
         text-align: center;
     }
 
-    .featured-blogs-container {
-        margin-top: 6%;
-    }
-
     .featured-blogs-post-one {
         width: 500px;
         margin-right:0%;
@@ -302,6 +326,12 @@ body, html {
         width: 500px;
         margin-left:0%;
         margin-top: 4%;
+    }
+    .rest-blogs {
+        background-color: #fcfcf8;
+        margin-top:500px;
+        width: 100%;
+        height: 100vh;
     }
 
 }
@@ -333,10 +363,6 @@ body, html {
         text-align: center;
     }
 
-    .featured-blogs-container {
-        margin-top: 6%;
-    }
-
     .featured-blogs-post-one {
         width: 350px;
         margin-right: 0%;
@@ -347,6 +373,12 @@ body, html {
         width: 350px;
         margin-left: 0%;
         margin-top: 4%;
+    }
+    .rest-blogs {
+        background-color: #fcfcf8;
+        margin-top: 100px;
+        width: 100%;
+        height: 100vh;
     }
 }
 

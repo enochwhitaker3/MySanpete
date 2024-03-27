@@ -1,0 +1,67 @@
+﻿@using RazorClassLibrary.DTOs
+
+@inject IVoucherService service
+@inject IBusinessService businessService
+
+
+@if (voucher is not null)
+{
+    <div class="container">
+        <div class="content">
+            <div class="row">
+                <div class="col-md-6">
+                    <img width="300" src="@imgDataURL" />
+                </div>
+                <div class="col-md-6">
+                    <h2>@voucher.PromoName</h2>
+                    <p>@voucher.BusinessName</p>
+                    <p>@voucher.PromoDescription</p>
+                    <p>@voucher.RetailPrice</p>
+                    <p>@voucher.EndDate</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <p>This voucher doesn't exist anymore (or never existed at all!).</p>
+    <p>View All Vouchers</p>
+}
+
+@code {
+    [Parameter]
+    public int voucherId { get; set; }
+
+    public VoucherDTO voucher { get; set; }
+    public Business business { get; set; }
+    public string imgDataURL { get; set; } = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        voucher = await service.GetVoucher(voucherId) ?? new VoucherDTO();
+        var businesses = await businessService.GetAllBusinesses();
+        business = businesses.Where(x => x.BusinessName == voucher.BusinessName).FirstOrDefault();
+
+        if (business.Logo is not null)
+        {
+            ByteArrayToImage();
+        }
+    }
+
+    public void ByteArrayToImage()
+    {
+        try
+        {
+            string imageString = Convert.ToBase64String(business.Logo);
+            imgDataURL = string.Format("data:image/png;base64,{0}", imageString);
+
+        }
+        catch (Exception ex)
+        {
+            
+        }
+    }
+
+
+}

@@ -53,6 +53,9 @@ public partial class MySanpeteDbContext : IdentityDbContext
 
     public virtual DbSet<Voucher> Vouchers { get; set; }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        => optionsBuilder.UseNpgsql("Name=MySanpeteDb");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Blog>(entity =>
@@ -168,6 +171,8 @@ public partial class MySanpeteDbContext : IdentityDbContext
             entity.Property(e => e.Address).HasColumnName("address");
             entity.Property(e => e.BusinessName).HasColumnName("business_name");
             entity.Property(e => e.Logo).HasColumnName("logo");
+            entity.Property(e => e.PhoneNumber).HasColumnName("phone_number");
+            entity.Property(e => e.Website).HasColumnName("website");
         });
 
         modelBuilder.Entity<EndUser>(entity =>
@@ -379,6 +384,7 @@ public partial class MySanpeteDbContext : IdentityDbContext
             entity.Property(e => e.Isused)
                 .HasDefaultValue(false)
                 .HasColumnName("isused");
+            entity.Property(e => e.PromoCode).HasColumnName("promo_code");
             entity.Property(e => e.PurchaseDate).HasColumnName("purchase_date");
             entity.Property(e => e.TimesClaimd).HasColumnName("times_claimd");
             entity.Property(e => e.TotalReclaimable).HasColumnName("total_reclaimable");
@@ -413,6 +419,7 @@ public partial class MySanpeteDbContext : IdentityDbContext
                 .HasColumnType("money")
                 .HasColumnName("retail_price");
             entity.Property(e => e.StartDate).HasColumnName("start_date");
+            entity.Property(e => e.StripeId).HasColumnName("stripe_id");
             entity.Property(e => e.TotalReclaimable).HasColumnName("total_reclaimable");
 
             entity.HasOne(d => d.Business).WithMany(p => p.Vouchers)
@@ -421,6 +428,8 @@ public partial class MySanpeteDbContext : IdentityDbContext
                 .HasConstraintName("voucher_business_id_fkey");
         });
 
-        base.OnModelCreating(modelBuilder);
+        OnModelCreatingPartial(modelBuilder);
     }
+
+    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

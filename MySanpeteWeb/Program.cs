@@ -10,6 +10,7 @@ using System.Runtime.CompilerServices;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,8 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
     options.OnAppendCookie = cookieContext => CheckSameSite(cookieContext.CookieOptions);
     options.OnDeleteCookie = cookieContext => CheckSameSite(cookieContext.CookieOptions);
 });
+StripeConfiguration.ApiKey = builder.Configuration["STRIPE_SECRET_KEY"];
+//builder.Services.Configure<StripeOptions>
 
 builder.Services.AddMudServices();
 
