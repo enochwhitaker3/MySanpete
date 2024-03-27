@@ -1,0 +1,65 @@
+@font-face {
+    font-family: 'Nelphim';
+    src: url('Fonts/Nephilm.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Casual';
+    src: url('Fonts/Casual-Regular.ttf') format('truetype');
+}
+
+
+.navbar {
+    background-color: transparent;
+    overflow: hidden;
+    width: 100%;
+/*    position: absolute;*/
+    top: 0;
+    z-index: 1;
+}
+
+    .navbar a {
+        float: left;
+        display: block;
+        color: #3f4a49;
+        text-align: center;
+        padding: 14px 20px;
+        text-decoration: none;
+    }
+
+.content {
+    padding: 16px;
+    margin-top: 30px;
+    height: 800px; /* Used to show scrolling */
+}
+
+.navbar-brand {
+    font-family: Casual;
+    font-size: 1.5rem;
+}
+
+    .navbar-brand:hover {
+        color: #3f4a49;
+    }
+
+.nav-item {
+    font-family: Casual;
+    font-size: 1.25rem;
+    color: #3f4a49 !important;
+}
+
+
+.navbar-dark .navbar-nav .nav-link {
+    color: #3f4a49 !important;
+}
+
+.navbar-dark .navbar-toggler {
+    color: #3f4a49 !important;
+    border-color: transparent;
+}
+
+.navbar-toggler:focus {
+    text-decoration: none;
+    outline: 0;
+    box-shadow: none;
+}
