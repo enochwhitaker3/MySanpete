@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RazorClassLibrary.Data;
+using System;
 using System.Collections.Generic;
 
 namespace RazorClassLibrary.Data;
@@ -26,6 +27,8 @@ public partial class Voucher
     public int? TotalReclaimable { get; set; }
 
     public string? StripeId { get; set; }
+
+    public string? PriceId { get; set; }
 
     public virtual ICollection<BundleVoucher> BundleVouchers { get; set; } = new List<BundleVoucher>();
 
