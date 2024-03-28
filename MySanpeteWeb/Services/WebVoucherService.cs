@@ -4,6 +4,7 @@ using RazorClassLibrary.Requests;
 using RazorClassLibrary.Services;
 using RazorClassLibrary.DTOs;
 using System.Diagnostics;
+using Stripe;
 
 namespace MySanpeteWeb.Services;
 
@@ -19,6 +20,9 @@ public class WebVoucherService : IVoucherService
     {
         var context = await dbContextFactory.CreateDbContextAsync();
 
+        bool isInStripe = ValidateStripeId(request.StripeId);
+        if (!isInStripe) { throw new Exception("Voucher being created was not present in Stripe."); }
+
         Voucher newVoucher = new Voucher()
         {
             BusinessId = request.BusinessId,
@@ -30,6 +34,7 @@ public class WebVoucherService : IVoucherService
             PromoStock = request.PromoStock,
             RetailPrice = request.RetailPrice,
             TotalReclaimable = request.TotalReclaimable,
+            StripeId = request.StripeId,
         };
         if (newVoucher is not null)
         {
@@ -58,6 +63,18 @@ public class WebVoucherService : IVoucherService
         }
 
         throw new Exception("Voucher was null and couldn't be created");
+    }
+
+    private bool ValidateStripeId(string? stripeId)
+    {
+        var service = new ProductService();
+        var result = service.Get(stripeId);
+
+        if (result is null)
+        {
+            return false;
+        }
+        return true;
     }
 
     public async Task<bool> ClaimVoucher(int id)
