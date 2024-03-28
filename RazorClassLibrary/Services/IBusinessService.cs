@@ -10,7 +10,7 @@ namespace RazorClassLibrary.Services;
 
 public interface IBusinessService
 {
-    public Task<List<Business>?> GetAllBusinesses();
+    public Task<List<Business>> GetAllBusinesses();
     public Task<Business?> GetBusiness(int id);
     public Task<Business?> AddBusiness(AddBusinessRequest request);
     public Task<Business?> UpdateBusiness(Business business);
