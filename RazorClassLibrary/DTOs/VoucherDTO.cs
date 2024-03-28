@@ -14,4 +14,5 @@ public class VoucherDTO
     public Decimal? RetailPrice;
     public int? AmmountReclaimable;
     public int? Stock;
+    public string? PriceId;
 }
