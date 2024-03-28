@@ -31,6 +31,7 @@ public static class DtoConverter
             RetailPrice = voucher.RetailPrice,
             AmmountReclaimable = voucher.TotalReclaimable,
             Stock = voucher.PromoStock,
+            PriceId = voucher.PriceId,
         };
     }
 

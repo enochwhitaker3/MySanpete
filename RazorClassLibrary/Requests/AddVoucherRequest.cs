@@ -20,4 +20,5 @@ public class AddVoucherRequest
     public int? TotalReclaimable { get; set; }
 
     public string? StripeId { get; set; }
+    public string? PriceId { get; set; }
 }
