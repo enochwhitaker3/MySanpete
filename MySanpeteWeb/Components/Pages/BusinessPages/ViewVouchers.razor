@@ -1,8 +1,73 @@
 ﻿@page "/business/viewvouchers"
-@* @attribute [Authorize(Roles = "Business")] *@
+@using RazorClassLibrary.Data
+@using RazorClassLibrary.Services
+@* @attribute [Authorize(Roles = "Business")]  *@
+@inject IBusinessService businessService
 
-<h3>ViewVouchers</h3>
+@if (business is not null)
+{
+    @if (business.Vouchers is not null)
+    {
+        <table class="table" style="height: 100%; width: 100%;">
+            <thead>
+                <tr>
+                    <th>Coupon Code</th>
+                    <th>User Name</th>
+                    <th>Is Used</th>
+                    <th>Times Claimed</th>
+                    <th>#</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var userVoucher in vouchers)
+                {
+                    <tr>
+                        <td>@userVoucher.PromoCode</td>
+                        <td>@userVoucher.User.UserName</td>
+                        <td>@userVoucher.Isused</td>
+                        <td>
+                            @if(userVoucher.TotalReclaimable == null || userVoucher.TotalReclaimable == 0)
+                            {
+                                <input type="number"  min="@(userVoucher?.TimesClaimed ?? 0)" step="1"/>
+                            }
+                            else
+                            {
+                                <input type="checkbox" @bind="userVoucher.Isused" />
+                            }
+                        </td>
+                        <td></td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    }
+}
 
 @code {
+    [CascadingParameter]
+    Task<AuthenticationState>? authenticationStateTask { get; set; }
 
+    public string email { get; set; } = "";
+
+    public Business? business { get; set; }
+
+    List<UserVoucher> vouchers { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        //var authState = await (authenticationStateTask ?? throw new Exception("Auth state unfound"));
+        //email = authState.User.Claims.FirstOrDefault(x => x.Type.Contains("email"))?.Value ?? throw new Exception("Email missing on business");
+        email = "codebras2023@gmail.com";
+
+        business = await businessService.GetBusiness(email);
+
+        business?.Vouchers.Select(x =>
+            {
+                vouchers.AddRange(x.UserVouchers);
+                return x.UserVouchers;
+            }).ToList();
+
+    }
 }

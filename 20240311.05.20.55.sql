@@ -495,7 +495,7 @@ CREATE TABLE mysanpete.user_voucher (
     voucher_id integer NOT NULL,
     final_price money,
     isused boolean DEFAULT false,
-    times_claimd integer,
+    times_claimed integer,
     total_reclaimable integer,
     charge_id text,
     purchase_date timestamp with time zone
@@ -690,7 +690,7 @@ COPY mysanpete.user_role (id, role_name) FROM stdin;
 -- Data for Name: user_voucher; Type: TABLE DATA; Schema: mysanpete; Owner: parkerswenson_25
 --
 
-COPY mysanpete.user_voucher (id, user_id, voucher_id, final_price, isused, times_claimd, total_reclaimable, charge_id, purchase_date) FROM stdin;
+COPY mysanpete.user_voucher (id, user_id, voucher_id, final_price, isused, times_claimed, total_reclaimable, charge_id, purchase_date) FROM stdin;
 \.
 
 

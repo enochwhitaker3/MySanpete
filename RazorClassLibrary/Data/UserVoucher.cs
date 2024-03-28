@@ -15,7 +15,7 @@ public partial class UserVoucher
 
     public bool? Isused { get; set; }
 
-    public int? TimesClaimd { get; set; }
+    public int? TimesClaimed { get; set; }
 
     public int? TotalReclaimable { get; set; }
 

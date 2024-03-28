@@ -388,7 +388,7 @@ public partial class MySanpeteDbContext : DbContext
                 .HasColumnName("isused");
             entity.Property(e => e.PromoCode).HasColumnName("promo_code");
             entity.Property(e => e.PurchaseDate).HasColumnName("purchase_date");
-            entity.Property(e => e.TimesClaimd).HasColumnName("times_claimd");
+            entity.Property(e => e.TimesClaimed).HasColumnName("times_claimed");
             entity.Property(e => e.TotalReclaimable).HasColumnName("total_reclaimable");
             entity.Property(e => e.UserId).HasColumnName("user_id");
             entity.Property(e => e.VoucherId).HasColumnName("voucher_id");

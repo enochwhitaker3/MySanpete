@@ -150,7 +150,7 @@ public class WebBundleService : IBundleService
             PurchaseDate = DateTime.Now.ToUniversalTime(),
             TotalReclaimable = bv.Voucher!.TotalReclaimable,
             UserId = userToPurchase.Id,
-            TimesClaimd = 0,
+            TimesClaimed = 0,
             VoucherId = bv.VoucherId ?? throw new Exception("The voucher id was not found")
 
         });
