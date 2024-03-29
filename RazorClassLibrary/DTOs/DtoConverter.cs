@@ -22,6 +22,7 @@ public static class DtoConverter
         {
             Id = voucher.Id,
             BusinessName = voucher.Business.BusinessName,
+            BusinessLogo = voucher.Business.Logo,
             StartDate = voucher.StartDate,
             EndDate = voucher.EndDate,
             PromoCode = voucher.PromoCode,

@@ -28,15 +28,6 @@ public class WebBlogService : IBlogService
 
         var context = await dbContextFactory.CreateDbContextAsync();
 
-        var authorCapable = await context.EndUsers
-            .Where(x => x.Id == request.AuthorId && x.UserRoleId <= 2 && x.UserRoleId > 0)
-            .FirstOrDefaultAsync();
-
-        if (authorCapable == null)
-        {
-            throw new Exception("The author either doesn't exist or doesn't have permissions");
-        }
-
         Blog? newBlog = new Blog()
         {
             Title = request.Title,
