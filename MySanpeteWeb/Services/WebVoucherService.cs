@@ -35,6 +35,7 @@ public class WebVoucherService : IVoucherService
             RetailPrice = request.RetailPrice,
             TotalReclaimable = request.TotalReclaimable,
             StripeId = request.StripeId,
+            PriceId = request.PriceId,
         };
         if (newVoucher is not null)
         {

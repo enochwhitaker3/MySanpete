@@ -40,50 +40,51 @@ else
 }
 
 @code {
-[Parameter]
-public int voucherId { get; set; }
+    [Parameter]
+    public int voucherId { get; set; }
 
-public VoucherDTO voucher { get; set; }
-public Business business { get; set; }
-public string imgDataURL { get; set; } = "";
+    public VoucherDTO voucher { get; set; }
+    public Business business { get; set; }
+    public string imgDataURL { get; set; } = "";
 
-protected override async Task OnInitializedAsync()
-{
-    voucher = await service.GetVoucher(voucherId) ?? new VoucherDTO();
-    var businesses = await businessService.GetAllBusinesses();
-    business = businesses.Where(x => x.BusinessName == voucher.BusinessName).FirstOrDefault();
-
-    if (business.Logo is not null)
+    protected override async Task OnInitializedAsync()
     {
-        ByteArrayToImage();
-    }
-}
+        voucher = await service.GetVoucher(voucherId) ?? new VoucherDTO();
+        var businesses = await businessService.GetAllBusinesses();
+        business = businesses.Where(x => x.BusinessName == voucher.BusinessName).FirstOrDefault();
 
-public void ByteArrayToImage()
-{
-    try
-    {
-        string imageString = Convert.ToBase64String(business.Logo);
-        imgDataURL = string.Format("data:image/png;base64,{0}", imageString);
-
-    }
-    catch (Exception ex)
-    {
-
-    }
-}
-
-private async Task Checkout()
-{
-    var domain = "https://localhost:7059"; // TODO change when we post to azure
-    var options = new SessionCreateOptions
+        if (business.Logo is not null)
         {
-            LineItems = new List<SessionLineItemOptions>
+            ByteArrayToImage();
+        }
+    }
+
+    public void ByteArrayToImage()
+    {
+        try
+        {
+            string imageString = Convert.ToBase64String(business.Logo);
+            imgDataURL = string.Format("data:image/png;base64,{0}", imageString);
+
+        }
+        catch (Exception ex)
+        {
+
+        }
+    }
+
+    private async Task Checkout()
+    {
+        var domain = "https://localhost:7059"; // TODO change when we post to azure
+        var options = new SessionCreateOptions
+            {
+                LineItems = new List<SessionLineItemOptions>
         {
             new()
             {
                 // Provide the exact Price ID (for example, price_1234) of the product you want to sell
-                Price = "price_1OyLIuDb4weiXajfjif0Porn",
+                //Price = "price_1OyLIuDb4weiXajfjif0Porn",
+                Price = voucher.PriceId,
                 Quantity = 1,
             },
         },
