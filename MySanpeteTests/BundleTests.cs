@@ -147,6 +147,7 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
         {
             Address = "Test Address",
             Name = "Test Business",
+            Email = "testbusiness@gmail.com"
         };
 
         var business = await businessService.AddBusiness(businessRequest);
