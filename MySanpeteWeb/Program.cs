@@ -54,6 +54,7 @@ builder.Services.AddSingleton<IPodcastService, WebPodcastService>();
 builder.Services.AddSingleton<IReactionService, WebReactionService>();
 builder.Services.AddSingleton<ICommentService, WebCommentService>();
 builder.Services.AddSingleton<IBundleService, WebBundleService>();
+builder.Services.AddSingleton<IStripeService, StripeService>();
 
 //builder.Services.AddAuthentication().AddGoogle(googleOptions =>
 //{

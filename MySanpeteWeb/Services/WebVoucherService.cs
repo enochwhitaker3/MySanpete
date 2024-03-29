@@ -11,17 +11,20 @@ namespace MySanpeteWeb.Services;
 public class WebVoucherService : IVoucherService
 {
     private readonly IDbContextFactory<MySanpeteDbContext> dbContextFactory;
-    public WebVoucherService(IDbContextFactory<MySanpeteDbContext> dbContextFactory)
+    private IStripeService stripeService;
+
+    public WebVoucherService(IDbContextFactory<MySanpeteDbContext> dbContextFactory, IStripeService stripeService)
     {
         this.dbContextFactory = dbContextFactory;
+        this.stripeService = stripeService;
     }
 
     public async Task<VoucherDTO> AddVoucher(AddVoucherRequest request)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
 
-        bool isInStripe = ValidateStripeId(request.StripeId);
-        if (!isInStripe) { throw new Exception("Voucher being created was not present in Stripe."); }
+        bool isInStripe = stripeService.ValidateStripeId(request.StripeId);
+        if (!isInStripe) { stripeService.AddProductToStripe(request); }
 
         Voucher newVoucher = new Voucher()
         {
@@ -64,18 +67,6 @@ public class WebVoucherService : IVoucherService
         }
 
         throw new Exception("Voucher was null and couldn't be created");
-    }
-
-    private bool ValidateStripeId(string? stripeId)
-    {
-        var service = new ProductService();
-        var result = service.Get(stripeId);
-
-        if (result is null)
-        {
-            return false;
-        }
-        return true;
     }
 
     public async Task<bool> ClaimVoucher(int id)
