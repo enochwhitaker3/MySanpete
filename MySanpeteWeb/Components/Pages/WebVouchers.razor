@@ -26,12 +26,10 @@
                     {
                         @if (b.Logo is not null)
                         {
-
                             <div>
-                                <a href="#">
-                                    <img class="business-logo"
-                                         style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px;"
-                                         src="@ByteArrayToImage(b.Logo)" alt="@b.BusinessName" title="@b.BusinessName"/>
+                                <a @onclick="() => toggleFiltering(b.BusinessName)">
+                                    <img class="@(b.BusinessName == filteredBusiness ? "filtered" : "non-filtered")"
+                                         src="@ByteArrayToImage(b.Logo)" alt="@b.BusinessName" title="@b.BusinessName" />
                                 </a>
                             </div>
                         }
@@ -56,52 +54,96 @@
         </div>
 
         <div class="card-container row mt-5" style="max-width: 1200px; margin-left: auto; margin-right: auto">
-            @if(!isLoading)
+            @if (!isLoading)
             {
-                
-          
-            @if (allVouchers.Count > 0)
-            {
-                @foreach (var voucher in allVouchers)
+                @if (allVouchers.Count > 0)
                 {
-                    <div class="col-md-6 p-3">
-                        <div class="card m-2 rounded-3 shadow">
-                            <div class="d-flex flex-row">
-                                <div class="col-md img-square-wrapper rounded" style="padding: 0px;">
-                                    <a href="#">
-                                        <img class="business-logo"
-                                             style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px;"
-                                             src="Images/theater.png" />
-                                    </a>
-                                </div>
-                                <div class="col-md card-body">
-                                    <h2 class="card-title">@voucher.PromoName</h2>
-                                    @if (voucher.EndDate is not null)
-                                    {
-                                        <p class="card-text">Good through @voucher.EndDate</p>
-                                    }
-                                    <!-- Button trigger modal -->
-                                    <div class="button" @onclick="() => GoToDetailsPage(voucher.Id)">
-                                        <div class="button-wrapper">
-                                            <div class="text">View</div>
-                                            <span class="icon">
-                                                <svg viewBox="0 0 16 16" class="bi bi-cart2" fill="currentColor" height="16" width="16" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"></path>
-                                                </svg>
-                                            </span>
+                    @if (!filtering)
+                    {
+                        @foreach (var voucher in allVouchers)
+                        {
+
+                            <div class="col-md-6 p-3">
+                                <div class="card m-2 rounded-3 shadow">
+                                    <div class="d-flex flex-row">
+                                        <div class="col-md img-square-wrapper rounded" style="padding: 0px;">
+                                            <a href="#">
+                                                <img class="business-logo"
+                                                     style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px;"
+                                                     src="@ByteArrayToImage(voucher.BusinessLogo)" />
+                                            </a>
+                                        </div>
+                                        <div class="col-md card-body">
+                                            <h2 class="card-title">@voucher.PromoName</h2>
+                                            @if (voucher.EndDate is not null)
+                                            {
+                                                <p class="card-text">Good through @voucher.EndDate</p>
+                                            }
+                                            <!-- Button trigger modal -->
+                                            <div class="button" @onclick="() => GoToDetailsPage(voucher.Id)">
+                                                <div class="button-wrapper">
+                                                    <div class="text">View</div>
+                                                    <span class="icon">
+                                                        <svg viewBox="0 0 16 16" class="bi bi-cart2" fill="currentColor" height="16" width="16" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"></path>
+                                                        </svg>
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+
+
+                        }
+                    }
+                    else
+                    {
+                        @foreach (var voucher in filteredVouchers)
+                        {
+
+                            <div class="col-md-6 p-3">
+                                <div class="card m-2 rounded-3 shadow">
+                                    <div class="d-flex flex-row">
+                                        <div class="col-md img-square-wrapper rounded" style="padding: 0px;">
+                                            <a href="#">
+                                                <img class="business-logo"
+                                                     style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px;"
+                                                     src="@ByteArrayToImage(voucher.BusinessLogo)" />
+                                            </a>
+                                        </div>
+                                        <div class="col-md card-body">
+                                            <h2 class="card-title">@voucher.PromoName</h2>
+                                            @if (voucher.EndDate is not null)
+                                            {
+                                                <p class="card-text">Good through @voucher.EndDate</p>
+                                            }
+                                            <!-- Button trigger modal -->
+                                            <div class="button" @onclick="() => GoToDetailsPage(voucher.Id)">
+                                                <div class="button-wrapper">
+                                                    <div class="text">View</div>
+                                                    <span class="icon">
+                                                        <svg viewBox="0 0 16 16" class="bi bi-cart2" fill="currentColor" height="16" width="16" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"></path>
+                                                        </svg>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        }
+                    }
                 }
-            }
-            else
-            {
-                <div class="alert alert-info">
-                    <p>Sorry, there are no vouchers currently. </p>
-                </div>
+                else
+                {
+                    <div class="alert alert-info">
+                        <p>Sorry, there are no vouchers currently. </p>
+                    </div>
                 }
             }
 
@@ -111,8 +153,11 @@
 
 @code {
     public List<VoucherDTO> allVouchers { get; set; } = new();
+    public List<VoucherDTO> filteredVouchers { get; set; }
+    public string filteredBusiness { get; set; } = "none";
     public List<Business> allBusinesses { get; set; }
     public bool isLoading { get; set; } = true;
+    public bool filtering { get; set; } = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -136,4 +181,21 @@
         return string.Format("data:image/png;base64,{0}", imageString);
     }
 
+    public List<VoucherDTO> toggleFiltering(string businessName)
+    {
+        if (filteredBusiness == businessName)
+        {
+            filtering = !filtering;
+            filteredBusiness = "none";
+        }
+        else
+        {
+            filtering = true;
+            filteredBusiness = businessName;
+            filteredVouchers = allVouchers.Where(b => b.BusinessName == businessName).ToList();
+        }
+
+        return filteredVouchers;
+
+    }
 }
