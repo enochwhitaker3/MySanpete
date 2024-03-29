@@ -85,10 +85,10 @@ public class GetAllVoucherTests : IClassFixture<MySanpeteFactory>
         var result = await voucherService.GetAllVouchers();
 
         result.Should().NotBeEmpty();
-        result.Count.Should().Be(3);
-        result[0].PromoName.Should().Be("Test Name 1");
-        result[1].PromoName.Should().Be("Test Name 2");
-        result[2].PromoName.Should().Be("Test Name 3");
+        result.Count.Should().Be(9);
+        result[6].PromoName.Should().Be("Test Name 1");
+        result[7].PromoName.Should().Be("Test Name 2");
+        result[8].PromoName.Should().Be("Test Name 3");
     }
 
     [Fact]
@@ -97,7 +97,7 @@ public class GetAllVoucherTests : IClassFixture<MySanpeteFactory>
         using var scope = mySanpeteFactory.Services.CreateScope();
         IVoucherService voucherService = scope.ServiceProvider.GetRequiredService<IVoucherService>();
 
-        var result = await voucherService.GetAllBusinessVouchers(1);
+        var result = await voucherService.GetAllBusinessVouchers(13);
 
         result.Count.Should().Be(2);
     }
