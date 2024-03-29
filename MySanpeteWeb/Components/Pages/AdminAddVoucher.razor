@@ -92,7 +92,7 @@
 
     public string errorMessage = "";
     [Parameter]
-    public string? Success { get; set; } 
+    public string? Success { get; set; }
 
     public string BusinessName { get; set; } = "";
     public DateTime StartDate { get; set; } = DateTime.Today.ToUniversalTime();
@@ -165,19 +165,22 @@
                 throw new Exception("You need to select a business for this voucher");
             }
 
+            string[] returnedStripeId = AddProductToStripe();
 
             newVoucher = new AddVoucherRequest()
-            {
-                BusinessId = selectedBusiness.Id,
-                StartDate = StartDate.ToUniversalTime(),
-                EndDate = EndDate.ToUniversalTime(),
-                PromoCode = PromoCode,
-                PromoDescription = PromoDescription,
-                PromoName = PromoName,
-                PromoStock = PromoStock,
-                RetailPrice = RetailPrice,
-                TotalReclaimable = TotalReclaimable,
-            };
+                {
+                    BusinessId = selectedBusiness.Id,
+                    StartDate = StartDate.ToUniversalTime(),
+                    EndDate = EndDate.ToUniversalTime(),
+                    PromoCode = PromoCode,
+                    PromoDescription = PromoDescription,
+                    PromoName = PromoName,
+                    PromoStock = PromoStock,
+                    RetailPrice = RetailPrice,
+                    TotalReclaimable = TotalReclaimable,
+                    StripeId = returnedStripeId[0],
+                    PriceId = returnedStripeId[1]
+                };
 
 
 
@@ -185,7 +188,6 @@
             {
                 if (newVoucher is not null)
                 {
-                    AddProductToStripe();
 
                     await voucherService.AddVoucher(newVoucher);
 
@@ -223,11 +225,20 @@
         Success = "false";
     }
 
-    public void AddProductToStripe()
+    public string[] AddProductToStripe()
     {
-        var options = new ProductCreateOptions { Name = PromoName, Description = PromoDescription };
+        string[] stripeIds = new string[2];
+
+        long numberOfCents = Convert.ToInt32(RetailPrice * 100) ;
+
+        var options = new ProductCreateOptions { Name = PromoName, Description = PromoDescription, DefaultPriceData = new() { Currency = "usd", UnitAmount = numberOfCents } };
         var service = new ProductService();
-        service.Create(options);
+        var result = service.Create(options);
+
+        stripeIds[0] = result.Id;
+        stripeIds[1] = result.DefaultPriceId;
+
+        return stripeIds;
     }
 
     public string ByteArrayToImage()

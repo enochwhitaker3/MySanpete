@@ -53,8 +53,6 @@ public partial class MySanpeteDbContext : DbContext
 
     public virtual DbSet<Voucher> Vouchers { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseNpgsql("Name=MySanpeteDb");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -411,6 +409,7 @@ public partial class MySanpeteDbContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.BusinessId).HasColumnName("business_id");
             entity.Property(e => e.EndDate).HasColumnName("end_date");
+            entity.Property(e => e.PriceId).HasColumnName("price_id");
             entity.Property(e => e.PromoCode).HasColumnName("promo_code");
             entity.Property(e => e.PromoDescription).HasColumnName("promo_description");
             entity.Property(e => e.PromoName).HasColumnName("promo_name");

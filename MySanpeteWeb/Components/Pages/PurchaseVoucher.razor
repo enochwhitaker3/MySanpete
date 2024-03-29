@@ -1,4 +1,4 @@
-﻿@page "/purchase-voucher"
+﻿@page "/view-voucher/{voucherId:int}"
 @using RazorClassLibrary.Data
 @using RazorClassLibrary.Services
 @using Stripe.Checkout
@@ -10,19 +10,18 @@
 
 @if (voucher is not null)
 {
-    <div class="container">
-        <div class="content">
-            <div class="row">
-                <div class="col-md-6">
-                    <img width="300" src="@imgDataURL" />
-                </div>
-                <div class="col-md-6">
-                    <h2>@voucher.PromoName</h2>
-                    <p>@voucher.BusinessName</p>
-                    <p>@voucher.PromoDescription</p>
-                    <p>@voucher.RetailPrice</p>
-                    <p>@voucher.EndDate</p>
-                </div>
+<div class="container">
+    <div class="content">
+        <div class="row">
+            <div class="col-md-6">
+                <img width="300" src="@imgDataURL" />
+            </div>
+            <div class="col-md-6">
+                <h2>@voucher.PromoName</h2>
+                <p>@voucher.BusinessName</p>
+                <p>@voucher.PromoDescription</p>
+                <p>@voucher.RetailPrice</p>
+                <p>@voucher.EndDate</p>
                 <form method="post" @formname="checkout" @onsubmit="Checkout">
                     <button type="submit" class="btn btn-primary">
                         Place Order
@@ -32,11 +31,12 @@
             </div>
         </div>
     </div>
+</div>
 }
 else
 {
-    <p>This voucher doesn't exist anymore (or never existed at all!).</p>
-    <p>View All Vouchers</p>
+<p>This voucher doesn't exist anymore (or never existed at all!).</p>
+<p>View All Vouchers</p>
 }
 
 @code {
@@ -79,29 +79,30 @@ else
         var options = new SessionCreateOptions
             {
                 LineItems = new List<SessionLineItemOptions>
+        {
+            new()
             {
-                new()
-                {
-                    // Provide the exact Price ID (for example, price_1234) of the product you want to sell
-                    Price = "price_1OyLIuDb4weiXajfjif0Porn",
-                    Quantity = 1,
-                },
+                // Provide the exact Price ID (for example, price_1234) of the product you want to sell
+                //Price = "price_1OyLIuDb4weiXajfjif0Porn",
+                Price = voucher.PriceId,
+                Quantity = 1,
             },
-                Mode = "payment",
-                SuccessUrl = domain + "/OrderComplete",
-                CancelUrl = domain + "/OrderAbandoned"
-            };
-        try
-        {
+        },
+            Mode = "payment",
+            SuccessUrl = domain + "/OrderComplete",
+            CancelUrl = domain + "/OrderAbandoned"
+        };
+    try
+    {
 
-            var service = new SessionService();
-            var session = await service.CreateAsync(options);
-            NavMan.NavigateTo(session.Url);
-        }
-        catch (Exception ex)
-        {
-
-        }
+        var service = new SessionService();
+        var session = await service.CreateAsync(options);
+        NavMan.NavigateTo(session.Url);
     }
+    catch (Exception ex)
+    {
+
+    }
+}
 
 }

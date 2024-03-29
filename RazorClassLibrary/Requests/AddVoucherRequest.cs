@@ -18,4 +18,7 @@ public class AddVoucherRequest
     public int? PromoStock { get; set; }
     public Decimal? RetailPrice { get; set; }
     public int? TotalReclaimable { get; set; }
+
+    public string? StripeId { get; set; }
+    public string? PriceId { get; set; }
 }
