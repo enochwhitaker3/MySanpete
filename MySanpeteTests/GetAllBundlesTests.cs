@@ -28,6 +28,7 @@ public class GetAllBundlesTests : IClassFixture<MySanpeteFactory>
         {
             Address = "Test Address",
             Name = "Test Business",
+            Email = "testemail@email.com"
         };
 
         var business = await businessService.AddBusiness(businessRequest);
@@ -96,9 +97,9 @@ public class GetAllBundlesTests : IClassFixture<MySanpeteFactory>
 
         var result = await bundleService.GetAllBundles();
 
-        result.Count.Should().Be(2);
-        result[0].Name.Should().Be("Test Bundle 1");
-        result[1].Name.Should().Be("Test Bundle 2");
+        result.Count.Should().Be(4);
+        result[2].Name.Should().Be("Test Bundle 1");
+        result[3].Name.Should().Be("Test Bundle 2");
     }
 
     [Fact]
@@ -108,6 +109,6 @@ public class GetAllBundlesTests : IClassFixture<MySanpeteFactory>
         IBundleService bundleService = scope.ServiceProvider.GetRequiredService<IBundleService>();
 
         var result = await bundleService.GetAllBundles();
-        result.Count.Should().Be(0);
+        result.Count.Should().Be(2);
     }
 }

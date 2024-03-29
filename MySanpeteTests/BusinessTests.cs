@@ -28,7 +28,8 @@ public class BusinessTests : IClassFixture<MySanpeteFactory>
         AddBusinessRequest request = new AddBusinessRequest()
         {
             Address = "Test Address",
-            Name = "Test Name"
+            Name = "Test Name",
+            Email = "Testemail@email.com"
         };
 
         var business = await businessService.AddBusiness(request);
@@ -80,7 +81,8 @@ public class BusinessTests : IClassFixture<MySanpeteFactory>
         AddBusinessRequest request = new AddBusinessRequest()
         {
             Name = "Test Name",
-            Address = "Test Address"
+            Address = "Test Address",
+            Email = "business@gmail.com"
         };
 
         var business = await businessService.AddBusiness(request);
@@ -115,7 +117,8 @@ public class BusinessTests : IClassFixture<MySanpeteFactory>
         AddBusinessRequest request = new AddBusinessRequest()
         {
             Address = "Test Address",
-            Name = "Test Name"
+            Name = "Test Name",
+            Email = "Testemail@email.com"
         };
 
         var business = await businessService.AddBusiness(request);
@@ -135,10 +138,22 @@ public class BusinessTests : IClassFixture<MySanpeteFactory>
         using var scope = mySanpeteFactory.Services.CreateScope();
         IBusinessService businessService = scope.ServiceProvider.GetRequiredService<IBusinessService>();
 
-        var result = await businessService.GetBusiness(1);
+        AddBusinessRequest request = new AddBusinessRequest()
+        {
+            Name = "Test Name",
+            Address = "Test Address",
+            Email = "business@gmail.com"
+        };
+
+        var business = await businessService.AddBusiness(request);
+        var allBusiness = await businessService.GetAllBusinesses();
+        int AddedBId = allBusiness.Last().Id;
+
+        var result = await businessService.GetBusiness(AddedBId);
         result.Should().NotBeNull();
-        result!.BusinessName.Should().Be("Collaborative Music");
-        result!.Address.Should().Be("123 Swag Street");
+        result!.BusinessName.Should().Be("Test Name");
+        result!.Address.Should().Be("Test Address");
+        result!.Email.Should().Be("business@gmail.com");
     }
 
     [Fact]
