@@ -39,7 +39,7 @@ public class MySanpeteFactory : WebApplicationFactory<Program>, IAsyncLifetime
             services.RemoveAll(typeof(DbContextOptions<MySanpeteDbContext>));
             services.RemoveAll(typeof(IStripeService));
             services.AddDbContextFactory<MySanpeteDbContext>(options => options.UseNpgsql(_dbContainer.GetConnectionString()));
-            services.AddSingleton<IStripeService, DummyStripeService>();
+            services.AddScoped<IStripeService, DummyStripeService>();
         });
     }
     public async Task InitializeAsync()
