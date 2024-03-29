@@ -610,9 +610,10 @@ COPY mysanpete.business (id, business_name, address, logo, phone_number, website
 --
 
 COPY mysanpete.end_user (id, user_name, photo, user_email, isactive, guid, authid) FROM stdin;
-12	\N	\N	test@gmail.com	t	\N	auth0|6604b27316c9ed63ffc4ddaa
-14	\N	\N	wendys@gmail.com	t	\N	auth0|6605c4be5a313d868b905bf9
+12	tes	\N	test@gmail.com	t	\N	auth0|6604b27316c9ed63ffc4ddaa
+14	wendy	\N	wendys@gmail.com	t	\N	auth0|6605c4be5a313d868b905bf9
 1	[Deleted]	\N	codebras2023@gmail.com	t	dc43835d-1738-1738-1738-ce90cc1209e3	iuozxcuioziouvioup
+2	[Deleted]	\N	codebras2023@gmail.com	t	dc43835d-1738-1738-1738-ce90cc1209e4	iuozxcuioziouvioup
 \.
 
 
