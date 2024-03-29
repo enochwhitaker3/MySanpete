@@ -145,12 +145,12 @@ public class WebBundleService : IBundleService
 
         var purchases = bundleToPurchase.BundleVouchers.Select(bv => new UserVoucher()
         {
-            ChargeId = request.ChargeId,
+            ChargeId = request!.ChargeId,
             FinalPrice = bv.DiscountPrice,
             PurchaseDate = DateTime.Now.ToUniversalTime(),
-            TotalReclaimable = bv.Voucher!.TotalReclaimable,
+            TotalReclaimable = bv.Voucher!.TotalReclaimable ?? 0,
             UserId = userToPurchase.Id,
-            TimesClaimd = 0,
+            TimesClaimed = 0,
             VoucherId = bv.VoucherId ?? throw new Exception("The voucher id was not found")
 
         });
