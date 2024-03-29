@@ -34,7 +34,7 @@ public class GetAllPodcastTests : IClassFixture<MySanpeteFactory>
 
         var allPodcasts = await service.GetAllPodcasts();
 
-        allPodcasts.Count.Should().Be(1);
+        allPodcasts.Count.Should().Be(28);
     }
 
     public IPodcastService createService()
