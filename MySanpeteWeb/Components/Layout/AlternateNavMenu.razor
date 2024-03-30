@@ -27,17 +27,17 @@
                     <li class="nav-item">
                         <a class="nav-link" href="Account/Logout">Log out</a>
                     </li>
-                    <Microsoft.AspNetCore.Components.Authorization.AuthorizeView Roles="Admin">
-                        <li class="nav-item">
-                            <a class="nav-link" href="admin">Admin Controls</a>
-                        </li>
-                    </Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
                 </Authorized>
                 <NotAuthorized>
                     <li class="nav-item">
                         <a class="nav-link" href="Account/Login?redirectUri=/">Log in</a>
                     </li>
                 </NotAuthorized>
+            </Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+            <Microsoft.AspNetCore.Components.Authorization.AuthorizeView Roles="Admin">
+                        <li class="nav-item">
+                            <a class="nav-link" href="admin">Admin Controls</a>
+                        </li>
             </Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
         </ul>
     </div>
