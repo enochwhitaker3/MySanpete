@@ -85,4 +85,21 @@ public static class DtoConverter
             Vouchers = bundle.BundleVouchers.Select(x => x.Voucher!.ToDto()).ToList(),
         };
     }
+
+    public static UserVoucherDTO ToDto(this UserVoucher userVoucher)
+    {
+        return new UserVoucherDTO()
+        {
+            Final_Price = userVoucher.FinalPrice,
+            Purchase_Date = userVoucher.PurchaseDate,
+            Charge_Id = userVoucher.ChargeId,
+            Is_Used = userVoucher.Isused,
+            Last_Updated = userVoucher.LastUpdated,
+            Promo_Code = userVoucher.PromoCode,
+            Times_Claimed = userVoucher.TimesClaimed,
+            Total_Reclaimable = userVoucher.TotalReclaimable,
+            Voucher = userVoucher.Voucher.ToDto(),
+            User = userVoucher.User.ToDto()
+        };
+    }
 }

@@ -55,6 +55,7 @@ builder.Services.AddSingleton<IReactionService, WebReactionService>();
 builder.Services.AddSingleton<ICommentService, WebCommentService>();
 builder.Services.AddSingleton<IBundleService, WebBundleService>();
 builder.Services.AddScoped<IStripeService, StripeService>();
+builder.Services.AddSingleton<IUserVoucherService, WebUserVoucherService>();
 
 //builder.Services.AddAuthentication().AddGoogle(googleOptions =>
 //{

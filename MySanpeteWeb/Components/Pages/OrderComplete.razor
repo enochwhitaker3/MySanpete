@@ -1,9 +1,73 @@
 ﻿@page "/OrderComplete"
 
-<div class="container">
-    <div class="content">
-        <h2>Order Complete</h2>
-        <p>Got it, thanks!</p>
-        <p>Please check your email to see your voucher. Show this at [Business name] to redeem.</p>
+@using RazorClassLibrary.Requests
+@using RazorClassLibrary.Services
+@using Stripe
+
+@inject IUserVoucherService userVoucherService
+@inject IUserService userService
+
+@if (errorMessage == "")
+{
+    <div class="container">
+        <div class="content">
+            <h2>Order Complete</h2>
+            <p>Got it, thanks!</p>
+            <p>Please check your email to see your voucher. Show this at [Business name] to redeem.</p>
+        </div>
     </div>
-</div>
+}
+else
+{
+    <div class="alert-warning">
+        <p>@errorMessage</p>
+    </div>
+}
+
+@code{
+    public AddUserVoucherRequest newUserVoucher = new();
+
+    public string? intentId { get; set; }
+    public int userId { get; set; }
+    public int voucherId { get; set; }
+    public decimal finalPrice { get; set; }
+    public string errorMessage = "";
+
+    protected override void OnInitialized()
+    {
+        var options = new Stripe.Checkout.SessionListOptions { Limit = 3 };
+        var service = new Stripe.Checkout.SessionService();
+        StripeList<Stripe.Checkout.Session> sessions = service.List(options);
+
+        var id = sessions.FirstOrDefault();
+
+        if (id is not null)
+        {
+            intentId = id.PaymentIntent.Id;
+            finalPrice = Convert.ToDecimal(id.AmountTotal / 100);
+            voucherId = int.Parse(id.Metadata["VoucherId"]);
+            var authId = id.Metadata["UserId"];
+            userId = userService.GetAuthUser(authId).Id;
+        }
+
+
+    }
+
+    public async Task CreateNewUserVoucher()
+    {
+        try
+        {
+            newUserVoucher = new AddUserVoucherRequest()
+            {
+                chargeId = intentId,
+                userId = userId,
+                voucherId = voucherId,
+                finalPrice = finalPrice
+            };
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
+}

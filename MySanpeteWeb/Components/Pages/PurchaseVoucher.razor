@@ -1,7 +1,9 @@
 ﻿@page "/view-voucher/{voucherId:int}"
+
 @using RazorClassLibrary.Data
 @using RazorClassLibrary.Services
 @using Stripe.Checkout
+
 @inject NavigationManager NavMan
 @inject IVoucherService service
 @inject IBusinessService businessService
@@ -47,11 +49,17 @@ else
     public Business business { get; set; }
     public string imgDataURL { get; set; } = "";
 
+    [CascadingParameter]
+    Task<AuthenticationState> authenticationState { get; set; }
+
+    AuthenticationState? authState { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         voucher = await service.GetVoucher(voucherId) ?? new VoucherDTO();
         var businesses = await businessService.GetAllBusinesses();
         business = businesses.Where(x => x.BusinessName == voucher.BusinessName).FirstOrDefault();
+        authState = await authenticationState;
 
         if (business.Logo is not null)
         {
@@ -97,6 +105,8 @@ else
 
             var service = new SessionService();
             var session = await service.CreateAsync(options);
+            session.Metadata.Add("VoucherId", voucher.Id.ToString());
+            session.Metadata.Add("UserId", authState?.User?.Claims?.FirstOrDefault(x => x.Type == "authId")?.Value);
             NavMan.NavigateTo(session.Url);
         }
         catch (Exception ex)
