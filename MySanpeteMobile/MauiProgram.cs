@@ -28,8 +28,8 @@ namespace MySanpeteMobile
             {
                 Domain = builder.Configuration["Auth0:Domain"],
                 ClientId = builder.Configuration["Auth0:ClientId"],
-                RedirectUri = "myapp://callback/",
-                PostLogoutRedirectUri = "myapp://callback/",
+                RedirectUri = "myapp://callback",
+                PostLogoutRedirectUri = "myapp://callback",
                 Scope = "openid profile email",
             }));
 

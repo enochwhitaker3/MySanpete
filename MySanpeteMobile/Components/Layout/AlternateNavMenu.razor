@@ -37,14 +37,6 @@
         </ul>
     </div>
 </nav>
-@if (user is null)
-{
-    <button class="nav-link" @onclick="Login">Log in</button>
-}
-else
-{
-    <button class="nav-link" href="Account/Logout">Log out</button>
-}
 
 @code
 {

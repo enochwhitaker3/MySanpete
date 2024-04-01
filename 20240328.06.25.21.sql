@@ -694,6 +694,7 @@ COPY mysanpete.podcast_reaction (id, podcast_id, reaction_id, user_id) FROM stdi
 --
 
 COPY mysanpete.reaction (id, unicode) FROM stdin;
+1	U+1F44D
 \.
 
 

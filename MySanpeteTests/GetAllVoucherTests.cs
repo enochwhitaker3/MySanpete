@@ -42,7 +42,7 @@ public class GetAllVoucherTests : IClassFixture<MySanpeteFactory>
             PromoName = "Test Name 1",
             RetailPrice = 5,
             TotalReclaimable = 1,
-            BusinessId = 1,
+            BusinessId = 13,
         };
 
         AddVoucherRequest request2 = new AddVoucherRequest()
@@ -55,7 +55,7 @@ public class GetAllVoucherTests : IClassFixture<MySanpeteFactory>
             PromoName = "Test Name 2",
             RetailPrice = 5,
             TotalReclaimable = 1,
-            BusinessId = 1,
+            BusinessId = 13,
         };
 
         AddVoucherRequest request3 = new AddVoucherRequest()
@@ -68,7 +68,7 @@ public class GetAllVoucherTests : IClassFixture<MySanpeteFactory>
             PromoName = "Test Name 3",
             RetailPrice = 5,
             TotalReclaimable = 1,
-            BusinessId = 2,
+            BusinessId = 13,
         };
 
         await voucherService.AddVoucher(request);
@@ -85,10 +85,10 @@ public class GetAllVoucherTests : IClassFixture<MySanpeteFactory>
         var result = await voucherService.GetAllVouchers();
 
         result.Should().NotBeEmpty();
-        result.Count.Should().Be(9);
-        result[6].PromoName.Should().Be("Test Name 1");
-        result[7].PromoName.Should().Be("Test Name 2");
-        result[8].PromoName.Should().Be("Test Name 3");
+        result.Count.Should().Be(12);
+        result[9].PromoName.Should().Be("Test Name 1");
+        result[10].PromoName.Should().Be("Test Name 2");
+        result[11].PromoName.Should().Be("Test Name 3");
     }
 
     [Fact]
@@ -99,7 +99,7 @@ public class GetAllVoucherTests : IClassFixture<MySanpeteFactory>
 
         var result = await voucherService.GetAllBusinessVouchers(13);
 
-        result.Count.Should().Be(2);
+        result.Count.Should().Be(5);
     }
 
     [Fact]
