@@ -3,7 +3,6 @@
 
 # Built With
 <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/Blazor.png" width="40"/>
-<img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/Blazor.png" width="40"/>
 
 # Contributors
 
