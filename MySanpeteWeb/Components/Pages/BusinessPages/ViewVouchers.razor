@@ -13,9 +13,8 @@
                 <tr>
                     <th>Coupon Code</th>
                     <th>User Name</th>
-                    <th>Is Used</th>
-                    <th>Times Claimed</th>
-                    <th>#</th>
+                    <th>Voucher Type</th>
+                    <th>Claim</th>
                 </tr>
             </thead>
             <tbody>
@@ -25,18 +24,24 @@
                     <tr>
                         <td>@userVoucher.PromoCode</td>
                         <td>@userVoucher.User.UserName</td>
-                        <td>@userVoucher.Isused</td>
+                        @if (userVoucher.TotalReclaimable == null || userVoucher.TotalReclaimable == 0)
+                        {
+                            <td>Multi-Use</td>
+                        }
+                        else
+                        {
+                            <td>Single-Use</td>
+                        }
                         <td>
-                            @if(userVoucher.TotalReclaimable == null || userVoucher.TotalReclaimable == 0)
+                            @if (userVoucher.TotalReclaimable == null || userVoucher.TotalReclaimable == 0)
                             {
-                                <input type="number"  min="@(userVoucher?.TimesClaimed ?? 0)" step="1"/>
+                                <input type="number" min="@(userVoucher?.TimesClaimed ?? 0)" step="1" />
                             }
                             else
                             {
                                 <input type="checkbox" @bind="userVoucher.Isused" />
                             }
                         </td>
-                        <td></td>
                     </tr>
 
                 }
@@ -57,7 +62,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        //var authState = await (authenticationStateTask ?? throw new Exception("Auth state unfound"));
+        var authState = await (authenticationStateTask ?? throw new Exception("Auth state unfound"));
         //email = authState.User.Claims.FirstOrDefault(x => x.Type.Contains("email"))?.Value ?? throw new Exception("Email missing on business");
         email = "codebras2023@gmail.com";
 

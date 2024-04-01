@@ -56,11 +56,6 @@ builder.Services.AddSingleton<IReactionService, WebReactionService>();
 builder.Services.AddSingleton<ICommentService, WebCommentService>();
 builder.Services.AddSingleton<IBundleService, WebBundleService>();
 
-//builder.Services.AddAuthentication().AddGoogle(googleOptions =>
-//{
-//    googleOptions.ClientId = builder.Configuration["GoogleClientId"] ?? throw new Exception("BWAH");
-//    googleOptions.ClientSecret = builder.Configuration["GoogleClientSecret"] ?? throw new Exception("BWAH");
-//});
 builder.Services.AddAuth0WebAppAuthentication(options =>
 {
     options.Domain = builder.Configuration["Domain"] ?? throw new Exception("Auth0 domain missing");
