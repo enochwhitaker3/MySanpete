@@ -23,7 +23,8 @@ public class WebBusinessService : IBusinessService
             Address = request.Address,
             Logo = request.Logo,
             Website = request.WebURL,
-            PhoneNumber = request.PhoneNum
+            PhoneNumber = request.PhoneNum,
+            Email = request.Email ?? ""
         };
 
         if (business.Address == "")
@@ -41,6 +42,10 @@ public class WebBusinessService : IBusinessService
         if (business.Website == "")
         {
             throw new Exception("Can't make a business without a website");
+        }
+        if (business.Email == "" || business.Email is null)
+        {
+            throw new Exception("Can't make a business without an email");
         }
 
         await context.Businesses.AddAsync(business);

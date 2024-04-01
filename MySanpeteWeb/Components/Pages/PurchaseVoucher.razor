@@ -1,4 +1,4 @@
-﻿@page "/purchase-voucher"
+﻿@page "/view-voucher/{voucherId:int}"
 @using RazorClassLibrary.Data
 @using RazorClassLibrary.Services
 @using Stripe.Checkout
@@ -14,7 +14,7 @@
         <div class="content">
             <div class="row">
                 <div class="col-md-6">
-                    <img width="300" src="@imgDataURL" />
+                    <img width="300" src="@imgDataURL" class="img-fluid img rounded-circle" />
                 </div>
                 <div class="col-md-6">
                     <h2>@voucher.PromoName</h2>
@@ -22,13 +22,13 @@
                     <p>@voucher.PromoDescription</p>
                     <p>@voucher.RetailPrice</p>
                     <p>@voucher.EndDate</p>
+                    <form method="post" @formname="checkout" @onsubmit="Checkout">
+                        <button type="submit" class="btn btn-primary" style="background-color: black; color: white;">
+                            Checkout with Stripe
+                        </button>
+                        <AntiforgeryToken />
+                    </form>
                 </div>
-                <form method="post" @formname="checkout" @onsubmit="Checkout">
-                    <button type="submit" class="btn btn-primary">
-                        Place Order
-                    </button>
-                    <AntiforgeryToken />
-                </form>
             </div>
         </div>
     </div>
@@ -79,14 +79,15 @@ else
         var options = new SessionCreateOptions
             {
                 LineItems = new List<SessionLineItemOptions>
+        {
+            new()
             {
-                new()
-                {
-                    // Provide the exact Price ID (for example, price_1234) of the product you want to sell
-                    Price = "price_1OyLIuDb4weiXajfjif0Porn",
-                    Quantity = 1,
-                },
+                // Provide the exact Price ID (for example, price_1234) of the product you want to sell
+                //Price = "price_1OyLIuDb4weiXajfjif0Porn",
+                Price = voucher.PriceId,
+                Quantity = 1,
             },
+        },
                 Mode = "payment",
                 SuccessUrl = domain + "/OrderComplete",
                 CancelUrl = domain + "/OrderAbandoned"

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Npgsql.NameTranslation;
 using RazorClassLibrary.Data;
 using RazorClassLibrary.DTOs;
@@ -14,6 +15,7 @@ public class WebBlogService : IBlogService
     {
         this.dbContextFactory = dbContextFactory;
     }
+
     public async Task<BlogDTO?> AddBlog(AddBlogRequest request)
     {
         if (request.Title == "")
@@ -26,16 +28,12 @@ public class WebBlogService : IBlogService
             throw new Exception("Blog cannot be made with no content");
         }
 
-        var context = await dbContextFactory.CreateDbContextAsync();
-
-        var authorCapable = await context.EndUsers
-            .Where(x => x.Id == request.AuthorId && x.UserRoleId <= 2 && x.UserRoleId > 0)
-            .FirstOrDefaultAsync();
-
-        if (authorCapable == null)
+        if (request.AuthorId <= 0)
         {
             throw new Exception("The author either doesn't exist or doesn't have permissions");
         }
+
+        var context = await dbContextFactory.CreateDbContextAsync();
 
         Blog? newBlog = new Blog()
         {

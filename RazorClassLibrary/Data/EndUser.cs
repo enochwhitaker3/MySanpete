@@ -9,8 +9,6 @@ public partial class EndUser
 
     public string? UserName { get; set; }
 
-    public int UserRoleId { get; set; }
-
     public byte[]? Photo { get; set; }
 
     public string UserEmail { get; set; } = null!;
@@ -32,8 +30,6 @@ public partial class EndUser
     public virtual ICollection<UserComment> UserComments { get; set; } = new List<UserComment>();
 
     public virtual ICollection<UserOccasion> UserOccasions { get; set; } = new List<UserOccasion>();
-
-    public virtual UserRole UserRole { get; set; } = null!;
 
     public virtual ICollection<UserVoucher> UserVouchers { get; set; } = new List<UserVoucher>();
 }

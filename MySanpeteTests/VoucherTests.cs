@@ -33,7 +33,8 @@ public class VoucherTests : IClassFixture<MySanpeteFactory>
             PromoName = "Test Name",
             RetailPrice = 5,
             TotalReclaimable = 1,
-            BusinessId = 1,
+            BusinessId = 13,
+            StripeId = "prod_PpRKfjN2OF8dkd"
         };
 
         var voucher = await voucherService.AddVoucher(request);
@@ -63,7 +64,7 @@ public class VoucherTests : IClassFixture<MySanpeteFactory>
             PromoName = "Test Name",
             RetailPrice = 5,
             TotalReclaimable = 1,
-            BusinessId = 1,
+            BusinessId = 13,
         };
 
         await voucherService.Invoking(vs => vs.AddVoucher(request))
@@ -89,6 +90,7 @@ public class VoucherTests : IClassFixture<MySanpeteFactory>
             RetailPrice = 5,
             TotalReclaimable = 1,
             BusinessId = 1000000,
+            StripeId = "prod_Pp6OUA9cCgPnIs"
         };
 
         await voucherService.Invoking(vs => vs.AddVoucher(request))
@@ -123,7 +125,7 @@ public class VoucherTests : IClassFixture<MySanpeteFactory>
             PromoName = "Test Name",
             RetailPrice = 5,
             TotalReclaimable = 1,
-            BusinessId = 1,
+            BusinessId = 13,
         };
 
         var voucher = await voucherService.AddVoucher(request);
@@ -162,7 +164,8 @@ public class VoucherTests : IClassFixture<MySanpeteFactory>
             PromoName = "Test Name",
             RetailPrice = 5,
             TotalReclaimable = 1,
-            BusinessId = 1,
+            BusinessId = 13,
+            StripeId = "prod_Pp6OUA9cCgPnIs"
         };
 
         var voucher = await voucherService.AddVoucher(request);
@@ -206,7 +209,8 @@ public class VoucherTests : IClassFixture<MySanpeteFactory>
             PromoName = "Test Name",
             RetailPrice = 5,
             TotalReclaimable = 1,
-            BusinessId = 1,
+            BusinessId = 13,
+            StripeId = "prod_Pp6OUA9cCgPnIs"
         };
 
         var voucher = await voucherService.AddVoucher(request);

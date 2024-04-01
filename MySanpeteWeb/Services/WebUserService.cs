@@ -40,7 +40,6 @@ public class WebUserService : IUserService
         var newUser = new EndUser()
         {
             UserEmail = email,
-            UserRoleId = 1,
             Guid = guid
         };
 
@@ -169,15 +168,8 @@ public class WebUserService : IUserService
             throw new Exception("No user found with given GUID");
         }
 
-        var rolesExists = await context.UserRoles.AnyAsync(r => r.Id == request.RoleId);
-
-        if (!rolesExists)
-        {
-            throw new Exception($"No role found with given id {request.RoleId}");
-        }
 
 
-        user.UserRoleId = request.RoleId;
 
         context.Update(user);
         await context.SaveChangesAsync();

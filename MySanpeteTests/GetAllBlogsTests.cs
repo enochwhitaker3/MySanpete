@@ -46,9 +46,9 @@ public class GetAllBlogsTests : IClassFixture<MySanpeteFactory>
 
         var results = await blogService.GetAllBlogs();
 
-        results.Count.Should().Be(2);
+        results.Count.Should().Be(6);
 
-        results[0].Title.Should().Be("Title");
-        results[1].Title.Should().Be("Title 2");
+        results[4].Title.Should().Be("Title");
+        results[5].Title.Should().Be("Title 2");
     }
 }

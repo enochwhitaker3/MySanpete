@@ -22,6 +22,7 @@ public static class DtoConverter
         {
             Id = voucher.Id,
             BusinessName = voucher.Business.BusinessName,
+            BusinessLogo = voucher.Business.Logo,
             StartDate = voucher.StartDate,
             EndDate = voucher.EndDate,
             PromoCode = voucher.PromoCode,
@@ -31,6 +32,7 @@ public static class DtoConverter
             RetailPrice = voucher.RetailPrice,
             AmmountReclaimable = voucher.TotalReclaimable,
             Stock = voucher.PromoStock,
+            PriceId = voucher.PriceId,
         };
     }
 

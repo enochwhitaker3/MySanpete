@@ -4,20 +4,27 @@ using RazorClassLibrary.Requests;
 using RazorClassLibrary.Services;
 using RazorClassLibrary.DTOs;
 using System.Diagnostics;
+using Stripe;
 
 namespace MySanpeteWeb.Services;
 
 public class WebVoucherService : IVoucherService
 {
     private readonly IDbContextFactory<MySanpeteDbContext> dbContextFactory;
-    public WebVoucherService(IDbContextFactory<MySanpeteDbContext> dbContextFactory)
+    private IStripeService stripeService;
+
+    public WebVoucherService(IDbContextFactory<MySanpeteDbContext> dbContextFactory, IStripeService stripeService)
     {
         this.dbContextFactory = dbContextFactory;
+        this.stripeService = stripeService;
     }
 
     public async Task<VoucherDTO> AddVoucher(AddVoucherRequest request)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
+
+        bool isInStripe = stripeService.ValidateStripeId(request.StripeId);
+        if (!isInStripe) { stripeService.AddProductToStripe(request); }
 
         Voucher newVoucher = new Voucher()
         {
@@ -30,6 +37,8 @@ public class WebVoucherService : IVoucherService
             PromoStock = request.PromoStock,
             RetailPrice = request.RetailPrice,
             TotalReclaimable = request.TotalReclaimable,
+            StripeId = request.StripeId,
+            PriceId = request.PriceId,
         };
         if (newVoucher is not null)
         {

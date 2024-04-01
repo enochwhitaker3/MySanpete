@@ -25,6 +25,6 @@ public class GetAllBusinessTests : IClassFixture<MySanpeteFactory>
 
         var result = await businessService.GetAllBusinesses();
         result.Should().NotBeNull();
-        result!.Count.Should().Be(2);
+        result!.Count.Should().Be(5);
     }
 }

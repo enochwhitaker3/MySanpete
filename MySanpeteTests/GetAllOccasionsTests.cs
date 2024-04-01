@@ -27,7 +27,7 @@ public class GetAllOccasionsTests : IClassFixture<MySanpeteFactory>
             Description = "Test Description",
             EndDate = new DateTime(2024, 3, 12).ToUniversalTime(),
             StartDate = new DateTime(2024, 3, 10).ToUniversalTime(),
-            BusinessId = 1,
+            BusinessId = 13,
             Title = "Test Title",
             XCoordinate = 39.359770M,
             YCoordinate = -111.584170M,
@@ -39,7 +39,7 @@ public class GetAllOccasionsTests : IClassFixture<MySanpeteFactory>
             Description = "Test Description 2",
             EndDate = new DateTime(2024, 3, 12).ToUniversalTime(),
             StartDate = new DateTime(2024, 3, 10).ToUniversalTime(),
-            BusinessId = 1,
+            BusinessId = 13,
             Title = "Test Title 2",
             XCoordinate = 39.359770M,
             YCoordinate = -111.584170M,
@@ -50,12 +50,12 @@ public class GetAllOccasionsTests : IClassFixture<MySanpeteFactory>
 
         var result = await occasionService.GetAllOcassions();
 
-        result.Count.Should().Be(2);
+        result.Count.Should().Be(3);
 
-        result[0].Description.Should().Be("Test Description");
-        result[0].Title.Should().Be("Test Title");
+        result[1].Description.Should().Be("Test Description");
+        result[1].Title.Should().Be("Test Title");
 
-        result[1].Description.Should().Be("Test Description 2");
-        result[1].Title.Should().Be("Test Title 2");
+        result[2].Description.Should().Be("Test Description 2");
+        result[2].Title.Should().Be("Test Title 2");
     }
 }

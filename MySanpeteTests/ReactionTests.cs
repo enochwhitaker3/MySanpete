@@ -36,12 +36,21 @@ public class ReactionTests : IClassFixture<MySanpeteFactory>
 
         AddBlogRequest blogRequest = new() { AuthorId = user.Id, Commentable = true, Content = "<p>Hello</p>", Photo = photo, Title = "Title" };
         var addedBlog = await blogService.AddBlog(blogRequest) ?? throw new Exception("Creating new blog for the AddBlogReactionPasses test failed.");
+
+        Reaction reaction = new Reaction()
+        {
+            Unicode = "U+1F44D",
+            
+        };
+
         AddReactionRequest request = new()
         {
             ContentId = addedBlog.Id,
-            Unicode = "U+1F44D",
+            Unicode = reaction.Unicode,
             UserGuid = userGuid,
         };
+
+
 
         // Act
         var newBlog = await service.AddBlogReaction(request);

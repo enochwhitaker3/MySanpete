@@ -28,6 +28,7 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
         {
             Address = "Test Address",
             Name = "Test Business",
+            Email = "Test Email"
         };
 
         var business = await businessService.AddBusiness(businessRequest);
@@ -43,6 +44,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 5,
             RetailPrice = 5.99M,
             TotalReclaimable = 1,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         AddVoucherRequest voucherRequest2 = new AddVoucherRequest()
@@ -56,6 +59,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 5,
             RetailPrice = 5.99M,
             TotalReclaimable = 1,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         var voucher = await voucherService.AddVoucher(voucherRequest);
@@ -66,7 +71,7 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             EndDate = new DateTime(2024, 3, 12).ToUniversalTime(),
             StartDate = new DateTime(2024, 3, 10).ToUniversalTime(),
             Name = "Test Bundle",
-            Vouchers = [voucher, voucher2],
+            Vouchers = [voucher, voucher2]
         };
 
         var bundle = await bundleService.AddNewBundle(request);
@@ -89,6 +94,7 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
         {
             Address = "Test Address",
             Name = "Test Business",
+            Email = "Test Email"
         };
 
         var business = await businessService.AddBusiness(businessRequest);
@@ -104,6 +110,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 5,
             RetailPrice = 5.99M,
             TotalReclaimable = 1,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         AddVoucherRequest voucherRequest2 = new AddVoucherRequest()
@@ -117,6 +125,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 5,
             RetailPrice = 5.99M,
             TotalReclaimable = 1,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         var voucher = await voucherService.AddVoucher(voucherRequest);
@@ -147,6 +157,7 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
         {
             Address = "Test Address",
             Name = "Test Business",
+            Email = "testbusiness@gmail.com"
         };
 
         var business = await businessService.AddBusiness(businessRequest);
@@ -162,6 +173,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 5,
             RetailPrice = 5.99M,
             TotalReclaimable = 1,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         AddVoucherRequest voucherRequest2 = new AddVoucherRequest()
@@ -175,6 +188,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 5,
             RetailPrice = 5.99M,
             TotalReclaimable = 1,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         var voucher = await voucherService.AddVoucher(voucherRequest);
@@ -205,6 +220,7 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
         {
             Address = "Test Address",
             Name = "Test Business",
+            Email = "Test Email"
         };
 
         var business = await businessService.AddBusiness(businessRequest);
@@ -220,6 +236,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 5,
             RetailPrice = 5.99M,
             TotalReclaimable = 1,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         AddVoucherRequest voucherRequest2 = new AddVoucherRequest()
@@ -233,6 +251,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 5,
             RetailPrice = 5.99M,
             TotalReclaimable = 1,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         var voucher = await voucherService.AddVoucher(voucherRequest);
@@ -263,6 +283,7 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
         {
             Address = "Test Address",
             Name = "Test Business",
+            Email = "Test Email"
         };
 
         var business = await businessService.AddBusiness(businessRequest);
@@ -278,6 +299,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 5,
             RetailPrice = 5.99M,
             TotalReclaimable = 1,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         AddVoucherRequest voucherRequest2 = new AddVoucherRequest()
@@ -291,6 +314,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 5,
             RetailPrice = 5.99M,
             TotalReclaimable = 1,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         var voucher = await voucherService.AddVoucher(voucherRequest);
@@ -321,6 +346,7 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
         {
             Address = "Test Address",
             Name = "Test Business",
+            Email = "Test Email"
         };
 
         var business = await businessService.AddBusiness(businessRequest);
@@ -336,6 +362,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 5,
             RetailPrice = 5.99M,
             TotalReclaimable = 1,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         AddVoucherRequest voucherRequest2 = new AddVoucherRequest()
@@ -349,6 +377,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 5,
             RetailPrice = 5.99M,
             TotalReclaimable = 1,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         var voucher = await voucherService.AddVoucher(voucherRequest);
@@ -393,6 +423,7 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
         {
             Address = "Test Address",
             Name = "Test Business",
+            Email = "Test Email"
         };
 
         var business = await businessService.AddBusiness(businessRequest);
@@ -408,6 +439,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 5,
             RetailPrice = 5.99M,
             TotalReclaimable = 1,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         AddVoucherRequest voucherRequest2 = new AddVoucherRequest()
@@ -421,6 +454,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 5,
             RetailPrice = 5.99M,
             TotalReclaimable = 1,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         var voucher = await voucherService.AddVoucher(voucherRequest);
@@ -467,6 +502,7 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
         {
             Address = "Test Address",
             Name = "Test Business",
+            Email = "Test Email"
         };
 
         var business = await businessService.AddBusiness(businessRequest);
@@ -482,6 +518,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 5,
             RetailPrice = 5.99M,
             TotalReclaimable = 1,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         AddVoucherRequest voucherRequest2 = new AddVoucherRequest()
@@ -495,6 +533,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 5,
             RetailPrice = 5.99M,
             TotalReclaimable = 1,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         AddVoucherRequest voucherRequest3 = new AddVoucherRequest()
@@ -508,6 +548,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 1,
             RetailPrice = 8.99M,
             TotalReclaimable = 5,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         var voucher = await voucherService.AddVoucher(voucherRequest);
@@ -553,6 +595,7 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
         {
             Address = "Test Address",
             Name = "Test Business",
+            Email = "Test Email"
         };
 
         var business = await businessService.AddBusiness(businessRequest);
@@ -568,6 +611,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 5,
             RetailPrice = 5.99M,
             TotalReclaimable = 1,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         AddVoucherRequest voucherRequest2 = new AddVoucherRequest()
@@ -581,6 +626,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 5,
             RetailPrice = 5.99M,
             TotalReclaimable = 1,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         AddVoucherRequest voucherRequest3 = new AddVoucherRequest()
@@ -635,6 +682,7 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
         {
             Address = "Test Address",
             Name = "Test Business",
+            Email = "Test Email"
         };
 
         var business = await businessService.AddBusiness(businessRequest);
@@ -650,6 +698,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 5,
             RetailPrice = 5.99M,
             TotalReclaimable = 1,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         AddVoucherRequest voucherRequest2 = new AddVoucherRequest()
@@ -663,6 +713,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 5,
             RetailPrice = 5.99M,
             TotalReclaimable = 1,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         AddVoucherRequest voucherRequest3 = new AddVoucherRequest()
@@ -676,6 +728,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 1,
             RetailPrice = 8.99M,
             TotalReclaimable = 5,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         var voucher = await voucherService.AddVoucher(voucherRequest);
@@ -717,6 +771,7 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
         {
             Address = "Test Address",
             Name = "Test Business",
+            Email = "Test Email"
         };
 
         var business = await businessService.AddBusiness(businessRequest);
@@ -732,6 +787,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 5,
             RetailPrice = 5.99M,
             TotalReclaimable = 1,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         AddVoucherRequest voucherRequest2 = new AddVoucherRequest()
@@ -745,6 +802,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 5,
             RetailPrice = 5.99M,
             TotalReclaimable = 1,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         AddVoucherRequest voucherRequest3 = new AddVoucherRequest()
@@ -758,6 +817,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 1,
             RetailPrice = 8.99M,
             TotalReclaimable = 5,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         var voucher = await voucherService.AddVoucher(voucherRequest);
@@ -799,6 +860,7 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
         {
             Address = "Test Address",
             Name = "Test Business",
+            Email = "Test Email"
         };
 
         var business = await businessService.AddBusiness(businessRequest);
@@ -814,6 +876,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 5,
             RetailPrice = 5.99M,
             TotalReclaimable = 1,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         AddVoucherRequest voucherRequest2 = new AddVoucherRequest()
@@ -827,6 +891,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 5,
             RetailPrice = 5.99M,
             TotalReclaimable = 1,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         AddVoucherRequest voucherRequest3 = new AddVoucherRequest()
@@ -840,6 +906,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 1,
             RetailPrice = 8.99M,
             TotalReclaimable = 5,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         var voucher = await voucherService.AddVoucher(voucherRequest);
@@ -881,6 +949,7 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
         {
             Address = "Test Address",
             Name = "Test Business",
+            Email = "Test Email"
         };
 
         var business = await businessService.AddBusiness(businessRequest);
@@ -896,6 +965,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 5,
             RetailPrice = 5.99M,
             TotalReclaimable = 1,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         AddVoucherRequest voucherRequest2 = new AddVoucherRequest()
@@ -909,6 +980,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 5,
             RetailPrice = 5.99M,
             TotalReclaimable = 1,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         AddVoucherRequest voucherRequest3 = new AddVoucherRequest()
@@ -922,6 +995,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 1,
             RetailPrice = 8.99M,
             TotalReclaimable = 5,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         var voucher = await voucherService.AddVoucher(voucherRequest);
@@ -962,6 +1037,7 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
         {
             Address = "Test Address",
             Name = "Test Business",
+            Email = "Test Email"
         };
 
         var business = await businessService.AddBusiness(businessRequest);
@@ -977,6 +1053,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 5,
             RetailPrice = 5.99M,
             TotalReclaimable = 1,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         AddVoucherRequest voucherRequest2 = new AddVoucherRequest()
@@ -990,6 +1068,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 5,
             RetailPrice = 5.99M,
             TotalReclaimable = 1,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         AddVoucherRequest voucherRequest3 = new AddVoucherRequest()
@@ -1003,6 +1083,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 1,
             RetailPrice = 8.99M,
             TotalReclaimable = 5,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         var voucher = await voucherService.AddVoucher(voucherRequest);
@@ -1044,6 +1126,7 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
         {
             Address = "Test Address",
             Name = "Test Business",
+            Email = "Test Email"
         };
 
         var business = await businessService.AddBusiness(businessRequest);
@@ -1059,6 +1142,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 5,
             RetailPrice = 5.99M,
             TotalReclaimable = 1,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         AddVoucherRequest voucherRequest2 = new AddVoucherRequest()
@@ -1072,6 +1157,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 5,
             RetailPrice = 5.99M,
             TotalReclaimable = 1,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         AddVoucherRequest voucherRequest3 = new AddVoucherRequest()
@@ -1085,6 +1172,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             PromoStock = 1,
             RetailPrice = 8.99M,
             TotalReclaimable = 5,
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         var voucher = await voucherService.AddVoucher(voucherRequest);

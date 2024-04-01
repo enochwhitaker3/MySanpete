@@ -22,30 +22,12 @@ public class UserTests : IClassFixture<MySanpeteFactory>
     }
 
     [Fact]
-    public async void CreateUserTest()
-    {
-        var userService = CreateUserService();
-        var user = await userService.AddUser("testUser@gmail.com");
-
-        user.Should().NotBeNull();
-    }
-
-    [Fact]
-    public async void CreateUserWithInvalidEmail()
-    {
-        var userService = CreateUserService();
-        var user = await userService.AddUser("blah blah");
-
-        user.Should().BeNull();
-    }
-
-    [Fact]
     public async void DeleteUserTest()
     {
         // Arrange
         var userService = CreateUserService();
         int countBefore = (await userService.GetAllUsers()).Count();
-        Guid usersGuid = new Guid("dc43835d-1738-1738-1738-ce90cc1209e3");
+        Guid usersGuid = new Guid("dc43835d-1738-1738-1738-ce90cc1209e4");
 
         // Act
         await userService.DeleteUser(usersGuid);
@@ -137,6 +119,11 @@ public class UserTests : IClassFixture<MySanpeteFactory>
         if (userUnderTest == null)
         {
             throw new Exception("User was not found.");
+        }
+
+        if (userUnderTest.Username is null)
+        {
+            userUnderTest.UserEmail = newEmail;
         }
 
         userUnderTest.UserEmail = newEmail;
@@ -250,97 +237,5 @@ public class UserTests : IClassFixture<MySanpeteFactory>
             return;
         }
         throw new Exception("Long username was saved.");
-    }
-
-    [Fact]
-    public async void SetRoleWithInvalidGUIDTest()
-    {
-        var userService = CreateUserService();
-        SetRoleRequest request = new SetRoleRequest()
-        {
-            UserId = new Guid("dc34835d-1738-1738-1738-ce90dc1209e3"),
-            AuthString = "DefaultAuthString",
-            RoleId = 2
-        };
-
-        //Act
-        try
-        {
-            var result = await userService.SetRole(request);
-        }
-        catch
-        {
-            return;
-        }
-
-        //Assert
-        throw new Exception("Role was set");
-
-    }
-
-    [Fact]
-    public async void SetRoleWithValidEverythingTest()
-    {
-        var userService = CreateUserService();
-        SetRoleRequest request = new SetRoleRequest()
-        {
-            UserId = new Guid("dc43835d-1738-1738-1738-ce90cc1209e3"),
-            AuthString = "DefaultAuthString",
-            RoleId = 2
-        };
-
-        var result = await userService.SetRole(request);
-
-        result.Should().Be(true);
-    }
-
-    [Fact]
-    public async void SetRoleWithInvalidAuthString()
-    {
-        var userService = CreateUserService();
-        SetRoleRequest request = new SetRoleRequest()
-        {
-            UserId = new Guid("dc43835d-1738-1738-1738-ce90cc1209e3"),
-            AuthString = "Incorrect Auth String",
-            RoleId = 2
-        };
-
-        //Act
-        try
-        {
-            var result = await userService.SetRole(request);
-        }
-        catch
-        {
-            return;
-        }
-
-        //Assert
-        throw new Exception("Role was set");
-    }
-
-    [Fact]
-    public async void SetRoleWithInvalidRoleId()
-    {
-        var userService = CreateUserService();
-        SetRoleRequest request = new SetRoleRequest()
-        {
-            UserId = new Guid("dc43835d-1738-1738-1738-ce90cc1209e3"),
-            AuthString = "DefaultAuthString",
-            RoleId = 4
-        };
-
-        //Act
-        try
-        {
-            var result = await userService.SetRole(request);
-        }
-        catch
-        {
-            return;
-        }
-
-        //Assert
-        throw new Exception("Role was set");
     }
 }

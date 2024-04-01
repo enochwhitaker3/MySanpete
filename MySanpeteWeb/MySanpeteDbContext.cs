@@ -47,14 +47,9 @@ public partial class MySanpeteDbContext : DbContext
 
     public virtual DbSet<UserOccasion> UserOccasions { get; set; }
 
-    public virtual DbSet<UserRole> UserRoles { get; set; }
-
     public virtual DbSet<UserVoucher> UserVouchers { get; set; }
 
     public virtual DbSet<Voucher> Vouchers { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseNpgsql("Name=MySanpeteDb");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -193,12 +188,6 @@ public partial class MySanpeteDbContext : DbContext
             entity.Property(e => e.UserName)
                 .HasMaxLength(80)
                 .HasColumnName("user_name");
-            entity.Property(e => e.UserRoleId).HasColumnName("user_role_id");
-
-            entity.HasOne(d => d.UserRole).WithMany(p => p.EndUsers)
-                .HasForeignKey(d => d.UserRoleId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("end_user_user_role_id_fkey");
         });
 
         modelBuilder.Entity<Occasion>(entity =>
@@ -362,16 +351,6 @@ public partial class MySanpeteDbContext : DbContext
                 .HasConstraintName("user_occasion_user_id_fkey");
         });
 
-        modelBuilder.Entity<UserRole>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("user_role_pkey");
-
-            entity.ToTable("user_role", "mysanpete");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.RoleName).HasColumnName("role_name");
-        });
-
         modelBuilder.Entity<UserVoucher>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("user_vourcher_pkey");
@@ -386,9 +365,12 @@ public partial class MySanpeteDbContext : DbContext
             entity.Property(e => e.Isused)
                 .HasDefaultValue(false)
                 .HasColumnName("isused");
+            entity.Property(e => e.LastUpdated).HasColumnName("last_updated");
             entity.Property(e => e.PromoCode).HasColumnName("promo_code");
             entity.Property(e => e.PurchaseDate).HasColumnName("purchase_date");
-            entity.Property(e => e.TimesClaimed).HasColumnName("times_claimed");
+            entity.Property(e => e.TimesClaimed)
+                .HasDefaultValue(0)
+                .HasColumnName("times_claimed");
             entity.Property(e => e.TotalReclaimable).HasColumnName("total_reclaimable");
             entity.Property(e => e.UserId).HasColumnName("user_id");
             entity.Property(e => e.VoucherId).HasColumnName("voucher_id");
@@ -413,6 +395,7 @@ public partial class MySanpeteDbContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.BusinessId).HasColumnName("business_id");
             entity.Property(e => e.EndDate).HasColumnName("end_date");
+            entity.Property(e => e.PriceId).HasColumnName("price_id");
             entity.Property(e => e.PromoCode).HasColumnName("promo_code");
             entity.Property(e => e.PromoDescription).HasColumnName("promo_description");
             entity.Property(e => e.PromoName).HasColumnName("promo_name");

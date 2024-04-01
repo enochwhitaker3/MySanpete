@@ -17,7 +17,7 @@ public partial class Business
 
     public string? Website { get; set; }
 
-    public string? Email { get; set; }
+    public string Email { get; set; } = null!;
 
     public virtual ICollection<Occasion> Occasions { get; set; } = new List<Occasion>();
 

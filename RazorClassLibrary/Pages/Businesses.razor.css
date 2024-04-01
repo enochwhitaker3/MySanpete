@@ -39,8 +39,7 @@ body, html {
 }
 
     .card img {
-        width: 50%;
-        height: 203px !important;
+        max-height: 203px !important;
         object-fit: cover;
         object-position: center;
     }

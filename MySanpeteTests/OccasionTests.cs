@@ -26,7 +26,7 @@ public class OccasionTests : IClassFixture<MySanpeteFactory>
             Description = "Test Description",
             EndDate = new DateTime(2024, 3, 12).ToUniversalTime(),
             StartDate = new DateTime(2024, 3, 10).ToUniversalTime(),
-            BusinessId = 1,
+            BusinessId = 13,
             Title = "Test Title",
             XCoordinate = 39.359770M,
             YCoordinate = -111.584170M,
@@ -37,7 +37,7 @@ public class OccasionTests : IClassFixture<MySanpeteFactory>
         occasion.Description.Should().Be("Test Description");
         occasion.EndDate.Should().Be(new DateTime(2024, 3, 12).ToUniversalTime());
         occasion.StartDate.Should().Be(new DateTime(2024, 3, 10).ToUniversalTime());
-        occasion.BusinessId.Should().Be(1);
+        occasion.BusinessId.Should().Be(13);
         occasion.Title.Should().Be("Test Title");
         occasion.XCoordinate.Should().Be(39.359770M);
         occasion.YCoordinate.Should().Be(-111.584170M);
@@ -187,7 +187,7 @@ public class OccasionTests : IClassFixture<MySanpeteFactory>
             Description = "Test Description",
             EndDate = new DateTime(2024, 3, 12).ToUniversalTime(),
             StartDate = new DateTime(2024, 3, 10).ToUniversalTime(),
-            BusinessId = 1,
+            BusinessId = 13,
             Title = "Test Title",
             XCoordinate = 39.359770M,
             YCoordinate = -111.584170M,
@@ -223,7 +223,7 @@ public class OccasionTests : IClassFixture<MySanpeteFactory>
             Description = "Test Description",
             EndDate = new DateTime(2024, 3, 12).ToUniversalTime(),
             StartDate = new DateTime(2024, 3, 10).ToUniversalTime(),
-            BusinessId = 1,
+            BusinessId = 13,
             Title = "Test Title",
             XCoordinate = 39.359770M,
             YCoordinate = -111.584170M,
@@ -235,7 +235,7 @@ public class OccasionTests : IClassFixture<MySanpeteFactory>
 
         result.Should().NotBeNull();
         result.Description.Should().Be("Test Description");
-        result.BusinessId.Should().Be(1);
+        result.BusinessId.Should().Be(13);
         result.Title.Should().Be("Test Title");
         result.XCoordinate.Should().Be(39.359770M);
         result.YCoordinate.Should().Be(-111.584170M);
@@ -266,7 +266,7 @@ public class OccasionTests : IClassFixture<MySanpeteFactory>
             Description = "Test Description",
             EndDate = new DateTime(2024, 3, 12).ToUniversalTime(),
             StartDate = new DateTime(2024, 3, 10).ToUniversalTime(),
-            BusinessId = 1,
+            BusinessId = 13,
             Title = "Test Title",
             XCoordinate = 39.359770M,
             YCoordinate = -111.584170M,
