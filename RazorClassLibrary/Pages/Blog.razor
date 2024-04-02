@@ -24,7 +24,7 @@
         <div class="d-flex align-items-center justify-content-center" style="margin-top: 10vh;">
             <div class="container">
                 <div class="row justify-content-center mb-4">
-                    <div class="col-lg-8">
+                    <div class="col-lg-10">
                         <h5>@AllComments.Count() Comments</h5>
                     </div>
                 </div>
@@ -32,7 +32,7 @@
                 {
 
                     <div class="row justify-content-center mb-4">
-                        <div class="col-lg-8">
+                        <div class="col-lg-10">
                             <div class="comments">
 
                                 @foreach (var c in AllComments)
@@ -50,12 +50,40 @@
                                             <div class="comment-body">
                                                 @c.Content
                                             </div>
+                                            <div class="row justify-content-center mb-5">
+                                                <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                                    Reply
+                                                </a>
+                                                <div class="collapse" id="collapseExample">
+                                                    <div class="card card-body">
+
+                                                        <div class="comment-form d-flex align-items-center">
+                                                            <div class="flex-shrink-0">
+                                                                <div class="avatar avatar-sm rounded-circle">
+                                                                    <img class="avatar-img" src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&crop=faces&fit=crop&h=200&w=200" alt="">
+                                                                </div>
+                                                            </div>
+                                                            <div class="flex-grow-1 ms-2 ms-sm-3">
+                                                                <form>
+                                                                    <textarea @bind="inputedComment" class="form-control py-0 px-1 border-0" rows="1" placeholder="Start writing..." style="resize: none;"></textarea>
+                                                                    <button @onclick="@(() => AddResponse(c.Id))" class="btn btn-primary">Comment</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                
+                                                   
+                                               
+                                            </div>
+                                            @* <a @onclick="@(() => AddResponse(c.Id))">Reply</a> *@
                                             @if (c.Replies.Count() > 0)
                                             {
-                                                @foreach (var r in c.Replies)
-                                                {
-                                                    <div class="comment-replies bg-light p-3 mt-3 rounded">
-                                                        <h6 class="comment-replies-title mb-4 text-muted text-uppercase"> replies</h6>
+                                                <div class="comment-replies bg-light p-3 mt-3 rounded">
+                                                    <h6 class="comment-replies-title mb-4 text-muted text-uppercase"> replies</h6>
+                                                    @foreach (var r in c.Replies)
+                                                    {
 
                                                         <div class="reply d-flex mb-4">
                                                             <div class="flex-shrink-0">
@@ -73,9 +101,9 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                }
-
+                                                        <a @onclick="@(() => AddResponse(r.Id))">Reply</a>
+                                                    }
+                                                </div>
                                             }
                                         </div>
                                     </div>
@@ -83,8 +111,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row justify-content-center">
-                        <div class="col-lg-8">
+                }
+                @if (user is not null)
+                {
+                    <div class="row justify-content-center mb-5">
+                        <div class="col-lg-10">
                             <div class="comment-form d-flex align-items-center">
                                 <div class="flex-shrink-0">
                                     <div class="avatar avatar-sm rounded-circle">
@@ -94,12 +125,16 @@
                                 <div class="flex-grow-1 ms-2 ms-sm-3">
                                     <form>
                                         <textarea @bind="inputedComment" class="form-control py-0 px-1 border-0" rows="1" placeholder="Start writing..." style="resize: none;"></textarea>
-                                        <button @onclick="@AddResponse">Comment</button>
+                                        <button @onclick="@(() => AddResponse())" class="btn btn-primary">Comment</button>
                                     </form>
                                 </div>
                             </div>
                         </div>
                     </div>
+                }
+                else
+                {
+                    <p>Log in to leave a comment</p>
                 }
             </div>
         </div>
@@ -136,20 +171,35 @@
         AllComments = blog.Comments;
 
         var authState = await authenticationState;
-        var authId = authState.User.Claims.FirstOrDefault(x => x.Type == "authId").Value;
+        if (authState.User.Identity.IsAuthenticated)
+        {
+            var authId = authState.User.Claims.FirstOrDefault(x => x.Type == "authId").Value;
+            user = await userService.GetAuthUser(authId);
+        }
 
-        user = await userService.GetAuthUser(authId);
 
     }
 
     public void AddResponse()
     {
         AddCommentRequest newRequest = new()
-        {
-            content = inputedComment,
-            contentId = blogId,
-            userGuid = user.Guid,
-        };
+            {
+                content = inputedComment,
+                contentId = blogId,
+                userGuid = user.Guid,
+            };
+        commentService.AddBlogComment(newRequest);
+    }
+
+    public void AddResponse(int replyId)
+    {
+        AddCommentRequest newRequest = new()
+            {
+                content = inputedComment,
+                contentId = blogId,
+                userGuid = user.Guid,
+                replyId = replyId,
+            };
         commentService.AddBlogComment(newRequest);
     }
 }
