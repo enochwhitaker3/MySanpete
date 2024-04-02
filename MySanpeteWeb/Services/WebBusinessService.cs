@@ -94,6 +94,25 @@ public class WebBusinessService : IBusinessService
         return business;
     }
 
+    public async Task<Business?> GetBusiness(string email)
+    {
+        var context = await dbContextFactory.CreateDbContextAsync();
+
+        var business = await context.Businesses
+            .Include(b => b.Vouchers)
+            .ThenInclude(v => v.UserVouchers)
+            .ThenInclude(uv => uv.User)
+            .Where(b => b.Email == email)
+            .FirstOrDefaultAsync();
+
+        if (business is null)
+        {
+            throw new Exception("No businesses found with given email");
+        }
+
+        return business;
+    }
+
     public async Task<Business?> UpdateBusiness(Business business)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
