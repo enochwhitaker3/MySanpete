@@ -8,6 +8,8 @@
 @inject IVoucherService service
 @inject IBusinessService businessService
 
+@attribute [Authorize]
+
 <h3>Purchase Voucher</h3>
 
 @if (voucher is not null)
@@ -84,29 +86,30 @@ else
     private async Task Checkout()
     {
         var domain = "https://localhost:7059"; // TODO change when we post to azure
-        var options = new SessionCreateOptions
+        var metadata = new Dictionary<string, string>();
+        metadata.Add("VoucherId", voucher.Id.ToString());
+        metadata.Add("UserId", authState?.User?.Claims?.FirstOrDefault(x => x.Type == "authId")?.Value);
+        var options = new SessionCreateOptions { LineItems = new List<SessionLineItemOptions>
             {
-                LineItems = new List<SessionLineItemOptions>
-        {
-            new()
-            {
-                // Provide the exact Price ID (for example, price_1234) of the product you want to sell
-                //Price = "price_1OyLIuDb4weiXajfjif0Porn",
-                Price = voucher.PriceId,
-                Quantity = 1,
+                new()
+                {
+                    // Provide the exact Price ID (for example, price_1234) of the product you want to sell
+                    //Price = "price_1OyLIuDb4weiXajfjif0Porn",
+                    Price = voucher.PriceId,
+                    Quantity = 1,
+                },
             },
-        },
-                Mode = "payment",
-                SuccessUrl = domain + "/OrderComplete",
-                CancelUrl = domain + "/OrderAbandoned"
-            };
+            Mode = "payment",
+            SuccessUrl = domain + "/OrderComplete",
+            CancelUrl = domain + "/OrderAbandoned",
+            Metadata = metadata,
+            ExpiresAt = DateTime.Now.AddMinutes(31),
+        };
         try
         {
 
             var service = new SessionService();
             var session = await service.CreateAsync(options);
-            session.Metadata.Add("VoucherId", voucher.Id.ToString());
-            session.Metadata.Add("UserId", authState?.User?.Claims?.FirstOrDefault(x => x.Type == "authId")?.Value);
             NavMan.NavigateTo(session.Url);
         }
         catch (Exception ex)
