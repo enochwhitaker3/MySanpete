@@ -133,7 +133,7 @@ public class WebCommentService : ICommentService
             return false;
         }
 
-        bcud.Comment.CommentText = "[Redacted]";
+        bcud.Comment.CommentText = "[Deleted]";
         bcud.Comment.UserId = 1;
 
 

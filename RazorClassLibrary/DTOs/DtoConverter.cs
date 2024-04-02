@@ -59,9 +59,9 @@ public static class DtoConverter
             Id = comment.Id,
             ReplyId = comment.ReplyId,
             Content = comment.CommentText,
-            //Replies = comment.BlogComments.Select( x => x.ToDto()).Union( comment.PodcastComments.Select(x => x.ToDto()) ).ToList(),
             Replies = comment.InverseReply.Where(x => x.ReplyId == comment.Id).Select(x => x.ToDto()).ToList(),
-            UserId = comment.UserId,
+            UserName = comment.User.UserName,
+            PostedDate = comment.PostDate,
         };
     }
 

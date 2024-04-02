@@ -1,13 +1,87 @@
+@font-face {
+    font-family: 'Nelphim';
+    src: url('Fonts/Nephilm.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Casual';
+    src: url('Fonts/Casual-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Tenor';
+    src: url('Fonts/TenorSans-Regular.ttf') format('truetype');
+}
+
+
 * {
     color: #242424;
 }
+
+::deep p, p, ::deep ul, ::deep li, ::deep ol {
+    color: #525252;
+    font-size: 17px;
+    line-height: 1.55;
+}
+
+::deep h1, ::deep h2, ::deep h3, ::deep h4, ::deep h5 {
+    font-family: Tenor;
+}
+
 
 .avatar-img {
     width: 3.5rem;
     border-radius: 50%;
 }
 
+.comment-body, .reply-body {
+    color: dimgray;
+    padding-bottom: 10px;
+    font-size: 16px;
+    line-height: 1.5;
+}
 
-.blog-content * {
-    color: blue !important;
+.comment-meta h6 {
+    font-weight: 500;
+    color: #242424;
+}
+
+.comment-replies {
+    background-color: #ebebeb;
+}
+
+.reply {
+    margin-bottom: 1.75rem;
+}
+
+.comment {
+}
+
+button {
+    color: white;
+    background-color: black;
+    border-color: black;
+}
+
+    button:hover {
+        color: black;
+        background-color: white;
+        border-color: black;
+    }
+
+
+.reply-btn {
+    color: #242424;
+    font-weight: bold;
+    transition: color .5s;
+}
+
+    .reply-btn:hover {
+        color: darkblue;
+        font-weight: bold;
+        text-decoration: underline;
+    }
+
+textarea:active {
+    border-color: black;
 }
