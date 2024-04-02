@@ -1,0 +1,13 @@
+* {
+    color: #242424;
+}
+
+.avatar-img {
+    width: 3.5rem;
+    border-radius: 50%;
+}
+
+
+.blog-content * {
+    color: blue !important;
+}
