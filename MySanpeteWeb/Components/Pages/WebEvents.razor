@@ -1,4 +1,27 @@
 ﻿@layout MySanpeteWeb.Components.Layout.AlternateLayout
 @page "/events"
+@inject IConfiguration config
 
-<RazorClassLibrary.Pages.Events></RazorClassLibrary.Pages.Events>
+<div class="main-section">
+    <div class="content">
+        <div class="title">
+            Find Yourself In Sanpete County.
+        </div>
+    </div>
+    <img class="full-screen-image" src="Images/event.jpg" alt="Image">
+    <div class="vouchers-content" style="max-width: 100vw; margin-left: auto; margin-right: auto; background-color:#fcfcf8; justify-content: center;">
+    </div>
+    @if(MapsKey is not null)
+    {
+        <RazorClassLibrary.Pages.Map MapsKey="@MapsKey" />
+    }
+</div>
+
+@code {
+    private string? MapsKey;
+
+    protected override void OnInitialized()
+    {
+        MapsKey = config.GetValue<string>("MapKey") ?? throw new Exception("Map key is not in the secrets");
+    }
+}

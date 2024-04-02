@@ -1,0 +1,16 @@
+﻿@using Microsoft.JSInterop
+@inject IJSRuntime JSRuntime
+
+<div id="mapDiv" style="width:400px;height:400px;"></div>
+
+
+@code {
+    [Parameter] public string MapsKey { get; set; }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("initializeMap", MapsKey);
+        }
+    }
+}

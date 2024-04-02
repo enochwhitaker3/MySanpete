@@ -13,6 +13,9 @@
     src: url('Fonts/TenorSans-Regular.ttf') format('truetype');
 }
 
+/*justify-content: center;*/ /* Horizontally center */
+/*align-items: center;*/ /* Vertically center */
+
 body {
     background-color: #fcfcf8;
 }
@@ -29,9 +32,15 @@ body, html {
     text-align: center;
 }
 
+.card-container {
+    height: 45vh;
+    max-width: 425px;
+}
+
 
 .card {
     background-color: #fcfcf8;
+    height: 100%;
     margin-bottom: 20px;
     align-items: center;
     margin: 2%;
@@ -39,7 +48,6 @@ body, html {
 }
 
     .card img {
-        width: 100%;
         object-fit: cover;
         object-position: center;
     }
@@ -53,6 +61,8 @@ body, html {
 
 
 .card-body {
+    display: grid;
+    align-items: center;
     text-align: center;
     font-family: Tenor;
 }
@@ -75,11 +85,11 @@ body, html {
 }
 
     .main-text p {
-        font-size: 1rem;
+        font-size: 1vw;
     }
 
     .main-text h2 {
-        font-size: 1.5rem;
+        font-size: 1.5vw;
         font-weight: bold;
     }
 
@@ -89,18 +99,18 @@ body, html {
 }
 
     .sub-text p {
-        font-size: 1rem;
+        font-size: .75vw;
     }
 
     .sub-text h2 {
-        font-size: 1.25rem;
+        font-size: 1vw;
         font-weight: bold;
     }
 
-    .sub-text h1 {
-        font-size: 1rem;
-        text-decoration: underline;
-    }
+.button h1{
+    font-size: 1rem;
+    text-decoration: underline;
+}
 
 .btn {
     background: transparent;
@@ -116,7 +126,7 @@ body, html {
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    width: 65%;
+/*    width: 65%;*/
     margin: auto;
 }
 
@@ -144,7 +154,7 @@ body, html {
     }
 
     .btn span {
-        font-size: 20px;
+        font-size: 1vw;
         font-weight: 500;
         overflow: hidden;
         position: relative;
@@ -187,4 +197,30 @@ body, html {
     100% {
         transform: scaleX(1);
     }
+}
+
+
+@media screen and (max-width: 767px){
+
+    .main-text h2{
+        font-size: 3.5vw;
+    }
+    .main-text p {
+        font-size: 3vw;
+    }
+    .sub-text p {
+        font-size: 2.5vw;
+    }
+
+    .sub-text h2 {
+        font-size: 3vw;
+        font-weight: bold;
+    }
+    .btn{
+        width:65%;
+    }
+    .btn span{
+        font-size: 3vw;
+    }
+
 }
