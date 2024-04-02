@@ -102,7 +102,8 @@ public static class DtoConverter
             Times_Claimed = userVoucher.TimesClaimed,
             Total_Reclaimable = userVoucher.TotalReclaimable,
             Voucher = userVoucher.Voucher.ToDto(),
-            User = userVoucher.User.ToDto()
+            User = userVoucher.User.ToDto(),
+            Id = userVoucher.Id
         };
     }
 
