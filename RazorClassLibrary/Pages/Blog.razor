@@ -45,7 +45,7 @@
                                         </div>
                                         <div class="flex-grow-1 ms-2 ms-sm-3">
                                             <div class="comment-meta d-flex align-items-baseline">
-                                                <h6 class="me-2">@c.UserName</h6>
+                                                <h6 class="me-2">@c.UserId</h6>
                                             </div>
                                             <div class="comment-body">
                                                 @c.Content
@@ -65,7 +65,7 @@
                                                             </div>
                                                             <div class="flex-grow-1 ms-2 ms-sm-3">
                                                                 <div class="reply-meta d-flex align-items-baseline">
-                                                                    <h6 class="mb-0 me-2">@r.UserName</h6>
+                                                                    <h6 class="mb-0 me-2">@r.UserId</h6>
                                                                     <span class="text-muted">2d</span>
                                                                 </div>
                                                                 <div class="reply-body">
@@ -93,7 +93,8 @@
                                 </div>
                                 <div class="flex-grow-1 ms-2 ms-sm-3">
                                     <form>
-                                        <textarea @bind="inputedComment" class="form-control py-0 px-1 border-0" rows="1" placeholder="Start writing..." style="resize: none;" @onkeydown="@AddResponse"></textarea>
+                                        <textarea @bind="inputedComment" class="form-control py-0 px-1 border-0" rows="1" placeholder="Start writing..." style="resize: none;"></textarea>
+                                        <button @onclick="@AddResponse">Comment</button>
                                     </form>
                                 </div>
                             </div>
