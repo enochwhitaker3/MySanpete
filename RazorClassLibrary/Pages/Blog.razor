@@ -7,6 +7,7 @@
 @inject IBlogService service;
 @inject ICommentService commentService;
 @inject IUserService userService;
+@inject IUserState userState
 
 
 <div class="mt-5 p-4" style="max-width: 800px; margin-left: auto; margin-right: auto; padding-top: 100px;">
@@ -157,8 +158,6 @@
 
     public string inputedComment { get; set; }
 
-    [CascadingParameter]
-    Task<AuthenticationState> authenticationState { get; set; }
 
     UserDTO user { get; set; }
 
@@ -172,10 +171,9 @@
         TopLevelComments = AllComments.Where(x => x.ReplyId is null).ToList();
 
 
-        var authState = await authenticationState;
-        if (authState.User.Identity.IsAuthenticated)
+        if (userState.User.Identity.IsAuthenticated)
         {
-            var authId = authState.User.Claims.FirstOrDefault(x => x.Type == "authId").Value;
+            var authId = userState.User.Claims.FirstOrDefault(x => x.Type == "authId").Value;
             user = await userService.GetAuthUser(authId);
         }
     }
