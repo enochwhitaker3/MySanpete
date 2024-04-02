@@ -1,0 +1,127 @@
+﻿@page "/account"
+@using RazorClassLibrary.Services
+
+@inject IUserService service
+<h3>My Account</h3>
+
+<div class="row" style="max-width: 1200px; margin-left: auto; margin-right: auto;">
+    <div class="col-md-5">
+        <div>
+            <p>My Account</p>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <h3>My Account</h3>
+    
+        <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="100" height="100" fill="#EB99D4" />
+        </svg>
+        <span>: )</span>
+
+        <div class="mb-3">
+            <label for="formFile" class="form-label">Choose a thumbnail image</label>
+            <input class="form-control" type="file" id="formFile">
+        </div>
+
+        <div class="form-group">
+            <label for="photo">Add a Thumnail Image</label>
+            <small style="color: darkgray;"><br />Recommended image size of 500 X 750 pixels. If no image is provided, MySanpete Logo will be displayed.<br /></small>
+            <InputFile OnChange="SaveFile"></InputFile>
+        </div>
+
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Edit your Username</label>
+            <small>This will be public to other users and will be seen on comments.</small>
+            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="username">
+        </div>
+
+        <h3>My Vouchers</h3>
+
+
+        <div class="p-3">
+            <div class="card m-2 rounded-3 shadow">
+                <div class="d-flex flex-row">
+                    <div class="col-md img-square-wrapper rounded" style="padding: 0px;">
+                        <img class="business-logo"
+                             style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px;"
+                             src="" />
+                    </div>
+                    <div class="col-md card-body">
+                        <h2 class="card-title">PromoName</h2>
+                        @* @if (voucher.EndDate is not null)
+                        { *@
+                        <p class="card-text">Good through EndDate</p>
+                        @*  } *@
+                        <!-- Button trigger modal -->
+                        <div class="button" >
+                            <div class="button-wrapper">
+                                <div class="text">View</div>
+                                <span class="icon">
+                                    <svg viewBox="0 0 16 16" class="bi bi-cart2" fill="currentColor" height="16" width="16" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"></path>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3>My Saved Events</h3>
+
+        <div class=" p-3">
+            <div class="card m-2 rounded-3 shadow">
+                <div class="d-flex flex-row">
+                    <div class="col-md img-square-wrapper rounded" style="padding: 0px;">
+                        <img class="business-logo"
+                             style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px;"
+                             src="" />
+                    </div>
+                    <div class="col-md card-body">
+                        <h2 class="card-title">PromoName</h2>
+                        @* @if (voucher.EndDate is not null)
+                        { *@
+                        <p class="card-text">Good through EndDate</p>
+                        @*  } *@
+                        <!-- Button trigger modal -->
+                        <div class="button">
+                            <div class="button-wrapper">
+                                <div class="text">View</div>
+                                <span class="icon">
+                                    <svg viewBox="0 0 16 16" class="bi bi-cart2" fill="currentColor" height="16" width="16" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"></path>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@code {
+
+    byte[]? ImageBytes { get; set; }
+
+    public UserDTO User { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+    }
+
+    public async Task SaveFile(InputFileChangeEventArgs e)
+    {
+        IBrowserFile file = e.GetMultipleFiles(1).Single();
+
+        using (var ms = new MemoryStream())
+        {
+            await file.OpenReadStream().CopyToAsync(ms);
+            ImageBytes = ms.ToArray();
+        }
+    }
+}
