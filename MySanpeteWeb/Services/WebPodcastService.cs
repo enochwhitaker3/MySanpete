@@ -56,7 +56,8 @@ public class WebPodcastService : IPodcastService
         var context = await dbContextFactory.CreateDbContextAsync();
         return await context.Podcasts
               .Include(x => x.PodcastComments)
-                .ThenInclude(x => x.Comment)  // DUSTY COMMENT not sure about this line 
+                .ThenInclude(x => x.Comment)
+                .ThenInclude(x => x.User)
               .Include(x => x.PodcastReactions)
               .Select(x => x.ToDto()).ToListAsync();
     }
@@ -67,7 +68,8 @@ public class WebPodcastService : IPodcastService
 
         var podcast = await context.Podcasts
               .Include(x => x.PodcastComments)
-                .ThenInclude(x => x.Comment)  // DUSTY COMMENT not sure about this line 
+                .ThenInclude(x => x.Comment)
+                .ThenInclude(x => x.User)
               .Include(x => x.PodcastReactions)
                 .ThenInclude(x => x.Reaction)
               .Where(x => x.Id == podcastId)
