@@ -168,12 +168,23 @@ public class WebUserService : IUserService
             throw new Exception("No user found with given GUID");
         }
 
-
-
-
         context.Update(user);
         await context.SaveChangesAsync();
 
         return true;
+    }
+
+    public async Task<UserDTO?> GetAuthUser(string authId)
+    {
+        var context = await dbContextFactory.CreateDbContextAsync();
+
+        var user = await context.EndUsers.Where(u => u.Authid == authId).FirstOrDefaultAsync();
+
+        if (user is null)
+        {
+            throw new Exception($"{authId} is not a user");
+        }
+
+        return user.ToDto();
     }
 }

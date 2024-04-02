@@ -15,7 +15,7 @@ public partial class UserVoucher
 
     public bool? Isused { get; set; }
 
-    public int TotalReclaimable { get; set; }
+    public int? TotalReclaimable { get; set; }
 
     public string ChargeId { get; set; } = null!;
 
@@ -25,7 +25,7 @@ public partial class UserVoucher
 
     public DateTime LastUpdated { get; set; }
 
-    public int TimesClaimed { get; set; }
+    public int? TimesClaimed { get; set; }
 
     public virtual EndUser User { get; set; } = null!;
 

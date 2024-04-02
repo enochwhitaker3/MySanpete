@@ -1,9 +1,150 @@
 ﻿@page "/OrderComplete"
 
-<div class="container">
-    <div class="content">
-        <h2>Order Complete</h2>
-        <p>Got it, thanks!</p>
-        <p>Please check your email to see your voucher. Show this at [Business name] to redeem.</p>
+@using RazorClassLibrary.Requests
+@using RazorClassLibrary.Services
+@using Stripe
+
+@inject IUserVoucherService userVoucherService
+@inject IUserService userService
+@inject IVoucherService voucherService
+
+@rendermode InteractiveServer
+
+@if (errorMessage == "")
+{
+    <div class="container">
+        <div class="content">
+            <h2>Order Complete</h2>
+            <p>Got it, thanks!</p>
+            @if(BusinessDefined is true)
+            {
+                <p>Please check your email to see your voucher. Show this at @voucher.BusinessName to redeem.</p>
+            }
+            else
+            {
+                <p>Loading...</p>
+            }
+        </div>
     </div>
-</div>
+}
+else
+{
+    <div class="alert-warning">
+        <p>@errorMessage</p>
+    </div>
+}
+
+@code {
+    public string? intentId { get; set; }
+    public string? authId { get; set; }
+    public int userId { get; set; }
+    public int voucherId { get; set; }
+    public decimal finalPrice { get; set; }
+    public string errorMessage = "";
+    public VoucherDTO voucher { get; set; } = new();
+    public static bool BusinessDefined = false;
+    public string BusinessName { get; set; } = "";
+
+    [CascadingParameter]
+    Task<AuthenticationState> authenticationState { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        BusinessDefined = false;
+        var options = new Stripe.Checkout.SessionListOptions { Limit = 100 };
+        var service = new Stripe.Checkout.SessionService();
+        StripeList<Stripe.Checkout.Session> sessions = service.List(options);
+
+        var authState = await authenticationState;
+        authId = authState?.User?.Claims?.FirstOrDefault(x => x.Type == "authId")?.Value;
+
+        var id = sessions.FirstOrDefault(x => x.Metadata.ContainsKey("UserId") && x.Metadata["UserId"] == authId && x.Created > DateTime.Now.AddMinutes(-30));
+
+        voucherId = int.Parse(id!.Metadata["VoucherId"]);
+        voucher = (await voucherService.GetVoucher(voucherId)) ?? throw new Exception("BWAH");
+        BusinessName = voucher.BusinessName ?? "";
+        BusinessDefined = true;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            return;
+        }
+
+        var options = new Stripe.Checkout.SessionListOptions { Limit = 100 };
+        var service = new Stripe.Checkout.SessionService();
+        StripeList<Stripe.Checkout.Session> sessions = service.List(options);
+
+        var authState = await authenticationState;
+        authId = authState?.User?.Claims?.FirstOrDefault(x => x.Type == "authId")?.Value;
+
+        var id = sessions.FirstOrDefault(x => x.Metadata.ContainsKey("UserId") && x.Metadata["UserId"] == authId && x.Created > DateTime.Now.AddMinutes(-30));
+
+
+        try
+        {
+            if (id is not null)
+            {
+                voucherId = int.Parse(id.Metadata["VoucherId"]);
+                authId = id.Metadata["UserId"];
+                voucher = (await voucherService.GetVoucher(voucherId)) ?? throw new Exception("BWAH");
+
+                var user = (await userService.GetAuthUser(authId));
+                if (user is not null)
+                {
+                    userId = user.Id;
+                }
+                else
+                {
+                    throw new Exception("Somehow you aren't logged in thats crazy");
+                }
+
+                finalPrice = Convert.ToDecimal(id.AmountTotal) / 100.00M;
+
+                if (id.PaymentIntentId is null)
+                {
+                    intentId = "Free Voucher Claimed";
+                }
+                else
+                {
+                    intentId = id.PaymentIntentId;
+                }
+
+                if (firstRender)
+                {
+                    await CreateNewUserVoucher();
+                }
+            }
+            else
+            {
+                throw new Exception("Checkout Session could not be found");
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
+
+    public async Task CreateNewUserVoucher()
+    {
+        try
+        {
+            var request = new AddUserVoucherRequest()
+                {
+                    chargeId = intentId,
+                    userId = userId,
+                    voucherId = voucherId,
+                    finalPrice = finalPrice
+                };
+
+            await userVoucherService.AddUserVoucher(request);
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
+}

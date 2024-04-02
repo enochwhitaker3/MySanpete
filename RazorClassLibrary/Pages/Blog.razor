@@ -1,36 +1,109 @@
-﻿@using RazorClassLibrary.DTOs
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using RazorClassLibrary.DTOs
 @using Blazored.TextEditor
+@using RazorClassLibrary.Requests
+
 
 @inject IBlogService service;
+@inject ICommentService commentService;
+@inject IUserService userService;
 
 
 <div class="mt-5 p-4" style="max-width: 800px; margin-left: auto; margin-right: auto; padding-top: 100px;">
-    @if(blog is not null && blog.Content is not null)
+    @if (blog is not null && blog.Content is not null)
     {
         <h1>@blog.Title</h1>
-        <p style="color: gray;" class="mb-5">published @blog.PublishDate</p>
-        @((MarkupString)blog.Content)
-        <p>
-            The standard Lorem Ipsum passage, used since the 1500s
+        <p style="color: gray;" class="mb-5">
+            published @blog.PublishDate.Value.Month - @blog.PublishDate.Value.Day - @blog.PublishDate.Value.Year
         </p>
-        <p>
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-            Section 1.10.32 of "de Finibus Bonorum et Malorum", written by Cicero in 45 BC
-        </p>
-        <p>
-            "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
-            1914 translation by H. Rackham
-        </p>
-        <p>
-            "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?"
-            Section 1.10.33 of "de Finibus Bonorum et Malorum", written by Cicero in 45 BC
-        </p>
-        <p>
-            "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."
-            1914 translation by H. Rackham
+        <div class="blog-content">
+            @((MarkupString)blog.Content)
+        </div>
+        @*        <CommentComponent /> *@
 
-            "On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains."
-        </p>
+        <div class="d-flex align-items-center justify-content-center" style="margin-top: 10vh;">
+            <div class="container">
+                <div class="row justify-content-center mb-4">
+                    <div class="col-lg-8">
+                        <h5>@AllComments.Count() Comments</h5>
+                    </div>
+                </div>
+                @if (AllComments.Count() > 0)
+                {
+
+                    <div class="row justify-content-center mb-4">
+                        <div class="col-lg-8">
+                            <div class="comments">
+
+                                @foreach (var c in AllComments)
+                                {
+                                    <div class="comment d-flex mb-5">
+                                        <div class="flex-shrink-0">
+                                            <div class="avatar avatar-sm rounded-circle">
+                                                <img class="avatar-img" src="https://randomuser.me/api/portraits/men/32.jpg" alt="">
+                                            </div>
+                                        </div>
+                                        <div class="flex-grow-1 ms-2 ms-sm-3">
+                                            <div class="comment-meta d-flex align-items-baseline">
+                                                <h6 class="me-2">@c.UserId</h6>
+                                            </div>
+                                            <div class="comment-body">
+                                                @c.Content
+                                            </div>
+                                            @if (c.Replies.Count() > 0)
+                                            {
+                                                @foreach (var r in c.Replies)
+                                                {
+                                                    <div class="comment-replies bg-light p-3 mt-3 rounded">
+                                                        <h6 class="comment-replies-title mb-4 text-muted text-uppercase"> replies</h6>
+
+                                                        <div class="reply d-flex mb-4">
+                                                            <div class="flex-shrink-0">
+                                                                <div class="avatar avatar-sm rounded-circle">
+                                                                    <img class="avatar-img" src="https://images.unsplash.com/photo-1501325087108-ae3ee3fad52f?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=f7f448c2a70154ef85786cf3e4581e4b" alt="">
+                                                                </div>
+                                                            </div>
+                                                            <div class="flex-grow-1 ms-2 ms-sm-3">
+                                                                <div class="reply-meta d-flex align-items-baseline">
+                                                                    <h6 class="mb-0 me-2">@r.UserId</h6>
+                                                                    <span class="text-muted">2d</span>
+                                                                </div>
+                                                                <div class="reply-body">
+                                                                    @r.Content
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="comment-form d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <div class="avatar avatar-sm rounded-circle">
+                                        <img class="avatar-img" src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&crop=faces&fit=crop&h=200&w=200" alt="">
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1 ms-2 ms-sm-3">
+                                    <form>
+                                        <textarea @bind="inputedComment" class="form-control py-0 px-1 border-0" rows="1" placeholder="Start writing..." style="resize: none;"></textarea>
+                                        <button @onclick="@AddResponse">Comment</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
     }
     else
     {
@@ -46,8 +119,37 @@
 
     public string ParsedContent { get; set; } = "no content";
 
+    public List<CommentDTO> AllComments { get; set; }
+
+    public string inputedComment { get; set; }
+
+    [CascadingParameter]
+    Task<AuthenticationState> authenticationState { get; set; }
+
+    UserDTO user { get; set; }
+
+
+
     protected override async Task OnInitializedAsync()
     {
         blog = await service.GetBlog(blogId);
+        AllComments = blog.Comments;
+
+        var authState = await authenticationState;
+        var authId = authState.User.Claims.FirstOrDefault(x => x.Type == "authId").Value;
+
+        user = await userService.GetAuthUser(authId);
+
+    }
+
+    public void AddResponse()
+    {
+        AddCommentRequest newRequest = new()
+        {
+            content = inputedComment,
+            contentId = blogId,
+            userGuid = user.Guid,
+        };
+        commentService.AddBlogComment(newRequest);
     }
 }

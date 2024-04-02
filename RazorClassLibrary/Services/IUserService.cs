@@ -17,4 +17,5 @@ public interface IUserService
     public Task<UserDTO?> PatchUser(UserDTO user);
     public Task<bool> DeleteUser(Guid guid);
     public Task<List<UserDTO>> GetAllUsers();
+    public Task<UserDTO?> GetAuthUser(string authId);
 }
