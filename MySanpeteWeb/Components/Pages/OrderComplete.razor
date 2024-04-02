@@ -13,7 +13,8 @@
 @if (errorMessage == "")
 {
     <div class="container">
-        <div class="content">
+        <div class="content d-grid justify-content-center align-items-center">
+            <img class="img_success" src="Images/order_success.svg"/>
             <h2>Order Complete</h2>
             <p>Got it, thanks!</p>
             @if(BusinessDefined is true)
@@ -22,7 +23,7 @@
             }
             else
             {
-                <p>Loading...</p>
+                <p style="font-size: 1vw;">Loading...</p>
             }
         </div>
     </div>

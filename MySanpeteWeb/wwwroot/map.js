@@ -6,7 +6,7 @@ function initializeMap(mapsKey) {
     // Create the map instance
     map = new atlas.Map("mapDiv", {
         view: "Auto",
-        center: [39.3597, 111.5863],
+        center: [-122.129, 47.640],
         zoom: 3
     });
 

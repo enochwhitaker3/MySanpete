@@ -1,4 +1,10 @@
-﻿.container {
+﻿@font-face {
+    font-family: 'Tajawal';
+    src: url('Fonts/Tajawal-Regular.ttf') format('truetype');
+}
+
+
+.container {
     height: 100vh;
     width: 100vw;
 }
@@ -8,8 +14,19 @@
     width: 30%;
     text-align: center;
     margin-top: 100px;
+    font-family: Tajawal;
 }
 
-.content h2 {
-    font-weight: bolder;
+    .content h2 {
+        font-weight: bolder;
+        font-size:3vw;
+    }
+
+    .content p {
+        font-size: 2vw;
+    }
+
+.img_success{
+    height: 25vw;
+    width: 25vw;
 }

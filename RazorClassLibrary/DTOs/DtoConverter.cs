@@ -58,7 +58,10 @@ public static class DtoConverter
         {
             Id = comment.Id,
             ReplyId = comment.ReplyId,
-            Content = comment.CommentText
+            Content = comment.CommentText,
+            //Replies = comment.BlogComments.Select( x => x.ToDto()).Union( comment.PodcastComments.Select(x => x.ToDto()) ).ToList(),
+            Replies = comment.InverseReply.Where(x => x.ReplyId == comment.Id).Select(x => x.ToDto()).ToList(),
+            UserId = comment.UserId,
         };
     }
 
@@ -101,6 +104,24 @@ public static class DtoConverter
             Voucher = userVoucher.Voucher.ToDto(),
             User = userVoucher.User.ToDto(),
             Id = userVoucher.Id
+        };
+    }
+
+    public static CommentDTO ToDto(this BlogComment comment)
+    {
+        return new CommentDTO()
+        {
+            Id = comment.Id,
+            Content = comment.Comment.CommentText
+        };
+    }
+
+    public static CommentDTO ToDto(this PodcastComment comment)
+    {
+        return new CommentDTO()
+        {
+            Id = comment.Id,
+            Content = comment.Comment.CommentText
         };
     }
 }
