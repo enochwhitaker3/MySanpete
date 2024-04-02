@@ -28,6 +28,21 @@ namespace MySanpeteWeb.Services
 
             var voucher = await voucherService.GetVoucher(request.voucherId);
 
+            if (voucher == null)
+            {
+                throw new Exception("Voucher could not be found");
+            }
+
+            if (request.chargeId == null)
+            {
+                throw new Exception("User Voucher needs a charge Id from stripe");
+            }
+
+            if (request.userId <= 0)
+            {
+                throw new Exception("User Voucher needs a user");
+            }
+
             UserVoucher userVoucher = new UserVoucher()
             {
                 PurchaseDate = DateTime.Now.ToUniversalTime(),
@@ -42,7 +57,7 @@ namespace MySanpeteWeb.Services
                 TotalReclaimable = voucher.AmmountReclaimable
             };
 
-            context.Add(userVoucher);
+            await context.AddAsync(userVoucher);
             await context.SaveChangesAsync();
 
             var result = await context.UserVouchers
