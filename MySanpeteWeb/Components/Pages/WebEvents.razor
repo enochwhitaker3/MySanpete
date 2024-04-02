@@ -9,13 +9,24 @@
         </div>
     </div>
     <img class="full-screen-image" src="Images/event.jpg" alt="Image">
-    <div class="vouchers-content" style="max-width: 100vw; margin-left: auto; margin-right: auto; background-color:#fcfcf8; justify-content: center;">
+    <div class="event-container row" style="max-width: 100vw; margin-left: auto; margin-right: auto;  background-color:#fcfcf8; justify-content: center; align-items:center;">
+
+        <div class="map-vr-container row justify-content-center align-items-center">
+            @if (MapsKey is not null)
+            {
+                <div class="map-container col-md-3 shadow" style="width:500px;height:500px; padding:0;">
+                    <RazorClassLibrary.Pages.Map MapsKey="@MapsKey" />
+                </div>
+                <div class="vertical-rule vr"></div>
+            }
+            <div class="map-container col-md-3" style="width:500px;height:500px; padding:0;"></div>
+            <div class="map-container col-md-3" style="width:500px;height:500px; padding:0;"></div>
+            <div class="map-container col-md-3" style="width:500px;height:500px; padding:0;"></div>
+        </div>
     </div>
-    @if(MapsKey is not null)
-    {
-        <RazorClassLibrary.Pages.Map MapsKey="@MapsKey" />
-    }
 </div>
+
+
 
 @code {
     private string? MapsKey;
