@@ -1,15 +1,39 @@
 ﻿@using Microsoft.JSInterop
+@using Newtonsoft.Json;
+@using System.Web.Mvc;
 @inject IJSRuntime JSRuntime
+@inject IOccasionService occasionService
 
 <div id="mapDiv" style="width:100%;height:100%;"></div>
 
 @code {
     [Parameter] public string MapsKey { get; set; }
+    public Occasion[] allOccasions { get; set; }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+
+
+        // Define your array
+        string[] myArray = { "apple", "banana", "orange" };
+
+        // Serialize the array to JSON
+        var serializer = new JavaScriptSerializer();
+        string json = serializer.Serialize(myArray);
+
+        // Pass the JSON data to your JavaScript file, you can use ViewBag or ViewData if you're using ASP.NET MVC
+        ViewBag.JsonData = json;
+
+
+
+
+        var allOccasion = await occasionService.GetAllOcassions();
         if (firstRender)
         {
-            await JSRuntime.InvokeVoidAsync("initializeMap", MapsKey);
+            await JSRuntime.InvokeVoidAsync("initializeMap", MapsKey, allOccasion);
         }
+        
+
+
     }
+
 }
