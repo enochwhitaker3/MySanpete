@@ -1,6 +1,6 @@
 var map;
 
-function initializeMap(mapsKey, allOccasion) {
+function initializeMap(mapsKey, jsonOccasions) {
     // Initialize the Azure Maps
     atlas.setSubscriptionKey(mapsKey);
     // Create the map instance
@@ -19,32 +19,27 @@ function initializeMap(mapsKey, allOccasion) {
         });
     });
 
+    var deserializedData = JSON.parse(jsonOccasions);
 
-
-
-
-    allOccasion.forEach((item) => {
+    deserializedData.forEach((item) => {
         var marker = new atlas.HtmlMarker({
             color: 'DodgerBlue',
             text: 'O',
-            position: []
-            popup: new atlas.Popup({
-                content: '<div style="padding:10px">BUUUUUUUNGER</div>',
+            position: [item.YCoordinate, item.XCoordinate],
+                popup: new atlas.Popup({
+                content: `<div style="padding:10px">${item.Description}</div>`,
                 pixelOffset: [0, -30]
             })
         });
         map.markers.add(marker);
 
-        // Do something with each item
-        console.log(item);
+        map.events.add('click', marker, () => {
+            marker.togglePopup();
+        });
     })
 
-    
-
     //Add a click event to toggle the popup.
-    map.events.add('click', marker, () => {
-        marker.togglePopup();
-    });
+
 
 }
 
