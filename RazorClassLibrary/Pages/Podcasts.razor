@@ -1,14 +1,25 @@
-﻿<div class="banner">
-    <div class="content">
-        <div class="title">
-            Podcasts Page
-        </div>
-        <div class="undertitle">
-            @* &nbsp&nbsp&nbspConnecting Sanpete<br />entrepreneurs to people. *@
-        </div>
-    </div>
-</div>
+﻿@inject IPodcastService service;
+
+
+
+<iframe title="From Landscape Rocks to the Ballot Box: How to Work with Local Government to Improve Your Community (with Troy Shelley)" allowtransparency="true" height="300" width="100%" style="border: none; min-width: min(100%, 430px);height:300px;" scrolling="no" data-name="pb-iframe-player" src="https://www.podbean.com/player-v2/?from=embed&i=8ytfd-159b5fa-pb&square=1&share=1&download=1&fonts=Arial&skin=f6f6f6&font-color=auto&rtl=0&logo_link=episode_page&btn-skin=60a0c8&size=300" loading="lazy" allowfullscreen=""></iframe>
+
+<iframe title="Welcome to MySanpete! Scandinavian Festival" allowtransparency="true" height="150" width="100%" style="border: none; min-width: min(100%, 430px);height:150px;" scrolling="no" data-name="pb-iframe-player" src="https://www.podbean.com/player-v2/?from=embed&i=rwxfu-141ba9e-pb" loading="lazy"></iframe>
+
+
+@if(AllPodcasts is not null)
+{
+    @foreach (var p in AllPodcasts)
+    {
+        <iframe title="@p.Name" allowtransparency="true" height="300" width="100%" style="border: none; min-width: min(100%, 430px);height:300px;" scrolling="no" data-name="pb-iframe-player" src="@p.URL" loading="lazy" allowfullscreen=""></iframe>
+    }
+}
 
 @code {
+    public List<PodcastDTO> AllPodcasts { get; set; } = new();
 
+    protected override async Task OnInitializedAsync()
+    {
+        AllPodcasts = await service.GetAllPodcasts();
+    }
 }

@@ -59,9 +59,9 @@ public static class DtoConverter
             Id = comment.Id,
             ReplyId = comment.ReplyId,
             Content = comment.CommentText,
-            //Replies = comment.BlogComments.Select( x => x.ToDto()).Union( comment.PodcastComments.Select(x => x.ToDto()) ).ToList(),
             Replies = comment.InverseReply.Where(x => x.ReplyId == comment.Id).Select(x => x.ToDto()).ToList(),
-            UserId = comment.UserId,
+            UserName = comment.User.UserName,
+            PostedDate = comment.PostDate,
         };
     }
 
@@ -102,7 +102,8 @@ public static class DtoConverter
             Times_Claimed = userVoucher.TimesClaimed,
             Total_Reclaimable = userVoucher.TotalReclaimable,
             Voucher = userVoucher.Voucher.ToDto(),
-            User = userVoucher.User.ToDto()
+            User = userVoucher.User.ToDto(),
+            Id = userVoucher.Id
         };
     }
 

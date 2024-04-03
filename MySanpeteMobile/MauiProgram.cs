@@ -6,6 +6,7 @@ namespace MySanpeteMobile
 {
     public static class MauiProgram
     {
+        public static string domain { get; set; }
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
@@ -16,6 +17,7 @@ namespace MySanpeteMobile
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 });
 
+         
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddMudServices();
 
@@ -26,8 +28,8 @@ namespace MySanpeteMobile
 
             builder.Services.AddSingleton(new Auth0Client(new()
             {
-                Domain = builder.Configuration["Auth0:Domain"],
-                ClientId = builder.Configuration["Auth0:ClientId"],
+                Domain = "",
+                ClientId = "",
                 RedirectUri = "myapp://callback",
                 PostLogoutRedirectUri = "myapp://callback",
                 Scope = "openid profile email",
