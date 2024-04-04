@@ -19,7 +19,7 @@ public class ImageController : Controller
         this.factory = factory;
     }
 
-    [HttpGet("/business/{id}")]
+    [HttpGet("business/{id}")]
     public async Task<IActionResult> GetImage(int id)
     {
         using var context = await factory.CreateDbContextAsync();
