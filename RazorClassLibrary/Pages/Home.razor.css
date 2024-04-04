@@ -44,120 +44,234 @@ body, html {
 }
 
 
-.blog-section {
-    background-color: #fcfcf8;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    height: 100vh;
+.business-container {
+    color: white;
+    background-color: #383B42;
 }
 
-.blog-title {
-    margin-top: 25px;
-    text-align: center;
-    color: #3f4a49;
-    font-size: 60px;
-    font-family: Casual;
+.about-us {
+    max-width: 650px;
 }
 
-.container {
-    display: flex;
-    width: 1040px;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-    margin-top: 5%;
-    margin-bottom: auto;
-}
-
-.card {
-    margin: 10px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
-    overflow: hidden;
-    width: 300px;
-}
-
-.card-header{
-    padding: unset!important;
-}
-
-.card-header img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-}
-
-.card-body {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 20px;
-    min-height: 250px;
-}
-
-.card-body p {
-    font-size: 13px;
-    margin: 0 0 40px;
-}
-
-.user {
-    display: flex;
-    margin-top: auto;
-}
-
-    .user img {
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        margin-right: 10px;
-    }
-
-.user-info h5 {
-    margin: 0;
-}
-
-.user-info small {
-    color: #545d7a;
-}
-
-
-
-@media screen and (max-width: 768px) {
-    .title .blog-title {
+    .about-us h2 {
+        font-family: Inter-Bold;
         font-size: 40px;
     }
 
-    .subtitle {
-        font-size: 20px; 
+    .about-us h3 {
+        font-family: Inter;
+        font-size: 20px;
+        width: 70%;
     }
 
-    .container{
-        width:350px!important;
+.contact-us {
+    max-width: 650px;
+}
+
+    .contact-us h2 {
+        font-family: Inter-Bold;
+        font-size: 40px;
+    }
+
+    .contact-us p {
+        font-family: Inter;
+        font-size: 20px;
+    }
+
+
+.contact-button {
+    width: 200px;
+}
+
+    .contact-button h1 {
+        font-size: 1rem;
+        text-decoration: underline;
+    }
+
+.btn {
+    background: transparent;
+    border: 1px solid white;
+    outline: none;
+    padding: 12px 40px;
+    height: 60px;
+    border-radius: 100px;
+    overflow: hidden;
+    transform: scaleX(1);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0, 1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    /*    width: 65%;*/
+    margin: auto;
+}
+
+    .btn:hover {
+        animation: animate-scaleX 3s cubic-bezier(0.4, 0, 0, 1);
+        background: transparent;
+    }
+
+    .btn::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        background: white;
+        transition: transform 0.5s cubic-bezier(0.4, 0, 0, 1), border-radius 0.5s cubic-bezier(0.4, 0, 0, 1);
+        width: 100%;
+        height: 100%;
+        border-radius: 50% 50% 0 0;
+        transform: translateY(100%);
+    }
+
+    .btn:hover::after {
+        transform: translateY(0%);
+        border-radius: 0;
+    }
+
+    .btn span {
+        font-size: 1vw;
+        font-weight: 500;
+        overflow: hidden;
+        position: relative;
+        color: white;
+    }
+
+        .btn span:after {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0, 1);
+            content: attr(data-text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            z-index: 1;
+            transform: translate(-50%, 100%);
+            color: black;
+        }
+
+    .btn:hover span:after {
+        transform: translate(-50%, 0);
+    }
+
+    .btn:focus {
+        outline: none;
+    }
+
+@keyframes animate-scaleX {
+    0% {
+        transform: scaleX(1);
+    }
+
+    50% {
+        transform: scaleX(1.05);
+    }
+
+    100% {
+        transform: scaleX(1);
     }
 }
 
-
-
-
-
-@media screen and (max-width: 350px) {
-    .title .blog-title {
-        font-size: 30px;
-    }
-
-    .subtitle {
-        font-size: 15px; 
-    }
-    .container{
-        width:300px!important;
-    }
-    .card{
-        width:250px;
-    }
+.voucher-container {
+    color: #3f4a49;
+    background-color: #fcfcf8;
 }
 
+.voucher-header h2 {
+    font-size: 1.5rem !important;
+}
 
+.card {
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='1' ry='1' stroke='%23333' stroke-width='3' stroke-dasharray='6%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+    border: none !important;
+}
 
+.bs-icon {
+    transform: scaleX(-1);
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -ms-transform: scaleX(-1);
+}
+
+.button {
+    --width: 100px;
+    --height: 35px;
+    --tooltip-height: 35px;
+    --tooltip-width: 90px;
+    --gap-between-tooltip-to-button: 18px;
+    --button-color: #222;
+    --tooltip-color: #fff;
+    width: var(--width);
+    height: var(--height);
+    background: var(--button-color);
+    position: relative;
+    text-align: center;
+    border-radius: 0.45em;
+    font-family: "Arial";
+    transition: background 0.3s;
+    margin-left: auto;
+}
+
+.text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-wrapper, .text, .icon {
+    overflow: hidden;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    color: #fff;
+}
+
+.text {
+    top: 0
+}
+
+.text, .icon {
+    transition: top 0.5s;
+}
+
+.icon {
+    color: #fff;
+    top: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .icon svg {
+        width: 24px;
+        height: 24px;
+    }
+
+.button:hover {
+    background: #222;
+}
+
+    .button:hover .text {
+        top: -100%;
+    }
+
+    .button:hover .icon {
+        top: 0;
+    }
+
+    .button:hover:before, .button:hover:after {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .button:hover:after {
+        bottom: calc(var(--height) + var(--gap-between-tooltip-to-button) - 20px);
+    }
+
+    .button:hover:before {
+        bottom: calc(var(--height) + var(--gap-between-tooltip-to-button));
+    }
