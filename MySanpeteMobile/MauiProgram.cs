@@ -33,6 +33,8 @@ namespace MySanpeteMobile
                 Scope = "openid profile email",
             }));
 
+            
+
             return builder.Build();
         }
     }
