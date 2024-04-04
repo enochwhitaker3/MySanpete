@@ -19,17 +19,17 @@ public class ReactionController : Controller
 	}
 
 	[HttpPost("addblogreaction/{request}")]
-	public async Task<BlogReaction> AddBlogReaction(AddReactionRequest request)
+	public async Task<BlogReaction?> AddBlogReaction(AddReactionRequest request)
 	{
 		var result = await reactionService.AddBlogReaction(request);
-		return result;
+		return result!;
 	}
 
 	[HttpPost("addpodcastreaction/{request}")]
-	public async Task<PodcastReaction> AddPodcastReaction(AddReactionRequest request)
+	public async Task<PodcastReaction?> AddPodcastReaction(AddReactionRequest request)
 	{
 		var result = await reactionService.AddPodReaction(request); 
-		return result;
+		return result!;
 	}
 
 	[HttpDelete("deleteblogreaction/{id}")]

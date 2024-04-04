@@ -11,4 +11,5 @@
 </a>
 
 ## Project Docs
-<https://docs.google.com/spreadsheets/d/1OFWuggrPdq_nJGEKuaclPF50HhgMMrzH038PU0mWf-w/edit#gid=0>
+[Requirements]<https://docs.google.com/spreadsheets/d/1OFWuggrPdq_nJGEKuaclPF50HhgMMrzH038PU0mWf-w/edit#gid=0>
+[Design]<https://www.figma.com/file/r6at3fo24S8red6cfpBVjH/MySanpete?type=design&node-id=0-1&mode=design&t=7kK5TRnxff9WK0FL-0>
