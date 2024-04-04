@@ -53,11 +53,4 @@ public class UserVoucherController : Controller
         var result = await userVoucherService.GetById(voucherId);
         return result;
     }
-
-    [HttpPatch("uservoucherupdate/{userVoucher}")]
-    public async Task<UserVoucherDTO> UpdateUserVoucher(UserVoucherDTO userVoucher)
-    {
-        var result = await userVoucherService.UpdateUserVoucher(userVoucher);
-        return result;
-    }
 }

@@ -1,10 +1,11 @@
-﻿@using Auth0.OidcClient
-@using IdentityModel.OidcClient
-@inject Auth0Client client;
+﻿@using RazorClassLibrary.Services
+@inject IUserState userState
+
 <nav class="navbar navbar-expand-lg navbar-dark">
     <a class="navbar-brand" href="#">My Sanpete.</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon" style="background-image: url(&quot;data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(63, 74, 73, 0.55)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22' /%3e%3c/svg%3e&quot;);"></span>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon" style="color:black!important"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent" style="justify-content:right;">
@@ -24,35 +25,25 @@
             <li class="nav-item">
                 <a class="nav-link" href="/vouchers">Vouchers</a>
             </li>
-            <li class="nav-item">
-                @if(user is null)
-                {
-                    <a class="nav-link" @onclick="Login">Log in</a>
-                }
-                else
-                {
-                    <a class="nav-link" href="Account/Logout">Log out</a>
-                    <a class="nav-link">@authenticationTime</a>
-                }
-            </li>
+            <AuthorizeView>
+                <Authorized>
+                    <li class="nav-item">
+                        <a class="nav-link" @onclick="userState.Logout">Log out</a>
+                    </li>
+
+                </Authorized>
+                <NotAuthorized>
+
+                    <li class="nav-item">
+                        <a class="nav-link" @onclick="userState.Login">Log in</a>
+                    </li>
+                </NotAuthorized>
+            </AuthorizeView>
+            <AuthorizeView Roles="Admin">
+                <li class="nav-item">
+                    <a class="nav-link" href="admin">Admin Controls</a>
+                </li>
+            </AuthorizeView>
         </ul>
     </div>
 </nav>
-
-@code
-{
-    LoginResult? user { get; set; } = null;
-    DateTimeOffset? authenticationTime { get => user!.AccessTokenExpiration; }
-
-    private async Task Login()
-    {
-        user = await client.LoginAsync();
-    }
-
-    private async Task Logout()
-    {
-        await client.LogoutAsync();
-        user = null;
-    }
-}
-
