@@ -1,15 +1,22 @@
 ﻿@using Microsoft.JSInterop
+@using System.Collections.Generic;
+@using System.Text.Json;
 @inject IJSRuntime JSRuntime
+@inject IOccasionService occasionService
 
 <div id="mapDiv" style="width:100%;height:100%;"></div>
 
 @code {
     [Parameter] public string MapsKey { get; set; }
+    public string jsonOccasions { get; set; }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        var allOccasion = await occasionService.GetAllOcassions();
+        jsonOccasions = JsonSerializer.Serialize(allOccasion);
+
         if (firstRender)
         {
-            await JSRuntime.InvokeVoidAsync("initializeMap", MapsKey);
+            await JSRuntime.InvokeVoidAsync("initializeMap", MapsKey, jsonOccasions);
         }
     }
 }
