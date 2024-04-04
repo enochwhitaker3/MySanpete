@@ -25,7 +25,6 @@ namespace MySanpeteMobile
             builder.Services.AddBlazorWebViewDeveloperTools();
             builder.Logging.AddDebug();
 #endif
-            builder.Configuration.AddUserSecrets("147a395d-350b-47ec-852a-d7e5339b58dc");
 
             builder.Services.AddSingleton(new Auth0Client(new()
             {
