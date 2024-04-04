@@ -25,7 +25,7 @@ public class MobileBusinessService : IBusinessService
 
     public async Task<List<Business>> GetAllBusinesses()
     {
-        var result = await httpClient.GetFromJsonAsync<List<Business>>("/api/business/");
+        var result = await httpClient.GetFromJsonAsync<List<Business>>($"https://localhost:7059/api/business/");
         return result!;
     }
 
