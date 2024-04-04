@@ -60,6 +60,9 @@ builder.Services.AddScoped<IStripeService, StripeService>();
 builder.Services.AddScoped<IUserVoucherService, WebUserVoucherService>();
 builder.Services.AddScoped<IUserState, WindowsUserState>();
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 builder.Services.AddAuth0WebAppAuthentication(options =>
 {
     options.Domain = builder.Configuration["Domain"] ?? throw new Exception("Auth0 domain missing");
@@ -68,6 +71,7 @@ builder.Services.AddAuth0WebAppAuthentication(options =>
 });
 
 builder.Services.AddControllersWithViews();
+
 
 
 var app = builder.Build();
@@ -93,6 +97,11 @@ app.MapControllers();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Blazor API V1");
+});
 
 app.MapGet("/Account/Login", async (HttpContext httpContext, string redirectUri = "/") =>
 {
