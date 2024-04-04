@@ -1,4 +1,6 @@
-﻿using RazorClassLibrary.Services;
+﻿using Auth0.OidcClient;
+using Microsoft.AspNetCore.Components.Authorization;
+using RazorClassLibrary.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,15 +12,24 @@ namespace MySanpeteMobile.Services;
 
 public class MauiUserState : IUserState
 {
-    public ClaimsPrincipal User => throw new NotImplementedException();
-
-    public Task Login()
+    private readonly AuthenticationStateProvider authProvider;
+    public MauiUserState(AuthenticationStateProvider authProvider)
     {
-        throw new NotImplementedException();
+        this.authProvider = authProvider;
+        user = new ClaimsPrincipal();
+    }
+    private ClaimsPrincipal user; 
+
+    public ClaimsPrincipal User => user;
+
+    public async Task Login()
+    {
+        await ((Auth0AuthenticationStateProvider)authProvider).LogInAsync();
     }
 
-    public Task Logout()
+    public async Task Logout()
     {
-        throw new NotImplementedException();
+        await Task.CompletedTask;
+        ((Auth0AuthenticationStateProvider)authProvider).LogOut();
     }
 }

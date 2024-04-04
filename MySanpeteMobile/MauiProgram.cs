@@ -1,7 +1,10 @@
 ﻿using Auth0.OidcClient;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MudBlazor.Services;
+using MySanpeteMobile.Services;
+using RazorClassLibrary.Services;
 
 namespace MySanpeteMobile
 {
@@ -34,6 +37,10 @@ namespace MySanpeteMobile
                 PostLogoutRedirectUri = "myapp://callback",
                 Scope = "openid profile email",
             }));
+
+            builder.Services.AddAuthorizationCore();
+            builder.Services.AddScoped<IUserState, MauiUserState>();
+            builder.Services.AddScoped<AuthenticationStateProvider, Auth0AuthenticationStateProvider>();
 
             return builder.Build();
         }
