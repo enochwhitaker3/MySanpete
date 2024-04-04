@@ -10,7 +10,9 @@ public class CommentDTO
     public int? ReplyId { get; set; }
     public string? Content { get; set; }
 
-    public int? UserId { get; set; }
+    public string? UserName { get; set; }
+
+    public DateTime? PostedDate { get; set; }
 
     public IEnumerable<CommentDTO>? Replies { get; set; }
 }

@@ -1,6 +1,10 @@
 ﻿using Auth0.OidcClient;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MudBlazor.Services;
+using MySanpeteMobile.Services;
+using RazorClassLibrary.Services;
 
 namespace MySanpeteMobile
 {
@@ -16,6 +20,7 @@ namespace MySanpeteMobile
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 });
 
+
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddMudServices();
 
@@ -26,14 +31,23 @@ namespace MySanpeteMobile
 
             builder.Services.AddSingleton(new Auth0Client(new()
             {
-                Domain = builder.Configuration["Auth0:Domain"],
-                ClientId = builder.Configuration["Auth0:ClientId"],
+                Domain = "dev-013fwxix4dwe1jea.us.auth0.com",
+                ClientId = "w7WZdACmKqbjV3Q5uIwvItVgJyUv4aQU",
                 RedirectUri = "myapp://callback",
                 PostLogoutRedirectUri = "myapp://callback",
                 Scope = "openid profile email",
             }));
 
-            
+            builder.Services.AddSingleton(o =>
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri("https://localhost:7059");
+                return client;
+            });
+
+            builder.Services.AddAuthorizationCore();
+            builder.Services.AddScoped<IUserState, MauiUserState>();
+            builder.Services.AddScoped<AuthenticationStateProvider, Auth0AuthenticationStateProvider>();
 
             return builder.Build();
         }

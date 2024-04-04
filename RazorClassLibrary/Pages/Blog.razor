@@ -7,6 +7,7 @@
 @inject IBlogService service;
 @inject ICommentService commentService;
 @inject IUserService userService;
+@inject IUserState userState
 
 
 <div class="mt-5 p-4" style="max-width: 800px; margin-left: auto; margin-right: auto; padding-top: 100px;">
@@ -19,7 +20,6 @@
         <div class="blog-content">
             @((MarkupString)blog.Content)
         </div>
-        @*        <CommentComponent /> *@
 
         <div class="d-flex align-items-center justify-content-center" style="margin-top: 10vh;">
             <div class="container">
@@ -30,12 +30,11 @@
                 </div>
                 @if (AllComments.Count() > 0)
                 {
-
                     <div class="row justify-content-center mb-4">
                         <div class="col-lg-10">
                             <div class="comments">
 
-                                @foreach (var c in AllComments)
+                                @foreach (var c in TopLevelComments)
                                 {
                                     <div class="comment d-flex mb-5">
                                         <div class="flex-shrink-0">
@@ -44,19 +43,23 @@
                                             </div>
                                         </div>
                                         <div class="flex-grow-1 ms-2 ms-sm-3">
+
                                             <div class="comment-meta d-flex align-items-baseline">
-                                                <h6 class="me-2">@c.UserId</h6>
+                                                <h6 class="me-2">@c.UserName</h6>
                                             </div>
                                             <div class="comment-body">
                                                 @c.Content
                                             </div>
                                             <div class="row justify-content-center mb-5">
-                                                <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                                    Reply
-                                                </a>
-                                                <div class="collapse" id="collapseExample">
+                                                @if (user is not null)
+                                                {
+                                                    <a data-toggle="collapse" href="@("#collapseExample" + c.Id)" role="button" aria-expanded="false" aria-controls="@("collapseExample" + c.Id)" class="reply-btn">
+                                                        Reply
+                                                    </a>
+                                                }
+                                                <!-- Reply box that slides out -->
+                                                <div class="collapse mt-2" id="@("collapseExample" + c.Id)">
                                                     <div class="card card-body">
-
                                                         <div class="comment-form d-flex align-items-center">
                                                             <div class="flex-shrink-0">
                                                                 <div class="avatar avatar-sm rounded-circle">
@@ -64,28 +67,24 @@
                                                                 </div>
                                                             </div>
                                                             <div class="flex-grow-1 ms-2 ms-sm-3">
-                                                                <form>
-                                                                    <textarea @bind="inputedComment" class="form-control py-0 px-1 border-0" rows="1" placeholder="Start writing..." style="resize: none;"></textarea>
-                                                                    <button @onclick="@(() => AddResponse(c.Id))" class="btn btn-primary">Comment</button>
+                                                                <form onsubmit="return false">
+                                                                    <textarea @bind="inputedComment" class="form-control py-0 px-1 border-0" rows="1" placeholder="Reply to @c.UserName..." style="resize: none;"></textarea>
+                                                                    <button @onclick="@(() => AddResponse(c.Id))" class="btn btn-primary mt-5">Add Comment</button>
                                                                 </form>
                                                             </div>
                                                         </div>
-
                                                     </div>
                                                 </div>
-                                                
-                                                   
-                                               
                                             </div>
-                                            @* <a @onclick="@(() => AddResponse(c.Id))">Reply</a> *@
+
                                             @if (c.Replies.Count() > 0)
                                             {
-                                                <div class="comment-replies bg-light p-3 mt-3 rounded">
-                                                    <h6 class="comment-replies-title mb-4 text-muted text-uppercase"> replies</h6>
+                                                <div class="comment-replies mb-5 p-3 mt-3 rounded">
+                                                    <h6 class="comment-replies-title text-muted text-uppercase"> replies</h6>
                                                     @foreach (var r in c.Replies)
                                                     {
 
-                                                        <div class="reply d-flex mb-4">
+                                                        <div class="reply d-flex">
                                                             <div class="flex-shrink-0">
                                                                 <div class="avatar avatar-sm rounded-circle">
                                                                     <img class="avatar-img" src="https://images.unsplash.com/photo-1501325087108-ae3ee3fad52f?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=f7f448c2a70154ef85786cf3e4581e4b" alt="">
@@ -93,7 +92,7 @@
                                                             </div>
                                                             <div class="flex-grow-1 ms-2 ms-sm-3">
                                                                 <div class="reply-meta d-flex align-items-baseline">
-                                                                    <h6 class="mb-0 me-2">@r.UserId</h6>
+                                                                    <h6 class="mb-0 me-2">@r.UserName</h6>
                                                                     <span class="text-muted">2d</span>
                                                                 </div>
                                                                 <div class="reply-body">
@@ -101,7 +100,6 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <a @onclick="@(() => AddResponse(r.Id))">Reply</a>
                                                     }
                                                 </div>
                                             }
@@ -123,9 +121,9 @@
                                     </div>
                                 </div>
                                 <div class="flex-grow-1 ms-2 ms-sm-3">
-                                    <form>
+                                    <form onsubmit="return false">
                                         <textarea @bind="inputedComment" class="form-control py-0 px-1 border-0" rows="1" placeholder="Start writing..." style="resize: none;"></textarea>
-                                        <button @onclick="@(() => AddResponse())" class="btn btn-primary">Comment</button>
+                                        <button @onclick="@(() => AddResponse())" class="btn btn-primary mt-5">Add Comment</button>
                                     </form>
                                 </div>
                             </div>
@@ -156,10 +154,10 @@
 
     public List<CommentDTO> AllComments { get; set; }
 
+    public List<CommentDTO> TopLevelComments { get; set; }
+
     public string inputedComment { get; set; }
 
-    [CascadingParameter]
-    Task<AuthenticationState> authenticationState { get; set; }
 
     UserDTO user { get; set; }
 
@@ -170,17 +168,17 @@
         blog = await service.GetBlog(blogId);
         AllComments = blog.Comments;
 
-        var authState = await authenticationState;
-        if (authState.User.Identity.IsAuthenticated)
+        TopLevelComments = AllComments.Where(x => x.ReplyId is null).ToList();
+
+
+        if (userState.User.Identity.IsAuthenticated)
         {
-            var authId = authState.User.Claims.FirstOrDefault(x => x.Type == "authId").Value;
+            var authId = userState.User.Claims.FirstOrDefault(x => x.Type == "authId").Value;
             user = await userService.GetAuthUser(authId);
         }
-
-
     }
 
-    public void AddResponse()
+    public async Task AddResponse()
     {
         AddCommentRequest newRequest = new()
             {
@@ -188,7 +186,10 @@
                 contentId = blogId,
                 userGuid = user.Guid,
             };
-        commentService.AddBlogComment(newRequest);
+        await commentService.AddBlogComment(newRequest);
+        inputedComment = "";
+        blog = await service.GetBlog(blogId);
+        AllComments = blog.Comments;
     }
 
     public void AddResponse(int replyId)

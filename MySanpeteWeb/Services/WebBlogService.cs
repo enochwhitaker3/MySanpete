@@ -105,6 +105,7 @@ public class WebBlogService : IBlogService
         return await context.Blogs
             .Include(x => x.BlogComments)
                 .ThenInclude(x => x.Comment)
+                .ThenInclude(x => x.User)
             .Include(x => x.BlogReactions)
                 .ThenInclude(x => x.Reaction)
             .Include(x => x.Author)
@@ -117,6 +118,7 @@ public class WebBlogService : IBlogService
         var blog = await context.Blogs
             .Include(x => x.BlogComments)
                 .ThenInclude(x => x.Comment)
+                .ThenInclude(x => x.User)
             .Include(x => x.BlogReactions)
                 .ThenInclude(x => x.Reaction)
             .Include(x => x.Author)
