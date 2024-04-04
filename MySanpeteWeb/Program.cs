@@ -18,6 +18,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+builder.Services.AddControllers();
+
 builder.Services.AddDbContextFactory<MySanpeteDbContext>(config => config.UseNpgsql(builder.Configuration["MySanpeteDB"]));
 
 var CheckSameSite = (CookieOptions options) =>
@@ -85,6 +87,8 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 
 app.UseAntiforgery();
+
+app.MapControllers();
 
 app.UseAuthentication();
 app.UseAuthorization();

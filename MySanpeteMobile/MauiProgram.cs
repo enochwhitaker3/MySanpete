@@ -24,6 +24,17 @@ namespace MySanpeteMobile
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddMudServices();
 
+            builder.Services.AddSingleton<IOccasionService, MobileOccasionService>();
+            builder.Services.AddSingleton<IBlogService, MobileBlogService>();
+            builder.Services.AddScoped<IVoucherService, MobileVoucherService>();
+            builder.Services.AddSingleton<IBusinessService, MobileBusinessService>();
+            builder.Services.AddSingleton<IUserService, MobileUserService>();
+            builder.Services.AddSingleton<IPodcastService, MobilePodcastService>();
+            builder.Services.AddSingleton<IReactionService, MobileReactionService>();
+            builder.Services.AddSingleton<ICommentService, MobileCommentService>();
+            builder.Services.AddSingleton<IBundleService, MobileBundleService>();
+            builder.Services.AddScoped<IUserVoucherService, MobileUserVoucherService>();
+
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();
             builder.Logging.AddDebug();

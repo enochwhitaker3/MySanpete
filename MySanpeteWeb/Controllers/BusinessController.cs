@@ -25,7 +25,7 @@ public class BusinessController : Controller
         return allBusinesses;
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("/byid/{id}")]
     public async Task<Business?> GetById(int id)
     {
         var business = await businessService.GetBusiness(id);
@@ -34,5 +34,16 @@ public class BusinessController : Controller
             return null;
         }
         return business;
+    }
+
+    [HttpGet("/byemail/{email}")]
+    public async Task<Business?> GetByEmail(string email)
+    {
+        var business = await businessService.GetBusiness(email);
+        if (business is null)
+        {
+            return null;
+        }
+        return business;    
     }
 }
