@@ -19,14 +19,14 @@ public class BusinessController : Controller
     }
 
     [HttpGet()]
-    public async Task<List<Business>> GetAll()
+    public async Task<List<BusinessDTO>> GetAll()
     {
         var allBusinesses = await businessService.GetAllBusinesses();
         return allBusinesses;
     }
 
     [HttpGet("/byid/{id}")]
-    public async Task<Business?> GetById(int id)
+    public async Task<BusinessDTO?> GetById(int id)
     {
         var business = await businessService.GetBusiness(id);
         if (business is null)
@@ -37,7 +37,7 @@ public class BusinessController : Controller
     }
 
     [HttpGet("/byemail/{email}")]
-    public async Task<Business?> GetByEmail(string email)
+    public async Task<BusinessDTO?> GetByEmail(string email)
     {
         var business = await businessService.GetBusiness(email);
         if (business is null)

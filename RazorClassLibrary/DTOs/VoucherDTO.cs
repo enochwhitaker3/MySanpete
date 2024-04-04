@@ -5,7 +5,7 @@ public class VoucherDTO
 {
     public int Id;
     public string? BusinessName;
-    public byte[]? BusinessLogo;
+    public string? BusinessLogoURL;
     public DateTime? StartDate;
     public DateTime? EndDate;
     public string? PromoCode;

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using RazorClassLibrary.Data;
+using RazorClassLibrary.DTOs;
 using RazorClassLibrary.Requests;
 using RazorClassLibrary.Services;
 
@@ -13,7 +14,7 @@ public class WebBusinessService : IBusinessService
     {
         this.dbContextFactory = dbContextFactory;
     }
-    public async Task<Business?> AddBusiness(AddBusinessRequest request)
+    public async Task<BusinessDTO?> AddBusiness(AddBusinessRequest request)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
 
@@ -51,7 +52,7 @@ public class WebBusinessService : IBusinessService
         await context.Businesses.AddAsync(business);
         await context.SaveChangesAsync();
 
-        return business;
+        return business.ToDto();
     }
 
     public async Task<bool?> DeleteBusiness(int id)
@@ -71,37 +72,44 @@ public class WebBusinessService : IBusinessService
         return true;
     }
 
-    public async Task<List<Business>?> GetAllBusinesses()
+    public async Task<List<BusinessDTO?>> GetAllBusinesses()
     {
         var context = await dbContextFactory.CreateDbContextAsync();
 
-        var businesses = await context.Businesses.ToListAsync();
+        var businesses = await context.Businesses
+            .Include(x => x.Vouchers)
+            .Select(x => x.ToDto())
+            .ToListAsync();
 
-        return businesses;
+        return businesses!;
     }
 
-    public async Task<Business?> GetBusiness(int id)
+    public async Task<BusinessDTO?> GetBusiness(int id)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
 
-        var business = await context.Businesses.Where(b => b.Id == id).FirstOrDefaultAsync();
+        var business = await context.Businesses
+            .Include(x => x.Vouchers)
+                .ThenInclude(x => x.UserVouchers)
+            .Where(b => b.Id == id)
+            .FirstOrDefaultAsync();
 
         if (business is null)
         {
             throw new Exception("No businesses found with given ID");
         }
 
-        return business;
+        return business.ToDto();
     }
 
-    public async Task<Business?> GetBusiness(string email)
+    public async Task<BusinessDTO?> GetBusiness(string email)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
 
         var business = await context.Businesses
             .Include(b => b.Vouchers)
-            .ThenInclude(v => v.UserVouchers)
-            .ThenInclude(uv => uv.User)
+                .ThenInclude(v => v.UserVouchers)
+                    .ThenInclude(uv => uv.User)
             .Where(b => b.Email == email)
             .FirstOrDefaultAsync();
 
@@ -110,27 +118,31 @@ public class WebBusinessService : IBusinessService
             throw new Exception("No businesses found with given email");
         }
 
-        return business;
+        return business.ToDto();
     }
 
-    public async Task<Business?> UpdateBusiness(Business business)
+    public async Task<BusinessDTO?> UpdateBusiness(UpdateBusinessRequest businessRequest)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
 
-        var buc = await context.Businesses.Where(b => b.Id == business.Id).FirstOrDefaultAsync();
+        var buc = await context.Businesses.Where(b => b.Id == businessRequest.Id).FirstOrDefaultAsync();
 
         if (buc is null)
         {
             throw new Exception("No business found with given ID");
         }
 
-        buc.BusinessName = business.BusinessName;
-        buc.Address = business.Address;
-        buc.Logo = business.Logo;
+        buc.BusinessName = businessRequest.BusinessName!;
+        buc.Address = businessRequest.Address!;
+
+        if (businessRequest.Logo is not null)
+        {
+            buc.Logo = businessRequest.Logo;
+        }
 
         context.Update(buc);
         await context.SaveChangesAsync();
 
-        return buc;
+        return buc.ToDto();
     }
 }

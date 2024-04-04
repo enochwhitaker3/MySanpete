@@ -15,7 +15,7 @@
             <div class="col-md-3 mt-10">
                 <div class="card h-100 shadow">
                     <div class="logo-container d-flex justify-content-center m-5">
-                        @if (b.Logo is null)
+                        @if (b.LogoURL is null)
                         {
                             <img class="card-img-top rounded-circle "
                                  src="https://i.fbcd.co/products/resized/resized-750-500/b456fb3c430f2ac383cae48c4f8e0c037e0ecaf072d2607320a3252c38fc90de.webp" />
@@ -23,7 +23,7 @@
                         else
                         {
                             <img class="card-img-top rounded-circle "
-                                 src="@ConvertImage(b.Logo)" />
+                                 src="@b.LogoURL" />
                         }
                     </div>
 
@@ -48,7 +48,7 @@
 
 
 @code {
-    public List<Business> AllBusinesses { get; set; } = new();
+    public List<BusinessDTO> AllBusinesses { get; set; } = new();
 
     public string test { get; set; } = "";
 
@@ -56,13 +56,4 @@
     {
         AllBusinesses = await service.GetAllBusinesses();
     }
-
-    public string ConvertImage(byte[] byte_array)
-    {
-        string base64String = Convert.ToBase64String(byte_array);
-        return string.Format("data:image/png;base64,{0}", base64String); ;
-    }
-
-    
-
 }
