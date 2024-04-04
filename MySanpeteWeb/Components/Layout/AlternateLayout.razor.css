@@ -8,6 +8,16 @@
     src: url('Fonts/Casual-Regular.ttf') format('truetype');
 }
 
+@font-face {
+    font-family: 'Inter';
+    src: url('Fonts/Inter-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Inter-Bold';
+    src: url('Fonts/Inter-Bold.ttf') format('truetype');
+}
+
 body {
     background-color: #fcfcf8;
 }
@@ -64,3 +74,12 @@ body {
     outline: 0;
     box-shadow: none;
 }
+
+.footer {
+    width: 100%;
+    background-color: blue;
+    height: 100px;
+}
+
+
+

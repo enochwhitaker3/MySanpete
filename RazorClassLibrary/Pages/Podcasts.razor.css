@@ -32,6 +32,14 @@
     padding-left: 65px;
 }
 
+.logo-row img {
+    transition: .25s ease-out;
+}
+
+.logo:hover {
+    transform: translate(0rem, -0.5rem);
+}
+
 
 @media (max-width: 750px) {
     .content {
