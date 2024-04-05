@@ -56,7 +56,7 @@
 
     public string email { get; set; } = "";
 
-    public Business? business { get; set; }
+    public BusinessDTO? business { get; set; }
 
     List<UserVoucher> vouchers { get; set; } = new();
 
@@ -68,11 +68,11 @@
 
         business = await businessService.GetBusiness(email);
 
-        business?.Vouchers.Select(x =>
-            {
-                vouchers.AddRange(x.UserVouchers);
-                return x.UserVouchers;
-            }).ToList();
+        // business?.Vouchers.Select(x =>
+        //     {
+        //         vouchers.AddRange(x.UserVouchers);
+        //         return x.UserVouchers;
+        //     }).ToList();
 
     }
 }

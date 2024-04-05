@@ -125,7 +125,15 @@ public class BusinessTests : IClassFixture<MySanpeteFactory>
 
         business!.BusinessName = "New Business Name";
 
-        var result = await businessService.UpdateBusiness(business);
+        var updateRequest = new UpdateBusinessRequest()
+        {
+            Address = business.Address,
+            BusinessName = business.BusinessName,
+            Id = business.Id,
+            Logo = [146]
+        };
+
+        var result = await businessService.UpdateBusiness(updateRequest);
 
         result.Should().NotBeNull();
         result!.BusinessName.Should().Be("New Business Name");

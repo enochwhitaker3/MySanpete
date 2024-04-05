@@ -80,8 +80,8 @@
 
 @code {
     public AddOccasionRequest? newOccasion = new();
-    public IEnumerable<Business>? AllBusinesses { get; set; }
-    public Business selectedBusiness { get; set; } = new();
+    public IEnumerable<BusinessDTO>? AllBusinesses { get; set; }
+    public BusinessDTO selectedBusiness { get; set; } = new();
 
     public string errorMessage = "";
     [Parameter]
@@ -126,7 +126,7 @@
                 throw new Exception("The end date needs to be further in the future than the start date");
             }
 
-            selectedBusiness = AllBusinesses.Where(x => x.BusinessName == BusinessName).FirstOrDefault();
+            selectedBusiness = AllBusinesses.Where(x => x.BusinessName == BusinessName).FirstOrDefault()!;
 
             if (selectedBusiness is null)
             {

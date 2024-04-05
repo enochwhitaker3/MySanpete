@@ -1,17 +1,25 @@
 ﻿@inject IPodcastService service;
 
-
-
-<iframe title="From Landscape Rocks to the Ballot Box: How to Work with Local Government to Improve Your Community (with Troy Shelley)" allowtransparency="true" height="300" width="100%" style="border: none; min-width: min(100%, 430px);height:300px;" scrolling="no" data-name="pb-iframe-player" src="https://www.podbean.com/player-v2/?from=embed&i=8ytfd-159b5fa-pb&square=1&share=1&download=1&fonts=Arial&skin=f6f6f6&font-color=auto&rtl=0&logo_link=episode_page&btn-skin=60a0c8&size=300" loading="lazy" allowfullscreen=""></iframe>
-
-<iframe title="Welcome to MySanpete! Scandinavian Festival" allowtransparency="true" height="150" width="100%" style="border: none; min-width: min(100%, 430px);height:150px;" scrolling="no" data-name="pb-iframe-player" src="https://www.podbean.com/player-v2/?from=embed&i=rwxfu-141ba9e-pb" loading="lazy"></iframe>
-
+<div class="logo-row d-flex flex-row justify-content-center">
+    <div class="mx-5">
+        <img class="img-fluid border-rounded logo" style="width: 40px;" src="/Images/Iheart_radio_logo.jpg" />
+    </div>
+    <div class="mx-5">
+        <img class="img-fluid border-rounded logo" style="width: 40px;" src="/Images/iOS_podcast_logo.svg" />
+    </div>
+    <div class="mx-5">
+        <img class="img-fluid border-rounded logo" style="width: 40px;" src="/Images/podbean_logo.png" />
+    </div>
+    <div class="mx-5">
+        <img class="img-fluid border-rounded logo" style="width: 40px;" src="/Images/amazon_music_logo.jpg" />
+    </div>
+</div>
 
 @if(AllPodcasts is not null)
 {
     @foreach (var p in AllPodcasts)
     {
-        <iframe title="@p.Name" allowtransparency="true" height="300" width="100%" style="border: none; min-width: min(100%, 430px);height:300px;" scrolling="no" data-name="pb-iframe-player" src="@p.URL" loading="lazy" allowfullscreen=""></iframe>
+        @((MarkupString)@p.URL)
     }
 }
 

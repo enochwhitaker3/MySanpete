@@ -1,4 +1,12 @@
-﻿<div class="full-page">
+﻿@using RazorClassLibrary.DTOs
+@using RazorClassLibrary.Data
+@using RazorClassLibrary.Services
+@inject IVoucherService voucherService
+@inject NavigationManager NavMan
+@inject IBusinessService businessService
+
+
+<div class="full-page">
 
     <div class="main-section">
         <div class="content">
@@ -10,74 +18,182 @@
         <img class="full-screen-image" src="Images/Sanpete1.jpg" alt="Image">
     </div>
 
-
-    <div class="blog-section">
-        <div class="blog-title">
-            Check Out Our Latest Blogs
+    <!-- Voucher Section -->
+    <div class="voucher-container">
+        <div class="voucher-header p-5 pb-0 w-100 d-flex justify-content-center">
+            <i class="bs-icon bi bi-tags-fill align-self-center m-3 mt-0" style="font-size:80px;"></i>
+            <h2 class="w-25">Shop and Save with local discounts to your favorite places to visit in Sanpete County. Purchase vouchers here and download the app to redeem at the counter.</h2>
         </div>
-        <div class="container">
-            <div class="card">
-                <div class="card-header">
-                    <img src="https://www.wonderworksonline.com/wp-content/uploads/1970/01/Wind-300x200.jpg" alt="rover" />
-                </div>
-                <div class="card-body">
-                    <h4>
-                        Where does the wind come from?
-                    </h4>
-                    <p>
-                        Do we actually know the answer to this polarizing question?
-                    </p>
-                    <div class="user">
-                        <img src="Images/Ethan.jpg" alt="user" />
-                        <div class="user-info">
-                            <h5>Ethan Enger</h5>
-                            <small>2+ Days Ago</small>
+        <div class="mt-5 row pb-15" style="max-width: 1200px; margin-left: auto; margin-right: auto">
+            @if (!isLoading)
+            {
+                @if (allVouchers.Count > 0)
+                {
+                    @for (int i = 0; i < 4; i++)
+                    {
+
+                        <div class="col-md-6 p-3">
+                            <div class="card m-2 rounded-3 shadow">
+                                <div class="d-flex flex-row">
+                                    <div class="col-md img-square-wrapper rounded" style="padding: 0px;">
+                                        <img class="business-logo"
+                                             style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px;"
+                                             src="@allVouchers[i].BusinessLogoURL" />
+                                    </div>
+                                    <div class="col-md card-body">
+                                        <h2 class="card-title">@allVouchers[i].PromoName</h2>
+                                        @if (allVouchers[i].EndDate is not null)
+                                        {
+                                            <p class="card-text">Good through @allVouchers[i].EndDate</p>
+                                        }
+                                        <!-- Button trigger modal -->
+                                        <div class="button" @* @onclick="() => GoToDetailsPage(voucher.Id)" *@>
+                                            <div class="button-wrapper">
+                                                <div class="text">View</div>
+                                                <span class="icon">
+                                                    <svg viewBox="0 0 16 16" class="bi bi-cart2" fill="currentColor" height="16" width="16" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"></path>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
+
+                    }
+                }
+
+                else
+                {
+                    <div class="alert alert-info">
+                        <p>Sorry, there are no vouchers currently. </p>
                     </div>
+                }
+            }
+
+        </div>
+
+    </div>
+
+    <div class="divider d-flex justify-content-center" style="background-color:#fcfcf8;">
+        <hr class="hr w-75" />
+    </div>
+
+
+    <!-- Events Section -->
+
+    <div class="event-container">
+        <div class="voucher-header p-5 pb-0 w-100 d-flex justify-content-center">
+            <i class="bi bi-calendar4-event align-self-center m-3 mt-0" style="font-size:80px;"></i>
+            <h2 class="w-25">Sanpete Events Happening Soon</h2>
+        </div>
+        <div class="row shadow" style="max-width: 1200px;">
+            <div class="event-date col d-flex">
+                <div class="event-day align-self-end">
+                    <h2>MAY</h2>
+                    <h2>01</h2>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-header">
-                    <img src="https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/uk/advisor/wp-content/uploads/2021/09/wind-unsplash.jpg" alt="ballons" />
-                </div>
-                <div class="card-body">
-                    <h4>
-                        An answer to the last blog regarding the wind.
-                    </h4>
-                    <p>
-                        Yes, we actually know where the wind comes from.
-                    </p>
-                    <div class="user">
-                        <img src="Images/Dusty.jpg" alt="user" />
-                        <div class="user-info">
-                            <h5>Dusty Shaw</h5>
-                            <small>Yesterday</small>
-                        </div>
-                    </div>
+            <div class="col">
+                <h3>Title</h3>
+                <h4>Time</h4>
+                <h4>Dasd sf sd fsdf j nkf enk lef nk ef nefni owf eni o'wf enio'</h4>
+            </div>
+            <div class="col align-self-end">
+
+                <img src="https://dummyimage.com/300x300/000/fff" />
+
+            </div>
+        </div>
+        <div class="row shadow mt-5" style="max-width: 1200px;">
+            <div class="event-date col d-flex">
+                <div class="event-day align-self-end">
+                    <h2>SEPT</h2>
+                    <h2>01</h2>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-header">
-                    <img src="https://news.fullerton.edu/app/uploads/2022/11/Debate-Team-800x500.jpg" alt="city" />
-                </div>
-                <div class="card-body">
-                    <h4>
-                        Debunking the last blog regarding where the wind comes from.
-                    </h4>
-                    <p>
-                        The big man in the sky the liberals DO NOT want you to know about!
-                    </p>
-                    <div class="user">
-                        <img src="Images/Parker.jpg" alt="user" />
-                        <div class="user-info">
-                            <h5>Parker Swenson</h5>
-                            <small>2h ago</small>
-                        </div>
-                    </div>
+            <div class="col">
+                <h3>Title</h3>
+                <h4>Time</h4>
+                <h4>Dasd sfsd fsdfjnk fenk lefn kefnefniowfeni o'wfe nio'</h4>
+            </div>
+            <div class="col align-self-end">
+                <img src="https://dummyimage.com/300x300/000/fff" />
+            </div>
+        </div>
+        <div class="row shadow mt-5" style="max-width: 1200px;">
+            <div class="event-date col d-flex">
+                <div class="event-day align-self-end">
+                    <h2>MARCH</h2>
+                    <h2>01</h2>
                 </div>
             </div>
+            <div class="col">
+                <h3>Title</h3>
+                <h4>Time</h4>
+                <h4>Dasds fsdfsdfjn kfenklef nkefnef ni owfenio'wfenio'</h4>
+            </div> 
+            <div class="col align-self-end">
+                <img class="img align-self-end" src="https://dummyimage.com/300x300/000/fff" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Business Section -->
+    <div class="business-container row justify-content-center">
+        <div class="col-md-6 m-5 about-us">
+            <h2 class="mb-5">Are you a business in Sanpete?</h2>
+            <h3>MySanpete wants to help you and your business thrive! Learn how to collaborate with MySanpete, read our blogs, or listen to our podcasts all about businesses. </h3>
+        </div>
+        <div class="col-md-6 m-5 contact-us">
+            <h2 class="mb-5">Collaborate With MySanpete</h2>
+            <div class="row mb-4">
+                <div class="col-1">
+                    <i class="bi bi-check-square" style="font-size: 40px;" />
+                </div>
+                <div class="col-11">
+                    <p> List your upcoming events through MySanpete</p>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-1">
+                    <i class="bi bi-check-square" style="font-size: 40px;" />
+                </div>
+                <div class="col-11">
+                    <p>Create Coupons and Purchasable vouchers to increase traffic to your business.</p>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-1">
+                    <i class="bi bi-check-square" style="font-size: 40px;" />
+                </div>
+                <div class="col-11">
+                    <p>Keep in touch with content that can help your business stand out.</p>
+                </div>
+            </div>
+            <div class="contact-button d-flex w-100 justify-content-center">
+                <div class="btn mt-5 mb-5"><span data-text="Contact">Contact</span></div>
+            </div>
+
         </div>
     </div>
 </div>
 
 
+@code {
+    public List<VoucherDTO> allVouchers { get; set; } = new();
+    public List<BusinessDTO> allBusinesses { get; set; } = new();
+    public bool isLoading { get; set; } = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+        allVouchers = await voucherService.GetAllVouchers();
+        allVouchers = allVouchers.Where(x => x.EndDate >= DateTime.UtcNow).ToList();
+        allBusinesses = await businessService.GetAllBusinesses();
+        isLoading = false;
+    }
+}

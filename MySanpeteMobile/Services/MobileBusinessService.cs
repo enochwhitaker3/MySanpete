@@ -13,7 +13,7 @@ public class MobileBusinessService : IBusinessService
     {
         this.httpClient = httpClient;
     }
-    public Task<Business?> AddBusiness(AddBusinessRequest request)
+    public Task<BusinessDTO?> AddBusiness(AddBusinessRequest request)
     {
         throw new NotImplementedException();
     }
@@ -23,25 +23,25 @@ public class MobileBusinessService : IBusinessService
         throw new NotImplementedException();
     }
 
-    public async Task<List<Business>> GetAllBusinesses()
+    public async Task<List<BusinessDTO>> GetAllBusinesses()
     {
-        var result = await httpClient.GetFromJsonAsync<List<Business>>($"https://localhost:7059/api/business/");
+        var result = await httpClient.GetFromJsonAsync<List<BusinessDTO>>($"https://localhost:7059/api/business/");
         return result!;
     }
 
-    public async Task<Business?> GetBusiness(int id)
+    public async Task<BusinessDTO?> GetBusiness(int id)
     {
-        var result = await httpClient.GetFromJsonAsync<Business>($"/api/business/byid/{id}");
+        var result = await httpClient.GetFromJsonAsync<BusinessDTO>($"/api/business/byid/{id}");
         return result!;
     }
 
-    public async Task<Business?> GetBusiness(string email)
+    public async Task<BusinessDTO?> GetBusiness(string email)
     {
-        var result = await httpClient.GetFromJsonAsync<Business>($"/api/business/byemail/{email}");
+        var result = await httpClient.GetFromJsonAsync<BusinessDTO>($"/api/business/byemail/{email}");
         return result!;
     }
 
-    public Task<Business?> UpdateBusiness(Business business)
+    public Task<BusinessDTO?> UpdateBusiness(UpdateBusinessRequest businessRequest)
     {
         throw new NotImplementedException();
     }
