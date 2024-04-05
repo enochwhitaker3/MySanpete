@@ -11,6 +11,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Stripe;
+using LazyCache;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,6 +60,12 @@ builder.Services.AddSingleton<IBundleService, WebBundleService>();
 builder.Services.AddScoped<IStripeService, StripeService>();
 builder.Services.AddScoped<IUserVoucherService, WebUserVoucherService>();
 builder.Services.AddScoped<IUserState, WindowsUserState>();
+
+builder.Services.AddLazyCache(serviceProvider => {
+    var cache = new CachingService(CachingService.DefaultCacheProvider);
+    cache.DefaultCachePolicy.DefaultCacheDurationSeconds = 60 * 60 * 24; //1m -> 1hr -> 1d
+    return cache;
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
