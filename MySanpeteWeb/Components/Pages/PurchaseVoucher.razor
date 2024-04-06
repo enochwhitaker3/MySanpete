@@ -47,8 +47,8 @@ else
     [Parameter]
     public int voucherId { get; set; }
 
-    public VoucherDTO voucher { get; set; }
-    public Business business { get; set; }
+    public VoucherDTO? voucher { get; set; }
+    public BusinessDTO? business { get; set; }
     public string imgDataURL { get; set; } = "";
 
     [CascadingParameter]
@@ -62,25 +62,6 @@ else
         var businesses = await businessService.GetAllBusinesses();
         business = businesses.Where(x => x.BusinessName == voucher.BusinessName).FirstOrDefault();
         authState = await authenticationState;
-
-        if (business.Logo is not null)
-        {
-            ByteArrayToImage();
-        }
-    }
-
-    public void ByteArrayToImage()
-    {
-        try
-        {
-            string imageString = Convert.ToBase64String(business.Logo);
-            imgDataURL = string.Format("data:image/png;base64,{0}", imageString);
-
-        }
-        catch (Exception ex)
-        {
-
-        }
     }
 
     private async Task Checkout()

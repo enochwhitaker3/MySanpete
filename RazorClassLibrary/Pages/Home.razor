@@ -38,7 +38,7 @@
                                     <div class="col-md img-square-wrapper rounded" style="padding: 0px;">
                                         <img class="business-logo"
                                              style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px;"
-                                             src="@ByteArrayToImage(allVouchers[i].BusinessLogo)" />
+                                             src="@allVouchers[i].BusinessLogoURL" />
                                     </div>
                                     <div class="col-md card-body">
                                         <h2 class="card-title">@allVouchers[i].PromoName</h2>
@@ -158,7 +158,7 @@
 
 @code {
     public List<VoucherDTO> allVouchers { get; set; } = new();
-    public List<Business> allBusinesses { get; set; }
+    public List<BusinessDTO> allBusinesses { get; set; } = new();
     public bool isLoading { get; set; } = true;
 
     protected override async Task OnInitializedAsync()
@@ -168,14 +168,5 @@
         allVouchers = allVouchers.Where(x => x.EndDate >= DateTime.UtcNow).ToList();
         allBusinesses = await businessService.GetAllBusinesses();
         isLoading = false;
-    }
-
-
-    public string ByteArrayToImage(byte[] array)
-    {
-        isLoading = true;
-        string imageString = Convert.ToBase64String(array);
-        isLoading = false;
-        return string.Format("data:image/png;base64,{0}", imageString);
     }
 }

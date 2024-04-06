@@ -1,4 +1,5 @@
 ﻿using RazorClassLibrary.Data;
+using RazorClassLibrary.Pages;
 
 namespace RazorClassLibrary.DTOs;
 
@@ -12,23 +13,28 @@ public static class DtoConverter
             Guid = user.Guid,
             Username = user.UserName,
             UserEmail = user.UserEmail,
-            Photo = user.Photo,
+            Photo = $"https://mysanpete.azurewebsites.net/api/image/user/{user.Id}",
         };
     }
 
     public static VoucherDTO ToDto(this Voucher voucher)
     {
+        int? stock = 0;
+        if(voucher.UserVouchers is not null && voucher.PromoStock is not null)
+        {
+            stock = voucher.PromoStock - voucher.UserVouchers.Count();
+        }
         return new VoucherDTO()
         {
             Id = voucher.Id,
             BusinessName = voucher.Business.BusinessName,
-            BusinessLogo = voucher.Business.Logo,
+            BusinessLogoURL = $"https://mysanpete.azurewebsites.net/api/image/business/{voucher.Business.Id}",
             StartDate = voucher.StartDate,
             EndDate = voucher.EndDate,
             PromoCode = voucher.PromoCode,
             PromoName = voucher.PromoName,
             PromoDescription = voucher.PromoDescription,
-            LeftInStock = voucher.PromoStock - voucher.UserVouchers.Count(),
+            LeftInStock = stock,
             RetailPrice = voucher.RetailPrice,
             AmmountReclaimable = voucher.TotalReclaimable,
             Stock = voucher.PromoStock,
@@ -122,6 +128,23 @@ public static class DtoConverter
         {
             Id = comment.Id,
             Content = comment.Comment.CommentText
+        };
+    }
+
+    public static BusinessDTO ToDto(this Business business)
+    {
+        var vouchers = business.Vouchers.Select(x => x.ToDto());
+
+        return new BusinessDTO()
+        {
+            Id = business.Id,
+            Address = business.Address,
+            BusinessName = business.BusinessName,
+            Email = business.Email,
+            LogoURL = $"https://mysanpete.azurewebsites.net/api/image/business/{business.Id}",
+            PhoneNumber = business.PhoneNumber,
+            WebsiteURL = business.Website,
+            Vouchers = vouchers
         };
     }
 }

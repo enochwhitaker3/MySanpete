@@ -6,5 +6,5 @@ public class UserDTO
     public Guid? Guid { get; set; }
     public string? Username { get; set; }
     public string? UserEmail { get; set; }
-    public byte[]? Photo { get; set; }
+    public string? Photo { get; set; }
 }

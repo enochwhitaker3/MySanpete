@@ -24,12 +24,12 @@
                 {
                     @foreach (var b in allBusinesses)
                     {
-                        @if (b.Logo is not null)
+                        @if (b.LogoURL is not null && b.BusinessName is not null)
                         {
                             <div>
                                 <a @onclick="() => toggleFiltering(b.BusinessName)">
                                     <img class="@(b.BusinessName == filteredBusiness ? "filtered" : "non-filtered")"
-                                         src="@ByteArrayToImage(b.Logo)" alt="@b.BusinessName" title="@b.BusinessName" />
+                                         src="@b.LogoURL" alt="@b.BusinessName Logo" title="@b.BusinessName" />
                                 </a>
                             </div>
                         }
@@ -69,7 +69,7 @@
                                         <div class="col-md img-square-wrapper rounded" style="padding: 0px;">
                                             <img class="business-logo"
                                                  style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px;"
-                                                 src="@ByteArrayToImage(voucher.BusinessLogo)" />
+                                                 src="@voucher.BusinessLogoURL" />
                                         </div>
                                         <div class="col-md card-body">
                                             <h2 class="card-title">@voucher.PromoName</h2>
@@ -107,7 +107,7 @@
                                         <div class="col-md img-square-wrapper rounded" style="padding: 0px;">
                                             <img class="business-logo"
                                                  style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px;"
-                                                 src="@ByteArrayToImage(voucher.BusinessLogo)" />
+                                                 src="@voucher.BusinessLogoURL" />
                                         </div>
                                         <div class="col-md card-body">
                                             <h2 class="card-title">@voucher.PromoName</h2>
@@ -149,9 +149,9 @@
 
 @code {
     public List<VoucherDTO> allVouchers { get; set; } = new();
-    public List<VoucherDTO> filteredVouchers { get; set; }
+    public List<VoucherDTO> filteredVouchers { get; set; } = new();
     public string filteredBusiness { get; set; } = "none";
-    public List<Business> allBusinesses { get; set; }
+    public List<BusinessDTO> allBusinesses { get; set; } = new();
     public bool isLoading { get; set; } = true;
     public bool filtering { get; set; } = false;
 
@@ -167,14 +167,6 @@
     public void GoToDetailsPage(int id)
     {
         NavMan.NavigateTo($"/view-voucher/{id}");
-    }
-
-    public string ByteArrayToImage(byte[] array)
-    {
-        isLoading = true;
-        string imageString = Convert.ToBase64String(array);
-        isLoading = false;
-        return string.Format("data:image/png;base64,{0}", imageString);
     }
 
     public List<VoucherDTO> toggleFiltering(string businessName)
