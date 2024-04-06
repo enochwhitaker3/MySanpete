@@ -14,6 +14,11 @@ body, html {
     height: 100%;
 }
 
+.full-page {
+    background-color: #fcfcf8;
+}
+
+
 .main-section {
     position: relative;
 }
@@ -278,26 +283,56 @@ body, html {
 
 
 .event-container {
-    color: #3f4a49;
+    color: #fcfcf8;
     background-color: #fcfcf8;
 }
 
-.event-month{
-    width: 17%;
+.voucher-header {
+    color: black !important;
 }
 
-    .event-month h1 {
+.event-date {
+}
+
+    .event-date h2 {
         font-family: Inter-Bold;
-        font-size: 40px;
-        transform: rotate(270deg);
+        font-size: 70px;
         width: fit-content;
         transform-origin: bottom center;
     }
 
-.event-day h2 {
-    font-family: Inter-Bold;
-    font-size: 70px;
-    width: fit-content;
-    transform-origin: bottom center;
+    .event-date h3 {
+        font-family: Inter-Bold;
+        font-size: 70px;
+        width: fit-content;
+        transform-origin: bottom center;
+    }
+
+.event-card {
+    background-color: #fff;
 }
 
+
+.button2 {
+    background-color: #fcfcf8;
+    color: black;
+    border-radius: 10em;
+    font-size: 17px;
+    font-weight: 600;
+    padding: 1em 2em;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    border: 1px solid black;
+    box-shadow: 0 0 0 0 black;
+}
+
+    .button2:hover {
+        transform: translateY(-4px) translateX(-2px);
+        box-shadow: 2px 5px 0 0 black;
+    }
+
+
+.button2:active {
+    transform: translateY(2px) translateX(1px);
+    box-shadow: 0 0 0 0 black;
+}
