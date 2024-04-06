@@ -308,8 +308,36 @@ body, html {
         transform-origin: bottom center;
     }
 
+.event-details {
+
+    color: #3f4a49 !important;
+}
+
+    .event-details h2 {
+        font-family: Inter-Bold;
+    }
+    .event-details h4 {
+        font-family: Inter;
+    }
+
 .event-card {
     background-color: #fff;
+}
+
+
+.carousel-inner {
+    padding: 1em;
+}
+
+
+.carousel-control-prev,
+.carousel-control-next {
+    background-color: #e1e1e1;
+    width: 5vh;
+    height: 5vh;
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 
