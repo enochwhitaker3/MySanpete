@@ -72,7 +72,7 @@ public class WebBusinessService : IBusinessService
         return true;
     }
 
-    public async Task<List<BusinessDTO?>> GetAllBusinesses()
+    public async Task<List<BusinessDTO>> GetAllBusinesses()
     {
         var context = await dbContextFactory.CreateDbContextAsync();
 

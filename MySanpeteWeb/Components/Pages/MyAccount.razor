@@ -1,4 +1,5 @@
 ﻿@page "/account"
+@using RazorClassLibrary.Requests
 @using RazorClassLibrary.Services
 
 @inject IUserService userService
@@ -17,7 +18,7 @@
     <div class="col-md-5">
         <h3>My Account</h3>
     
-        <img class="img-fluid border-rounded" src="@User.Photo" />
+        <img class="img-fluid border-rounded" src="@User.PhotoURL" />
 
         
 
@@ -55,10 +56,10 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (userState.User.Identity.IsAuthenticated)
+        if (userState!.User!.Identity.IsAuthenticated)
         {
-            var authId = userState.User.Claims.FirstOrDefault(x => x.Type == "authId").Value;
-            User = await userService.GetAuthUser(authId);
+            var authId = userState.User.Claims.FirstOrDefault(x => x.Type == "authId")!.Value;
+            User = await userService!.GetAuthUser(authId)!;
         }
     }
 
@@ -77,13 +78,13 @@
 
     public async Task UpdateUserPhoto()
     {
-        UserDTO updatedUsr = new UserDTO()
+        UpdateUserRequest updatedUsr = new UpdateUserRequest()
         {
             Guid = User.Guid,
-            Username = User.Username,
+            Id = User.Id,
             Photo = ImageBytes,
             UserEmail = User.UserEmail,
-
+            Username = User.Username
         };
 
         var result = await userService.PatchUser(updatedUsr);

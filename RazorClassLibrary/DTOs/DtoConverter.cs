@@ -13,7 +13,7 @@ public static class DtoConverter
             Guid = user.Guid,
             Username = user.UserName,
             UserEmail = user.UserEmail,
-            Photo = $"https://mysanpete.azurewebsites.net/api/image/user/{user.Id}",
+            PhotoURL = $"https://mysanpete.azurewebsites.net/api/image/user/{user.Id}",
         };
     }
 
