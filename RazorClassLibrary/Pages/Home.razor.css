@@ -60,13 +60,13 @@ body, html {
 
     .about-us h2 {
         font-family: Inter-Bold;
-        font-size: 40px;
+        font-size: 2.25rem;
     }
 
     .about-us h3 {
         font-family: Inter;
-        font-size: 20px;
-        width: 70%;
+        font-size: 1rem;
+        width: 75%;
     }
 
 .contact-us {
@@ -75,12 +75,12 @@ body, html {
 
     .contact-us h2 {
         font-family: Inter-Bold;
-        font-size: 40px;
+        font-size: 2.25rem;
     }
 
     .contact-us p {
         font-family: Inter;
-        font-size: 20px;
+        font-size: 1rem;
     }
 
 
@@ -107,7 +107,7 @@ body, html {
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    /*    width: 65%;*/
+    width: 35%;
     margin: auto;
 }
 
@@ -135,9 +135,8 @@ body, html {
     }
 
     .btn span {
-        font-size: 1vw;
+        font-size: 1rem;
         font-weight: 500;
-        overflow: hidden;
         position: relative;
         color: white;
     }
@@ -186,7 +185,7 @@ body, html {
 }
 
 .voucher-header h2 {
-    font-size: 1.5rem !important;
+    font-size: 1.5vw !important;
 }
 
 .card {
@@ -292,36 +291,33 @@ body, html {
 }
 
 .event-date {
+
 }
 
     .event-date h2 {
         font-family: Inter-Bold;
-        font-size: 70px;
+        font-size: 3vw;
         width: fit-content;
         transform-origin: bottom center;
     }
 
-    .event-date h3 {
-        font-family: Inter-Bold;
-        font-size: 70px;
-        width: fit-content;
-        transform-origin: bottom center;
-    }
 
 .event-details {
-
     color: #3f4a49 !important;
 }
 
     .event-details h2 {
         font-family: Inter-Bold;
+        font-size: 2.5vw
     }
     .event-details h4 {
         font-family: Inter;
+        font-size: 1rem;
     }
 
 .event-card {
     background-color: #fff;
+    height: 25vh;
 }
 
 
@@ -363,4 +359,35 @@ body, html {
 .button2:active {
     transform: translateY(2px) translateX(1px);
     box-shadow: 0 0 0 0 black;
+}
+
+
+
+@media screen and (max-width: 800px){
+    .voucher-header h2{
+        font-size: 1rem !important;
+        width: 75% !important;
+    }
+    .bs-icon {
+        font-size: 8vw !important;
+    }
+
+    .bi-calendar4-event {
+        font-size: 8vw !important ;
+    }
+}
+
+
+
+@media screen and (max-width: 600px){
+    .event-card {
+        height: 15vh;
+        max-width: 75vw !important;
+    }
+    .event-details h2{
+        font-size: 3.5vw;
+    }
+    .event-details h4{
+        font-size: .6rem;
+    }
 }
