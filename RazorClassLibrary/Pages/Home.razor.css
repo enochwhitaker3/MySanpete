@@ -187,6 +187,16 @@ body, html {
 .voucher-header h2 {
     font-size: 1.5vw !important;
 }
+.app-header{
+    font-size: 1.5vw !important;
+}
+.lg-view {
+    display: inline-block;
+}
+.sm-view {
+    display: none;
+    font-size: 4vw !important;
+}
 
 .card {
     background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='1' ry='1' stroke='%23333' stroke-width='3' stroke-dasharray='6%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
@@ -361,6 +371,74 @@ body, html {
     box-shadow: 0 0 0 0 black;
 }
 
+.download-button{
+
+}
+
+.playstore-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #000;
+    border-radius: 9999px;
+    background-color: white;
+    padding: 0.625rem 1.5rem;
+    text-align: center;
+    color: black;
+    outline: 0;
+    transition: all .2s ease;
+    text-decoration: none;
+}
+
+    .playstore-button:hover {
+        transform: translateY(-4px) translateX(-2px);
+        box-shadow: 2px 5px 0 0 black;
+    }
+
+.google-icon {
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+.texts {
+    margin-left: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1;
+}
+
+.text-1 {
+    margin-bottom: 0.25rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 768px) {
+    .playstore-button {
+        padding: 0.5rem 1.25rem; /* Adjusted padding for smaller screens */
+    }
+
+    .text-1 {
+        font-size: 0.65rem; /* Adjusted font size for smaller screens */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .playstore-button {
+        padding: 0.4rem 1rem; /* Further adjusted padding for even smaller screens */
+    }
+
+    .text-1 {
+        font-size: 0.5rem; /* Further adjusted font size for even smaller screens */
+    }
+}
+
+
+.text-2 {
+    font-weight: 600;
+}
 
 
 @media screen and (max-width: 800px){
@@ -375,6 +453,10 @@ body, html {
     .bi-calendar4-event {
         font-size: 8vw !important ;
     }
+    .lg-view {
+        font-size: 2vw;
+    }
+
 }
 
 
@@ -389,5 +471,13 @@ body, html {
     }
     .event-details h4{
         font-size: .6rem;
+    }
+    .lg-view {
+        display: none;
+    }
+
+    .sm-view {
+        display: inline-block;
+        font-size: 3vw;
     }
 }
