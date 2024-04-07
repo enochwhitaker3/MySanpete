@@ -135,6 +135,7 @@ app.MapRazorComponents<App>()
 
 app.MapRazorPages();
 
+app.UseStatusCodePagesWithRedirects("/404");
 
 
 app.Run();
