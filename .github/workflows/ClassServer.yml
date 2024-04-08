@@ -37,7 +37,7 @@ jobs:
       - name: "Run docker-compose up"
         id: compose
         run: |
-            docker compose -e Domain=${{secrets.DOMAIN}} ClientId=${{ secrets.CLIENTID }} STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }} MapKey=${{ secrets.MAPKEY }} up --build -d 
+          Domain=${{secrets.DOMAIN}} ClientId=${{ secrets.CLIENTID }} STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }} MapKey=${{ secrets.MAPKEY }} docker compose up --build -d
         working-directory: ./../../../../MySanpete
     #   - name: Microsoft Teams Notification
     #     uses: skitionek/notify-microsoft-teams@master
