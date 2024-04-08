@@ -114,7 +114,11 @@
     {
         UpdateUserRequest updatedUsr = new UpdateUserRequest()
             {
+                Guid = User.Guid,
+                Id = User.Id,
                 Photo = ImageBytes,
+                UserEmail = User.UserEmail,
+                Username = User.Username
             };
 
         var result = await userService.PatchUser(updatedUsr);
@@ -125,9 +129,13 @@
     public async Task UpdateUserName()
     {
         UpdateUserRequest updatedUsr = new UpdateUserRequest()
-        {
-            Username = NewUsername
-        };
+            {
+                Guid = User.Guid,
+                Id = User.Id,
+                UserEmail = User.UserEmail,
+                Username =  NewUsername
+            };
+
 
         var result = await userService.PatchUser(updatedUsr);
     }
