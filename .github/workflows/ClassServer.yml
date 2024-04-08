@@ -36,7 +36,10 @@ jobs:
     #     working-directory: ./../../../../ticketsrus-dusty-mustafa-ethan/MobileApp/
       - name: "Not making an env file"
         run: | 
-          echo "Domain=${{secrets.DOMAIN}} \nClientId=${{ secrets.CLIENTID }} \nSTRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }} \nMapKey=${{ secrets.MAPKEY }}" > .env
+          echo "Domain=${{secrets.DOMAIN}} 
+          ClientId=${{ secrets.CLIENTID }} 
+          STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }} 
+          MapKey=${{ secrets.MAPKEY }}" > .env
         working-directory: ./../../../../MySanpete/MySanpeteWeb
       - name: "Run docker-compose up"
         id: compose
