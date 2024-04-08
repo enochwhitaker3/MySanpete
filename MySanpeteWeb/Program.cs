@@ -79,7 +79,7 @@ builder.Services.AddAuth0WebAppAuthentication(options =>
 
 builder.Services.AddControllersWithViews();
 
-
+builder.Configuration.AddEnvironmentVariables();
 
 var app = builder.Build();
 
