@@ -6,10 +6,10 @@ jobs:
     steps:
       - name: "Stop old compose"
         run: |
-            # cd ./MySanpete
-            # docker compose down -v 
-            # cd ../
-            # rm -rf ./MySanpete
+            cd ./MySanpete
+            docker compose down -v 
+            cd ../
+            rm -rf ./MySanpete
         working-directory: ./../../../../
       - name: "Clone repo"
         run: | 
