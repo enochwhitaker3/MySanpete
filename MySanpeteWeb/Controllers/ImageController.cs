@@ -33,7 +33,12 @@ public class ImageController : Controller
     [HttpGet("user/{userId}")]
     public async Task<IActionResult> GetUserImage(int userId)
     {
-        return await cache.GetOrAddAsync($"User{userId}", () => GetUserImageAsync(userId));
+        using var context = await factory.CreateDbContextAsync();
+        var user = await context.EndUsers.FirstOrDefaultAsync(i => i.Id == userId);
+
+        var image = user.Photo;
+
+        return File(image, "image/jpeg");
     }
 
     private async Task<IActionResult> GetUserImageAsync(int id)
