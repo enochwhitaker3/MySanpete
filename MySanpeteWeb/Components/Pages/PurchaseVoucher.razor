@@ -50,9 +50,10 @@ else
     public VoucherDTO? voucher { get; set; }
     public BusinessDTO? business { get; set; }
     public string imgDataURL { get; set; } = "";
+    public string errorMessage { get; set; } = "";
 
     [CascadingParameter]
-    Task<AuthenticationState> authenticationState { get; set; }
+    Task<AuthenticationState>? authenticationState { get; set; }
 
     AuthenticationState? authState { get; set; }
 
@@ -61,17 +62,16 @@ else
         voucher = await service.GetVoucher(voucherId) ?? new VoucherDTO();
         var businesses = await businessService.GetAllBusinesses();
         business = businesses.Where(x => x.BusinessName == voucher.BusinessName).FirstOrDefault();
-        authState = await authenticationState;
+        imgDataURL = business!.LogoURL!;
+        authState = await authenticationState!;
     }
 
     private async Task Checkout()
     {
         var domain = "https://localhost:7059"; // TODO change when we post to azure
         var metadata = new Dictionary<string, string>();
-        metadata.Add("VoucherId", voucher.Id.ToString());
-        metadata.Add("UserId", authState?.User?.Claims?.FirstOrDefault(x => x.Type == "authId")?.Value);
-
-
+        metadata.Add("VoucherId", voucher!.Id.ToString());
+        metadata.Add("UserId", authState?.User?.Claims?.FirstOrDefault(x => x.Type == "authId")?.Value!);
         var options = new SessionCreateOptions { LineItems = new List<SessionLineItemOptions>
             {
                 new()
@@ -97,7 +97,7 @@ else
         }
         catch (Exception ex)
         {
-
+            errorMessage = ex.Message;
         }
     }
 
