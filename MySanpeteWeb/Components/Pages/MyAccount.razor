@@ -1,0 +1,92 @@
+﻿@page "/account"
+@using RazorClassLibrary.Requests
+@using RazorClassLibrary.Services
+
+@inject IUserService userService
+@inject IUserState userState
+<h3>My Account</h3>
+
+@if(User is not null)
+{
+    
+<div class="row" style="max-width: 1200px; margin-left: auto; margin-right: auto;">
+    <div class="col-md-5">
+        <div>
+            <p>My Account</p>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <h3>My Account</h3>
+    
+        <img class="img-fluid border-rounded" src="@User.PhotoURL" />
+
+        
+
+        <div class="form-group">
+            <label for="photo">Add a Thumnail Image</label>
+            <small style="color: darkgray;"><br />Recommended image size of 500 X 750 pixels. If no image is provided, MySanpete Logo will be displayed.<br /></small>
+            <InputFile OnChange="SaveFile"></InputFile>
+                <button class="btn btn-primary" @onclick="UpdateUserPhoto">Update Photo</button>
+        </div>
+
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Edit your Username</label>
+            <small>This will be public to other users and will be seen on comments.</small>
+            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="username">
+        </div>
+
+        <h3>My Vouchers</h3>
+        <button>View Vouchers</button>
+
+        
+
+        <h3>My Saved Events</h3>
+        <button></button>
+       
+
+    </div>
+</div>
+}
+
+@code {
+
+    byte[]? ImageBytes { get; set; }
+
+    public UserDTO User { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (userState!.User!.Identity.IsAuthenticated)
+        {
+            var authId = userState.User.Claims.FirstOrDefault(x => x.Type == "authId")!.Value;
+            User = await userService!.GetAuthUser(authId)!;
+        }
+    }
+
+    public async Task SaveFile(InputFileChangeEventArgs e)
+    {
+        IBrowserFile file = e.GetMultipleFiles(1).Single();
+
+        using (var ms = new MemoryStream())
+        {
+            await file.OpenReadStream().CopyToAsync(ms);
+            ImageBytes = ms.ToArray();
+        }
+
+
+    }
+
+    public async Task UpdateUserPhoto()
+    {
+        UpdateUserRequest updatedUsr = new UpdateUserRequest()
+        {
+            Guid = User.Guid,
+            Id = User.Id,
+            Photo = ImageBytes,
+            UserEmail = User.UserEmail,
+            Username = User.Username
+        };
+
+        var result = await userService.PatchUser(updatedUsr);
+    }
+}

@@ -1,4 +1,5 @@
 ﻿using RazorClassLibrary.Data;
+using RazorClassLibrary.Pages;
 
 namespace RazorClassLibrary.DTOs;
 
@@ -12,7 +13,7 @@ public static class DtoConverter
             Guid = user.Guid,
             Username = user.UserName,
             UserEmail = user.UserEmail,
-            Photo = user.Photo,
+            PhotoURL = $"https://mysanpete.azurewebsites.net/api/image/user/{user.Id}",
         };
     }
 
