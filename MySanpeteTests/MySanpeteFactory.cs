@@ -37,8 +37,8 @@ public class MySanpeteFactory : WebApplicationFactory<Program>, IAsyncLifetime
         builder.ConfigureTestServices(services =>
         {
             services.RemoveAll(typeof(DbContextOptions<MySanpeteDbContext>));
-            services.RemoveAll(typeof(IStripeService));
             services.AddDbContextFactory<MySanpeteDbContext>(options => options.UseNpgsql(_dbContainer.GetConnectionString()));
+            services.RemoveAll(typeof(IStripeService));
             services.AddScoped<IStripeService, DummyStripeService>();
         });
     }
