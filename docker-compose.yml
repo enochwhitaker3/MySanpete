@@ -17,6 +17,10 @@ services:
     environment:
       MySanpeteDb: user id= postgres; password=postgres; server=mysanpetedb; database= postgres;
       DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE: false
+      Domain: ${{ secrets.DOMAIN }}
+      ClientId: ${{ secrets.CLIENTID }}
+      STRIPE_SECRET_KEY:  ${{ secrets.STRIPE_SECRET_KEY }}
+      MapKey: ${{ secrets.MAPKEY }}
     depends_on: 
       - mysanpetedb
 
