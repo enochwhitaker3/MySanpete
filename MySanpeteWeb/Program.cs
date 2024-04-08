@@ -79,7 +79,9 @@ builder.Services.AddAuth0WebAppAuthentication(options =>
 
 builder.Services.AddControllersWithViews();
 
-
+builder.Configuration
+.AddJsonFile("../../../.env", true)
+.AddEnvironmentVariables();
 
 var app = builder.Build();
 

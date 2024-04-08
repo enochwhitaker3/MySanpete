@@ -34,10 +34,17 @@ jobs:
 
     #         kubectl apply -f EthansDockerFiles/kube/
     #     working-directory: ./../../../../ticketsrus-dusty-mustafa-ethan/MobileApp/
+      - name: "Not making an env file"
+        run: | 
+          echo "Domain=${{secrets.DOMAIN}} 
+          ClientId=${{ secrets.CLIENTID }} 
+          STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }} 
+          MapKey=${{ secrets.MAPKEY }}" > .env
+        working-directory: ./../../../../MySanpete/MySanpeteWeb
       - name: "Run docker-compose up"
         id: compose
         run: |
-            docker compose up --build -d
+          docker compose up --build -d
         working-directory: ./../../../../MySanpete
     #   - name: Microsoft Teams Notification
     #     uses: skitionek/notify-microsoft-teams@master
