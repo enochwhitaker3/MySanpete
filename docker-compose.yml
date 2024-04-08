@@ -17,6 +17,6 @@ services:
     environment:
       - MySanpeteDb = user id= postgres; password=postgres; server=mysanpetedb; database= postgres;
     depends_on: 
-      - db
+      - mysanpetedb
 
   
