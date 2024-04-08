@@ -12,6 +12,10 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Stripe;
 using LazyCache;
+using DotNetEnv;
+using DotNetEnv.Configuration;
+
+DotNetEnv.Env.TraversePath().Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -80,8 +84,7 @@ builder.Services.AddAuth0WebAppAuthentication(options =>
 builder.Services.AddControllersWithViews();
 
 builder.Configuration
-.SetBasePath(Directory.GetCurrentDirectory())
-.AddJsonFile(".env", true)
+.AddDotNetEnv(".env", LoadOptions.TraversePath())
 .AddEnvironmentVariables();
 
 var app = builder.Build();
