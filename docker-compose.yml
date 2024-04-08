@@ -16,6 +16,7 @@ services:
       - 6969:8080
     environment:
       MySanpeteDb: user id= postgres; password=postgres; server=mysanpetedb; database= postgres;
+      DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE: false
     depends_on: 
       - mysanpetedb
 
