@@ -16,6 +16,10 @@ services:
       - 6969:8080
     environment:
       MySanpeteDb: user id= postgres; password=postgres; server=mysanpetedb; database= postgres;
+      Domain: ${Domain}
+      ClientId: ${ClientId}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      MapKey: ${eKnaZrIlSRq2pmEua4M4juaiUQvBIlh-xGv1UjnE3rQ}
       DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE: false
     depends_on: 
       - mysanpetedb
