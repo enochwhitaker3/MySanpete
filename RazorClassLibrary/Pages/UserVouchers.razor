@@ -77,7 +77,7 @@
             navManager.NavigateTo("/", true);
         }
 
-        currentUser = await userService.GetAuthUser(authId);
+        currentUser = await userService.GetAuthUser(authId!);
         allUserVouchers = await userVoucherService.GetAllUserVouchers();
 
         allUserVouchers = allUserVouchers.Where(x => x.User!.Id == currentUser!.Id).ToList();

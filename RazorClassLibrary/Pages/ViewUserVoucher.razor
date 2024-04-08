@@ -1,18 +1,29 @@
 ﻿@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
 
 @inject IUserVoucherService userVoucherService
+@inject IUserService userService
+@inject NavigationManager navManager
 
 @attribute [Authorize]
-
-<h3>ViewUserVoucher</h3>
 
 @if (selectedUserVoucher is not null)
 {
     <div class="container">
         <div class="content">
-            <div class="col-md-6">
-                <h2>@selectedUserVoucher!.Voucher!.PromoName</h2>
-                <p></p>
+            <div class="row">
+                <div class="col-md-6">
+                    <img width="300" src="@imgDataURL"b class="img-fluid rounded-circle"/>
+                </div>
+                <div class="col-md-6">
+                    <h2>@selectedUserVoucher!.Voucher!.PromoName</h2>
+                    <p>Promo Code: @selectedUserVoucher.Promo_Code</p>
+                    <p>Times Used: @selectedUserVoucher.Times_Claimed</p>
+                    <p>Uses Left: @(@selectedUserVoucher.Total_Reclaimable - @selectedUserVoucher.Times_Claimed)</p>
+                    <p>Date Purchased: @selectedUserVoucher.Purchase_Date</p>
+                    <p>@selectedUserVoucher.Voucher.StartDate to @selectedUserVoucher.Voucher.EndDate</p>
+                    <p>@selectedUserVoucher.Voucher.PromoDescription</p>
+                </div>
             </div>
         </div>
     </div>
@@ -26,11 +37,47 @@ else
 @code {
     [Parameter]
     public int voucherId { get; set; }
+    public string? imgDataURL { get; set; } = "";
+    public string? errorMessage { get; set; } = "";
+    public string? authId { get; set; }
+
+    [CascadingParameter]
+    Task<AuthenticationState>? AuthStateTask { get; set; }
 
     public UserVoucherDTO? selectedUserVoucher { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        selectedUserVoucher = await userVoucherService.GetById(voucherId);
+        if (AuthStateTask is null)
+        {
+            throw new Exception("BWAH");
+        }
+        var authState = await AuthStateTask;
+        try
+        {
+            authId = authState.User.Claims.FirstOrDefault(x => x.Type == "authId")!.Value;
+
+            if (authId is null)
+            {
+                throw new Exception("User was not found");
+            }
+
+            var userId = (await userService.GetAuthUser(authId))!.Id;
+            var maybeTheirVoucher = await userVoucherService.GetById(voucherId);
+
+            if (maybeTheirVoucher!.User!.Id != userId)
+            {
+                throw new Exception($"This is not {userId}'s voucher to see");
+            }
+
+            selectedUserVoucher = maybeTheirVoucher;
+            imgDataURL = selectedUserVoucher!.Voucher!.BusinessLogoURL;
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            navManager.NavigateTo("/404", true);
+        }
+
     }
 }
