@@ -7,6 +7,7 @@
 @inject IUserVoucherService userVoucherService
 @inject IUserService userService
 @inject IVoucherService voucherService
+@inject NavigationManager navManager
 
 @rendermode InteractiveServer
 
@@ -61,7 +62,15 @@ else
 
         var id = sessions.FirstOrDefault(x => x.Metadata.ContainsKey("UserId") && x.Metadata["UserId"] == authId && x.Created > DateTime.Now.AddMinutes(-30));
 
-        voucherId = int.Parse(id!.Metadata["VoucherId"]);
+        try
+        {
+            voucherId = int.Parse(id!.Metadata["VoucherId"]);
+        }
+        catch
+        {
+            navManager.NavigateTo("/", true);
+        }
+
         voucher = (await voucherService.GetVoucher(voucherId)) ?? throw new Exception("BWAH");
         BusinessName = voucher.BusinessName ?? "";
         BusinessDefined = true;
