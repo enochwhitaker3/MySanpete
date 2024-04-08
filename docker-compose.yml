@@ -21,6 +21,7 @@ services:
       STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
       MapKey: ${MapKey}
       DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE: false
+      ASPNETCORE_ENVIRONMENT: Development
     depends_on: 
       - mysanpetedb
 
