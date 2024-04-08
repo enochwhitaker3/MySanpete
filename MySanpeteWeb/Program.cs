@@ -80,7 +80,8 @@ builder.Services.AddAuth0WebAppAuthentication(options =>
 builder.Services.AddControllersWithViews();
 
 builder.Configuration
-.AddJsonFile("../../../.env", true)
+.SetBasePath(Directory.GetCurrentDirectory())
+.AddJsonFile(".env", true)
 .AddEnvironmentVariables();
 
 var app = builder.Build();
