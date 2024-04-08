@@ -41,7 +41,7 @@ jobs:
           STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }} 
           MapKey=${{ secrets.MAPKEY }}" > .env
           sleep 1
-        working-directory: ./../../../../MySanpete/MySanpeteWeb
+        working-directory: ./../../../../MySanpete
       - name: "Run docker-compose up"
         id: compose
         run: |

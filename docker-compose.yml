@@ -19,7 +19,7 @@ services:
       Domain: ${Domain}
       ClientId: ${ClientId}
       STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
-      MapKey: ${eKnaZrIlSRq2pmEua4M4juaiUQvBIlh-xGv1UjnE3rQ}
+      MapKey: ${MapKey}
       DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE: false
     depends_on: 
       - mysanpetedb
