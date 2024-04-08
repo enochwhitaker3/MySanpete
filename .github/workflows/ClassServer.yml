@@ -38,6 +38,11 @@ jobs:
         id: compose
         run: |
             docker compose up --build -d
+        env: 
+          Domain: ${{ secrets.DOMAIN }}
+          ClientId: ${{ secrets.CLIENTID }}
+          STRIPE_SECRET_KEY:  ${{ secrets.STRIPE_SECRET_KEY }}
+          MapKey: ${{ secrets.MAPKEY }}
         working-directory: ./../../../../MySanpete
     #   - name: Microsoft Teams Notification
     #     uses: skitionek/notify-microsoft-teams@master
