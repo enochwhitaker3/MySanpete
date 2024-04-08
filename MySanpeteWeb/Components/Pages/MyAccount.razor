@@ -13,31 +13,52 @@
 @if (User is not null)
 {
     <div class="row" style="max-width: 1200px; margin-left: auto; margin-right: auto;">
+
         <h3>My Account</h3>
 
-            <h3>My Account</h3>
+        <img class="img-fluid" style="width: 250px; height: 250px; object-fit: cover; object-position: center; border-radius: 200px; border: solid 1px gray; padding: 0;" src="@User.PhotoURL" />
+        <button data-toggle="modal" data-target="#photoModal" style="background-color: white; border: solid 1px gray; width: 43px; height: 43px; border-radius: 5px; position: relative; top: 200px; left: -50px;"><i class="bi bi-pencil-fill" style="font-size: 19px; color: dimgray"></i></button>
+      
 
-            <img class="img-fluid border-rounded" style="width: 120px; height: 120px;" src="@User.PhotoURL" />
-
-            <div class="form-group">
-                <label for="photo">Add a Thumnail Image</label>
-                <InputFile OnChange="SaveFile"></InputFile>
-                <button class="btn btn-primary" @onclick="UpdateUserPhoto">Update Photo</button>
+        <!-- Modal -->
+        <div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="editPhotoModal" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editPhotoModal">Edit your User Photo</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                         <div class="form-group">
+                    <InputFile OnChange="SaveFile"></InputFile>
+                    </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button @onclick="UpdateUserPhoto" type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                    </div>
+                </div>
             </div>
+        </div>
 
-            <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Edit your Username</label>
-                <small><br />This will be public to other users and will be seen on comments.</small>
-                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="username">
-            </div>
-
-            <h3>My Vouchers</h3>
-            <button @onclick="GoToUserVouchers" class="btn btn-primary">View Vouchers</button>
-
+        <strong class="mt-5">@User.Username</strong>
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Edit your Username</label>
+            <small><br />This will be public to other users and will be seen on comments.</small>
+            <input @bind="NewUsername" type="text" class="form-control" id="exampleFormControlInput1" placeholder="username">
+            <button @onclick="UpdateUserName">Update Username</button>
+        </div>
 
 
-            <h3>My Saved Events</h3>
-            <button @onclick="GoToUserEvents" class="btn btn-primary">My Saved Events</button>
+        <h3 class="mt-5">My Vouchers</h3>
+        <button @onclick="GoToUserVouchers" class="btn btn-primary">View Vouchers</button>
+
+
+
+        <h3 class="mt-5">My Saved Events</h3>
+        <button @onclick="GoToUserEvents" class="btn btn-primary">My Saved Events</button>
 
     </div>
 }
@@ -49,6 +70,8 @@
     public UserDTO User { get; set; }
 
     public string? AuthId { get; set; }
+
+    public string? NewUsername { get; set; }
 
     [CascadingParameter]
     Task<AuthenticationState>? AuthStateTask { get; set; }
@@ -91,12 +114,20 @@
     {
         UpdateUserRequest updatedUsr = new UpdateUserRequest()
             {
-                Guid = User.Guid,
-                Id = User.Id,
                 Photo = ImageBytes,
-                UserEmail = User.UserEmail,
-                Username = User.Username
             };
+
+        var result = await userService.PatchUser(updatedUsr);
+
+        NavMan.NavigateTo("/Account", true);
+    }
+
+    public async Task UpdateUserName()
+    {
+        UpdateUserRequest updatedUsr = new UpdateUserRequest()
+        {
+            Username = NewUsername
+        };
 
         var result = await userService.PatchUser(updatedUsr);
     }
