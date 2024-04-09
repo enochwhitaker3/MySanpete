@@ -67,7 +67,7 @@
      <tr>
       <td>Automated deployment</td>
       <td>04/13/2024</td>
-      <td></td>
+      <td>X</td>
     </tr>
     <tr>
       <td>Zero downtime deployment (users are unaware of application updates)</td>
