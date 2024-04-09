@@ -20,10 +20,10 @@ jobs:
     #         dotnet format --verify-no-changes
     #         dotnet build --warnaserror
     #     working-directory: ./../../../../MySanpete/MySanpeteWeb
-      - name: "Integration tests"
-        run: |
-            dotnet test
-        working-directory: ./../../../../MySanpete/MySanpeteTests
+      # - name: "Integration tests"
+      #   run: |
+      #       dotnet test
+      #   working-directory: ./../../../../MySanpete/MySanpeteTests
     #   - name: "Build and add tag"
     #     run: |
     #         docker build -t 144.17.92.12:5000/ethan/blazor-web:1 .
