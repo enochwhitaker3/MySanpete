@@ -12,7 +12,7 @@
 
 @if (User is not null)
 {
-    <div class="row" style="max-width: 1200px; margin-left: auto; margin-right: auto;">
+    <div class="row" style="max-width: 1200px; margin-left: auto; margin-right: auto; height: 90vh;">
 
         <h3>My Account</h3>
 
@@ -42,9 +42,10 @@
             </div>
         </div>
 
-        <div class="d-flex flex-row" style="margin-top: 50px; margin-bottom: 50px;">
+        <p style="margin-top: 20px;">Username:</p>
+        <div class="d-flex flex-row">
             <button class="mr-3" data-toggle="modal" data-target="#usernameModal" style="background-color: white; border: solid 1px gray; width: 33px; height: 33px; border-radius: 5px;"><i class="bi bi-pencil-fill" style="font-size: 19px; color: dimgray"></i></button>
-            <h3><strong class="mt-5">@User.Username</strong></h3>
+            <h3><strong class="">@User.Username</strong></h3>
         </div>
         
 
@@ -75,12 +76,12 @@
 
 
         <h3 class="mt-5">My Vouchers</h3>
-        <button @onclick="GoToUserVouchers" class="btn btn-primary">View Vouchers</button>
+        <button @onclick="GoToUserVouchers" class="btn btn-primary" style="width: 200px; height: 80px;">View Vouchers</button>
 
 
 
         <h3 class="mt-5">My Saved Events</h3>
-        <button @onclick="GoToUserEvents" class="btn btn-primary">My Saved Events</button>
+        <button @onclick="GoToUserEvents" class="btn btn-primary" style="width: 200px; height: 80px;">My Saved Events</button>
 
     </div>
 }

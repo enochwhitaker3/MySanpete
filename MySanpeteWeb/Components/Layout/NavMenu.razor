@@ -1,6 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
 @using RazorClassLibrary.Services
 @inject IUserState userState
+
+
 <nav class="navbar navbar-expand-lg navbar-dark">
     <a class="navbar-brand" href="#">My Sanpete.</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,7 +28,7 @@
             </li>
             @if (userState.User.Identity.IsAuthenticated == false)
             {
-                <li class="nav-item">
+                <li class="nav-item" >
                     <a class="nav-link" @onclick="userState.Login">Log in</a>
                 </li>
             }
@@ -38,7 +40,7 @@
                         <a class="nav-link" href="admin">Admin Controls</a>
                     </li>
                 }
-                <li class="nav-item">
+                <li class="nav-item" >
                     <a class="nav-link" @onclick="userState.Logout">Log out</a>
                 </li>
             }
