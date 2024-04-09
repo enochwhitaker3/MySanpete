@@ -8,21 +8,10 @@
     src: url('Fonts/Casual-Regular.ttf') format('truetype');
 }
 
-@font-face {
-    font-family: 'Tajawal';
-    src: url('Fonts/Tajawal-Regular.ttf') format('truetype');
-}
 
-@font-face {
-    font-family: 'Tenor';
-    src: url('Fonts/TenorSans-Regular.ttf') format('truetype');
-}
 /*justify-content: center;*/ /* Horizontally center */
 /*align-items: center;*/ /* Vertically center */
 
-h2 {
-    font-family: Nelphim !important;
-}
 
 .main-section {
     position: relative;
@@ -61,11 +50,10 @@ h2 {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    margin-top: 100px; 
 }
 
 .vertical-rule {
-    width: 2px;
+    width: 2px !important;
     margin-left: 100px;
     padding: 0;
     opacity: .50;
@@ -161,3 +149,52 @@ h2 {
     }
 }
 
+.event-date {
+}
+
+    .event-date h2 {
+        font-family: Inter-Bold;
+        font-size: 2.5vw;
+        width: fit-content;
+        transform-origin: bottom center;
+        color: #fcfcf8;
+    }
+
+
+.event-details {
+    color: #3f4a49 !important;
+}
+
+    .event-details h2 {
+        font-family: Inter-Bold;
+        font-size: 1.5vw;
+
+    }
+
+    .event-details h4 {
+        font-family: Inter;
+        font-size: 1rem;
+    }
+
+.event-card {
+    background-color: #fff;
+    height: 17vh;
+    max-width: 35vw;
+}
+
+
+@media screen and (max-width: 600px) {
+    .event-card {
+        height: 15vh;
+        max-width: 75vw !important;
+
+    }
+
+    .event-details h2 {
+        font-size: 3.5vw;
+    }
+
+    .event-details h4 {
+        font-size: .6rem;
+    }
+}

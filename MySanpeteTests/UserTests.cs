@@ -126,8 +126,16 @@ public class UserTests : IClassFixture<MySanpeteFactory>
             userUnderTest.UserEmail = newEmail;
         }
 
+        UpdateUserRequest userRequest = new()
+        {
+            UserEmail = userUnderTest.UserEmail,
+            Guid = userUnderTest.Guid,
+            Id = userUnderTest.Id,
+            Username = userUnderTest.Username
+        };
+
         userUnderTest.UserEmail = newEmail;
-        await userService.PatchUser(userUnderTest);
+        await userService.PatchUser(userRequest);
         var userChanged = await userService.GetUser(userUnderTest.UserEmail);
 
         userChanged?.UserEmail.Should().Be(newEmail);
@@ -149,9 +157,17 @@ public class UserTests : IClassFixture<MySanpeteFactory>
 
         userUnderTest.UserEmail = newEmail;
 
+        UpdateUserRequest userRequest = new()
+        {
+            UserEmail = userUnderTest.UserEmail,
+            Guid = userUnderTest.Guid,
+            Id = userUnderTest.Id,
+            Username = userUnderTest.Username
+        };
+
         try
         {
-            await userService.PatchUser(userUnderTest);
+            await userService.PatchUser(userRequest);
         }
         catch
         {
@@ -176,9 +192,17 @@ public class UserTests : IClassFixture<MySanpeteFactory>
 
         userUnderTest.UserEmail = newEmail;
 
+        UpdateUserRequest userRequest = new()
+        {
+            UserEmail = userUnderTest.UserEmail,
+            Guid = userUnderTest.Guid,
+            Id = userUnderTest.Id,
+            Username = userUnderTest.Username
+        };
+
         try
         {
-            await userService.PatchUser(userUnderTest);
+            await userService.PatchUser(userRequest);
         }
         catch
         {
@@ -202,9 +226,17 @@ public class UserTests : IClassFixture<MySanpeteFactory>
 
         userUnderTest.Username = null;
 
+        UpdateUserRequest userRequest = new()
+        {
+            UserEmail = userUnderTest.UserEmail,
+            Guid = userUnderTest.Guid,
+            Id = userUnderTest.Id,
+            Username = userUnderTest.Username
+        };
+
         try
         {
-            await userService.PatchUser(userUnderTest);
+            await userService.PatchUser(userRequest);
         }
         catch
         {
@@ -228,9 +260,17 @@ public class UserTests : IClassFixture<MySanpeteFactory>
 
         userUnderTest.Username = "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789";
 
+        UpdateUserRequest userRequest = new()
+        {
+            UserEmail = userUnderTest.UserEmail,
+            Guid = userUnderTest.Guid,
+            Id = userUnderTest.Id,
+            Username = userUnderTest.Username
+        };
+
         try
         {
-            await userService.PatchUser(userUnderTest);
+            await userService.PatchUser(userRequest);
         }
         catch
         {

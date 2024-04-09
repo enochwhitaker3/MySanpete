@@ -1,0 +1,15 @@
+﻿* {
+    margin: 0;
+    background-color: #9c9992;
+    color: black;
+}
+
+row {
+    padding: 30px;
+}
+
+a {
+    color: black;
+    text-decoration: underline;
+    margin-top: 8px;
+}
