@@ -8,14 +8,20 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
     volumes:
-      - ./database.sql:/docker-entrypoint-initdb.d/database.sql
+      - ./20240328.06.25.21.sql:/docker-entrypoint-initdb.d/A_init.sql
 
   mysanpeteweb:
     build: .
     ports:
       - 6969:8080
     environment:
-      - MySanpeteDb = user id= postgres; password=postgres; server=mysanpetedb; database= postgres;
+      MySanpeteDb: user id= postgres; password=postgres; server=mysanpetedb; database= postgres;
+      Domain: ${Domain}
+      ClientId: ${ClientId}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      MapKey: ${MapKey}
+      DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE: false
+      ASPNETCORE_ENVIRONMENT: Development
     depends_on: 
       - mysanpetedb
 

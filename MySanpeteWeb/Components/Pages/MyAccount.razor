@@ -4,48 +4,85 @@
 
 @inject IUserService userService
 @inject IUserState userState
-<h3>My Account</h3>
 
-@if(User is not null)
+@inject NavigationManager NavMan
+
+@attribute [Authorize]
+
+
+@if (User is not null)
 {
-    
-<div class="row" style="max-width: 1200px; margin-left: auto; margin-right: auto;">
-    <div class="col-md-5">
-        <div>
-            <p>My Account</p>
-        </div>
-    </div>
-    <div class="col-md-5">
+    <div class="row" style="max-width: 1200px; margin-left: auto; margin-right: auto;">
+
         <h3>My Account</h3>
-    
-        <img class="img-fluid border-rounded" src="@User.PhotoURL" />
 
-        
-
-        <div class="form-group">
-            <label for="photo">Add a Thumnail Image</label>
-            <small style="color: darkgray;"><br />Recommended image size of 500 X 750 pixels. If no image is provided, MySanpete Logo will be displayed.<br /></small>
-            <InputFile OnChange="SaveFile"></InputFile>
-                <button class="btn btn-primary" @onclick="UpdateUserPhoto">Update Photo</button>
+        <img class="img-fluid" style="width: 250px; height: 250px; object-fit: cover; object-position: center; border-radius: 200px; border: solid 1px gray; padding: 0;" src="@User.PhotoURL" />
+        <button data-toggle="modal" data-target="#photoModal" style="background-color: white; border: solid 1px gray; width: 43px; height: 43px; border-radius: 5px; position: relative; top: 200px; left: -50px;"><i class="bi bi-pencil-fill" style="font-size: 19px; color: dimgray"></i></button>
+      
+        <!-- Modal -->
+        <div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="editPhotoModal" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editPhotoModal">Edit your User Photo</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                         <div class="form-group">
+                    <InputFile OnChange="SaveFile"></InputFile>
+                    </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button @onclick="UpdateUserPhoto" type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label">Edit your Username</label>
-            <small>This will be public to other users and will be seen on comments.</small>
-            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="username">
+        <div class="d-flex flex-row" style="margin-top: 50px; margin-bottom: 50px;">
+            <button class="mr-3" data-toggle="modal" data-target="#usernameModal" style="background-color: white; border: solid 1px gray; width: 33px; height: 33px; border-radius: 5px;"><i class="bi bi-pencil-fill" style="font-size: 19px; color: dimgray"></i></button>
+            <h3><strong class="mt-5">@User.Username</strong></h3>
         </div>
-
-        <h3>My Vouchers</h3>
-        <button>View Vouchers</button>
-
         
 
-        <h3>My Saved Events</h3>
-        <button></button>
-       
+        <!-- Modal -->
+        <div class="modal fade" id="usernameModal" tabindex="-1" role="dialog" aria-labelledby="editUsernameModal" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editUsernameModal">Edit your User Name</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>This username will be seen by other users.</p>
+                        <div class="mb-3">
+                            <input @bind="NewUsername" type="text" class="form-control" id="exampleFormControlInput1" placeholder="username">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button @onclick="UpdateUserName" type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <h3 class="mt-5">My Vouchers</h3>
+        <button @onclick="GoToUserVouchers" class="btn btn-primary">View Vouchers</button>
+
+
+
+        <h3 class="mt-5">My Saved Events</h3>
+        <button @onclick="GoToUserEvents" class="btn btn-primary">My Saved Events</button>
 
     </div>
-</div>
 }
 
 @code {
@@ -54,13 +91,32 @@
 
     public UserDTO User { get; set; }
 
+    public string? AuthId { get; set; }
+
+    public string? NewUsername { get; set; }
+
+    [CascadingParameter]
+    Task<AuthenticationState>? AuthStateTask { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
-        if (userState!.User!.Identity.IsAuthenticated)
+
+        var authState = await AuthStateTask;
+        try
         {
-            var authId = userState.User.Claims.FirstOrDefault(x => x.Type == "authId")!.Value;
-            User = await userService!.GetAuthUser(authId)!;
+            AuthId = authState.User.Claims.FirstOrDefault(x => x.Type == "authId")!.Value;
+            if (AuthId is null)
+            {
+                NavMan.NavigateTo("/404");
+            }
         }
+        catch
+        {
+            NavMan.NavigateTo("/404");
+        }
+
+        User = await userService.GetAuthUser(AuthId!);
+
     }
 
     public async Task SaveFile(InputFileChangeEventArgs e)
@@ -79,14 +135,40 @@
     public async Task UpdateUserPhoto()
     {
         UpdateUserRequest updatedUsr = new UpdateUserRequest()
-        {
-            Guid = User.Guid,
-            Id = User.Id,
-            Photo = ImageBytes,
-            UserEmail = User.UserEmail,
-            Username = User.Username
-        };
+            {
+                Guid = User.Guid,
+                Id = User.Id,
+                Photo = ImageBytes,
+                UserEmail = User.UserEmail,
+                Username = User.Username
+            };
 
         var result = await userService.PatchUser(updatedUsr);
+
+        NavMan.NavigateTo("/Account", true);
+    }
+
+    public async Task UpdateUserName()
+    {
+        UpdateUserRequest updatedUsr = new UpdateUserRequest()
+            {
+                Guid = User.Guid,
+                Id = User.Id,
+                UserEmail = User.UserEmail,
+                Username =  NewUsername
+            };
+
+
+        var result = await userService.PatchUser(updatedUsr);
+    }
+
+    public void GoToUserVouchers()
+    {
+        NavMan.NavigateTo("/user-vouchers");
+    }
+
+    public void GoToUserEvents()
+    {
+        NavMan.NavigateTo("/user-events");
     }
 }
