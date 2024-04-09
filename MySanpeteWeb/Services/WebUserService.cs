@@ -120,30 +120,30 @@ public class WebUserService : IUserService
         return user.ToDto();
     }
 
-    public async Task<UserDTO?> PatchUser(UserDTO user)
+    public async Task<UserDTO?> PatchUser(UpdateUserRequest userRequest)
     {
-        if (user.Username == null)
+        if (userRequest.Username == null)
         {
             throw new Exception("Username cannot be null");
         }
 
-        if (!IsValid(user.UserEmail!))
+        if (!IsValid(userRequest.UserEmail!))
         {
             throw new Exception("Email was invalid");
         }
 
         var context = await dbContextFactory.CreateDbContextAsync();
 
-        var databaseUser = await context.EndUsers.Where(u => u.Guid == user.Guid).FirstOrDefaultAsync();
+        var databaseUser = await context.EndUsers.Where(u => u.Guid == userRequest.Guid).FirstOrDefaultAsync();
 
         if (databaseUser is null)
         {
             return null;
         }
 
-        databaseUser.UserName = user.Username;
-        databaseUser.UserEmail = user.UserEmail!;
-        databaseUser.Photo = user.Photo;
+        databaseUser.UserName = userRequest.Username;
+        databaseUser.UserEmail = userRequest.UserEmail!;
+        databaseUser.Photo = userRequest.Photo;
 
         context.Update(databaseUser);
         await context.SaveChangesAsync();
@@ -187,4 +187,5 @@ public class WebUserService : IUserService
 
         return user.ToDto();
     }
+
 }

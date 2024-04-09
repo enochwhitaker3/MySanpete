@@ -1,0 +1,61 @@
+name: Ethan's Deploy Thingy
+on: [push]
+jobs:
+  DeployingPipeline:
+    runs-on: MySanpete
+    steps:
+      - name: "Stop old compose"
+        run: |
+            cd ./MySanpete
+            docker compose down -v 
+            cd ../
+            rm -rf ./MySanpete
+        working-directory: ./../../../../
+      - name: "Clone repo"
+        run: | 
+            git clone https://${{secrets.MYSANPETEPAT}}@github.com/enochwhitaker3/MySanpete.git
+        working-directory: ./../../../../
+    #   - name: "Lint and Build Warnings"
+    #     run: |
+    #         dotnet format --verify-no-changes
+    #         dotnet build --warnaserror
+    #     working-directory: ./../../../../MySanpete/MySanpeteWeb
+    #   - name: "Integration tests"
+    #     run: |
+    #         dotnet test --warnaserror
+    #     working-directory: ./../../../../MySanpete/MySanpeteTests
+    #   - name: "Build and add tag"
+    #     run: |
+    #         docker build -t 144.17.92.12:5000/ethan/blazor-web:1 .
+
+    #         docker push 144.17.92.12:5000/ethan/blazor-web:1
+            
+    #         # kubectl -n ethan create configmap blazor-web-postgres-init --from-file=init.sql
+
+    #         kubectl apply -f EthansDockerFiles/kube/
+    #     working-directory: ./../../../../ticketsrus-dusty-mustafa-ethan/MobileApp/
+      - name: "Not making an env file"
+        run: | 
+          echo "Domain=${{secrets.DOMAIN}} 
+          ClientId=${{ secrets.CLIENTID }} 
+          STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }} 
+          MapKey=${{ secrets.MAPKEY }}" > .env
+          sleep 1
+        working-directory: ./../../../../MySanpete
+      - name: "Run docker-compose up"
+        id: compose
+        run: |
+          docker compose up --build -d
+        working-directory: ./../../../../MySanpete
+    #   - name: Microsoft Teams Notification
+    #     uses: skitionek/notify-microsoft-teams@master
+        
+    #     if: failure()
+    #     with:
+    #       webhook_url: ${{ secrets.TEAMS_WEBHOOK }}
+    #       overwrite: "{title: `Ethan's Runner failed! Point and laugh. ${workflow_link}`}"
+    #   - name: Microsoft Teams Notification
+    #     uses: skitionek/notify-microsoft-teams@master
+    #     if: steps.compose.outcome == 'success'
+    #     with:
+    #       webhook_url: ${{ secrets.TEAMS_WEBHOOK }}

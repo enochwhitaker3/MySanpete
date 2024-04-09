@@ -14,6 +14,11 @@ body, html {
     height: 100%;
 }
 
+.full-page {
+    background-color: #fcfcf8;
+}
+
+
 .main-section {
     position: relative;
 }
@@ -55,13 +60,13 @@ body, html {
 
     .about-us h2 {
         font-family: Inter-Bold;
-        font-size: 40px;
+        font-size: 2.25rem;
     }
 
     .about-us h3 {
         font-family: Inter;
-        font-size: 20px;
-        width: 70%;
+        font-size: 1rem;
+        width: 75%;
     }
 
 .contact-us {
@@ -70,12 +75,12 @@ body, html {
 
     .contact-us h2 {
         font-family: Inter-Bold;
-        font-size: 40px;
+        font-size: 2.25rem;
     }
 
     .contact-us p {
         font-family: Inter;
-        font-size: 20px;
+        font-size: 1rem;
     }
 
 
@@ -102,7 +107,7 @@ body, html {
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    /*    width: 65%;*/
+    width: 35%;
     margin: auto;
 }
 
@@ -130,9 +135,8 @@ body, html {
     }
 
     .btn span {
-        font-size: 1vw;
+        font-size: 1rem;
         font-weight: 500;
-        overflow: hidden;
         position: relative;
         color: white;
     }
@@ -181,7 +185,17 @@ body, html {
 }
 
 .voucher-header h2 {
-    font-size: 1.5rem !important;
+    font-size: 1.5vw !important;
+}
+.app-header{
+    font-size: 1.5vw !important;
+}
+.lg-view {
+    display: inline-block;
+}
+.sm-view {
+    display: none;
+    font-size: 4vw !important;
 }
 
 .card {
@@ -278,26 +292,192 @@ body, html {
 
 
 .event-container {
-    color: #3f4a49;
+    color: #fcfcf8;
     background-color: #fcfcf8;
 }
 
-.event-month{
-    width: 17%;
+.voucher-header {
+    color: black !important;
 }
 
-    .event-month h1 {
+.event-date {
+
+}
+
+    .event-date h2 {
         font-family: Inter-Bold;
-        font-size: 40px;
-        transform: rotate(270deg);
+        font-size: 3vw;
         width: fit-content;
         transform-origin: bottom center;
     }
 
-.event-day h2 {
-    font-family: Inter-Bold;
-    font-size: 70px;
-    width: fit-content;
-    transform-origin: bottom center;
+
+.event-details {
+    color: #3f4a49 !important;
 }
 
+    .event-details h2 {
+        font-family: Inter-Bold;
+        font-size: 2.5vw
+    }
+    .event-details h4 {
+        font-family: Inter;
+        font-size: 1rem;
+    }
+
+.event-card {
+    background-color: #fff;
+    height: 25vh;
+}
+
+
+.carousel-inner {
+    padding: 1em;
+}
+
+
+.carousel-control-prev,
+.carousel-control-next {
+    background-color: #e1e1e1;
+    width: 5vh;
+    height: 5vh;
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+
+.button2 {
+    background-color: #fcfcf8;
+    color: black;
+    border-radius: 10em;
+    font-size: 17px;
+    font-weight: 600;
+    padding: 1em 2em;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    border: 1px solid black;
+    box-shadow: 0 0 0 0 black;
+}
+
+    .button2:hover {
+        transform: translateY(-4px) translateX(-2px);
+        box-shadow: 2px 5px 0 0 black;
+    }
+
+
+.button2:active {
+    transform: translateY(2px) translateX(1px);
+    box-shadow: 0 0 0 0 black;
+}
+
+.download-button{
+
+}
+
+.playstore-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #000;
+    border-radius: 9999px;
+    background-color: white;
+    padding: 0.625rem 1.5rem;
+    text-align: center;
+    color: black;
+    outline: 0;
+    transition: all .2s ease;
+    text-decoration: none;
+}
+
+    .playstore-button:hover {
+        transform: translateY(-4px) translateX(-2px);
+        box-shadow: 2px 5px 0 0 black;
+    }
+
+.google-icon {
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+.texts {
+    margin-left: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1;
+}
+
+.text-1 {
+    margin-bottom: 0.25rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 768px) {
+    .playstore-button {
+        padding: 0.5rem 1.25rem; /* Adjusted padding for smaller screens */
+    }
+
+    .text-1 {
+        font-size: 0.65rem; /* Adjusted font size for smaller screens */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .playstore-button {
+        padding: 0.4rem 1rem; /* Further adjusted padding for even smaller screens */
+    }
+
+    .text-1 {
+        font-size: 0.5rem; /* Further adjusted font size for even smaller screens */
+    }
+}
+
+
+.text-2 {
+    font-weight: 600;
+}
+
+
+@media screen and (max-width: 800px){
+    .voucher-header h2{
+        font-size: 1rem !important;
+        width: 75% !important;
+    }
+    .bs-icon {
+        font-size: 8vw !important;
+    }
+
+    .bi-calendar4-event {
+        font-size: 8vw !important ;
+    }
+    .lg-view {
+        font-size: 2vw;
+    }
+
+}
+
+
+
+@media screen and (max-width: 600px){
+    .event-card {
+        height: 15vh;
+        max-width: 75vw !important;
+    }
+    .event-details h2{
+        font-size: 3.5vw;
+    }
+    .event-details h4{
+        font-size: .6rem;
+    }
+    .lg-view {
+        display: none;
+    }
+
+    .sm-view {
+        display: inline-block;
+        font-size: 3vw;
+    }
+}

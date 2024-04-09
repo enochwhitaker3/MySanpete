@@ -21,7 +21,7 @@
     <!-- Voucher Section -->
     <div class="voucher-container">
         <div class="voucher-header p-5 pb-0 w-100 d-flex justify-content-center">
-            <i class="bs-icon bi bi-tags-fill align-self-center m-3 mt-0" style="font-size:80px;"></i>
+            <i class="bs-icon bi bi-tags-fill align-self-center m-3 mt-0" style="font-size:5vw;"></i>
             <h2 class="w-25">Shop and Save with local discounts to your favorite places to visit in Sanpete County. Purchase vouchers here and download the app to redeem at the counter.</h2>
         </div>
         <div class="mt-5 row pb-15" style="max-width: 1200px; margin-left: auto; margin-right: auto">
@@ -65,7 +65,6 @@
 
                     }
                 }
-
                 else
                 {
                     <div class="alert alert-info">
@@ -87,74 +86,119 @@
 
     <div class="event-container">
         <div class="voucher-header p-5 pb-0 w-100 d-flex justify-content-center">
-            <i class="bi bi-calendar4-event align-self-center m-3 mt-0" style="font-size:80px;"></i>
-            <h2 class="w-25">Sanpete Events Happening Soon</h2>
+            <i class="bi bi-calendar4-event align-self-center m-3 mt-0" style="font-size:5vw;"></i>
+            <h2 class="w-25">Come and find out all about events happening in Sanpete County. Download our app to find what events are happening soon near you!</h2>
         </div>
-        <div class="row shadow" style="max-width: 1200px;">
-            <div class="event-date col d-flex">
-                <div class="event-day align-self-end">
-                    <h2>MAY</h2>
-                    <h2>01</h2>
+        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="cards-wrapper">
+                        <div class="w-100 mt-10 pb-15 d-flex justify-content-center">
+                            <div class="event-card row shadow" style="max-width: 55vw;">
+                                <div class="event-date col-3 d-flex align-items-center" style="background-image: url(Images/green_wave.svg); background-repeat: repeat-y;">
+                                    <div class="event-date">
+                                        <h2>MAY</h2>
+                                        <h2>24</h2>
+                                    </div>
+                                </div>
+                                <div class="event-details col-6 d-grid align-content-center" style="color: black">
+                                    <h2>Scandinavian Days</h2>
+                                    <h4>12PM - 8:30PM</h4>
+                                    <h4>
+                                        Come and join for Scandinavia Festivities!
+                                    </h4>
+                                </div>
+                                <div class="col-3 d-flex" style="padding-right: 0 !important; max-height:25vh;">
+                                    <img src="https://scandinavianfestival.org/wp-content/uploads/2023/03/p3.png" style="width: 100%; object-fit: cover; object-position: center;" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col">
-                <h3>Title</h3>
-                <h4>Time</h4>
-                <h4>Dasd sf sd fsdf j nkf enk lef nk ef nefni owf eni o'wf enio'</h4>
-            </div>
-            <div class="col align-self-end">
+                <div class="carousel-item">
+                    <div class="cards-wrapper">
+                        <div class="w-100 mt-10 pb-15 d-flex justify-content-center">
+                            <div class="event-card row shadow" style="max-width: 55vw;">
+                                <div class="event-date col-3 d-flex align-items-center" style="background-image: url(Images/green_wave.svg); background-repeat: repeat-y;">
+                                    <div class="event-date">
+                                        <h2>MAY</h2>
+                                        <h2>25</h2>
+                                    </div>
+                                </div>
+                                <div class="event-details col-6 d-grid align-content-center" style="color: black">
+                                    <h2>Nordic Fun Run</h2>
+                                    <h4>6:30AM</h4>
+                                    <h4>
+                                        Join us for our Festival Races! All ages are welcome!
+                                    </h4>
+                                </div>
+                                <div class="col-3 d-flex" style="padding-right: 0 !important; max-height:25vh;">
+                                    <img src="https://scandinavianfestival.org/wp-content/uploads/2023/03/race.png" style="width: 100%; object-fit: cover;" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="cards-wrapper">
 
-                <img src="https://dummyimage.com/300x300/000/fff" />
+                        <div class="w-100 mt-10 pb-15 d-flex justify-content-center">
+                            <div class="event-card row shadow" style="max-width: 55vw;">
+                                <div class="event-date col-3 d-flex align-items-center" style="background-image: url(Images/green_wave.svg); background-repeat: repeat-y;">
+                                    <div class="event-date">
+                                        <h2>MAY</h2>
+                                        <h2>25</h2>
+                                    </div>
+                                </div>
+                                <div class="event-details col-6 d-grid align-content-center" style="color: black">
+                                    <h2>Axe Throwing</h2>
+                                    <h4>10AM - 6PM</h4>
+                                    <h4>
+                                        Axe Throwing and Viking Games open to the public
+                                    </h4>
+                                </div>
+                                <div class="col-3 d-flex" style="padding-right: 0 !important; max-height:25vh;">
+                                    <img src="https://scandinavianfestival.org/wp-content/uploads/2022/11/cropped-slide6.png" style="width: 100%; object-fit: cover; object-position: center;" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
 
-            </div>
-        </div>
-        <div class="row shadow mt-5" style="max-width: 1200px;">
-            <div class="event-date col d-flex">
-                <div class="event-day align-self-end">
-                    <h2>SEPT</h2>
-                    <h2>01</h2>
-                </div>
-            </div>
-            <div class="col">
-                <h3>Title</h3>
-                <h4>Time</h4>
-                <h4>Dasd sfsd fsdfjnk fenk lefn kefnefniowfeni o'wfe nio'</h4>
-            </div>
-            <div class="col align-self-end">
-                <img src="https://dummyimage.com/300x300/000/fff" />
-            </div>
-        </div>
-        <div class="row shadow mt-5" style="max-width: 1200px;">
-            <div class="event-date col d-flex">
-                <div class="event-day align-self-end">
-                    <h2>MARCH</h2>
-                    <h2>01</h2>
-                </div>
-            </div>
-            <div class="col">
-                <h3>Title</h3>
-                <h4>Time</h4>
-                <h4>Dasds fsdfsdfjn kfenklef nkefnef ni owfenio'wfenio'</h4>
-            </div> 
-            <div class="col align-self-end">
-                <img class="img align-self-end" src="https://dummyimage.com/300x300/000/fff" />
-            </div>
+
+
+
+
+        <div class="d-flex justify-content-center m-5 mt-0">
+            <button class="button2 shadow">
+                Discover More
+            </button>
         </div>
     </div>
 
     <!-- Business Section -->
-    <div class="business-container row justify-content-center">
-        <div class="col-md-6 m-5 about-us">
+    <div class="business-container row justify-content-center m-0">
+        <div class="col-md-6 mt-10 about-us">
             <h2 class="mb-5">Are you a business in Sanpete?</h2>
             <h3>MySanpete wants to help you and your business thrive! Learn how to collaborate with MySanpete, read our blogs, or listen to our podcasts all about businesses. </h3>
         </div>
-        <div class="col-md-6 m-5 contact-us">
+        <div class="col-md-6 mt-10 contact-us">
             <h2 class="mb-5">Collaborate With MySanpete</h2>
             <div class="row mb-4">
                 <div class="col-1">
                     <i class="bi bi-check-square" style="font-size: 40px;" />
                 </div>
-                <div class="col-11">
+                <div class="col-11 pl-8">
                     <p> List your upcoming events through MySanpete</p>
                 </div>
             </div>
@@ -162,7 +206,7 @@
                 <div class="col-1">
                     <i class="bi bi-check-square" style="font-size: 40px;" />
                 </div>
-                <div class="col-11">
+                <div class="col-11 pl-8">
                     <p>Create Coupons and Purchasable vouchers to increase traffic to your business.</p>
                 </div>
             </div>
@@ -170,16 +214,41 @@
                 <div class="col-1">
                     <i class="bi bi-check-square" style="font-size: 40px;" />
                 </div>
-                <div class="col-11">
+                <div class="col-11 pl-8">
                     <p>Keep in touch with content that can help your business stand out.</p>
                 </div>
             </div>
-            <div class="contact-button d-flex w-100 justify-content-center">
-                <div class="btn mt-5 mb-5"><span data-text="Contact">Contact</span></div>
+            <div class="d-flex justify-content-center m-5 mt-0">
+                <button class="button2 shadow">
+                    Contact Now
+                </button>
             </div>
-
         </div>
     </div>
+
+    <!-- Download Our App Section-->
+    <div class="app-container">
+        <div class="app-header row g-0 p-5 pb-0 w-100 d-flex justify-content-center">
+            <img class="lg-view app-person col-6 img-fluid" src="Images/app.svg" />
+            <img class="sm-view app-person col-12 img-fluid" src="Images/app.svg" />
+            <span class="lg-view col-6" style="font-family: Inter-Bold">Discover exciting events near you and unlock exclusive deals with MySanpete! Download our app now to stay updated on the latest happenings in Sanpete County and enjoy great savings through our exclusive vouchers and coupons. Whether you're looking for entertainment, dining, or shopping deals, MySanpete has you covered. Don't miss out on the fun – download MySanpete today and start exploring Sanpete County like never before!</span>
+            <span class="sm-view col-12 text-center p-3" style="font-family: Inter-Bold">Discover exciting events near you and unlock exclusive deals with MySanpete! Download our app today!</span>
+        </div>
+        <div class="download-button d-flex p-3 justify-content-center" >
+            <a class="playstore-button">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="google-icon" viewBox="0 0 512 512">
+                    <path d="M99.617 8.057a50.191 50.191 0 00-38.815-6.713l230.932 230.933 74.846-74.846L99.617 8.057zM32.139 20.116c-6.441 8.563-10.148 19.077-10.148 30.199v411.358c0 11.123 3.708 21.636 10.148 30.199l235.877-235.877L32.139 20.116zM464.261 212.087l-67.266-37.637-81.544 81.544 81.548 81.548 67.273-37.64c16.117-9.03 25.738-25.442 25.738-43.908s-9.621-34.877-25.749-43.907zM291.733 279.711L60.815 510.629c3.786.891 7.639 1.371 11.492 1.371a50.275 50.275 0 0027.31-8.07l266.965-149.372-74.849-74.847z"></path>
+                </svg>
+                <span class="texts">
+                    <span class="text-1">GET IT ON</span>
+                    <span class="text-2">Google Play</span>
+                </span>
+            </a>
+        </div>
+
+    </div>
+
+
 </div>
 
 

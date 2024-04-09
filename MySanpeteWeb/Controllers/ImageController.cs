@@ -6,6 +6,8 @@ using RazorClassLibrary.Services;
 using RazorClassLibrary.Requests;
 using Microsoft.EntityFrameworkCore;
 using LazyCache;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
 namespace MySanpeteWeb.Controllers;
 
 
@@ -26,6 +28,27 @@ public class ImageController : Controller
     public async Task<IActionResult> GetImage(int id)
     {
         return await cache.GetOrAddAsync($"Business{id}",  () => GetImageAsync(id));
+    }
+
+    [HttpGet("user/{userId}")]
+    public async Task<IActionResult> GetUserImage(int userId)
+    {
+        using var context = await factory.CreateDbContextAsync();
+        var user = await context.EndUsers.FirstOrDefaultAsync(i => i.Id == userId);
+
+        var image = user.Photo;
+
+        return File(image, "image/jpeg");
+    }
+
+    private async Task<IActionResult> GetUserImageAsync(int id)
+    {
+        using var context = await factory.CreateDbContextAsync();
+        var user = await context.EndUsers.FirstOrDefaultAsync(i => i.Id == id);
+
+        var image = user.Photo;
+
+        return File(image, "image/jpeg");
     }
 
     private async Task<IActionResult> GetImageAsync(int id)
