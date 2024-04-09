@@ -46,7 +46,7 @@ public class MobileUserService : IUserService
         return result!;
     }
 
-    public Task<UserDTO?> PatchUser(UserDTO user)
+    public Task<UserDTO?> PatchUser(UpdateUserRequest user)
     {
         throw new NotImplementedException();
     }

@@ -41,6 +41,7 @@ StripeConfiguration.ApiKey = builder.Configuration["STRIPE_SECRET_KEY"];
 //builder.Services.Configure<StripeOptions>
 
 builder.Services.AddMudServices();
+builder.Services.AddServerSideBlazor().AddCircuitOptions(options => { options.DetailedErrors = true; });
 
 builder.Services.AddAntiforgery(options => { 
     options.Cookie.Expiration = TimeSpan.Zero;
