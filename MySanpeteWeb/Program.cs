@@ -14,8 +14,10 @@ using Stripe;
 using LazyCache;
 using DotNetEnv;
 using DotNetEnv.Configuration;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
-DotNetEnv.Env.TraversePath().Load();
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,6 +45,8 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
 });
 StripeConfiguration.ApiKey = builder.Configuration["STRIPE_SECRET_KEY"];
 //builder.Services.Configure<StripeOptions>
+
+builder.Services.AddHealthChecks();
 
 builder.Services.AddMudServices();
 
@@ -135,6 +139,17 @@ app.MapGet("/Account/Logout", async (HttpContext httpContext, string redirectUri
     await httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 });
 
+
+app.MapHealthChecks("/healthCheck", new HealthCheckOptions
+{
+    AllowCachingResponses = false,
+    ResultStatusCodes =
+        {
+            [HealthStatus.Healthy] = StatusCodes.Status200OK,
+            [HealthStatus.Degraded] = StatusCodes.Status200OK,
+            [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
+        }
+});
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
