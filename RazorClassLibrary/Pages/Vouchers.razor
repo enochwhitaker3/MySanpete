@@ -49,11 +49,13 @@
                 </a>
             </div>
         </div>
-
+        <div>
+            <label>Search?</label><input @onchange="FilterVouchers"/>
+        </div>
         <div class="card-container row mt-5" style="max-width: 1200px; margin-left: auto; margin-right: auto">
-            @if (allVouchers is not null)
+            @if (searchedVouchers is not null)
             {
-                @foreach (var voucher in allVouchers)
+                @foreach (var voucher in searchedVouchers)
                 {
                     <div class="col-md-6 p-3">
                         <div class="card m-2 rounded-3 shadow">
@@ -103,14 +105,29 @@
 @code {
     public List<VoucherDTO> allVouchers { get; set; } = new();
 
+    public List<VoucherDTO> searchedVouchers { get; set; } = new();
+
+
     protected override async Task OnInitializedAsync()
     {
-        allVouchers = await voucherService.GetAllVouchers();
+        allVouchers = searchedVouchers = await voucherService.GetAllVouchers();
     }
 
     public void GoToDetailsPage(int id)
     {
         NavMan.NavigateTo($"/view-voucher/{id}");
+    }
+
+    private void FilterVouchers(Microsoft.AspNetCore.Components.ChangeEventArgs args)
+    {
+        string searchString = (string)args.Value;
+        allVouchers.Where(x =>
+        {
+            return x.PromoName.ToLower().Contains(searchString)
+            || x.BusinessName.ToLower().Contains(searchString)
+            || x.PromoDescription.ToLower().Contains(searchString)
+            ;
+        });
     }
 
 }
