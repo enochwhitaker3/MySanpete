@@ -30,6 +30,12 @@ public class ImageController : Controller
         return await cache.GetOrAddAsync($"Business{id}",  () => GetImageAsync(id));
     }
 
+    [HttpGet("blogs/{id}")]
+    public async Task<IActionResult> GetBlogImage(int id)
+    {
+        return await cache.GetOrAddAsync($"Blogs{id}", () => GetImageAsync(id));
+    }
+
     [HttpGet("user/{userId}")]
     public async Task<IActionResult> GetUserImage(int userId)
     {
