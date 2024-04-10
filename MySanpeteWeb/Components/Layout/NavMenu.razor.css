@@ -11,8 +11,8 @@
 
 .navbar {
     background-color: transparent;
-    overflow: hidden;
-    width: 100%;
+/*    overflow: hidden;
+*/    width: 100%;
 /*    position: absolute;*/
     top: 0;
     z-index: 1;
@@ -73,3 +73,15 @@
     color: #fc039d !important;
 }
 
+.dropdown-item {
+    color: white !important;
+}
+
+.dropdown-item:hover {
+    color: black !important;
+}
+
+/*.navbar-collapse.collapse.show {
+    background-color: black !important;
+}
+*/
