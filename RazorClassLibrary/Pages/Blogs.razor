@@ -22,28 +22,13 @@
                             <h2>@blog.Title</h2>
                             <p>@blog.AuthorName</p>
                         </div>
-                        <div class="btn mt-5 mb-5"><span data-text="Read Now">Read Now</span></div>
+                        <div class="btn mt-5 mb-5" @onclick="() => GoToDetailsPage(blog.Id)">
+                            <span data-text="Read Now">Read Now</span>
+                        </div>
                     </div>
                 </div>
             </div>
         }
-
-@*         <div class="col-md-4 m-4">
-            <div class="card shadow" style="height: 99%">
-                <div class="logo-container d-flex justify-content-center" style="height: 55%;">
-                    <img class="card-img-top"
-                         src="https://images.pexels.com/photos/3840191/pexels-photo-3840191.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="city" />
-                </div>
-                <div class="card-body">
-                    <div class="main-text">
-                        <p>7 / 20 / 23</p>
-                        <h2>Meditation and mindfulness.</h2>
-                        <p>By C.S. Lewis</p>
-                    </div>
-                    <div class="btn mt-5 mb-5"><span data-text="Read Now">Read Now</span></div>
-                </div>
-            </div>
-        </div> *@
     </div>
 
     <div class="business-container row justify-content-center m-5">
@@ -62,7 +47,7 @@
                             <h2>@blog.Title</h2>
                             <p>@blog.AuthorName</p>
                         </div>
-                        <div class="button">
+                        <div class="button" @onclick="() => GoToDetailsPage(blog.Id)">
                             <h1>Read now</h1>
                         </div>
                     </div>
@@ -70,81 +55,6 @@
             </div>
         }
 
-        @* <div class="card-container col-md-3">
-            <div class="card shadow w-65">
-                <div class="image-container d-flex justify-content-center" style="height: 55%;">
-                    <img class="card-img-top img-fluid"
-                         src="https://images.pexels.com/photos/18725144/pexels-photo-18725144/free-photo-of-hand-of-a-woman-picking-up-a-glass-of-coffee-over-an-open-book.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="city" />
-                </div>
-                <div class="card-body mt-3">
-                    <div class="sub-text">
-                        <p>11/19/2023</p>
-                        <h2>Quite Mornings Part 4.</h2>
-                        <p>By C.S. Lewis</p>                        
-                    </div>
-                    <div class="button">
-                        <h1>Read now</h1>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card-container col-md-3">
-            <div class="card shadow w-65" >
-                <div class="image-container d-flex justify-content-center" style="height: 55%;">
-                    <img class="card-img-top"
-                         src="https://images.pexels.com/photos/2055556/pexels-photo-2055556.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="city" />
-                </div>
-                <div class="card-body mt-3">
-                    <div class="sub-text">
-                        <p>7/30/2023</p>
-                        <h2>Guide to a hikers paradise..</h2>
-                        <p>By Frank Herbert</p>
-                    </div>
-                    <div class="button">
-                        <h1>Read now</h1>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card-container col-md-3">
-            <div class="card shadow w-65">
-                <div class="image-container d-flex justify-content-center" style="height: 55%;">
-                    <img class="card-img-top"
-                         src="https://images.pexels.com/photos/11531737/pexels-photo-11531737.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="city" />
-                </div>
-                <div class="card-body mt-3">
-                    <div class="sub-text">
-                        <p>3/01/2023</p>
-                        <h2>The many cats in city center.</h2>
-                        <p>By C.S. Lewis</p>
-                    </div>
-                    <div class="button">
-                        <h1>Read now</h1>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card-container col-md-3">
-            <div class="card shadow w-65">
-                <div class="image-container d-flex justify-content-center" style="height: 55%;">
-                    <img class="card-img-top"
-                         src="https://images.pexels.com/photos/10147722/pexels-photo-10147722.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="city" />
-                </div>
-                <div class="card-body mt-3">
-                    <div class="sub-text">
-                        <p>9/24/2022</p>
-                        <h2>Pro / Cons to waking up early.</h2>
-                        <p>By Frank Herbert</p>
-                    </div>
-                    <div class="button">
-                        <h1>Read now</h1>
-                    </div>
-                </div>
-            </div>
-        </div> *@
     </div>
 </div>
 
@@ -159,11 +69,17 @@
     {
         isLoading = true;
         restBlogs = await blogService.GetAllBlogs();
-        restBlogs.OrderByDescending(d => d.PublishDate);
+        restBlogs = restBlogs.OrderByDescending(x => x.PublishDate).ToList();
 
-        featuredBlogs.Add(restBlogs[1]);
-        featuredBlogs.Add(restBlogs[2]);
+        featuredBlogs = restBlogs.GetRange(0, 2);
+        restBlogs.RemoveRange(0, 2);
+
         isLoading = false;
+    }
+
+    public void GoToDetailsPage(int id)
+    {
+        NavMan.NavigateTo($"/blog/{id}", true);
     }
 
 }
