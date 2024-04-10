@@ -36,7 +36,7 @@
                         <p>@userVoucher.Voucher.BusinessName</p>
                         <p >Good Through @userVoucher.Voucher.StartDate to @userVoucher.Voucher.EndDate</p>
                         
-                            <button class="btn btn-primary" style="text-align: right;" onclick="()=> GoToDetailsPage(@userVoucher.Id)">View Voucher</button>
+                            <button class="btn btn-primary" style="text-align: right;" @onclick="()=> GoToDetailsPage(userVoucher.Id)">View Voucher</button>
                        
 
                     </div>
