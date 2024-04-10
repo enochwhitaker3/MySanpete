@@ -35,7 +35,7 @@
                         <p>@userVoucher.Voucher.BusinessName</p>
                         <p style="position: absolute; bottom: 0;">Good Through @userVoucher.Voucher.StartDate to @userVoucher.Voucher.EndDate</p>
                         <div class="d-flex justify-content-end">
-                            <button class="btn btn-primary" style="text-align: right;" onclick="()=> GoToDetailsPage(@userVoucher.Id)">View Voucher</button>
+                            <button class="btn btn-primary" style="text-align: right;" @onclick="() => GoToDetailsPage(userVoucher.Id)">View Voucher</button>
                         </div>
 
                     </div>
@@ -85,6 +85,6 @@
 
     public void GoToDetailsPage(int id)
     {
-        navManager.NavigateTo($"/view-user-voucher/{id}");
+        navManager.NavigateTo($"/view-user-voucher/{id}", true);
     }
 }
