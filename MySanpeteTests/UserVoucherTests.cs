@@ -18,7 +18,7 @@ public class UserVoucherTests : IClassFixture<MySanpeteFactory>
     }
 
     [Fact]
-    public async void CreateUserVouchersuccessfullyTest()
+    public async void CreateUserVoucherSuccessfullyTest()
     {
         using var scope = mySanpeteFactory.Services.CreateScope();
         IUserVoucherService userVoucherService = scope.ServiceProvider.GetRequiredService<IUserVoucherService>();
