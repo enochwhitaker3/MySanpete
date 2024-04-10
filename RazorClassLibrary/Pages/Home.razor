@@ -46,7 +46,7 @@
                                             <p class="card-text">Good through @allVouchers[i].EndDate</p>
                                         }
                                         <!-- Button trigger modal -->
-                                        <div class="button" @* @onclick="() => GoToDetailsPage(voucher.Id)" *@>
+                                        <div class="button" @onclick="() => GoToDetailsPage(allVouchers[i].Id)">
                                             <div class="button-wrapper">
                                                 <div class="text">View</div>
                                                 <span class="icon">
@@ -179,9 +179,11 @@
 
 
         <div class="d-flex justify-content-center m-5 mt-0">
-            <button class="button2 shadow">
+            <a href="/events">
+                <button class="button2 shadow">
                 Discover More
-            </button>
+                </button>
+            </a>
         </div>
     </div>
 
@@ -263,5 +265,10 @@
         allVouchers = allVouchers.Where(x => x.EndDate >= DateTime.UtcNow).ToList();
         allBusinesses = await businessService.GetAllBusinesses();
         isLoading = false;
+    }
+
+    public void GoToDetailsPage(int voucherId)
+    {
+        NavMan.NavigateTo($"/view-voucher/{voucherId}");
     }
 }
