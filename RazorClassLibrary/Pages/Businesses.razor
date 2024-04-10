@@ -2,58 +2,56 @@
 
 <div class="main-section">
     <div class="section-title">Businesses</div>
-
-
 </div>
 
-
-<div class="business-container row mx-auto mt-10 pb-8" style="max-width: 1800px;">
-    @if (AllBusinesses is not null)
-    {
-        @foreach (var b in AllBusinesses)
+@if (isLoading)
+{
+    <LoadingComponent></LoadingComponent>
+}
+else
+{
+    <div class="business-container row mx-auto mt-10 pb-8" style="max-width: 1800px;">
+        @if (AllBusinesses is not null)
         {
-            <div class="col-md-3 mt-10">
-                <div class="card h-100 shadow">
-                    <div class="logo-container d-flex justify-content-center m-5">
-                        @if (b.LogoURL is null)
-                        {
-                            <img class="card-img-top rounded-circle "
-                                 src="https://i.fbcd.co/products/resized/resized-750-500/b456fb3c430f2ac383cae48c4f8e0c037e0ecaf072d2607320a3252c38fc90de.webp" />
-                        }
-                        else
-                        {
-                            <img class="card-img-top rounded-circle "
-                                 src="@b.LogoURL" />
-                        }
-                    </div>
+            @foreach (var b in AllBusinesses)
+            {
+                <div class="col-md-3 mt-10">
+                    <div class="card h-100 shadow">
+                        <div class="logo-container d-flex justify-content-center m-5">
+                            @if (b.LogoURL is null)
+                            {
+                                <img class="card-img-top rounded-circle "
+                                     src="https://i.fbcd.co/products/resized/resized-750-500/b456fb3c430f2ac383cae48c4f8e0c037e0ecaf072d2607320a3252c38fc90de.webp" />
+                            }
+                            else
+                            {
+                                <img class="card-img-top rounded-circle "
+                                     src="@b.LogoURL" />
+                            }
+                        </div>
 
-                    <div class="card-body mt-3 mb-15 mt-10">
-                        <h2 class="card-text">@b.BusinessName</h2>
-                        <p class="card-text">@b.Address</p>
+                        <div class="card-body mt-3 mb-15 mt-10">
+                            <h2 class="card-text">@b.BusinessName</h2>
+                            <p class="card-text">@b.Address</p>
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
         }
-    }
-</div>
-
-
-
-
-
-
-
-
-
+    </div>
+}
 
 
 @code {
     public List<BusinessDTO> AllBusinesses { get; set; } = new();
 
     public string test { get; set; } = "";
+    public bool isLoading { get; set; } = true;
 
     protected override async Task OnInitializedAsync()
     {
+        isLoading = true;
         AllBusinesses = await service.GetAllBusinesses();
+        isLoading = false;
     }
 }

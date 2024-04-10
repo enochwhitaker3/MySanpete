@@ -1,5 +1,6 @@
 ﻿using RazorClassLibrary.Data;
 using RazorClassLibrary.Pages;
+using System.Reflection.Metadata;
 
 namespace RazorClassLibrary.DTOs;
 
@@ -52,7 +53,7 @@ public static class DtoConverter
             AuthorName = blog.Author.UserName,
             PublishDate = blog.PublishDate,
             Commentable = blog.Commentable,
-            Photo = blog.Photo,
+            PhotoURL = $"https://mysanpete.azurewebsites.net/api/image/blogs/{blog.Id}",
             Comments = blog.BlogComments.Select(x => x.Comment.ToDto()).ToList(),
             Reactions = blog.BlogReactions.Select(x => x.Reaction).ToList()
         };
@@ -67,6 +68,7 @@ public static class DtoConverter
             Content = comment.CommentText,
             Replies = comment.InverseReply.Where(x => x.ReplyId == comment.Id).Select(x => x.ToDto()).ToList(),
             UserName = comment.User.UserName,
+            UserPhotoURL = $"https://mysanpete.azurewebsites.net/api/image/user/{comment.User.Id}",
             PostedDate = comment.PostDate,
         };
     }

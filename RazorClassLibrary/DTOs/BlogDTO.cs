@@ -17,5 +17,5 @@ public class BlogDTO
     public List<CommentDTO>? Comments { get; set; }
     public List<Reaction>? Reactions { get; set; }
     public bool Commentable { get; set; }
-    public Byte[]? Photo { get; set; }
+    public string? PhotoURL { get; set; }
 }

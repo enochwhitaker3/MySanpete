@@ -85,3 +85,8 @@ button {
 textarea:active {
     border-color: black;
 }
+
+.login-message {
+    font-size: 18px;
+    color: #302f2f;
+}
