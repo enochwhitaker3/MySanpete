@@ -33,14 +33,20 @@
             }
             else
             {
-                @if (userState.User.IsInRole("Admin"))
-                {
-                    <li class="nav-item">
-                        <a class="nav-link" href="admin">Admin Controls</a>
-                    </li>
-                }
-                <li class="nav-item">
-                    <a class="nav-link" @onclick="userState.Logout">Log out</a>
+                <li class="nav-item dropdown" style="margin-right: 40px;">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Profile
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="background-color: rgba(7,9,14,0.6); color: white !important;">
+                        @if (userState.User.IsInRole("Admin"))
+                        {
+                            <a class="dropdown-item" href="admin">Admin Controls</a>
+                        }
+                        <a class="dropdown-item" href="/Account">My Account</a>
+                        <a class="dropdown-item" href="/user-vouchers">My Vouchers</a>
+                        <a class="dropdown-item" href="#">My Events</a>
+                        <a class="dropdown-item" href="#" @onclick="userState.Logout">Log Out</a>
+                    </div>
                 </li>
             }
         </ul>
