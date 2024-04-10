@@ -12,7 +12,7 @@ public class WebReviewService : IReviewService
     {
         this.dbContextFactory = dbContextFactory;
     }
-    public async Task<Review> AddReview(AddReviewRequest request)
+    public async Task<Review?> AddReview(AddReviewRequest request)
     {
         if (request.Text is null || request.Stars < 0 || request.Stars > 5)
         {

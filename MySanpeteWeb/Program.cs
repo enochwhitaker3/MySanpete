@@ -69,6 +69,7 @@ builder.Services.AddSingleton<IBundleService, WebBundleService>();
 builder.Services.AddScoped<IStripeService, StripeService>();
 builder.Services.AddScoped<IUserVoucherService, WebUserVoucherService>();
 builder.Services.AddScoped<IUserState, WindowsUserState>();
+builder.Services.AddSingleton<IUserOccasionService, WebUserOccasionService>();
 
 builder.Services.AddLazyCache(serviceProvider => {
     var cache = new CachingService(CachingService.DefaultCacheProvider);
