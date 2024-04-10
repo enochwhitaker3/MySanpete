@@ -1,55 +1,87 @@
 ﻿@page "/business/viewvouchers"
 @using RazorClassLibrary.Data
 @using RazorClassLibrary.Services
-@* @attribute [Authorize(Roles = "Business")]  *@
-@inject IBusinessService businessService
+@attribute [Authorize(Roles = "Business")] 
+@inject IUserVoucherService userVoucherService
 
-@if (business is not null)
-{
-    @if (business.Vouchers is not null)
-    {
-        <table class="table" style="height: 100%; width: 100%;">
-            <thead>
+<table class="table" style="height: 100%; width: 100%;">
+    <thead>
+        <tr>
+            <th>Coupon Code</th>
+            <th>User Name</th>
+            <th>Voucher Type</th>
+            <th>Claim</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (vouchers is not null)
+        {
+
+            @foreach (var userVoucher in vouchers)
+            {
                 <tr>
-                    <th>Coupon Code</th>
-                    <th>User Name</th>
-                    <th>Voucher Type</th>
-                    <th>Claim</th>
-                </tr>
-            </thead>
-            <tbody>
+                    <td>@userVoucher.Promo_Code</td>
+                    <td>@userVoucher.User.Username</td>
+                    @if (userVoucher.Total_Reclaimable == null || userVoucher.Total_Reclaimable > 1)
+                    {
+                        <td>Multi-Use</td>
+                    }
+                    else
+                    {
+                        <td>Single-Use</td>
+                    }
+                    <td>
+                        <div style="width: 35%">
 
-                @foreach (var userVoucher in vouchers)
-                {
-                    <tr>
-                        <td>@userVoucher.PromoCode</td>
-                        <td>@userVoucher.User.UserName</td>
-                        @if (userVoucher.TotalReclaimable == null || userVoucher.TotalReclaimable == 0)
-                        {
-                            <td>Multi-Use</td>
-                        }
-                        else
-                        {
-                            <td>Single-Use</td>
-                        }
-                        <td>
-                            @if (userVoucher.TotalReclaimable == null || userVoucher.TotalReclaimable == 0)
+                            @if (userVoucher.Total_Reclaimable == null || userVoucher.Total_Reclaimable > 0)
                             {
-                                <input type="number" min="@(userVoucher?.TimesClaimed ?? 0)" step="1" />
+                                <input style="outline-color: black; outline-width: 2px; outline-style: solid; width: 45%; line-height: 212%"
+                                       placeholder="0"
+                                       type="number"
+                                       min="0"
+                                       max="@(userVoucher?.Total_Reclaimable)"
+                                       @bind="userVoucher.Times_Claimed"
+                                       step="1" />
+                                <button style="width: 50%" class="btn btn-primary" @onclick="() => ClaimVoucher(userVoucher)">
+                                    Save
+                                </button>
                             }
                             else
                             {
-                                <input type="checkbox" @bind="userVoucher.Isused" />
+                                @if (userVoucher.Is_Used != null && userVoucher.Is_Used == true)
+                                {
+                                    <button style="width: 100%" class="btn btn-info" @onclick="() => ConfirmUnclaim(userVoucher)" data-toggle="modal" data-target="#ImportantPopup">Claimed</button>
+                                }
+                                else
+                                {
+                                    <button style="width: 100%" class="btn btn-primary" @onclick="() => ClaimVoucher(userVoucher)">Claim?</button>
+                                }
                             }
-                        </td>
-                    </tr>
+                        </div>
+                    </td>
+                </tr>
 
-                }
-            </tbody>
-        </table>
-    }
-}
+            }
+        }
+    </tbody>
+</table>
 
+<div class="modal fade" id="ImportantPopup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Decision</h5>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you would like to unclaim this voucher?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" data-dismiss="modal" @onclick="UnclaimVoucher">Confirm</button>
+                <button class="btn btn-success" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
 @code {
     [CascadingParameter]
     Task<AuthenticationState>? authenticationStateTask { get; set; }
@@ -58,21 +90,35 @@
 
     public BusinessDTO? business { get; set; }
 
-    List<UserVoucher> vouchers { get; set; } = new();
+    List<UserVoucherDTO> vouchers { get; set; } = new();
+
+    private UserVoucherDTO userVoucherToUnclaim { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
         var authState = await (authenticationStateTask ?? throw new Exception("Auth state unfound"));
         email = authState.User.Claims.FirstOrDefault(x => x.Type.Contains("email"))?.Value ?? throw new Exception("Email missing on business");
-        email = "codebras2023@gmail.com";
 
-        business = await businessService.GetBusiness(email);
+        vouchers = await userVoucherService.GetAllByBusiness(email);
 
-        // business?.Vouchers.Select(x =>
-        //     {
-        //         vouchers.AddRange(x.UserVouchers);
-        //         return x.UserVouchers;
-        //     }).ToList();
+    }
 
+    private async Task ClaimVoucher(UserVoucherDTO userVoucher)
+    {
+        userVoucher.Is_Used = true;
+
+        await userVoucherService.UpdateUserVoucher(userVoucher);
+    }
+
+    private void ConfirmUnclaim(UserVoucherDTO userVoucher)
+    {
+        userVoucherToUnclaim = userVoucher;
+    }
+
+    private async Task UnclaimVoucher()
+    {
+        userVoucherToUnclaim.Is_Used = false;
+
+        await userVoucherService.UpdateUserVoucher(userVoucherToUnclaim);
     }
 }

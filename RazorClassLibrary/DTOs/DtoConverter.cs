@@ -147,4 +147,14 @@ public static class DtoConverter
             Vouchers = vouchers
         };
     }
+
+    public static UserOccasionDTO ToDto(this  UserOccasion userOccasion)
+    {
+        return new UserOccasionDTO()
+        {
+            Id = userOccasion.Id,
+            Occasion = userOccasion.Occasion,
+            User = userOccasion.User.ToDto()
+        };
+    }
 }
