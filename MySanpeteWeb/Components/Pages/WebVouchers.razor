@@ -166,7 +166,7 @@
 
     public void GoToDetailsPage(int id)
     {
-        NavMan.NavigateTo($"/view-voucher/{id}");
+        NavMan.NavigateTo($"/view-voucher/{id}",true);
     }
 
     public List<VoucherDTO> toggleFiltering(string businessName)

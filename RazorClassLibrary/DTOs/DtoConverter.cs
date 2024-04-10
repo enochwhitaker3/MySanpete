@@ -52,7 +52,7 @@ public static class DtoConverter
             AuthorName = blog.Author.UserName,
             PublishDate = blog.PublishDate,
             Commentable = blog.Commentable,
-            Photo = blog.Photo,
+            PhotoURL = $"https://mysanpete.azurewebsites.net/api/image/blogs/{blog.Id}",
             Comments = blog.BlogComments.Select(x => x.Comment.ToDto()).ToList(),
             Reactions = blog.BlogReactions.Select(x => x.Reaction).ToList()
         };
