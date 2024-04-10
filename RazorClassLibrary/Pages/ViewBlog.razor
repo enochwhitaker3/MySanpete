@@ -39,7 +39,7 @@
                                     <div class="comment d-flex mb-5">
                                         <div class="flex-shrink-0">
                                             <div class="avatar avatar-sm rounded-circle">
-                                                <img class="avatar-img" src="https://randomuser.me/api/portraits/men/32.jpg" alt="">
+                                                <img class="avatar-img" src="@c.UserPhotoURL" alt="">
                                             </div>
                                         </div>
                                         <div class="flex-grow-1 ms-2 ms-sm-3">
@@ -51,7 +51,7 @@
                                                 @c.Content
                                             </div>
                                             <div class="row justify-content-center mb-5">
-                                                @if (user is not null)
+                                                @if (loggedInUser is not null)
                                                 {
                                                     <a data-toggle="collapse" href="@("#collapseExample" + c.Id)" role="button" aria-expanded="false" aria-controls="@("collapseExample" + c.Id)" class="reply-btn">
                                                         Reply
@@ -87,7 +87,7 @@
                                                         <div class="reply d-flex">
                                                             <div class="flex-shrink-0">
                                                                 <div class="avatar avatar-sm rounded-circle">
-                                                                    <img class="avatar-img" src="https://images.unsplash.com/photo-1501325087108-ae3ee3fad52f?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=f7f448c2a70154ef85786cf3e4581e4b" alt="">
+                                                                    <img class="avatar-img" src="@r.UserPhotoURL" alt="">
                                                                 </div>
                                                             </div>
                                                             <div class="flex-grow-1 ms-2 ms-sm-3">
@@ -110,14 +110,14 @@
                         </div>
                     </div>
                 }
-                @if (user is not null)
+                @if (loggedInUser is not null)
                 {
                     <div class="row justify-content-center mb-5">
                         <div class="col-lg-10">
                             <div class="comment-form d-flex align-items-center">
                                 <div class="flex-shrink-0">
                                     <div class="avatar avatar-sm rounded-circle">
-                                        <img class="avatar-img" src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&crop=faces&fit=crop&h=200&w=200" alt="">
+                                        <img class="avatar-img" src="@loggedInUser.PhotoURL" alt="">
                                     </div>
                                 </div>
                                 <div class="flex-grow-1 ms-2 ms-sm-3">
@@ -132,7 +132,7 @@
                 }
                 else
                 {
-                    <p>Log in to leave a comment</p>
+                    <strong><p class="login-message">Log in to leave a comment</p></strong>
                 }
             </div>
         </div>
@@ -159,7 +159,7 @@
     public string inputedComment { get; set; }
 
 
-    UserDTO user { get; set; }
+    UserDTO loggedInUser { get; set; }
 
 
 
@@ -174,7 +174,7 @@
         if (userState.User.Identity.IsAuthenticated)
         {
             var authId = userState.User.Claims.FirstOrDefault(x => x.Type == "authId").Value;
-            user = await userService.GetAuthUser(authId);
+            loggedInUser = await userService.GetAuthUser(authId);
         }
     }
 
@@ -184,7 +184,7 @@
             {
                 content = inputedComment,
                 contentId = blogId,
-                userGuid = user.Guid,
+                userGuid = loggedInUser.Guid,
             };
         await commentService.AddBlogComment(newRequest);
         inputedComment = "";
@@ -198,7 +198,7 @@
             {
                 content = inputedComment,
                 contentId = blogId,
-                userGuid = user.Guid,
+                userGuid = loggedInUser.Guid,
                 replyId = replyId,
             };
         commentService.AddBlogComment(newRequest);

@@ -22,7 +22,7 @@
                             <h2>@blog.Title</h2>
                             <p>@blog.AuthorName</p>
                         </div>
-                        <div class="btn mt-5 mb-5"><span data-text="Read Now">Read Now</span></div>
+                        <div class="btn mt-5 mb-5"><span data-text="Read Now" @onclick="() => NavigateToBlog(blog.Id)">Read Now</span></div>
                     </div>
                 </div>
             </div>
@@ -63,7 +63,7 @@
                             <p>@blog.AuthorName</p>
                         </div>
                         <div class="button">
-                            <h1>Read now</h1>
+                            <h1 @onclick="() => NavigateToBlog(blog.Id)">Read now</h1>
                         </div>
                     </div>
                 </div>
@@ -164,6 +164,11 @@
         featuredBlogs.Add(restBlogs[1]);
         featuredBlogs.Add(restBlogs[2]);
         isLoading = false;
+    }
+
+    public void NavigateToBlog(int blogId)
+    {
+        NavMan.NavigateTo($"/blog/{blogId}");
     }
 
 }
