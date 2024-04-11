@@ -95,7 +95,7 @@ public class UserOccasionTests : IClassFixture<MySanpeteFactory>
         IUserOccasionService userOccasionService = scope.ServiceProvider.GetRequiredService<IUserOccasionService>();
 
         var result = await userOccasionService.DeleteUserOccasion(100000);
-        result.Should().BeFalse();  
+        result.Should().BeFalse();
     }
 
     [Fact]

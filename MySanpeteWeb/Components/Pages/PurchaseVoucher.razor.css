@@ -1,2 +1,44 @@
-﻿body {
+﻿
+@font-face {
+    font-family: 'Nelphim';
+    src: url('Fonts/Nephilm.otf') format('opentype');
 }
+
+@font-face {
+    font-family: 'Casual';
+    src: url('Fonts/Casual-Regular.ttf') format('truetype');
+}
+
+
+.content {
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='1' ry='1' stroke='%23333' stroke-width='3' stroke-dasharray='6%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+    border: none !important;
+    font-family: 'Tenor', Arial !important;
+    background-color: white !important;
+}
+
+
+
+h2 {
+    font-family: Nelphim;
+}
+
+p {
+    color: #525252;
+    font-size: 17px;
+    line-height: 1.55;
+}
+
+button {
+    background-color: black;
+    color: white;
+    border-radius: 30px;
+    border: none;
+    padding: 10px;
+}
+
+    button:hover {
+        background-color: white;
+        color: black;
+        border: black solid 1px;
+    }

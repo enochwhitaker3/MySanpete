@@ -18,7 +18,7 @@ public class MauiUserState : IUserState
         this.authProvider = authProvider;
         user = new ClaimsPrincipal();
     }
-    private ClaimsPrincipal user; 
+    private ClaimsPrincipal user;
 
     public ClaimsPrincipal User => user;
 

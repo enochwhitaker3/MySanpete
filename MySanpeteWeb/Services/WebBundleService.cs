@@ -40,8 +40,8 @@ public class WebBundleService : IBundleService
         var bundleVouchers = request.Vouchers
                                 .Select(x => new BundleVoucher()
                                 {
-                                    BundleId = newBundle.Id, 
-                                    DiscountPrice = x.RetailPrice, 
+                                    BundleId = newBundle.Id,
+                                    DiscountPrice = x.RetailPrice,
                                     VoucherId = x.Id,
                                 })
                                 .ToList();
@@ -54,7 +54,7 @@ public class WebBundleService : IBundleService
         var bundle = await context.Bundles
             .Include(x => x.BundleVouchers)
                 .ThenInclude(x => x.Voucher)
-                    .ThenInclude(x => x.Business)
+                    .ThenInclude(x => x!.Business)
             .FirstOrDefaultAsync(x => x.Id == newBundle.Id);
         return bundle!.ToDto();
     }
@@ -89,8 +89,8 @@ public class WebBundleService : IBundleService
         using var context = await dbContextFactory.CreateDbContextAsync();
 
         var bundles = await context.Bundles
-                        .Include (x => x.BundleVouchers)
-                            .ThenInclude (x => x.Voucher)
+                        .Include(x => x.BundleVouchers)
+                            .ThenInclude(x => x.Voucher)
                                 .ThenInclude(x => x!.Business)
                         .Select(x => x.ToDto())
                         .ToListAsync();
@@ -145,7 +145,7 @@ public class WebBundleService : IBundleService
 
         var purchases = bundleToPurchase.BundleVouchers.Select(bv => new UserVoucher()
         {
-            ChargeId = request!.ChargeId,
+            ChargeId = request!.ChargeId!,
             FinalPrice = bv.DiscountPrice,
             PurchaseDate = DateTime.Now.ToUniversalTime(),
             TotalReclaimable = bv.Voucher!.TotalReclaimable ?? 0,
@@ -178,12 +178,12 @@ public class WebBundleService : IBundleService
             throw new Exception("Start date for the occasion needs a value");
         }
 
-        if (bundle.EndDate < bundle.StartDate) 
+        if (bundle.EndDate < bundle.StartDate)
         {
             throw new Exception("End date needs to be after the start date");
         }
 
-        if (bundle.Name is null || bundle.Name == "") 
+        if (bundle.Name is null || bundle.Name == "")
         {
             throw new Exception("Name needs a value for the occasion");
         }
@@ -202,7 +202,7 @@ public class WebBundleService : IBundleService
 
         context.BundleVouchers.RemoveRange(rangeToDelete);
 
-        if(bundle.Vouchers is not null)
+        if (bundle.Vouchers is not null)
         {
             var bundleVouchers = bundle.Vouchers
                                    .Select(x => new BundleVoucher()

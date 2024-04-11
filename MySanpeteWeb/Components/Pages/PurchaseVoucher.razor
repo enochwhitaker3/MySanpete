@@ -10,24 +10,23 @@
 
 @attribute [Authorize]
 
-<h3>Purchase Voucher</h3>
-
+<div style="height: 80vh; margin-top: 100px">
 @if (voucher is not null)
 {
     <div class="container">
-        <div class="content">
+            <div class="content rounded-3 shadow">
             <div class="row">
                 <div class="col-md-6">
                     <img width="300" src="@imgDataURL" class="img-fluid img rounded-circle" />
                 </div>
                 <div class="col-md-6">
                     <h2>@voucher.PromoName</h2>
-                    <p>@voucher.BusinessName</p>
+                        <strong><p>@voucher.BusinessName</p></strong>
                     <p>@voucher.PromoDescription</p>
-                    <p>@voucher.RetailPrice</p>
-                    <p>@voucher.EndDate</p>
+                    <p>$@voucher.RetailPrice</p>
+                    <p>Good through @voucher.EndDate</p>
                     <form method="post" @formname="checkout" @onsubmit="Checkout">
-                        <button type="submit" class="btn btn-primary" style="background-color: black; color: white;">
+                        <button type="submit" class="btn btn-primary">
                             Checkout with Stripe
                         </button>
                         <AntiforgeryToken />
@@ -42,6 +41,7 @@ else
     <p>This voucher doesn't exist anymore (or never existed at all!).</p>
     <p>View All Vouchers</p>
 }
+</div>
 
 @code {
     [Parameter]

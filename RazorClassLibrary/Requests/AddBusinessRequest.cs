@@ -11,7 +11,7 @@ public class AddBusinessRequest
     public string Name { get; set; } = "";
     public string Address { get; set; } = "";
     public byte[]? Logo { get; set; }
-    public string? PhoneNum { get;set; } = null;
+    public string? PhoneNum { get; set; } = null;
     public string? WebURL { get; set; } = null;
     public string? Email { get; set; } = null;
 }

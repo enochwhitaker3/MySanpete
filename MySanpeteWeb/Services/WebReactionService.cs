@@ -12,7 +12,7 @@ public class WebReactionService : IReactionService
     {
         this.dbContextFactory = dbContextFactory;
     }
-    public async Task<BlogReaction> AddBlogReaction(AddReactionRequest request)
+    public async Task<BlogReaction?> AddBlogReaction(AddReactionRequest request)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
 
@@ -40,7 +40,7 @@ public class WebReactionService : IReactionService
         return blogReaction;
     }
 
-    public async Task<PodcastReaction> AddPodReaction(AddReactionRequest request)
+    public async Task<PodcastReaction?> AddPodReaction(AddReactionRequest request)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
 

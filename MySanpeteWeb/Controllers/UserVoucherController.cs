@@ -13,7 +13,7 @@ namespace MySanpeteWeb.Controllers;
 public class UserVoucherController : Controller
 {
     private readonly IUserVoucherService userVoucherService;
-    
+
     public UserVoucherController(IUserVoucherService userVoucherService)
     {
         this.userVoucherService = userVoucherService;
@@ -22,7 +22,7 @@ public class UserVoucherController : Controller
     [HttpGet()]
     public async Task<List<UserVoucherDTO>> GetAll()
     {
-        var result  = await userVoucherService.GetAllUserVouchers();
+        var result = await userVoucherService.GetAllUserVouchers();
         return result;
     }
 

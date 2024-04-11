@@ -19,7 +19,10 @@
 {
     @foreach (var p in AllPodcasts)
     {
-        @((MarkupString)@p.URL)
+        @if (p.URL is not null)
+        {
+            @((MarkupString)@p.URL)
+        }
     }
 }
 

@@ -49,10 +49,23 @@
             }
             else
             {
-                <p>Loading ...</p>
+                <RazorClassLibrary.Pages.LoadingComponent></RazorClassLibrary.Pages.LoadingComponent>
             }
         </div>
-
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="input-group mb-3 pt-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-light rounded-left">
+                                <img src="Images/MagnifyingGlass.png" alt="Search" style="width: 20px; height: 20px;" />
+                            </span>
+                        </div>
+                        <input type="text" class="form-control rounded-right" placeholder="Search All Vouchers (e.g. Wendys, Free, WAH)" @onchange="@FilterVouchers" />
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="card-container row mt-5 pb-8" style="max-width: 1200px; margin-left: auto; margin-right: auto">
             @if (!isLoading)
             {
@@ -60,10 +73,10 @@
                 {
                     @if (!filtering)
                     {
-                        @foreach (var voucher in allVouchers)
+                        @foreach (var voucher in searchedVouchers)
                         {
 
-                            <div class="col-md-6 p-3">
+                            <div class="col-md-6 p-3" >
                                 <div class="card m-2 rounded-3 shadow">
                                     <div class="d-flex flex-row">
                                         <div class="col-md img-square-wrapper rounded" style="padding: 0px;">
@@ -78,13 +91,11 @@
                                                 <p class="card-text">Good through @voucher.EndDate</p>
                                             }
                                             <!-- Button trigger modal -->
-                                            <div class="button" @onclick="() => GoToDetailsPage(voucher.Id)">
+                                            <div class="button mt-10" @onclick="() => GoToDetailsPage(voucher.Id)">
                                                 <div class="button-wrapper">
-                                                    <div class="text">View</div>
+                                                    <div class="text">$@voucher.RetailPrice</div>
                                                     <span class="icon">
-                                                        <svg viewBox="0 0 16 16" class="bi bi-cart2" fill="currentColor" height="16" width="16" xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"></path>
-                                                        </svg>
+                                                        View
                                                     </span>
                                                 </div>
                                             </div>
@@ -98,7 +109,7 @@
                     }
                     else
                     {
-                        @foreach (var voucher in filteredVouchers)
+                        @foreach (var voucher in searchedVouchers.Where(x => x.BusinessName == filteredBusiness).ToList())
                         {
 
                             <div class="col-md-6 p-3">
@@ -116,13 +127,11 @@
                                                 <p class="card-text">Good through @voucher.EndDate</p>
                                             }
                                             <!-- Button trigger modal -->
-                                            <div class="button" @onclick="() => GoToDetailsPage(voucher.Id)">
+                                            <div class="button mt-10" @onclick="() => GoToDetailsPage(voucher.Id)">
                                                 <div class="button-wrapper">
-                                                    <div class="text">View</div>
+                                                    <div class="text">$@voucher.RetailPrice</div>
                                                     <span class="icon">
-                                                        <svg viewBox="0 0 16 16" class="bi bi-cart2" fill="currentColor" height="16" width="16" xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"></path>
-                                                        </svg>
+                                                        View
                                                     </span>
                                                 </div>
                                             </div>
@@ -149,7 +158,8 @@
 
 @code {
     public List<VoucherDTO> allVouchers { get; set; } = new();
-    public List<VoucherDTO> filteredVouchers { get; set; } = new();
+    public List<VoucherDTO> searchedVouchers { get; set; } = new();
+
     public string filteredBusiness { get; set; } = "none";
     public List<BusinessDTO> allBusinesses { get; set; } = new();
     public bool isLoading { get; set; } = true;
@@ -159,7 +169,7 @@
     {
         isLoading = true;
         allVouchers = await voucherService.GetAllVouchers();
-        allVouchers = allVouchers.Where(x => x.EndDate >= DateTime.UtcNow).ToList();
+        searchedVouchers = allVouchers = allVouchers.Where(x => x.EndDate >= DateTime.UtcNow).ToList();
         allBusinesses = await businessService.GetAllBusinesses();
         isLoading = false;
     }
@@ -169,7 +179,7 @@
         NavMan.NavigateTo($"/view-voucher/{id}",true);
     }
 
-    public List<VoucherDTO> toggleFiltering(string businessName)
+    public void toggleFiltering(string businessName)
     {
         if (filteredBusiness == businessName)
         {
@@ -180,10 +190,19 @@
         {
             filtering = true;
             filteredBusiness = businessName;
-            filteredVouchers = allVouchers.Where(b => b.BusinessName == businessName).ToList();
         }
+    }
 
-        return filteredVouchers;
+    private void FilterVouchers(Microsoft.AspNetCore.Components.ChangeEventArgs args)
+    {
+        string searchString = ((string)args.Value!).ToLower();
 
+        searchedVouchers = allVouchers.Where(x =>
+        {
+            return x.PromoName!.ToLower().Contains(searchString)
+            || x.BusinessName!.ToLower().Contains(searchString)
+            || x.PromoDescription!.ToLower().Contains(searchString)
+            ;
+        }).ToList();
     }
 }

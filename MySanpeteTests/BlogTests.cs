@@ -146,7 +146,17 @@ namespace MySanpeteTests
 
             blog!.Content = "Woah new content";
 
-            var result = await blogService.EditBlog(blog);
+            UpdateBlogRequest updateRequest = new()
+            {
+                Id = blog.Id,
+                AuthorId = request.AuthorId,
+                Commentable = blog.Commentable,
+                BlogContent = blog.Content,
+                Title = blog!.Title!,
+                PublishDate = blog.PublishDate,
+            };
+
+            var result = await blogService.EditBlog(updateRequest);
 
             result.Should().NotBeNull();
 

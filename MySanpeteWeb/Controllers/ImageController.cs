@@ -13,45 +13,27 @@ namespace MySanpeteWeb.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ImageController : Controller
+public class ImageController(IDbContextFactory<MySanpeteDbContext> factory, IAppCache cache) : Controller
 {
-    private readonly IDbContextFactory<MySanpeteDbContext> factory;
-    private readonly IAppCache cache;
-
-    public ImageController(IDbContextFactory<MySanpeteDbContext> factory, IAppCache cache)
-    {
-        this.factory = factory;
-        this.cache = cache;
-    }
+    private readonly IDbContextFactory<MySanpeteDbContext> factory = factory;
+    private readonly IAppCache cache = cache;
 
     [HttpGet("business/{id}")]
-    public async Task<IActionResult> GetImage(int id)
-    {
-        return await cache.GetOrAddAsync($"Business{id}",  () => GetImageAsync(id));
-    }
+    public async Task<IActionResult> GetImage(int id) => await cache.GetOrAddAsync($"Business{id}", () => GetBusinessImageAsync(id));
+
+    [HttpGet("blogs/{id}")]
+    public async Task<IActionResult> GetBlogImage(int id) => await cache.GetOrAddAsync($"Blogs{id}", () => GetBlogImageAsync(id));
 
     [HttpGet("user/{userId}")]
     public async Task<IActionResult> GetUserImage(int userId)
     {
         using var context = await factory.CreateDbContextAsync();
-        var user = await context.EndUsers.FirstOrDefaultAsync(i => i.Id == userId);
-
-        var image = user.Photo;
-
+        var user = await context.EndUsers.FirstOrDefaultAsync(i => i.Id == userId) ?? throw new NullReferenceException("The user does not exist");
+        var image = user.Photo ?? throw new NullReferenceException("The user does not have a photo");
         return File(image, "image/jpeg");
     }
 
-    private async Task<IActionResult> GetUserImageAsync(int id)
-    {
-        using var context = await factory.CreateDbContextAsync();
-        var user = await context.EndUsers.FirstOrDefaultAsync(i => i.Id == id);
-
-        var image = user.Photo;
-
-        return File(image, "image/jpeg");
-    }
-
-    private async Task<IActionResult> GetImageAsync(int id)
+    private async Task<IActionResult> GetBusinessImageAsync(int id)
     {
         using var context = await factory.CreateDbContextAsync();
         var business = await context.Businesses.FirstOrDefaultAsync(i => i.Id == id);
@@ -62,6 +44,26 @@ public class ImageController : Controller
         }
 
         var image = business.Logo;
+
+        if (image == null)
+        {
+            return NotFound();
+        }
+
+        return File(image, "image/jpeg");
+    }
+
+    private async Task<IActionResult> GetBlogImageAsync(int id)
+    {
+        using var context = await factory.CreateDbContextAsync();
+        var blog = await context.Blogs.FirstOrDefaultAsync(i => i.Id == id);
+
+        if (blog == null)
+        {
+            return NotFound();
+        }
+
+        var image = blog.Photo;
 
         if (image == null)
         {

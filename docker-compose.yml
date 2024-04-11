@@ -13,7 +13,7 @@ services:
   mysanpeteweb:
     build: .
     ports:
-      - 6969:8080
+      - 420:8080
     environment:
       MySanpeteDb: user id= postgres; password=postgres; server=mysanpetedb; database= postgres;
       Domain: ${Domain}
@@ -25,4 +25,27 @@ services:
     depends_on: 
       - mysanpetedb
 
-  
+  mysanpeteswag:
+    image: lscr.io/linuxserver/swag
+    container_name: mysanpeteswag
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Denver
+      - URL=mysanpete.duckdns.org
+      - SUBDOMAINS=www,
+      - VALIDATION=duckdns
+      - DUCKDNSTOKEN=${DUCKDNS:-blahblahblah} #optional
+      - STAGING=false #optional
+    volumes:
+      - swag-data:/config
+      - ./Telemetry/nginx-default.conf:/config/nginx/site-confs/mysite.conf
+    ports:
+      - 6969:443
+      # - 80:80 #optional
+    restart: unless-stopped
+
+volumes:
+  swag-data:

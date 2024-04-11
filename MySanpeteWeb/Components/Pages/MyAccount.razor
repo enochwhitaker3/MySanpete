@@ -18,7 +18,7 @@
 
         <img class="img-fluid" style="width: 250px; height: 250px; object-fit: cover; object-position: center; border-radius: 200px; border: solid 1px gray; padding: 0;" src="@User.PhotoURL" />
         <button data-toggle="modal" data-target="#photoModal" style="background-color: white; border: solid 1px gray; width: 43px; height: 43px; border-radius: 5px; position: relative; top: 200px; left: -50px;"><i class="bi bi-pencil-fill" style="font-size: 19px; color: dimgray"></i></button>
-      
+
         <!-- Modal -->
         <div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="editPhotoModal" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -30,9 +30,9 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                         <div class="form-group">
-                    <InputFile OnChange="SaveFile"></InputFile>
-                    </div>
+                        <div class="form-group">
+                            <InputFile OnChange="SaveFile"></InputFile>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -47,7 +47,7 @@
             <button class="mr-3" data-toggle="modal" data-target="#usernameModal" style="background-color: white; border: solid 1px gray; width: 33px; height: 33px; border-radius: 5px;"><i class="bi bi-pencil-fill" style="font-size: 19px; color: dimgray"></i></button>
             <h3><strong class="">@User.Username</strong></h3>
         </div>
-        
+
 
         <!-- Modal -->
         <div class="modal fade" id="usernameModal" tabindex="-1" role="dialog" aria-labelledby="editUsernameModal" aria-hidden="true">
@@ -90,7 +90,7 @@
 
     byte[]? ImageBytes { get; set; }
 
-    public UserDTO User { get; set; }
+    public UserDTO? User { get; set; }
 
     public string? AuthId { get; set; }
 
@@ -101,7 +101,10 @@
 
     protected override async Task OnInitializedAsync()
     {
-
+        if (AuthStateTask is null)
+        {
+            throw new Exception("There is no user logged in.");
+        }
         var authState = await AuthStateTask;
         try
         {
@@ -116,8 +119,7 @@
             NavMan.NavigateTo("/404");
         }
 
-        User = await userService.GetAuthUser(AuthId!);
-
+        User = await userService.GetAuthUser(AuthId!) ?? new UserDTO();
     }
 
     public async Task SaveFile(InputFileChangeEventArgs e)
@@ -129,15 +131,13 @@
             await file.OpenReadStream().CopyToAsync(ms);
             ImageBytes = ms.ToArray();
         }
-
-
     }
 
     public async Task UpdateUserPhoto()
     {
         UpdateUserRequest updatedUsr = new UpdateUserRequest()
             {
-                Guid = User.Guid,
+                Guid = User!.Guid,
                 Id = User.Id,
                 Photo = ImageBytes,
                 UserEmail = User.UserEmail,
@@ -153,23 +153,16 @@
     {
         UpdateUserRequest updatedUsr = new UpdateUserRequest()
             {
-                Guid = User.Guid,
+                Guid = User!.Guid,
                 Id = User.Id,
                 UserEmail = User.UserEmail,
-                Username =  NewUsername
+                Username = NewUsername
             };
-
 
         var result = await userService.PatchUser(updatedUsr);
     }
 
-    public void GoToUserVouchers()
-    {
-        NavMan.NavigateTo("/user-vouchers");
-    }
+    public void GoToUserVouchers() => NavMan.NavigateTo("/user-vouchers");
 
-    public void GoToUserEvents()
-    {
-        NavMan.NavigateTo("/user-events");
-    }
+    public void GoToUserEvents() =>  NavMan.NavigateTo("/user-events");
 }

@@ -1,9 +1,24 @@
-﻿html, body {
+﻿@font-face {
+    font-family: 'Nelphim';
+    src: url('Fonts/Nephilm.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Casual';
+    src: url('Fonts/Casual-Regular.ttf') format('truetype');
+}
+
+
+html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 a, .btn-link {
     color: #006bb7;
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Nelphim', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
 }
 
 .btn-primary {
