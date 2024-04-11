@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore.Metadata;
 using RazorClassLibrary.Data;
+using RazorClassLibrary.DTOs;
 using RazorClassLibrary.Requests;
 using RazorClassLibrary.Services;
 using Stripe;
@@ -78,5 +79,45 @@ public class StripeService : IStripeService
             return false;
         }
         return true;
+    }
+
+    public async Task<string> CreateRefund(UserVoucherDTO userVoucher)
+    {
+        if (userVoucher.Charge_Id == "")
+        {
+            throw new Exception("No payment intent was found");
+        }
+        if (userVoucher.Is_Used == true)
+        {
+            throw new Exception("Voucher has already been used");
+        }
+        if (userVoucher.Times_Claimed != 0)
+        {
+            if (userVoucher.Times_Claimed >= userVoucher.Total_Reclaimable)
+            {
+                throw new Exception("Voucher has already been used");
+            }
+        }
+
+        var options = new RefundCreateOptions { PaymentIntent = userVoucher.Charge_Id };
+        var service = new RefundService();
+        var refund = await service.CreateAsync(options);
+
+        if (refund.Status == "succeeded")
+        {
+            return refund.Status;
+        }
+        if (refund.Status == "canceled")
+        {
+            throw new Exception("Refund was canceled");
+        }
+        if (refund.Status == "failed")
+        {
+            throw new Exception("Refund failed... give it a second and try again");
+        }
+        else
+        {
+            throw new Exception($"Refund has status of {refund.Status}");
+        }
     }
 }

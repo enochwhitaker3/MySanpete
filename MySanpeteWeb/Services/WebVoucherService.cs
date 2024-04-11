@@ -23,7 +23,7 @@ public class WebVoucherService : IVoucherService
     {
         var context = await dbContextFactory.CreateDbContextAsync();
 
-        bool isInStripe = stripeService.ValidateStripeId(request.StripeId);
+        bool isInStripe = stripeService.ValidateStripeId(request!.StripeId!);
         if (!isInStripe) { stripeService.AddProductToStripe(request); }
 
         Voucher newVoucher = new Voucher()

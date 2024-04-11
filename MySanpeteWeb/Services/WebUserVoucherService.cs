@@ -3,23 +3,19 @@ using RazorClassLibrary.Data;
 using RazorClassLibrary.Requests;
 using RazorClassLibrary.Services;
 using RazorClassLibrary.DTOs;
-using System.Diagnostics;
-using Stripe;
+
 
 namespace MySanpeteWeb.Services
 {
     public class WebUserVoucherService : IUserVoucherService
     {
         private readonly IDbContextFactory<MySanpeteDbContext> dbContextFactory;
-        private IStripeService stripeService;
         private IVoucherService voucherService;
 
-        public WebUserVoucherService(IDbContextFactory<MySanpeteDbContext> dbContextFactory, IStripeService stripeService, IVoucherService voucherService)
+        public WebUserVoucherService(IDbContextFactory<MySanpeteDbContext> dbContextFactory, IVoucherService voucherService)
         {
             this.dbContextFactory = dbContextFactory;
-            this.stripeService = stripeService;
             this.voucherService = voucherService;
-
         }
 
         public async Task<UserVoucherDTO> AddUserVoucher(AddUserVoucherRequest request)
@@ -87,6 +83,7 @@ namespace MySanpeteWeb.Services
             }
 
             context.UserVouchers.Remove(userVoucher);
+            await context.SaveChangesAsync();
             return true;
         }
 
