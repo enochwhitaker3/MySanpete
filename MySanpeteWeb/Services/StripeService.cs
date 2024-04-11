@@ -47,7 +47,7 @@ public class StripeService : IStripeService
             var session = await service.CreateAsync(options);
             NavMan.NavigateTo(session.Url);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
 
         }

@@ -106,7 +106,7 @@ public class WebBundleService : IBundleService
         var bundle = await context.Bundles
                         .Include(x => x.BundleVouchers)
                             .ThenInclude(x => x.Voucher)
-                                .ThenInclude(x => x.Business)
+                                .ThenInclude(x => x!.Business)
                         .FirstOrDefaultAsync(x => x.Id == bundleId);
 
         if (bundle is null)

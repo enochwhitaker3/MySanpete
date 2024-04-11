@@ -10,7 +10,9 @@ public class WindowsUserState : IUserState
     private readonly NavigationManager navManager;
     private readonly AuthenticationStateProvider authenticationStateProvider;
 
+#pragma warning disable CS8618
     public WindowsUserState(NavigationManager navManager, AuthenticationStateProvider authenticationStateProvider)
+#pragma warning restore CS8618
     {
         this.navManager = navManager;
         this.authenticationStateProvider = authenticationStateProvider;
