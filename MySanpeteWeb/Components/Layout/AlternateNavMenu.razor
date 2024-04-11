@@ -25,7 +25,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="/vouchers">Vouchers</a>
             </li>
-            @if (userState.User.Identity.IsAuthenticated == false)
+            @if (userState?.User?.Identity?.IsAuthenticated == false)
             {
                 <li class="nav-item">
                     <a class="nav-link" @onclick="userState.Login">Log in</a>
@@ -38,7 +38,7 @@
                         Profile
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="background-color: rgba(7,9,14,0.6); color: white !important;">
-                        @if (userState.User.IsInRole("Admin"))
+                        @if (userState!.User.IsInRole("Admin"))
                         {
                             <a class="dropdown-item" href="admin">Admin Controls</a>
                         }

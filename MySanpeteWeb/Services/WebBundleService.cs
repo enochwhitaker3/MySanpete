@@ -54,7 +54,7 @@ public class WebBundleService : IBundleService
         var bundle = await context.Bundles
             .Include(x => x.BundleVouchers)
                 .ThenInclude(x => x.Voucher)
-                    .ThenInclude(x => x.Business)
+                    .ThenInclude(x => x!.Business)
             .FirstOrDefaultAsync(x => x.Id == newBundle.Id);
         return bundle!.ToDto();
     }
@@ -145,7 +145,7 @@ public class WebBundleService : IBundleService
 
         var purchases = bundleToPurchase.BundleVouchers.Select(bv => new UserVoucher()
         {
-            ChargeId = request!.ChargeId,
+            ChargeId = request!.ChargeId!,
             FinalPrice = bv.DiscountPrice,
             PurchaseDate = DateTime.Now.ToUniversalTime(),
             TotalReclaimable = bv.Voucher!.TotalReclaimable ?? 0,

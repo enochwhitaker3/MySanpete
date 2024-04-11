@@ -23,10 +23,10 @@ public class WebVoucherService : IVoucherService
     {
         var context = await dbContextFactory.CreateDbContextAsync();
 
-        bool isInStripe = stripeService.ValidateStripeId(request.StripeId);
+        bool isInStripe = stripeService.ValidateStripeId(request.StripeId!);
         if (!isInStripe) { stripeService.AddProductToStripe(request); }
 
-        Voucher newVoucher = new Voucher()
+        Voucher newVoucher = new()
         {
             BusinessId = request.BusinessId,
             StartDate = request.StartDate,
@@ -40,6 +40,7 @@ public class WebVoucherService : IVoucherService
             StripeId = request.StripeId,
             PriceId = request.PriceId,
         };
+
         if (newVoucher is not null)
         {
             if (newVoucher.EndDate < newVoucher.StartDate)
@@ -56,12 +57,7 @@ public class WebVoucherService : IVoucherService
             await context.Vouchers.AddAsync(newVoucher);
             await context.SaveChangesAsync();
 
-            var newestVoucher = await context.Vouchers.Include(v => v.Business).FirstOrDefaultAsync(v => v.Id == newVoucher.Id);
-
-            if (newestVoucher is null)
-            {
-                throw new Exception("Voucher was created UNsuccesfully");
-            }
+            var newestVoucher = await context.Vouchers.Include(v => v.Business).FirstOrDefaultAsync(v => v.Id == newVoucher.Id) ?? throw new Exception("Voucher was created UNsuccesfully");
 
             return newestVoucher.ToDto();
         }
