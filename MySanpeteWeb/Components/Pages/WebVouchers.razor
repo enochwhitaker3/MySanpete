@@ -66,7 +66,7 @@
                 </div>
             </div>
         </div>
-        <div class="card-container row mt-5 pb-8" style="max-width: 1200px; margin-left: auto; margin-right: auto">
+        <div class="card-container row mt-5 pb-8" style="max-width: 1500px; margin-left: auto; margin-right: auto">
             @if (!isLoading)
             {
                 @if (allVouchers.Count > 0)
@@ -76,22 +76,24 @@
                         @foreach (var voucher in searchedVouchers)
                         {
 
-                            <div class="col-md-6 p-3" >
+                            <div class="col-md-6 p-3">
                                 <div class="card m-2 rounded-3 shadow">
                                     <div class="d-flex flex-row">
-                                        <div class="col-md img-square-wrapper rounded" style="padding: 0px;">
+                                        <div class="blogo d-flex align-items-center col-md img-square-wrapper rounded" style="padding: 0px;">
                                             <img class="business-logo"
                                                  style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px;"
                                                  src="@voucher.BusinessLogoURL" />
                                         </div>
                                         <div class="col-md card-body">
-                                            <h2 class="card-title">@voucher.PromoName</h2>
-                                            @if (voucher.EndDate is not null)
-                                            {
-                                                <p class="card-text">Good through @voucher.EndDate</p>
-                                            }
+                                            <h2 class="card-title" style="max-height: 42px;">
+                                                @voucher.PromoName
+                                                @if (voucher.EndDate is not null)
+                                                {
+                                                    <p class="card-text">Good through @voucher.EndDate.Value.ToString("M/dd/yy")</p>
+                                                }
+                                            </h2>
                                             <!-- Button trigger modal -->
-                                            <div class="button mt-10" @onclick="() => GoToDetailsPage(voucher.Id)">
+                                            <div class="button mt-15" @onclick="() => GoToDetailsPage(voucher.Id)">
                                                 <div class="button-wrapper">
                                                     <div class="text">$@voucher.RetailPrice</div>
                                                     <span class="icon">
@@ -115,19 +117,21 @@
                             <div class="col-md-6 p-3">
                                 <div class="card m-2 rounded-3 shadow">
                                     <div class="d-flex flex-row">
-                                        <div class="col-md img-square-wrapper rounded" style="padding: 0px;">
+                                        <div class="blogo d-flex align-items-center col-md img-square-wrapper rounded" style="padding: 0px;">
                                             <img class="business-logo"
                                                  style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px;"
                                                  src="@voucher.BusinessLogoURL" />
                                         </div>
                                         <div class="col-md card-body">
-                                            <h2 class="card-title">@voucher.PromoName</h2>
-                                            @if (voucher.EndDate is not null)
-                                            {
-                                                <p class="card-text">Good through @voucher.EndDate</p>
-                                            }
+                                            <h2 class="card-title" style="max-height: 42px;">
+                                                @voucher.PromoName
+                                                @if (voucher.EndDate is not null)
+                                                {
+                                                    <p class="card-text">Good through @voucher.EndDate.Value.ToString("M/dd/yy")</p>
+                                                }
+                                            </h2>
                                             <!-- Button trigger modal -->
-                                            <div class="button mt-10" @onclick="() => GoToDetailsPage(voucher.Id)">
+                                            <div class="button mt-15" @onclick="() => GoToDetailsPage(voucher.Id)">
                                                 <div class="button-wrapper">
                                                     <div class="text">$@voucher.RetailPrice</div>
                                                     <span class="icon">
@@ -176,7 +180,7 @@
 
     public void GoToDetailsPage(int id)
     {
-        NavMan.NavigateTo($"/view-voucher/{id}",true);
+        NavMan.NavigateTo($"/view-voucher/{id}", true);
     }
 
     public void toggleFiltering(string businessName)
