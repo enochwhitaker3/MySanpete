@@ -86,12 +86,13 @@
                                                  src="@voucher.BusinessLogoURL" />
                                         </div>
                                         <div class="col-md card-body">
-                                            <h2 class="card-title" style="max-height: 42px;">
+                                            <h2 class="d-grid card-title" style="max-height: 42px;">
                                                 @voucher.PromoName
                                                 @if (voucher.EndDate is not null)
                                                 {
-                                                    <p class="card-text">Good through @voucher.EndDate.Value.ToString("M/dd/yy")</p>
+                                                    <span class="card-text">Good through @voucher.EndDate.Value.ToString("M/dd/yy")</span>
                                                 }
+                                                
                                             </h2>
                                             <!-- Button trigger modal -->
                                             <div class="button mt-15" @onclick="() => GoToDetailsPage(voucher.Id)">
@@ -122,11 +123,11 @@
                                                  src="@voucher.BusinessLogoURL" />
                                         </div>
                                         <div class="col-md card-body">
-                                            <h2 class="card-title" style="max-height: 42px;">
+                                            <h2 class="d-grid card-title" style="max-height: 42px;">
                                                 @voucher.PromoName
                                                 @if (voucher.EndDate is not null)
                                                 {
-                                                    <p class="card-text">Good through @voucher.EndDate.Value.ToString("M/dd/yy")</p>
+                                                    <span class="card-text">Good through @voucher.EndDate.Value.ToString("M/dd/yy")</span>
                                                 }
                                             </h2>
                                             <!-- Button trigger modal -->
