@@ -4,10 +4,11 @@
 @using RazorClassLibrary.DTOs
 @using RazorClassLibrary.Data
 @using RazorClassLibrary.Services
+
 @inject IVoucherService voucherService
 @inject NavigationManager NavMan
 @inject IBusinessService businessService
-
+@inject IBundleService bundleService
 
 <div class="main-section">
     <div class="content">
@@ -75,7 +76,6 @@
                     {
                         @foreach (var voucher in searchedVouchers)
                         {
-
                             <div class="col-md-6 p-3" >
                                 <div class="card m-2 rounded-3 shadow">
                                     <div class="d-flex flex-row">
@@ -103,8 +103,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
                         }
                     }
                     else
@@ -151,6 +149,50 @@
                     </div>
                 }
             }
+        </div>
+        <div class="card-container row mt-5" style="max-width: 1200px; margin-left: auto; margin-right: auto">
+            @if (allBundles is not null)
+            {
+                @foreach (var bundle in allBundles)
+                {
+                    <div class="col-md-6 p-3">
+                        <div class="card m-2 rounded-3 shadow">
+                            <div class="d-flex flex-row">
+                                <div class="col-md img-square-wrapper rounded" style="padding: 0px;">
+                                    <img class="business-logo"
+                                         style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px;"
+                                         src="Images/My_Sanpete.png" />
+                                </div>
+                                <div class="col-md card-body">
+                                    <h2 class="card-title">@bundle.Name</h2>
+                                    @if (bundle.EndDate is not null)
+                                    {
+                                        <p class="card-text">Good through @bundle.EndDate</p>
+                                    }
+                                    <!-- Button trigger modal -->
+                                    <div class="button" @onclick="() => GoToBundlesPage(bundle.Id)">
+                                        <div class="button-wrapper">
+                                            <div class="button-wrapper">
+                                                <div class="text">$@bundle.FinalPrice</div>
+                                                <span class="icon">
+                                                    View
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <p>Sorry, there are no vouchers currently. </p>
+                </div>
+
+            }
 
         </div>
     </div>
@@ -159,6 +201,7 @@
 @code {
     public List<VoucherDTO> allVouchers { get; set; } = new();
     public List<VoucherDTO> searchedVouchers { get; set; } = new();
+    public List<BundleDTO> allBundles { get; set; } = new();
 
     public string filteredBusiness { get; set; } = "none";
     public List<BusinessDTO> allBusinesses { get; set; } = new();
@@ -171,12 +214,18 @@
         allVouchers = await voucherService.GetAllVouchers();
         searchedVouchers = allVouchers = allVouchers.Where(x => x.EndDate >= DateTime.UtcNow).ToList();
         allBusinesses = await businessService.GetAllBusinesses();
+        allBundles = await bundleService.GetAllBundles();
         isLoading = false;
     }
 
     public void GoToDetailsPage(int id)
     {
         NavMan.NavigateTo($"/view-voucher/{id}",true);
+    }
+
+    public void GoToBundlesPage(int id)
+    {
+        NavMan.NavigateTo($"/view-bundle/{id}", true);
     }
 
     public void toggleFiltering(string businessName)
