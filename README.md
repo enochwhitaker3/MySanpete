@@ -103,7 +103,7 @@
     <tr>
       <td>feature flags</td>
       <td>04/13/2024</td>
-      <td></td>
+      <td>X</td>
     </tr>
     <tr>
       <td>Need kubernetes</td>
