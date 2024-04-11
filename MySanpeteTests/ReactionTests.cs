@@ -56,7 +56,7 @@ public class ReactionTests : IClassFixture<MySanpeteFactory>
         var newBlog = await service.AddBlogReaction(request);
 
         // Assert
-        newBlog.BlogId.Should().Be(addedBlog.Id);
+        newBlog!.BlogId.Should().Be(addedBlog.Id);
         newBlog.UserId.Should().Be(user.Id);
     }
 
@@ -83,7 +83,7 @@ public class ReactionTests : IClassFixture<MySanpeteFactory>
         var newBlogReaction = await service.AddBlogReaction(request);
 
         // Act
-        var result = await service.DeleteBlogReaction(newBlogReaction.Id);
+        var result = await service.DeleteBlogReaction(newBlogReaction!.Id);
 
         // Assert
         result.Should().BeTrue();
@@ -142,7 +142,7 @@ public class ReactionTests : IClassFixture<MySanpeteFactory>
         var newPod = await service.AddPodReaction(request);
 
         // Assert
-        newPod.PodcastId.Should().Be(addedPodcast.Id);
+        newPod!.PodcastId.Should().Be(addedPodcast.Id);
         newPod.UserId.Should().Be(user.Id);
     }
 
@@ -168,7 +168,7 @@ public class ReactionTests : IClassFixture<MySanpeteFactory>
         var newPodReaction = await service.AddPodReaction(request);
 
         // Act
-        var result = await service.DeletePodReaction(newPodReaction.Id);
+        var result = await service.DeletePodReaction(newPodReaction!.Id);
 
         // Assert
         result.Should().BeTrue();

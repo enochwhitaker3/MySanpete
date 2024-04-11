@@ -2,8 +2,8 @@
 @using RazorClassLibrary.Services
 @inject IUserState userState
 
-
 <nav class="navbar navbar-expand-lg navbar-dark">
+<!-- Regular Nav -->
     <a class="navbar-brand" href="#">My Sanpete.</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -26,7 +26,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="/vouchers">Vouchers</a>
             </li>
-            @if (userState.User.Identity.IsAuthenticated == false)
+            @if (userState?.User?.Identity?.IsAuthenticated == false)
             {
                 <li class="nav-item" >
                     <a class="nav-link" @onclick="userState.Login">Log in</a>
@@ -34,19 +34,19 @@
             }
             else
             {
-                <li class="nav-item dropdown" style="margin-right: 40px;">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <li class="nav-item dropdown" style="margin-right: 40px; background-color: rgba(7,9,14,0.6);">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                         Profile
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="background-color: rgba(7,9,14,0.6);">
-                        @if (userState.User.IsInRole("Admin"))
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown" >
+                        @if (userState!.User.IsInRole("Admin"))
                         {
-                            <a class="dropdown-item" href="admin">Admin Controls</a>
+                            <a class="dropdown-item" style=" color: white;" href="admin">Admin Controls</a>
                         }
                         <a class="dropdown-item" href="/Account">My Account</a>
-                        <a class="dropdown-item" href="/user-vouchers">My Vouchers</a>
-                        <a class="dropdown-item" href="#">My Events</a>
-                        <div class="dropdown-divider" style="color: white;"></div>
+                        <a class="dropdown-item"  href="/user-vouchers">My Vouchers</a>
+                        <a class="dropdown-item"  href="#">My Events</a>
+                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#" @onclick="userState.Logout">Log Out</a>
                     </div>
                 </li>

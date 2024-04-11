@@ -24,7 +24,7 @@ else
         {
             <h1>@blog.Title</h1>
             <p style="color: gray;" class="mb-5">
-                published @blog.PublishDate.Value.Month - @blog.PublishDate.Value.Day - @blog.PublishDate.Value.Year
+                published @blog.PublishDate!.Value.Month - @blog.PublishDate.Value.Day - @blog.PublishDate.Value.Year
             </p>
             <div class="blog-content">
                 @((MarkupString)blog.Content)
@@ -34,16 +34,16 @@ else
                 <div class="container">
                     <div class="row justify-content-center mb-4">
                         <div class="col-lg-10">
-                            <h5>@AllComments.Count() Comments</h5>
+                            <h5>@AllComments!.Count() Comments</h5>
                         </div>
                     </div>
-                    @if (AllComments.Count() > 0)
+                    @if (AllComments!.Count() > 0)
                     {
                         <div class="row justify-content-center mb-4">
                             <div class="col-lg-10">
                                 <div class="comments">
 
-                                    @foreach (var c in TopLevelComments)
+                                    @foreach (var c in TopLevelComments!)
                                     {
                                         <div class="comment d-flex mb-5">
                                             <div class="flex-shrink-0">
@@ -72,7 +72,7 @@ else
                                                             <div class="comment-form d-flex align-items-center">
                                                                 <div class="flex-shrink-0">
                                                                     <div class="avatar avatar-sm rounded-circle">
-                                                                        <img class="avatar-img" src="@loggedInUser.PhotoURL" alt="Your Profile Image">
+                                                                        <img class="avatar-img" src="@loggedInUser!.PhotoURL" alt="Your Profile Image">
                                                                     </div>
                                                                 </div>
                                                                 <div class="flex-grow-1 ms-2 ms-sm-3">
@@ -86,11 +86,11 @@ else
                                                     </div>
                                                 </div>
 
-                                                @if (c.Replies.Count() > 0)
+                                                @if (c.Replies!.Count() > 0)
                                                 {
                                                     <div class="comment-replies mb-5 p-3 mt-3 rounded">
                                                         <h6 class="comment-replies-title text-muted text-uppercase"> replies</h6>
-                                                        @foreach (var r in c.Replies)
+                                                        @foreach (var r in c.Replies!)
                                                         {
 
                                                             <div class="reply d-flex">
@@ -160,10 +160,10 @@ else
 
     public BlogDTO? blog { get; set; }
     public string ParsedContent { get; set; } = "no content";
-    public List<CommentDTO> AllComments { get; set; }
-    public List<CommentDTO> TopLevelComments { get; set; }
-    public string inputedComment { get; set; }
-    UserDTO loggedInUser { get; set; }
+    public List<CommentDTO>? AllComments { get; set; }
+    public List<CommentDTO>? TopLevelComments { get; set; }
+    public string? inputedComment { get; set; }
+    UserDTO? loggedInUser { get; set; }
     public bool isLoading { get; set; } = true;
 
 
@@ -196,7 +196,10 @@ else
         await commentService.AddBlogComment(newRequest);
         inputedComment = "";
         blog = await service.GetBlog(blogId);
-        AllComments = blog.Comments;
+        if (blog?.Comments is not null)
+        {
+            AllComments = blog.Comments;
+        }
         StateHasChanged();
         NavMan.NavigateTo(NavMan.Uri, true);
         isLoading = false;
@@ -215,7 +218,10 @@ else
         await commentService.AddBlogComment(newRequest);
         inputedComment = "";
         blog = await service.GetBlog(blogId);
-        AllComments = blog.Comments;
+        if(blog?.Comments is not null)
+        {
+            AllComments = blog.Comments;
+        }
         StateHasChanged();
         NavMan.NavigateTo(NavMan.Uri, true);
         isLoading = false;

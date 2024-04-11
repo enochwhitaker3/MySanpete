@@ -1,5 +1,6 @@
 ﻿@using RazorClassLibrary.DTOs
 @using RazorClassLibrary.Services
+
 @inject IVoucherService voucherService
 @inject NavigationManager NavMan
 
@@ -133,12 +134,12 @@
 
     private void FilterVouchers(Microsoft.AspNetCore.Components.ChangeEventArgs args)
     {
-        string searchString = (string)args.Value;
+        string searchString = (string)args.Value!;
         allVouchers.Where(x =>
         {
-            return x.PromoName.ToLower().Contains(searchString)
-            || x.BusinessName.ToLower().Contains(searchString)
-            || x.PromoDescription.ToLower().Contains(searchString)
+            return x.PromoName!.ToLower().Contains(searchString!)
+            || x.BusinessName!.ToLower().Contains(searchString!)
+            || x.PromoDescription!.ToLower().Contains(searchString!)
             ;
         });
     }

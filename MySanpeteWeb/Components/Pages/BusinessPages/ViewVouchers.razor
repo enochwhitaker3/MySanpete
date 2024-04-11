@@ -21,8 +21,8 @@
             {
                 <tr>
                     <td>@userVoucher.Promo_Code</td>
-                    <td>@userVoucher.User.Username</td>
-                    @if (userVoucher.Total_Reclaimable == null || userVoucher.Total_Reclaimable > 1)
+                    <td>@userVoucher?.User?.Username</td>
+                    @if (userVoucher?.Total_Reclaimable == null || userVoucher.Total_Reclaimable > 1)
                     {
                         <td>Multi-Use</td>
                     }
@@ -33,14 +33,14 @@
                     <td>
                         <div style="width: 35%">
 
-                            @if (userVoucher.Total_Reclaimable == null || userVoucher.Total_Reclaimable > 0)
+                            @if (userVoucher?.Total_Reclaimable == null || userVoucher.Total_Reclaimable > 0)
                             {
                                 <input style="outline-color: black; outline-width: 2px; outline-style: solid; width: 45%; line-height: 212%"
                                        placeholder="0"
                                        type="number"
                                        min="0"
                                        max="@(userVoucher?.Total_Reclaimable)"
-                                       @bind="userVoucher.Times_Claimed"
+                                       @bind="userVoucher!.Times_Claimed"
                                        step="1" />
                                 <button style="width: 50%" class="btn btn-primary" @onclick="() => ClaimVoucher(userVoucher)">
                                     Save
