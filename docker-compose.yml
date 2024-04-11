@@ -27,7 +27,7 @@ services:
 
   mysanpeteswag:
     image: lscr.io/linuxserver/swag
-    container_name: swag
+    container_name: mysanpeteswag
     cap_add:
       - NET_ADMIN
     environment:
