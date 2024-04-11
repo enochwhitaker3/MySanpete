@@ -18,6 +18,11 @@
     src: url('Fonts/Inter-Bold.ttf') format('truetype');
 }
 
+@font-face {
+    font-family: 'Tenor';
+    src: url('Fonts/TenorSans-Regular.ttf') format('truetype');
+}
+
 body {
     background-color: #fcfcf8;
 }
