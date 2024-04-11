@@ -4,167 +4,172 @@
 @using RazorClassLibrary.Requests
 
 
-@inject IBlogService service;
-@inject ICommentService commentService;
-@inject IUserService userService;
+@inject IBlogService service
+@inject ICommentService commentService
+@inject IUserService userService
 @inject IUserState userState
+@inject NavigationManager NavMan
 
 
-<div class="mt-5 p-4" style="max-width: 800px; margin-left: auto; margin-right: auto; padding-top: 100px;">
-    @if (blog is not null && blog.Content is not null)
-    {
-        <h1>@blog.Title</h1>
-        <p style="color: gray;" class="mb-5">
-            published @blog.PublishDate.Value.Month - @blog.PublishDate.Value.Day - @blog.PublishDate.Value.Year
-        </p>
-        <div class="blog-content">
-            @((MarkupString)blog.Content)
-        </div>
+@if (isLoading)
+{
+    <LoadingComponent />
+}
+else
+{
 
-        <div class="d-flex align-items-center justify-content-center" style="margin-top: 10vh;">
-            <div class="container">
-                <div class="row justify-content-center mb-4">
-                    <div class="col-lg-10">
-                        <h5>@AllComments.Count() Comments</h5>
-                    </div>
-                </div>
-                @if (AllComments.Count() > 0)
-                {
+
+    <div class="mt-5 p-4" style="max-width: 800px; margin-left: auto; margin-right: auto; padding-top: 100px;">
+        @if (blog is not null && blog.Content is not null)
+        {
+            <h1>@blog.Title</h1>
+            <p style="color: gray;" class="mb-5">
+                published @blog.PublishDate.Value.Month - @blog.PublishDate.Value.Day - @blog.PublishDate.Value.Year
+            </p>
+            <div class="blog-content">
+                @((MarkupString)blog.Content)
+            </div>
+
+            <div class="d-flex align-items-center justify-content-center" style="margin-top: 10vh;">
+                <div class="container">
                     <div class="row justify-content-center mb-4">
                         <div class="col-lg-10">
-                            <div class="comments">
+                            <h5>@AllComments.Count() Comments</h5>
+                        </div>
+                    </div>
+                    @if (AllComments.Count() > 0)
+                    {
+                        <div class="row justify-content-center mb-4">
+                            <div class="col-lg-10">
+                                <div class="comments">
 
-                                @foreach (var c in TopLevelComments)
-                                {
-                                    <div class="comment d-flex mb-5">
-                                        <div class="flex-shrink-0">
-                                            <div class="avatar avatar-sm rounded-circle">
-                                                <img class="avatar-img" src="@c.UserPhotoURL" alt="">
+                                    @foreach (var c in TopLevelComments)
+                                    {
+                                        <div class="comment d-flex mb-5">
+                                            <div class="flex-shrink-0">
+                                                <div class="avatar avatar-sm rounded-circle">
+                                                    <img class="avatar-img" src="@c.UserPhotoURL" alt="">
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="flex-grow-1 ms-2 ms-sm-3">
+                                            <div class="flex-grow-1 ms-2 ms-sm-3">
 
-                                            <div class="comment-meta d-flex align-items-baseline">
-                                                <h6 class="me-2">@c.UserName</h6>
-                                            </div>
-                                            <div class="comment-body">
-                                                @c.Content
-                                            </div>
-                                            <div class="row justify-content-center mb-5">
-                                                @if (loggedInUser is not null)
-                                                {
-                                                    <a data-toggle="collapse" href="@("#collapseExample" + c.Id)" role="button" aria-expanded="false" aria-controls="@("collapseExample" + c.Id)" class="reply-btn">
-                                                        Reply
-                                                    </a>
-                                                }
-                                                <!-- Reply box that slides out -->
-                                                <div class="collapse mt-2" id="@("collapseExample" + c.Id)">
-                                                    <div class="card card-body">
-                                                        <div class="comment-form d-flex align-items-center">
-                                                            <div class="flex-shrink-0">
-                                                                <div class="avatar avatar-sm rounded-circle">
-                                                                    <img class="avatar-img" src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&crop=faces&fit=crop&h=200&w=200" alt="">
+                                                <div class="comment-meta d-flex align-items-baseline">
+                                                    <h6 class="me-2">@c.UserName</h6>
+                                                </div>
+                                                <div class="comment-body">
+                                                    @c.Content
+                                                </div>
+                                                <div class="row justify-content-center mb-5">
+                                                    @if (loggedInUser is not null)
+                                                    {
+                                                        <a data-toggle="collapse" href="@("#collapseExample" + c.Id)" role="button" aria-expanded="false" aria-controls="@("collapseExample" + c.Id)" class="reply-btn">
+                                                            Reply
+                                                        </a>
+                                                    }
+                                                    <!-- Reply box that slides out -->
+                                                    <div class="collapse mt-2" id="@("collapseExample" + c.Id)">
+                                                        <div class="card card-body">
+                                                            <div class="comment-form d-flex align-items-center">
+                                                                <div class="flex-shrink-0">
+                                                                    <div class="avatar avatar-sm rounded-circle">
+                                                                        <img class="avatar-img" src="@loggedInUser.PhotoURL" alt="Your Profile Image">
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="flex-grow-1 ms-2 ms-sm-3">
-                                                                <form onsubmit="return false">
-                                                                    <textarea @bind="inputedComment" class="form-control py-0 px-1 border-0" rows="1" placeholder="Reply to @c.UserName..." style="resize: none;"></textarea>
-                                                                    <button @onclick="@(() => AddResponse(c.Id))" class="btn btn-primary mt-5">Add Comment</button>
-                                                                </form>
+                                                                <div class="flex-grow-1 ms-2 ms-sm-3">
+                                                                    <form onsubmit="return false">
+                                                                        <textarea @bind="inputedComment" class="form-control py-0 px-1 border-0" rows="1" placeholder="Reply to @c.UserName..." style="resize: none;"></textarea>
+                                                                        <button @onclick="@(() => AddResponse(c.Id))" class="btn btn-primary mt-5">Add Comment</button>
+                                                                    </form>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                @if (c.Replies.Count() > 0)
+                                                {
+                                                    <div class="comment-replies mb-5 p-3 mt-3 rounded">
+                                                        <h6 class="comment-replies-title text-muted text-uppercase"> replies</h6>
+                                                        @foreach (var r in c.Replies)
+                                                        {
+
+                                                            <div class="reply d-flex">
+                                                                <div class="flex-shrink-0">
+                                                                    <div class="avatar avatar-sm rounded-circle">
+                                                                        <img class="avatar-img" src="@r.UserPhotoURL" alt="">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="flex-grow-1 ms-2 ms-sm-3">
+                                                                    <div class="reply-meta d-flex align-items-baseline">
+                                                                        <h6 class="mb-0 me-2">@r.UserName</h6>
+                                                                        <span class="text-muted">2d</span>
+                                                                    </div>
+                                                                    <div class="reply-body">
+                                                                        @r.Content
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                }
                                             </div>
-
-                                            @if (c.Replies.Count() > 0)
-                                            {
-                                                <div class="comment-replies mb-5 p-3 mt-3 rounded">
-                                                    <h6 class="comment-replies-title text-muted text-uppercase"> replies</h6>
-                                                    @foreach (var r in c.Replies)
-                                                    {
-
-                                                        <div class="reply d-flex">
-                                                            <div class="flex-shrink-0">
-                                                                <div class="avatar avatar-sm rounded-circle">
-                                                                    <img class="avatar-img" src="@r.UserPhotoURL" alt="">
-                                                                </div>
-                                                            </div>
-                                                            <div class="flex-grow-1 ms-2 ms-sm-3">
-                                                                <div class="reply-meta d-flex align-items-baseline">
-                                                                    <h6 class="mb-0 me-2">@r.UserName</h6>
-                                                                    <span class="text-muted">2d</span>
-                                                                </div>
-                                                                <div class="reply-body">
-                                                                    @r.Content
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    }
-                                                </div>
-                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @if (loggedInUser is not null)
+                    {
+                        <div class="row justify-content-center mb-5">
+                            <div class="col-lg-10">
+                                <div class="comment-form d-flex align-items-center">
+                                    <div class="flex-shrink-0">
+                                        <div class="avatar avatar-sm rounded-circle">
+                                            <img class="avatar-img" src="@loggedInUser.PhotoURL" alt="">
                                         </div>
                                     </div>
-                                }
-                            </div>
-                        </div>
-                    </div>
-                }
-                @if (loggedInUser is not null)
-                {
-                    <div class="row justify-content-center mb-5">
-                        <div class="col-lg-10">
-                            <div class="comment-form d-flex align-items-center">
-                                <div class="flex-shrink-0">
-                                    <div class="avatar avatar-sm rounded-circle">
-                                        <img class="avatar-img" src="@loggedInUser.PhotoURL" alt="">
+                                    <div class="flex-grow-1 ms-2 ms-sm-3">
+                                        <form onsubmit="return false">
+                                            <textarea @bind="inputedComment" class="form-control py-0 px-1 border-0" rows="1" placeholder="Start writing..." style="resize: none;"></textarea>
+                                            <button @onclick="@(() => AddResponse())" class="btn btn-primary mt-5">Add Comment</button>
+                                        </form>
                                     </div>
                                 </div>
-                                <div class="flex-grow-1 ms-2 ms-sm-3">
-                                    <form onsubmit="return false">
-                                        <textarea @bind="inputedComment" class="form-control py-0 px-1 border-0" rows="1" placeholder="Start writing..." style="resize: none;"></textarea>
-                                        <button @onclick="@(() => AddResponse())" class="btn btn-primary mt-5">Add Comment</button>
-                                    </form>
-                                </div>
                             </div>
                         </div>
-                    </div>
-                }
-                else
-                {
-                    <strong><p class="login-message">Log in to leave a comment</p></strong>
-                }
+                    }
+                    else
+                    {
+                        <strong><p class="login-message">Log in to leave a comment</p></strong>
+                    }
+                </div>
             </div>
-        </div>
 
-    }
-    else
-    {
-        <p>Loading...</p>
-    }
-</div>
+        }
+        else
+        {
+            <p>Loading...</p>
+        }
+    </div>
+}
 
 @code {
     [Parameter]
     public int blogId { get; set; }
 
     public BlogDTO? blog { get; set; }
-
     public string ParsedContent { get; set; } = "no content";
-
     public List<CommentDTO> AllComments { get; set; }
-
     public List<CommentDTO> TopLevelComments { get; set; }
-
     public string inputedComment { get; set; }
-
-
     UserDTO loggedInUser { get; set; }
-
+    public bool isLoading { get; set; } = true;
 
 
     protected override async Task OnInitializedAsync()
     {
+        isLoading = true;
         blog = await service.GetBlog(blogId);
         AllComments = blog.Comments;
 
@@ -176,10 +181,12 @@
             var authId = userState.User.Claims.FirstOrDefault(x => x.Type == "authId").Value;
             loggedInUser = await userService.GetAuthUser(authId);
         }
+        isLoading = false;
     }
 
     public async Task AddResponse()
     {
+        isLoading = true;
         AddCommentRequest newRequest = new()
             {
                 content = inputedComment,
@@ -190,10 +197,14 @@
         inputedComment = "";
         blog = await service.GetBlog(blogId);
         AllComments = blog.Comments;
+        StateHasChanged();
+        NavMan.NavigateTo(NavMan.Uri, true);
+        isLoading = false;
     }
 
-    public void AddResponse(int replyId)
+    public async Task AddResponse(int replyId)
     {
+        isLoading = true;
         AddCommentRequest newRequest = new()
             {
                 content = inputedComment,
@@ -201,6 +212,12 @@
                 userGuid = loggedInUser.Guid,
                 replyId = replyId,
             };
-        commentService.AddBlogComment(newRequest);
+        await commentService.AddBlogComment(newRequest);
+        inputedComment = "";
+        blog = await service.GetBlog(blogId);
+        AllComments = blog.Comments;
+        StateHasChanged();
+        NavMan.NavigateTo(NavMan.Uri, true);
+        isLoading = false;
     }
 }
