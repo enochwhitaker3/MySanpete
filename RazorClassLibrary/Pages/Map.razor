@@ -4,22 +4,13 @@
 @inject IJSRuntime JSRuntime
 @inject IOccasionService occasionService
 
-@if(isLoading)
-{
-    <LoadingComponent></LoadingComponent>
-}
-else
-{
     <div id="mapDiv" style="width:20vw;height:20vw;"></div>
-}
 
 @code {
     [Parameter] public string? MapsKey { get; set; }
     public string? jsonOccasions { get; set; }
-    public bool isLoading { get; set; } = true;
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        isLoading = true;
         var allOccasion = await occasionService.GetAllOcassions();
         jsonOccasions = JsonSerializer.Serialize(allOccasion);
 
@@ -27,6 +18,5 @@ else
         {
             await JSRuntime.InvokeVoidAsync("initializeMap", MapsKey, jsonOccasions);
         }
-        isLoading = false;
     }
 }
