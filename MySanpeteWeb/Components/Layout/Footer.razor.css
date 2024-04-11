@@ -1,15 +1,36 @@
-﻿* {
-    margin: 0;
-    background-color: #9c9992;
-    color: black;
+﻿@font-face {
+    font-family: 'Nelphim';
+    src: url('Fonts/Nephilm.otf') format('opentype');
 }
 
-row {
-    padding: 30px;
+@font-face {
+    font-family: 'Casual';
+    src: url('Fonts/Casual-Regular.ttf') format('truetype');
 }
 
-a {
+h1 {
+    font-family: Casual;
+}
+
+.my-footer {
+    background-color: white;
     color: black;
-    text-decoration: underline;
-    margin-top: 8px;
+    box-shadow: 0px -5px 15px #dbd8d3;
+}
+
+    .my-footer a {
+        color: black;
+        text-decoration: underline;
+    }
+
+        .my-footer a:hover {
+            color: #97befc;
+        }
+
+.snake-emoji {
+    display: none;
+}
+
+.codebras:hover * {
+    display: inline;
 }
