@@ -393,7 +393,7 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
         };
 
         var bundle = await bundleService.AddNewBundle(request);
-        
+
         var result = await bundleService.DeleteBundle(bundle.Id);
 
         result.Should().BeTrue();

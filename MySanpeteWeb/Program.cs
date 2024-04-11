@@ -51,7 +51,8 @@ builder.Services.AddHealthChecks();
 builder.Services.AddMudServices();
 builder.Services.AddServerSideBlazor().AddCircuitOptions(options => { options.DetailedErrors = true; });
 
-builder.Services.AddAntiforgery(options => { 
+builder.Services.AddAntiforgery(options =>
+{
     options.Cookie.Expiration = TimeSpan.Zero;
     options.SuppressXFrameOptionsHeader = true;
 });
@@ -71,7 +72,8 @@ builder.Services.AddScoped<IUserVoucherService, WebUserVoucherService>();
 builder.Services.AddScoped<IUserState, WindowsUserState>();
 builder.Services.AddSingleton<IUserOccasionService, WebUserOccasionService>();
 
-builder.Services.AddLazyCache(serviceProvider => {
+builder.Services.AddLazyCache(serviceProvider =>
+{
     var cache = new CachingService(CachingService.DefaultCacheProvider);
     cache.DefaultCachePolicy.DefaultCacheDurationSeconds = 60 * 60 * 24; //1m -> 1hr -> 1d
     return cache;
@@ -82,8 +84,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddAuth0WebAppAuthentication(options =>
 {
-    options.Domain = builder.Configuration["Domain"] ?? throw new Exception("Auth0 domain missing");
-    options.ClientId = builder.Configuration["ClientId"] ?? throw new Exception("Auth0 clientid is missing");
+    options.Domain = "dev-013fwxix4dwe1jea.us.auth0.com";
+    options.ClientId = "m0vdCWKGqEoU8BxauGZ73jR6y6qMEFaT";
     options.AccessDeniedPath = "/";
 });
 

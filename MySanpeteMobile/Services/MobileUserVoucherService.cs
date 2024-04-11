@@ -50,7 +50,7 @@ public class MobileUserVoucherService : IUserVoucherService
     public async Task<UserVoucherDTO> GetById(int id)
     {
         var result = await httpClient.GetFromJsonAsync<UserVoucherDTO>($"/api/uservoucher/{id}");
-        return result!; 
+        return result!;
     }
 
     public Task<UserVoucherDTO> UpdateUserVoucher(UserVoucherDTO userVoucher)

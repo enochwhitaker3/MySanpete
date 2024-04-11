@@ -28,7 +28,7 @@ public class WindowsUserState : IUserState
     public async Task Login()
     {
         var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
-        if(authState.User == null || authState.User.Identity == null || authState.User.Identity.IsAuthenticated == false)
+        if (authState.User == null || authState.User.Identity == null || authState.User.Identity.IsAuthenticated == false)
         {
             navManager.NavigateTo($"Account/Login?redirectUri={navManager.Uri}", true);
             return;

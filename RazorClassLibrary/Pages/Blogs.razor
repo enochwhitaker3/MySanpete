@@ -5,57 +5,63 @@
 
 <div class="main-section">
     <div class="section-title">Featured Blogs</div>
-    <div class="business-container row justify-content-center m-0">
 
+    @if(isLoading)
+    {
+        <LoadingComponent></LoadingComponent>
+    }
+    else
+    {
+        <div class="business-container row justify-content-center m-0">
 
-        @foreach(var blog in featuredBlogs)
-        {
-            <div class="col-md-4 m-4">
-                <div class="card shadow" style="height: 99%">
-                    <div class="logo-container d-flex justify-content-center" style="height: 55%;">
-                        <img class="card-img-top"
-                             src="@blog.PhotoURL" alt="Blog Photo" />
-                    </div>
-                    <div class="card-body">
-                        <div class="main-text">
-                            <p>@blog.PublishDate</p>
-                            <h2>@blog.Title</h2>
-                            <p>@blog.AuthorName</p>
+        
+            @foreach(var blog in featuredBlogs)
+            {
+                <div class="col-md-4 m-4">
+                    <div class="card shadow" style="height: 99%">
+                        <div class="logo-container d-flex justify-content-center" style="height: 55%;">
+                            <img class="card-img-top"
+                                 src="@blog.PhotoURL" alt="Blog Photo" />
                         </div>
-                        <div class="btn mt-5 mb-5" @onclick="() => GoToDetailsPage(blog.Id)">
-                            <span data-text="Read Now">Read Now</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
-
-    <div class="business-container row justify-content-center m-5">
-
-        @foreach (var blog in restBlogs)
-        {
-            <div class="card-container col-md-3">
-                <div class="card shadow w-65">
-                    <div class="image-container d-flex justify-content-center" style="height: 55%;">
-                        <img class="card-img-top img-fluid"
-                             src="@blog.PhotoURL" alt="city" />
-                    </div>
-                    <div class="card-body mt-3">
-                        <div class="sub-text">
-                            <p>@blog.PublishDate</p>
-                            <h2>@blog.Title</h2>
-                            <p>@blog.AuthorName</p>
-                        </div>
-                        <div class="button" @onclick="() => GoToDetailsPage(blog.Id)">
-                            <h1>Read now</h1>
+                        <div class="card-body">
+                            <div class="main-text">
+                                <p>@blog.PublishDate</p>
+                                <h2>@blog.Title</h2>
+                                <p>@blog.AuthorName</p>
+                            </div>
+                            <div class="btn mt-5 mb-5" @onclick="() => NavigateToBlog(blog.Id)"><span data-text="Read Now">Read Now</span></div>
                         </div>
                     </div>
                 </div>
-            </div>
-        }
+            }
+        </div>
 
-    </div>
+        <div class="business-container row justify-content-center m-5">
+
+            @foreach (var blog in restBlogs)
+            {
+                <div class="card-container col-md-3">
+                    <div class="card shadow w-65">
+                        <div class="image-container d-flex justify-content-center" style="height: 55%;">
+                            <img class="card-img-top img-fluid"
+                                 src="@blog.PhotoURL" alt="city" />
+                        </div>
+                        <div class="card-body mt-3">
+                            <div class="sub-text">
+                                <p>@blog.PublishDate</p>
+                                <h2>@blog.Title</h2>
+                                <p>@blog.AuthorName</p>
+                            </div>
+                            <div class="button">
+                                <h1 @onclick="() => NavigateToBlog(blog.Id)">Read now</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    }
 </div>
 
 
@@ -77,9 +83,11 @@
         isLoading = false;
     }
 
-    public void GoToDetailsPage(int id)
+    public void NavigateToBlog(int blogId)
     {
-        NavMan.NavigateTo($"/blog/{id}", true);
+        NavMan.NavigateTo($"/blog/{blogId}");
     }
 
 }
+
+

@@ -49,10 +49,23 @@
             }
             else
             {
-                <p>Loading ...</p>
+                <RazorClassLibrary.Pages.LoadingComponent></RazorClassLibrary.Pages.LoadingComponent>
             }
         </div>
-
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="input-group mb-3 pt-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-light rounded-left">
+                                <img src="Images/MagnifyingGlass.png" alt="Search" style="width: 20px; height: 20px;" />
+                            </span>
+                        </div>
+                        <input type="text" class="form-control rounded-right" placeholder="Search All Vouchers (e.g. Wendys, Free, WAH)" @onchange="@FilterVouchers" />
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="card-container row mt-5 pb-8" style="max-width: 1200px; margin-left: auto; margin-right: auto">
             @if (!isLoading)
             {
@@ -60,7 +73,7 @@
                 {
                     @if (!filtering)
                     {
-                        @foreach (var voucher in allVouchers)
+                        @foreach (var voucher in searchedVouchers)
                         {
 
                             <div class="col-md-6 p-3" >
@@ -96,7 +109,7 @@
                     }
                     else
                     {
-                        @foreach (var voucher in filteredVouchers)
+                        @foreach (var voucher in searchedVouchers.Where(x => x.BusinessName == filteredBusiness).ToList())
                         {
 
                             <div class="col-md-6 p-3">
@@ -145,7 +158,8 @@
 
 @code {
     public List<VoucherDTO> allVouchers { get; set; } = new();
-    public List<VoucherDTO> filteredVouchers { get; set; } = new();
+    public List<VoucherDTO> searchedVouchers { get; set; } = new();
+
     public string filteredBusiness { get; set; } = "none";
     public List<BusinessDTO> allBusinesses { get; set; } = new();
     public bool isLoading { get; set; } = true;
@@ -155,7 +169,7 @@
     {
         isLoading = true;
         allVouchers = await voucherService.GetAllVouchers();
-        allVouchers = allVouchers.Where(x => x.EndDate >= DateTime.UtcNow).ToList();
+        searchedVouchers = allVouchers = allVouchers.Where(x => x.EndDate >= DateTime.UtcNow).ToList();
         allBusinesses = await businessService.GetAllBusinesses();
         isLoading = false;
     }
@@ -165,7 +179,7 @@
         NavMan.NavigateTo($"/view-voucher/{id}",true);
     }
 
-    public List<VoucherDTO> toggleFiltering(string businessName)
+    public void toggleFiltering(string businessName)
     {
         if (filteredBusiness == businessName)
         {
@@ -176,10 +190,19 @@
         {
             filtering = true;
             filteredBusiness = businessName;
-            filteredVouchers = allVouchers.Where(b => b.BusinessName == businessName).ToList();
         }
+    }
 
-        return filteredVouchers;
+    private void FilterVouchers(Microsoft.AspNetCore.Components.ChangeEventArgs args)
+    {
+        string searchString = ((string)args.Value).ToLower();
 
+        searchedVouchers = allVouchers.Where(x =>
+        {
+            return x.PromoName.ToLower().Contains(searchString)
+            || x.BusinessName.ToLower().Contains(searchString)
+            || x.PromoDescription.ToLower().Contains(searchString)
+            ;
+        }).ToList();
     }
 }
