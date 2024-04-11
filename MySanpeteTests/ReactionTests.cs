@@ -40,7 +40,7 @@ public class ReactionTests : IClassFixture<MySanpeteFactory>
         Reaction reaction = new Reaction()
         {
             Unicode = "U+1F44D",
-            
+
         };
 
         AddReactionRequest request = new()

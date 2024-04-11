@@ -11,7 +11,7 @@ namespace RazorClassLibrary.Services;
 public interface IBlogService
 {
     public Task<BlogDTO?> AddBlog(AddBlogRequest request);
-    public Task<BlogDTO?> EditBlog(BlogDTO blogDto);
+    public Task<BlogDTO?> EditBlog(UpdateBlogRequest blogRequest);
     public Task<bool> DeleteBlog(int id);
     public Task<BlogDTO?> GetBlog(int id);
     public Task<List<BlogDTO>> GetAllBlogs();

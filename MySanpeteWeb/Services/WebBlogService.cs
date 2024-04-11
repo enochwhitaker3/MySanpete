@@ -72,7 +72,7 @@ public class WebBlogService : IBlogService
         return false;
     }
 
-    public async Task<BlogDTO?> EditBlog(BlogDTO blogDto)
+    public async Task<BlogDTO?> EditBlog(UpdateBlogRequest updateBlog)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
         var buc = await context.Blogs
@@ -81,15 +81,15 @@ public class WebBlogService : IBlogService
             .Include(x => x.BlogReactions)
                 .ThenInclude(x => x.Reaction)
             .Include(x => x.Author)
-            .Where(x => x.Id == blogDto.Id)
+            .Where(x => x.Id == updateBlog.Id)
             .FirstOrDefaultAsync();
         if (buc != null)
         {
-            buc.Title = blogDto.Title ?? "Default Title";
-            buc.PublishDate = blogDto.PublishDate;
-            buc.Commentable = blogDto.Commentable;
-            buc.BlogContent = blogDto.Content ?? "Default Content";
-            buc.Photo = blogDto.Photo;
+            buc.Title = updateBlog.Title ?? "Default Title";
+            buc.PublishDate = updateBlog.PublishDate;
+            buc.Commentable = updateBlog.Commentable;
+            buc.BlogContent = updateBlog.BlogContent ?? "Default Content";
+            buc.Photo = updateBlog.Photo;
 
             context.Blogs.Update(buc);
             await context.SaveChangesAsync();

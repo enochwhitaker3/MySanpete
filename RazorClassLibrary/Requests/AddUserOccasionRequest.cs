@@ -10,5 +10,5 @@ namespace RazorClassLibrary.Requests;
 public class AddUserOccasionRequest
 {
     public int OccasionId { get; set; }
-    public int UserId { get; set; } 
+    public int UserId { get; set; }
 }

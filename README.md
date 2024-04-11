@@ -1,4 +1,5 @@
 <h1 align="center">MySanpete</h1>
+<p align="center"><a href="https://mysanpete.azurewebsites.net/" target="_blank">mysanpete.azurewebsites.net</a></p>
 <p align="center">MySanpete is a web app and mobile app that connects entrepreneurs and small business owners to locals in Sanpete County, Utah.</p>
 
 # Built With
@@ -27,7 +28,7 @@
     <tr>
       <td>Application Health (current uptime, aggregated uptime)</td>
       <td>04/13/2024</td>
-      <td></td>
+      <td>X</td>
     </tr>
     <tr>
       <td>application performance</td>
