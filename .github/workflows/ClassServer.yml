@@ -1,4 +1,4 @@
-name: Ethan's Deploy Thingy
+name: MySanpete Class Server Deployment Pipeline
 on: [push]
 jobs:
   DeployingPipeline:
@@ -39,23 +39,22 @@ jobs:
           echo "Domain=${{secrets.DOMAIN}} 
           ClientId=${{ secrets.CLIENTID }} 
           STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }} 
-          MapKey=${{ secrets.MAPKEY }}" > .env
-          sleep 1
+          MapKey=${{ secrets.MAPKEY }}
+          DUCKDNS=${{ secrets.DUCKDNS }}" > .env
         working-directory: ./../../../../MySanpete
       - name: "Run docker-compose up"
         id: compose
         run: |
           docker compose up --build -d
         working-directory: ./../../../../MySanpete
-    #   - name: Microsoft Teams Notification
-    #     uses: skitionek/notify-microsoft-teams@master
-        
-    #     if: failure()
-    #     with:
-    #       webhook_url: ${{ secrets.TEAMS_WEBHOOK }}
-    #       overwrite: "{title: `Ethan's Runner failed! Point and laugh. ${workflow_link}`}"
-    #   - name: Microsoft Teams Notification
-    #     uses: skitionek/notify-microsoft-teams@master
-    #     if: steps.compose.outcome == 'success'
-    #     with:
-    #       webhook_url: ${{ secrets.TEAMS_WEBHOOK }}
+      - name: Microsoft Teams Notification
+        uses: skitionek/notify-microsoft-teams@master
+        if: failure()
+        with:
+          webhook_url: ${{ secrets.TEAMS_WEBHOOK }}
+          overwrite: "{title: `THE SERVER IS DOWN! Check it here :) -> ${workflow_link}`}"
+      - name: Microsoft Teams Notification
+        uses: skitionek/notify-microsoft-teams@master
+        if: steps.compose.outcome == 'success'
+        with:
+          webhook_url: ${{ secrets.TEAMS_WEBHOOK }}
