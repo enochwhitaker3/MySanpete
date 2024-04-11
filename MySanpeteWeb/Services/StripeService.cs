@@ -47,7 +47,7 @@ public class StripeService : IStripeService
             var session = await service.CreateAsync(options);
             NavMan.NavigateTo(session.Url);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
 
         }
@@ -59,7 +59,16 @@ public class StripeService : IStripeService
 
         long numberOfCents = Convert.ToInt32(request.RetailPrice * 100);
 
-        var options = new ProductCreateOptions { Name = request.PromoName, Description = request.PromoDescription, DefaultPriceData = new() { Currency = "usd", UnitAmount = numberOfCents } };
+        var options = new ProductCreateOptions 
+        { 
+            Name = request.PromoName, 
+            Description = request.PromoDescription, 
+            DefaultPriceData = new() 
+            { 
+                Currency = "usd", 
+                UnitAmount = numberOfCents
+            }, 
+        };
         var service = new ProductService();
         var result = service.Create(options);
 

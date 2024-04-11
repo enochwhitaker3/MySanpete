@@ -1,4 +1,5 @@
-﻿using RazorClassLibrary.Requests;
+﻿using RazorClassLibrary.DTOs;
+using RazorClassLibrary.Requests;
 using RazorClassLibrary.Services;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,11 @@ namespace MySanpeteTests.Dummies
         }
 
         public Task Checkout(AddVoucherRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> CreateRefund(UserVoucherDTO userVoucher)
         {
             throw new NotImplementedException();
         }
