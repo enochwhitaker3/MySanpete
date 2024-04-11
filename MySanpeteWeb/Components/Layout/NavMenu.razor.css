@@ -81,6 +81,10 @@
     color: black !important;
 }
 
+.dropdown {
+    z-index: 1;
+}
+
 /*.navbar-collapse.collapse.show {
     background-color: black !important;
 }
