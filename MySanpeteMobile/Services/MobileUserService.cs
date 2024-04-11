@@ -10,7 +10,7 @@ public class MobileUserService : IUserService
     private readonly HttpClient httpClient;
     public MobileUserService(HttpClient HttpClient)
     {
-        httpClient = HttpClient; 
+        httpClient = HttpClient;
     }
     public Task<UserDTO?> AddUser(string email)
     {
@@ -37,7 +37,7 @@ public class MobileUserService : IUserService
     public async Task<UserDTO?> GetUser(string email)
     {
         var result = await httpClient.GetFromJsonAsync<UserDTO>($"/api/user/getuseremail/{email}");
-        return result!; 
+        return result!;
     }
 
     public async Task<UserDTO?> GetUser(Guid guid)

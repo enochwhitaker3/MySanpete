@@ -15,7 +15,7 @@
     {
         <h1>@blog.Title</h1>
         <p style="color: gray;" class="mb-5">
-            published @blog.PublishDate.Value.Month - @blog.PublishDate.Value.Day - @blog.PublishDate.Value.Year
+            published @blog!.PublishDate!.Value.Month - @blog.PublishDate.Value.Day - @blog.PublishDate.Value.Year
         </p>
         <div class="blog-content">
             @((MarkupString)blog.Content)
@@ -77,11 +77,11 @@
                                                 </div>
                                             </div>
 
-                                            @if (c.Replies.Count() > 0)
+                                            @if (c!.Replies!.Count() > 0)
                                             {
                                                 <div class="comment-replies mb-5 p-3 mt-3 rounded">
                                                     <h6 class="comment-replies-title text-muted text-uppercase"> replies</h6>
-                                                    @foreach (var r in c.Replies)
+                                                    @foreach (var r in c!.Replies!)
                                                     {
 
                                                         <div class="reply d-flex">
@@ -152,28 +152,28 @@
 
     public string ParsedContent { get; set; } = "no content";
 
-    public List<CommentDTO> AllComments { get; set; }
+    public List<CommentDTO> AllComments { get; set; } = new();
 
-    public List<CommentDTO> TopLevelComments { get; set; }
+    public List<CommentDTO> TopLevelComments { get; set; } = new();
 
-    public string inputedComment { get; set; }
+    public string? inputedComment { get; set; }
 
 
-    UserDTO loggedInUser { get; set; }
+    UserDTO? loggedInUser { get; set; } = new();
 
 
 
     protected override async Task OnInitializedAsync()
     {
         blog = await service.GetBlog(blogId);
-        AllComments = blog.Comments;
+        AllComments = blog!.Comments!;
 
-        TopLevelComments = AllComments.Where(x => x.ReplyId is null).ToList();
+        TopLevelComments = AllComments!.Where(x => x.ReplyId is null).ToList();
 
 
-        if (userState.User.Identity.IsAuthenticated)
+        if (userState!.User!.Identity!.IsAuthenticated)
         {
-            var authId = userState.User.Claims.FirstOrDefault(x => x.Type == "authId").Value;
+            var authId = userState!.User!.Claims!.FirstOrDefault(x => x.Type == "authId")!.Value;
             loggedInUser = await userService.GetAuthUser(authId);
         }
     }
@@ -182,23 +182,23 @@
     {
         AddCommentRequest newRequest = new()
             {
-                content = inputedComment,
+                content = inputedComment!,
                 contentId = blogId,
-                userGuid = loggedInUser.Guid,
+                userGuid = loggedInUser!.Guid,
             };
         await commentService.AddBlogComment(newRequest);
         inputedComment = "";
         blog = await service.GetBlog(blogId);
-        AllComments = blog.Comments;
+        AllComments = blog!.Comments!;
     }
 
     public void AddResponse(int replyId)
     {
         AddCommentRequest newRequest = new()
             {
-                content = inputedComment,
+                content = inputedComment!,
                 contentId = blogId,
-                userGuid = loggedInUser.Guid,
+                userGuid = loggedInUser!.Guid,
                 replyId = replyId,
             };
         commentService.AddBlogComment(newRequest);

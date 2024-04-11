@@ -9,7 +9,7 @@ namespace RazorClassLibrary.Services;
 
 public interface IUserState
 {
-    public ClaimsPrincipal User { get;}
+    public ClaimsPrincipal User { get; }
     public Task Login();
     public Task Logout();
 }

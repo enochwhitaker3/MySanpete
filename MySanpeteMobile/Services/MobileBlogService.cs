@@ -23,7 +23,7 @@ public class MobileBlogService : IBlogService
         throw new NotImplementedException();
     }
 
-    public Task<BlogDTO?> EditBlog(BlogDTO blogDto)
+    public Task<BlogDTO?> EditBlog(UpdateBlogRequest request)
     {
         throw new NotImplementedException();
     }

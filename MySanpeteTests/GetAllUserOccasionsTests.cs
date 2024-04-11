@@ -22,7 +22,7 @@ public class GetAllUserOccasionsTests : IClassFixture<MySanpeteFactory>
 
     internal async Task FillDatabase()
     {
-        if(alreadyAdded) return;
+        if (alreadyAdded) return;
         alreadyAdded = true;
         using var scope = mySanpeteFactory.Services.CreateScope();
         IUserOccasionService userOccasionService = scope.ServiceProvider.GetRequiredService<IUserOccasionService>();

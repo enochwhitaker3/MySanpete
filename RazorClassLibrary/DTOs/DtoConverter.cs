@@ -21,7 +21,7 @@ public static class DtoConverter
     public static VoucherDTO ToDto(this Voucher voucher)
     {
         int? stock = 0;
-        if(voucher.UserVouchers is not null && voucher.PromoStock is not null)
+        if (voucher.UserVouchers is not null && voucher.PromoStock is not null)
         {
             stock = voucher.PromoStock - voucher.UserVouchers.Count();
         }
@@ -150,7 +150,7 @@ public static class DtoConverter
         };
     }
 
-    public static UserOccasionDTO ToDto(this  UserOccasion userOccasion)
+    public static UserOccasionDTO ToDto(this UserOccasion userOccasion)
     {
         return new UserOccasionDTO()
         {
