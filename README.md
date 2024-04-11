@@ -28,7 +28,7 @@
     <tr>
       <td>Application Health (current uptime, aggregated uptime)</td>
       <td>04/13/2024</td>
-      <td></td>
+      <td>X</td>
     </tr>
     <tr>
       <td>application performance</td>
