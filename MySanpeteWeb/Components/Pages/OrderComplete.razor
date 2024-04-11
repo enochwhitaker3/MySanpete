@@ -48,7 +48,7 @@ else
     public string BusinessName { get; set; } = "";
 
     [CascadingParameter]
-    Task<AuthenticationState> authenticationState { get; set; }
+    Task<AuthenticationState>? authenticationState { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -57,7 +57,7 @@ else
         var service = new Stripe.Checkout.SessionService();
         StripeList<Stripe.Checkout.Session> sessions = service.List(options);
 
-        var authState = await authenticationState;
+        var authState = await authenticationState!;
         authId = authState?.User?.Claims?.FirstOrDefault(x => x.Type == "authId")?.Value;
 
         var id = sessions.FirstOrDefault(x => x.Metadata.ContainsKey("UserId") && x.Metadata["UserId"] == authId && x.Created > DateTime.Now.AddMinutes(-30));
@@ -87,7 +87,7 @@ else
         var service = new Stripe.Checkout.SessionService();
         StripeList<Stripe.Checkout.Session> sessions = service.List(options);
 
-        var authState = await authenticationState;
+        var authState = await authenticationState!;
         authId = authState?.User?.Claims?.FirstOrDefault(x => x.Type == "authId")?.Value;
 
         var id = sessions.FirstOrDefault(x => x.Metadata.ContainsKey("UserId") && x.Metadata["UserId"] == authId && x.Created > DateTime.Now.AddMinutes(-30));

@@ -224,7 +224,7 @@ public class WebBundleService : IBundleService
         var newBundle = await context.Bundles
             .Include(x => x.BundleVouchers)
                 .ThenInclude(x => x.Voucher)
-                    .ThenInclude(x => x.Business)
+                    .ThenInclude(x => x!.Business)
             .FirstOrDefaultAsync(x => x.Id == buc.Id);
 
         return newBundle!.ToDto();
