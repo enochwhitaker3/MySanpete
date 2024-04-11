@@ -18,7 +18,7 @@ public class StripeService : IStripeService
 
     public StripeService()
     {
-        this.NavMan = null;
+        this.NavMan = null!;
     }
     public async Task Checkout(AddVoucherRequest request)
     {

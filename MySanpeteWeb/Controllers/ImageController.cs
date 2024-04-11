@@ -13,37 +13,23 @@ namespace MySanpeteWeb.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ImageController : Controller
+public class ImageController(IDbContextFactory<MySanpeteDbContext> factory, IAppCache cache) : Controller
 {
-    private readonly IDbContextFactory<MySanpeteDbContext> factory;
-    private readonly IAppCache cache;
-
-    public ImageController(IDbContextFactory<MySanpeteDbContext> factory, IAppCache cache)
-    {
-        this.factory = factory;
-        this.cache = cache;
-    }
+    private readonly IDbContextFactory<MySanpeteDbContext> factory = factory;
+    private readonly IAppCache cache = cache;
 
     [HttpGet("business/{id}")]
-    public async Task<IActionResult> GetImage(int id)
-    {
-        return await cache.GetOrAddAsync($"Business{id}", () => GetBusinessImageAsync(id));
-    }
+    public async Task<IActionResult> GetImage(int id) => await cache.GetOrAddAsync($"Business{id}", () => GetBusinessImageAsync(id));
 
     [HttpGet("blogs/{id}")]
-    public async Task<IActionResult> GetBlogImage(int id)
-    {
-        return await cache.GetOrAddAsync($"Blogs{id}", () => GetBlogImageAsync(id));
-    }
+    public async Task<IActionResult> GetBlogImage(int id) => await cache.GetOrAddAsync($"Blogs{id}", () => GetBlogImageAsync(id));
 
     [HttpGet("user/{userId}")]
     public async Task<IActionResult> GetUserImage(int userId)
     {
         using var context = await factory.CreateDbContextAsync();
-        var user = await context.EndUsers.FirstOrDefaultAsync(i => i.Id == userId);
-
-        var image = user.Photo;
-
+        var user = await context.EndUsers.FirstOrDefaultAsync(i => i.Id == userId) ?? throw new NullReferenceException("The user does not exist");
+        var image = user.Photo ?? throw new NullReferenceException("The user does not have a photo");
         return File(image, "image/jpeg");
     }
 
