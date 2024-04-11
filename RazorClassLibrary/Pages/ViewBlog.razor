@@ -171,14 +171,14 @@ else
     {
         isLoading = true;
         blog = await service.GetBlog(blogId);
-        AllComments = blog.Comments;
+        AllComments = blog!.Comments!;
 
-        TopLevelComments = AllComments.Where(x => x.ReplyId is null).ToList();
+        TopLevelComments = AllComments!.Where(x => x.ReplyId is null).ToList();
 
 
-        if (userState.User.Identity.IsAuthenticated)
+        if (userState!.User!.Identity!.IsAuthenticated)
         {
-            var authId = userState.User.Claims.FirstOrDefault(x => x.Type == "authId").Value;
+            var authId = userState!.User!.Claims!.FirstOrDefault(x => x.Type == "authId")!.Value;
             loggedInUser = await userService.GetAuthUser(authId);
         }
         isLoading = false;
@@ -189,9 +189,9 @@ else
         isLoading = true;
         AddCommentRequest newRequest = new()
             {
-                content = inputedComment,
+                content = inputedComment!,
                 contentId = blogId,
-                userGuid = loggedInUser.Guid,
+                userGuid = loggedInUser!.Guid,
             };
         await commentService.AddBlogComment(newRequest);
         inputedComment = "";
@@ -207,9 +207,9 @@ else
         isLoading = true;
         AddCommentRequest newRequest = new()
             {
-                content = inputedComment,
+                content = inputedComment!,
                 contentId = blogId,
-                userGuid = loggedInUser.Guid,
+                userGuid = loggedInUser!.Guid,
                 replyId = replyId,
             };
         await commentService.AddBlogComment(newRequest);

@@ -44,6 +44,6 @@ public class BusinessController : Controller
         {
             return null;
         }
-        return business;    
+        return business;
     }
 }
