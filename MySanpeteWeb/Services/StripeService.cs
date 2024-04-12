@@ -21,7 +21,42 @@ public class StripeService : IStripeService
     {
         this.NavMan = null!;
     }
-    public async Task Checkout(AddVoucherRequest request)
+    public async Task Checkout(PurchaseVoucherRequest request)
+    {
+        var domain = "https://localhost:7059"; // TODO change when we post to azure
+        var metadata = new Dictionary<string, string>();
+        metadata.Add("VoucherId", request.VoucherId.ToString());
+        metadata.Add("UserId", request!.UserId!);
+        var options = new SessionCreateOptions
+        {
+            LineItems = new List<SessionLineItemOptions>
+            {
+                new()
+                {
+                    Price = request.PriceId,
+                    Quantity = 1,
+                },
+            },
+            Mode = "payment",
+            SuccessUrl = domain + "/OrderComplete",
+            CancelUrl = domain + "/OrderAbandoned",
+            Metadata = metadata,
+            ExpiresAt = DateTime.Now.AddMinutes(31)
+        };
+        try
+        {
+
+            var service = new SessionService();
+            var session = await service.CreateAsync(options);
+            NavMan.NavigateTo(session.Url);
+        }
+        catch (Exception)
+        {
+
+        }
+    }
+
+    public async Task BundleCheckout(PurchaseBundleRequest request)
     {
         var domain = "https://localhost:7059"; // TODO change when we post to azure
         var options = new SessionCreateOptions
@@ -30,22 +65,19 @@ public class StripeService : IStripeService
         {
             new()
             {
-                // Provide the exact Price ID (for example, price_1234) of the product you want to sell
-                //Price = "price_1OyLIuDb4weiXajfjif0Porn",
                 Price = request.PriceId,
                 Quantity = 1,
             },
         },
             Mode = "payment",
-            SuccessUrl = domain + "/OrderComplete",
+            SuccessUrl = domain + "/OrderComplete?IsBundle=true",
             CancelUrl = domain + "/OrderAbandoned"
         };
         try
         {
-
             var service = new SessionService();
             var session = await service.CreateAsync(options);
-            NavMan.NavigateTo(session.Url);
+            NavMan.NavigateTo(session.Url, true);
         }
         catch (Exception)
         {
@@ -145,6 +177,7 @@ public class StripeService : IStripeService
                 Currency = "usd",
                 UnitAmount = numberOfCents
             },
+            
         };
         var service = new ProductService();
         var result = service.Create(options);

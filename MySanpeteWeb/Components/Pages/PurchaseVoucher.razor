@@ -1,46 +1,48 @@
 ﻿@page "/view-voucher/{voucherId:int}"
 
 @using RazorClassLibrary.Data
+@using RazorClassLibrary.Requests
 @using RazorClassLibrary.Services
 @using Stripe.Checkout
 
-@inject NavigationManager NavMan
+@inject NavigationManager navManager
 @inject IVoucherService service
 @inject IBusinessService businessService
+@inject IStripeService stripeService
 
 @attribute [Authorize]
 
 <div style="height: 80vh; margin-top: 100px">
-@if (voucher is not null)
-{
-    <div class="container">
+    @if (voucher is not null)
+    {
+        <div class="container">
             <div class="content rounded-3 shadow">
-            <div class="row">
-                <div class="col-md-6">
-                    <img width="300" src="@imgDataURL" class="img-fluid img rounded-circle" />
-                </div>
-                <div class="col-md-6">
-                    <h2>@voucher.PromoName</h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <img width="300" src="@imgDataURL" class="img-fluid img rounded-circle" />
+                    </div>
+                    <div class="col-md-6">
+                        <h2>@voucher.PromoName</h2>
                         <strong><p>@voucher.BusinessName</p></strong>
-                    <p>@voucher.PromoDescription</p>
-                    <p>$@voucher.RetailPrice</p>
-                    <p>Good through @voucher.EndDate</p>
-                    <form method="post" @formname="checkout" @onsubmit="Checkout">
-                        <button type="submit" class="btn btn-primary">
-                            Checkout with Stripe
-                        </button>
-                        <AntiforgeryToken />
-                    </form>
+                        <p>@voucher.PromoDescription</p>
+                        <p>$@voucher.RetailPrice</p>
+                        <p>Good through @voucher.EndDate</p>
+                        <form method="post" @formname="checkout" @onsubmit="Checkout">
+                            <button type="submit" class="btn btn-primary">
+                                Checkout with Stripe
+                            </button>
+                            <AntiforgeryToken />
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-}
-else
-{
-    <p>This voucher doesn't exist anymore (or never existed at all!).</p>
-    <p>View All Vouchers</p>
-}
+    }
+    else
+    {
+        <p>This voucher doesn't exist anymore (or never existed at all!).</p>
+        <p>View All Vouchers</p>
+    }
 </div>
 
 @code {
@@ -51,54 +53,66 @@ else
     public BusinessDTO? business { get; set; }
     public string imgDataURL { get; set; } = "";
     public string errorMessage { get; set; } = "";
+    public string? authId { get; set; }
 
     [CascadingParameter]
-    Task<AuthenticationState>? authenticationState { get; set; }
+    Task<AuthenticationState>? AuthStateTask { get; set; }
 
     AuthenticationState? authState { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        voucher = await service.GetVoucher(voucherId) ?? new VoucherDTO();
-        var businesses = await businessService.GetAllBusinesses();
-        business = businesses.Where(x => x.BusinessName == voucher.BusinessName).FirstOrDefault();
-        imgDataURL = business!.LogoURL!;
-        authState = await authenticationState!;
+
+        if (AuthStateTask is null)
+        {
+            throw new Exception("BWAH");
+        }
+        var authState = await AuthStateTask;
+
+        try
+        {
+            authId = authState.User.Claims.FirstOrDefault(x => x.Type == "authId")!.Value;
+
+            voucher = await service.GetVoucher(voucherId) ?? new VoucherDTO();
+            var businesses = await businessService.GetAllBusinesses();
+            business = businesses.Where(x => x.BusinessName == voucher.BusinessName).FirstOrDefault();
+            imgDataURL = business!.LogoURL!;
+        }
+        catch (Exception)
+        {
+            navManager.NavigateTo("/404", true);
+        }
+
     }
 
     private async Task Checkout()
     {
-        var domain = "https://localhost:7059"; // TODO change when we post to azure
-        var metadata = new Dictionary<string, string>();
-        metadata.Add("VoucherId", voucher!.Id.ToString());
-        metadata.Add("UserId", authState?.User?.Claims?.FirstOrDefault(x => x.Type == "authId")?.Value!);
-        var options = new SessionCreateOptions { LineItems = new List<SessionLineItemOptions>
-            {
-                new()
-                {
-                    // Provide the exact Price ID (for example, price_1234) of the product you want to sell
-                    //Price = "price_1OyLIuDb4weiXajfjif0Porn",
-                    Price = voucher.PriceId,
-                    Quantity = 1,
-                },
-            },
-            Mode = "payment",
-            SuccessUrl = domain + "/OrderComplete",
-            CancelUrl = domain + "/OrderAbandoned",
-            Metadata = metadata,
-            ExpiresAt = DateTime.Now.AddMinutes(31),
-        };
         try
         {
+            if (voucher is null)
+            {
+                throw new Exception("Voucher wasn't found you can't check out");
+            }
 
-            var service = new SessionService();
-            var session = await service.CreateAsync(options);
-            NavMan.NavigateTo(session.Url);
+            PurchaseVoucherRequest request = new()
+                {
+                    PriceId = voucher.PriceId,
+                    UserId = authId,
+                    VoucherId = voucher.Id
+                };
+
+            if (request is null)
+            {
+                throw new Exception("The add voucher request was null and couldn't be added");
+            }
+
+            await stripeService.Checkout(request);
         }
         catch (Exception ex)
         {
             errorMessage = ex.Message;
         }
+
     }
 
 }

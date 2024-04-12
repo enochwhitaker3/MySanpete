@@ -15,5 +15,5 @@ public interface IBundleService
     public Task<BundleDTO> AddNewBundle(AddBundleRequest request);
     public Task<BundleDTO> UpdateBundle(BundleDTO bundle);
     public Task<bool> DeleteBundle(int bundleId);
-    public Task<bool> PurchaseBundle(PurchaseBundleRequest request);
+    public Task<bool> PurchaseBundle(PostPurchaseBundleRequest request);
 }

@@ -47,6 +47,9 @@ else
     public static bool BusinessDefined = false;
     public string BusinessName { get; set; } = "";
 
+    [SupplyParameterFromQuery]
+    public bool IsBundle { get; set; }
+
     [CascadingParameter]
     Task<AuthenticationState>? authenticationState { get; set; }
 

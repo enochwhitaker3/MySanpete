@@ -89,7 +89,7 @@ else
 
 @code {
     [Parameter]
-    public int voucherId { get; set; }
+    public int userVoucherId { get; set; }
     public string? imgDataURL { get; set; } = "";
     public string? errorMessage { get; set; } = "";
     public string? authId { get; set; }
@@ -118,7 +118,7 @@ else
             }
 
             var userId = (await userService.GetAuthUser(authId))!.Id;
-            var maybeTheirVoucher = await userVoucherService.GetById(voucherId);
+            var maybeTheirVoucher = await userVoucherService.GetById(userVoucherId);
 
             if (maybeTheirVoucher!.User!.Id != userId)
             {

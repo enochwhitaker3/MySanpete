@@ -68,6 +68,9 @@ public class WebBundleService : IBundleService
             .Include(x => x.BundleVouchers)
                 .ThenInclude(x => x.Voucher)
                     .ThenInclude(x => x!.Business)
+            .Include(x => x.BundleVouchers)
+                .ThenInclude(x => x.Voucher)
+                    .ThenInclude(x => x!.UserVouchers)
             .FirstOrDefaultAsync(x => x.Id == newBundle.Id);
 
         return bundle!.ToDto();
@@ -78,9 +81,13 @@ public class WebBundleService : IBundleService
         using var context = await dbContextFactory.CreateDbContextAsync();
 
         var bundleToDelete = await context.Bundles
-                                .Include(x => x.BundleVouchers)
-                                    .ThenInclude(x => x.Voucher)
-                                .FirstOrDefaultAsync(x => x.Id == bundleId);
+            .Include(x => x.BundleVouchers)
+                .ThenInclude(x => x.Voucher)
+                    .ThenInclude(x => x!.Business)
+            .Include(x => x.BundleVouchers)
+                .ThenInclude(x => x.Voucher)
+                    .ThenInclude(x => x!.UserVouchers)
+            .FirstOrDefaultAsync(x => x.Id == bundleId);
 
         if (bundleToDelete is null)
         {
@@ -103,11 +110,14 @@ public class WebBundleService : IBundleService
         using var context = await dbContextFactory.CreateDbContextAsync();
 
         var bundles = await context.Bundles
-                        .Include(x => x.BundleVouchers)
-                            .ThenInclude(x => x.Voucher)
-                                .ThenInclude(x => x!.Business)
-                        .Select(x => x.ToDto())
-                        .ToListAsync();
+            .Include(x => x.BundleVouchers)
+                .ThenInclude(x => x.Voucher)
+                    .ThenInclude(x => x!.Business)
+            .Include(x => x.BundleVouchers)
+                .ThenInclude(x => x.Voucher)
+                    .ThenInclude(x => x!.UserVouchers)
+            .Select(x => x.ToDto())
+            .ToListAsync();
 
         return bundles;
 
@@ -118,10 +128,13 @@ public class WebBundleService : IBundleService
         using var context = await dbContextFactory.CreateDbContextAsync();
 
         var bundle = await context.Bundles
-                        .Include(x => x.BundleVouchers)
-                            .ThenInclude(x => x.Voucher)
-                                .ThenInclude(x => x!.Business)
-                        .FirstOrDefaultAsync(x => x.Id == bundleId);
+            .Include(x => x.BundleVouchers)
+                .ThenInclude(x => x.Voucher)
+                    .ThenInclude(x => x!.Business)
+            .Include(x => x.BundleVouchers)
+                .ThenInclude(x => x.Voucher)
+                    .ThenInclude(x => x!.UserVouchers)
+            .FirstOrDefaultAsync(x => x.Id == bundleId);
 
         if (bundle is null)
         {
@@ -132,16 +145,19 @@ public class WebBundleService : IBundleService
 
     }
 
-    public async Task<bool> PurchaseBundle(PurchaseBundleRequest request)
+    public async Task<bool> PurchaseBundle(PostPurchaseBundleRequest request)
     {
         using var context = await dbContextFactory.CreateDbContextAsync();
 
         //Get the bundle
         var bundleToPurchase = await context.Bundles
-                                   .Include(b => b.BundleVouchers)
-                                        .ThenInclude(b => b.Voucher)
-                                            .ThenInclude(b => b!.UserVouchers)
-                                   .FirstOrDefaultAsync(b => b.Id == request.BundleId);
+            .Include(x => x.BundleVouchers)
+                .ThenInclude(x => x.Voucher)
+                    .ThenInclude(x => x!.Business)
+            .Include(x => x.BundleVouchers)
+                .ThenInclude(x => x.Voucher)
+                    .ThenInclude(x => x!.UserVouchers)
+            .FirstOrDefaultAsync(b => b.Id == request.BundleId);
 
         if (bundleToPurchase is null)
         {
@@ -241,6 +257,9 @@ public class WebBundleService : IBundleService
             .Include(x => x.BundleVouchers)
                 .ThenInclude(x => x.Voucher)
                     .ThenInclude(x => x!.Business)
+            .Include(x => x.BundleVouchers)
+                .ThenInclude(x => x.Voucher)
+                    .ThenInclude(x => x.UserVouchers)
             .FirstOrDefaultAsync(x => x.Id == buc.Id);
 
         return newBundle!.ToDto();

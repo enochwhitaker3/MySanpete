@@ -36,7 +36,7 @@ public class MobileBundleService : IBundleService
         return result!;
     }
 
-    public Task<bool> PurchaseBundle(PurchaseBundleRequest request)
+    public Task<bool> PurchaseBundle(PostPurchaseBundleRequest request)
     {
         throw new NotImplementedException();
     }

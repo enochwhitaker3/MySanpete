@@ -1013,7 +1013,7 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
 
         var bundle = await bundleService.AddNewBundle(request);
 
-        var purchaseRequest = new PurchaseBundleRequest()
+        var purchaseRequest = new PostPurchaseBundleRequest()
         {
             BundleId = bundle.Id,
             UserId = new Guid("dc43835d-1738-1738-1738-ce90cc1209e3"),
@@ -1101,7 +1101,7 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
 
         var bundle = await bundleService.AddNewBundle(request);
 
-        var purchaseRequest = new PurchaseBundleRequest()
+        var purchaseRequest = new PostPurchaseBundleRequest()
         {
             BundleId = 10000000,
             UserId = new Guid("dc43835d-1738-1738-1738-ce90cc1209e3"),
@@ -1190,7 +1190,7 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
 
         var bundle = await bundleService.AddNewBundle(request);
 
-        var purchaseRequest = new PurchaseBundleRequest()
+        var purchaseRequest = new PostPurchaseBundleRequest()
         {
             BundleId = bundle.Id,
             UserId = new Guid("1c892d2e-a43e-4b3a-97f3-00a3c2037612"),
