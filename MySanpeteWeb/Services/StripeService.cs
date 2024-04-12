@@ -11,15 +11,15 @@ namespace MySanpeteWeb.Services;
 
 public class StripeService : IStripeService
 {
-    private readonly NavigationManager NavMan;
+    private readonly NavigationManager navManager;
     public StripeService(NavigationManager NavMan)
     {
-        this.NavMan = NavMan;
+        this.navManager = NavMan;
     }
 
     public StripeService()
     {
-        this.NavMan = null!;
+        this.navManager = null!;
     }
     public async Task Checkout(PurchaseVoucherRequest request)
     {
@@ -48,7 +48,7 @@ public class StripeService : IStripeService
 
             var service = new SessionService();
             var session = await service.CreateAsync(options);
-            NavMan.NavigateTo(session.Url);
+            navManager.NavigateTo(session.Url);
         }
         catch (Exception)
         {
@@ -59,6 +59,10 @@ public class StripeService : IStripeService
     public async Task BundleCheckout(PurchaseBundleRequest request)
     {
         var domain = "https://localhost:7059"; // TODO change when we post to azure
+        var metadata = new Dictionary<string, string>();
+        metadata.Add("UserId", request.UserId!);
+        metadata.Add("BundleId", request.BundleId!.ToString());
+
         var options = new SessionCreateOptions
         {
             LineItems = new List<SessionLineItemOptions>
@@ -71,13 +75,15 @@ public class StripeService : IStripeService
         },
             Mode = "payment",
             SuccessUrl = domain + "/OrderComplete?IsBundle=true",
-            CancelUrl = domain + "/OrderAbandoned"
+            CancelUrl = domain + "/OrderAbandoned",
+            Metadata = metadata,
+            ExpiresAt = DateTime.Now.AddMinutes(31)
         };
         try
         {
             var service = new SessionService();
             var session = await service.CreateAsync(options);
-            NavMan.NavigateTo(session.Url, true);
+            navManager.NavigateTo(session.Url, true);
         }
         catch (Exception)
         {

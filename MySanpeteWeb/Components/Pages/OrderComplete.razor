@@ -7,6 +7,7 @@
 @inject IUserVoucherService userVoucherService
 @inject IUserService userService
 @inject IVoucherService voucherService
+@inject IBundleService bundleService
 @inject NavigationManager navManager
 
 @rendermode InteractiveServer
@@ -20,7 +21,14 @@
             <p>Got it, thanks!</p>
             @if(BusinessDefined is true)
             {
-                <p>Please check your email to see your voucher. Show this at @voucher.BusinessName to redeem.</p>
+                @if(IsBundle)
+                {
+                    <p>Your bundle has been purchased! Have fun with your events</p>
+                }
+                else
+                {
+                    <p>Please check your email to see your voucher. Show this at @voucher.BusinessName to redeem.</p>
+                }
             }
             else
             {
@@ -40,10 +48,12 @@ else
     public string? intentId { get; set; }
     public string? authId { get; set; }
     public int userId { get; set; }
+    public int bundleId { get; set; }
     public int voucherId { get; set; }
     public decimal finalPrice { get; set; }
     public string errorMessage = "";
     public VoucherDTO voucher { get; set; } = new();
+    public BundleDTO bundle { get; set; } = new();
     public static bool BusinessDefined = false;
     public string BusinessName { get; set; } = "";
 
@@ -68,13 +78,20 @@ else
         try
         {
             voucherId = int.Parse(id!.Metadata["VoucherId"]);
+            voucher = (await voucherService.GetVoucher(voucherId)) ?? throw new Exception("BWAH");
         }
         catch
         {
-            navManager.NavigateTo("/", true);
+            try
+            {
+                bundleId = int.Parse(id!.Metadata["BundleId"]);
+            }
+            catch
+            {
+                navManager.NavigateTo("/404", true);
+            }
         }
 
-        voucher = (await voucherService.GetVoucher(voucherId)) ?? throw new Exception("BWAH");
         BusinessName = voucher.BusinessName ?? "";
         BusinessDefined = true;
     }
@@ -100,34 +117,13 @@ else
         {
             if (id is not null)
             {
-                voucherId = int.Parse(id.Metadata["VoucherId"]);
-                authId = id.Metadata["UserId"];
-                voucher = (await voucherService.GetVoucher(voucherId)) ?? throw new Exception("BWAH");
-
-                var user = (await userService.GetAuthUser(authId));
-                if (user is not null)
+                if(IsBundle)
                 {
-                    userId = user.Id;
+                    await PurchaseBundle(id, firstRender);
                 }
                 else
                 {
-                    throw new Exception("Somehow you aren't logged in thats crazy");
-                }
-
-                finalPrice = Convert.ToDecimal(id.AmountTotal) / 100.00M;
-
-                if (id.PaymentIntentId is null)
-                {
-                    intentId = "Free Voucher Claimed";
-                }
-                else
-                {
-                    intentId = id.PaymentIntentId;
-                }
-
-                if (firstRender)
-                {
-                    await CreateNewUserVoucher();
+                    await PurchaseVoucher(id, firstRender);
                 }
             }
             else
@@ -158,6 +154,97 @@ else
         catch (Exception ex)
         {
             errorMessage = ex.Message;
+        }
+    }
+
+    public async Task PurchaseVoucher(Stripe.Checkout.Session id, bool firstRender)
+    {
+        voucherId = int.Parse(id.Metadata["VoucherId"]);
+        authId = id.Metadata["UserId"];
+        voucher = (await voucherService.GetVoucher(voucherId)) ?? throw new Exception("BWAH");
+        BusinessName = voucher.BusinessName ?? "";
+
+        var user = (await userService.GetAuthUser(authId));
+        if (user is not null)
+        {
+            userId = user.Id;
+        }
+        else
+        {
+            throw new Exception("Somehow you aren't logged in thats crazy");
+        }
+
+        finalPrice = Convert.ToDecimal(id.AmountTotal) / 100.00M;
+
+        if (id.PaymentIntentId is null)
+        {
+            intentId = "Free Voucher Claimed";
+        }
+        else
+        {
+            intentId = id.PaymentIntentId;
+        }
+
+        if (firstRender)
+        {
+            //Make sure that this charge hasn't been added to the database yet.
+            var allVouchers = await userVoucherService.GetAllByUser(userId);
+            if(!allVouchers.Any(x => x.Charge_Id == intentId && x.Charge_Id != "Free Voucher Claimed"))
+            {
+                await CreateNewUserVoucher();
+            }
+            else
+            {
+                navManager.NavigateTo("/", true);
+            }
+        }
+    }
+
+    public async Task PurchaseBundle(Stripe.Checkout.Session id, bool firstRender)
+    {
+        bundleId = int.Parse(id.Metadata["BundleId"]);
+        authId = id.Metadata["UserId"];
+        var bundle = (await bundleService.GetBundle(bundleId)) ?? throw new Exception("BWAH");
+        BusinessName = voucher.BusinessName ?? "";
+
+        var user = (await userService.GetAuthUser(authId));
+        if (user is not null)
+        {
+            userId = user.Id;
+        }
+        else
+        {
+            throw new Exception("Somehow you aren't logged in thats crazy");
+        }
+
+        finalPrice = Convert.ToDecimal(id.AmountTotal) / 100.00M;
+
+        if (id.PaymentIntentId is null)
+        {
+            intentId = "Free Voucher Claimed";
+        }
+        else
+        {
+            intentId = id.PaymentIntentId;
+        }
+
+        if (firstRender)
+        {
+            //Make sure that this charge hasn't been added to the database yet.
+            var allVouchers = await userVoucherService.GetAllByUser(userId);
+            if (!allVouchers.Any(x => x.Charge_Id == intentId && x.Charge_Id != "Free Voucher Claimed"))
+            {
+                foreach(var voucher in bundle!.Vouchers!)
+                {
+                    voucherId = voucher.Id;
+                    finalPrice = voucher.RetailPrice ?? 0M;
+                    await CreateNewUserVoucher();
+                }
+            }
+            else
+            {
+                navManager.NavigateTo("/", true);
+            }
         }
     }
 }
