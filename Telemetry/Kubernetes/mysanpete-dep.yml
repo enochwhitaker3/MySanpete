@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: codebras
+  name: my-sanpete-deployment
+  labels:
+    app: my-sanpete
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-sanpete
+  template:
+    metadata:
+      labels:
+        app: my-sanpete
+    spec:
+      containers:
+      - name: my-sanpete
+        image: 144.17.92.12:5000/codebras/mysanpete:1
+        ports:
+        - containerPort: 8080
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Development
+        - name: MySanpeteDb
+          value: user id = postgres; password=postgres; server=my-sanpete-database-service; database= postgres; port= 5432

@@ -71,7 +71,9 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             EndDate = new DateTime(2024, 3, 12).ToUniversalTime(),
             StartDate = new DateTime(2024, 3, 10).ToUniversalTime(),
             Name = "Test Bundle",
-            Vouchers = [voucher, voucher2]
+            Vouchers = [voucher, voucher2],
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         var bundle = await bundleService.AddNewBundle(request);
@@ -137,6 +139,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             StartDate = new DateTime(2024, 3, 10).ToUniversalTime(),
             Name = "Test Bundle",
             Vouchers = [voucher, voucher2],
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         await bundleService.Invoking(vs => vs.AddNewBundle(request))
@@ -200,6 +204,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             EndDate = new DateTime(2024, 3, 12).ToUniversalTime(),
             StartDate = new DateTime(2024, 3, 10).ToUniversalTime(),
             Vouchers = [voucher, voucher2],
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         await bundleService.Invoking(vs => vs.AddNewBundle(request))
@@ -263,6 +269,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             EndDate = new DateTime(2024, 3, 12).ToUniversalTime(),
             StartDate = new DateTime(2024, 3, 10).ToUniversalTime(),
             Name = "Test Bundle",
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         await bundleService.Invoking(vs => vs.AddNewBundle(request))
@@ -326,6 +334,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             StartDate = new DateTime(2024, 3, 10).ToUniversalTime(),
             Name = "Test Bundle",
             Vouchers = [voucher, voucher2],
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         await bundleService.Invoking(vs => vs.AddNewBundle(request))
@@ -390,6 +400,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             StartDate = new DateTime(2024, 3, 10).ToUniversalTime(),
             Name = "Test Bundle",
             Vouchers = [voucher, voucher2],
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP",
         };
 
         var bundle = await bundleService.AddNewBundle(request);
@@ -467,6 +479,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             StartDate = new DateTime(2024, 3, 10).ToUniversalTime(),
             Name = "Test Bundle",
             Vouchers = [voucher, voucher2],
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         var bundle = await bundleService.AddNewBundle(request);
@@ -562,6 +576,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             StartDate = new DateTime(2024, 3, 10).ToUniversalTime(),
             Name = "Test Bundle",
             Vouchers = [voucher, voucher2],
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         var bundle = await bundleService.AddNewBundle(request);
@@ -653,6 +669,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             StartDate = new DateTime(2024, 3, 10).ToUniversalTime(),
             Name = "Test Bundle",
             Vouchers = [voucher, voucher2],
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         var bundle = await bundleService.AddNewBundle(request);
@@ -742,6 +760,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             StartDate = new DateTime(2024, 3, 10).ToUniversalTime(),
             Name = "Test Bundle",
             Vouchers = [voucher, voucher2],
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         var bundle = await bundleService.AddNewBundle(request);
@@ -831,6 +851,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             StartDate = new DateTime(2024, 3, 10).ToUniversalTime(),
             Name = "Test Bundle",
             Vouchers = [voucher, voucher2],
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         var bundle = await bundleService.AddNewBundle(request);
@@ -920,6 +942,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             StartDate = new DateTime(2024, 3, 10).ToUniversalTime(),
             Name = "Test Bundle",
             Vouchers = [voucher, voucher2],
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         var bundle = await bundleService.AddNewBundle(request);
@@ -1009,6 +1033,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             StartDate = new DateTime(2024, 3, 10).ToUniversalTime(),
             Name = "Test Bundle",
             Vouchers = [voucher, voucher2],
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         var bundle = await bundleService.AddNewBundle(request);
@@ -1097,6 +1123,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             StartDate = new DateTime(2024, 3, 10).ToUniversalTime(),
             Name = "Test Bundle",
             Vouchers = [voucher, voucher2],
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         var bundle = await bundleService.AddNewBundle(request);
@@ -1186,6 +1214,8 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             StartDate = new DateTime(2024, 3, 10).ToUniversalTime(),
             Name = "Test Bundle",
             Vouchers = [voucher, voucher2],
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
 
         var bundle = await bundleService.AddNewBundle(request);

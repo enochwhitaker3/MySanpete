@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: codebras
+  name: my-sanpete-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: mysanpetekube.duckdns.org
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: my-sanpete-service
+            port:
+              number: 80
