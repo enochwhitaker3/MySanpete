@@ -78,12 +78,12 @@
     <tr>
       <td>Use of a reverse proxy</td>
       <td>04/13/2024</td>
-      <td></td>
+      <td>X</td>
     </tr>
     <tr>
       <td>Alerts sent to developers when build fails</td>
       <td>04/13/2024</td>
-      <td></td>
+      <td>X</td>
     </tr>
     <tr>
       <td>use of ssl and dns entry for production application</td>
@@ -103,7 +103,7 @@
     <tr>
       <td>feature flags</td>
       <td>04/13/2024</td>
-      <td></td>
+      <td>X</td>
     </tr>
     <tr>
       <td>Need kubernetes</td>

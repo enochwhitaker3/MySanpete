@@ -45,7 +45,7 @@ h2 {
 }
 
 .title {
-    font-size: 60px;
+    font-size: calc(4em - 0.1vw);
     font-family: Casual;
 }
 
@@ -56,10 +56,11 @@ h2 {
 }
 
 .card-title {
-    font-size: 1.5vw;
+    font-size: calc(2em - 0.1vw);
 }
 .card-text {
-    font-size: .75vw;
+    font-size: calc(.75em - 0.1vw);
+    color: #828181
 }
 
 .undertitle {
@@ -93,13 +94,6 @@ h2 {
         transform: scale(1.2); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
     }
 
-
-@media (max-width: 750px) {
-    .content {
-        width: 450px;
-        margin-left: 25px;
-    }
-}
 
 
 .button {
@@ -181,3 +175,73 @@ h2 {
     .button:hover:before {
         bottom: calc(var(--height) + var(--gap-between-tooltip-to-button));
     }
+
+
+@media (max-width: 1250px) {
+    .card-title {
+        font-size: calc(2em - 0.75vw);
+    }
+}
+
+@media (max-width: 1040px) {
+    .card-title {
+        font-size: calc(2em - 1.15vw);
+    }
+}
+
+@media (max-width: 900px) {
+    .card-title {
+        font-size: calc(2em - 1.75vw);
+    }
+}
+
+@media (max-width: 767px) {
+    .blogo{
+        max-width:150px;
+    }
+    .card-title {
+        font-size: calc(2em - 0.1vw);
+    }
+
+    .card-text {
+        font-size: calc(.75em - 0.1vw);
+        color: #828181
+    }
+}
+
+@media (max-width: 611px) {
+    .card-title {
+        font-size: calc(1.75em - 0.5vw);
+    }
+
+    .card-text {
+        font-size: calc(.75em - 0.5vw);
+        color: #828181
+    }
+}
+
+@media (max-width: 495px) {
+    .card-title {
+        font-size: calc(1.25em - 0.5vw);
+    }
+
+    .card-text {
+        font-size: calc(.75em - 0.2vw);
+        color: #828181
+    }
+}
+
+@media (max-width: 379px) {
+    .title {
+        font-size: calc(3em - 1vw);
+    }
+    .card-title {
+        font-size: calc(1em - 0.5vw);
+    }
+
+    .card-text {
+        font-size: calc(1em - 0.5vw);
+        color: #828181
+    }
+}
+
