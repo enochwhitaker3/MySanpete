@@ -82,6 +82,8 @@ public class GetAllBundlesTests : IClassFixture<MySanpeteFactory>
             StartDate = new DateTime(2024, 3, 10).ToUniversalTime(),
             Name = "Test Bundle 1",
             Vouchers = [voucher, voucher2],
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP",
         };
 
         AddBundleRequest request2 = new AddBundleRequest()
@@ -90,6 +92,8 @@ public class GetAllBundlesTests : IClassFixture<MySanpeteFactory>
             StartDate = new DateTime(2024, 3, 10).ToUniversalTime(),
             Name = "Test Bundle 2",
             Vouchers = [voucher, voucher3],
+            StripeId = "prod_Pp6quxf4kRDS4c",
+            PriceId = "price_1OzScbDb4weiXajfCMzzapIP",
         };
 
         var bundle1 = await bundleService.AddNewBundle(request1);

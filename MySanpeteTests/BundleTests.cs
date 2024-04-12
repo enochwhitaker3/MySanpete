@@ -71,7 +71,7 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
             EndDate = new DateTime(2024, 3, 12).ToUniversalTime(),
             StartDate = new DateTime(2024, 3, 10).ToUniversalTime(),
             Name = "Test Bundle",
-            Vouchers = [voucher, voucher2]
+            Vouchers = [voucher, voucher2],
             StripeId = "prod_Pp6quxf4kRDS4c",
             PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
@@ -138,7 +138,7 @@ public class BundleTests : IClassFixture<MySanpeteFactory>
         {
             StartDate = new DateTime(2024, 3, 10).ToUniversalTime(),
             Name = "Test Bundle",
-            Vouchers = [voucher, voucher2]
+            Vouchers = [voucher, voucher2],
             StripeId = "prod_Pp6quxf4kRDS4c",
             PriceId = "price_1OzScbDb4weiXajfCMzzapIP"
         };
