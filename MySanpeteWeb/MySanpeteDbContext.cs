@@ -133,7 +133,9 @@ public partial class MySanpeteDbContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.BundleName).HasColumnName("bundle_name");
             entity.Property(e => e.EndDate).HasColumnName("end_date");
+            entity.Property(e => e.PriceId).HasColumnName("price_id");
             entity.Property(e => e.StartDate).HasColumnName("start_date");
+            entity.Property(e => e.StripeId).HasColumnName("stripe_id");
         });
 
         modelBuilder.Entity<BundleVoucher>(entity =>

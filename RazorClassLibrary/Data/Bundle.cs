@@ -13,5 +13,9 @@ public partial class Bundle
 
     public DateTime? EndDate { get; set; }
 
+    public string? StripeId { get; set; }
+
+    public string? PriceId { get; set; }
+
     public virtual ICollection<BundleVoucher> BundleVouchers { get; set; } = new List<BundleVoucher>();
 }
