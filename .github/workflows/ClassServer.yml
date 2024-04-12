@@ -24,16 +24,18 @@ jobs:
         run: |
             dotnet test
         working-directory: ./../../../../MySanpete/MySanpeteTests
-    #   - name: "Build and add tag"
-    #     run: |
-    #         docker build -t 144.17.92.12:5000/ethan/blazor-web:1 .
+      - name: "Build and add tag"
+        run: |
+            docker build -t 144.17.92.12:5000/codebras/mysanpete:1 .
 
-    #         docker push 144.17.92.12:5000/ethan/blazor-web:1
+            docker push 144.17.92.12:5000/codebras/mysanpete:1
             
-    #         # kubectl -n ethan create configmap blazor-web-postgres-init --from-file=init.sql
-
-    #         kubectl apply -f EthansDockerFiles/kube/
-    #     working-directory: ./../../../../ticketsrus-dusty-mustafa-ethan/MobileApp/
+            kubectl -n ethan delete configmap my-sanpete-postgres-init || true
+            kubectl -n ethan create configmap my-sanpete-postgres-init --from-file=20240328.06.25.21.sql
+            
+            cd ./Telemetry
+            kubectl apply -f Kubernetes/
+        working-directory: ./../../../../MySanpete
       - name: "Not making an env file"
         run: | 
           echo "Domain=${{secrets.DOMAIN}} 

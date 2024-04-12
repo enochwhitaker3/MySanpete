@@ -1,4 +1,7 @@
-﻿<nav role="navigation">
+﻿@using RazorClassLibrary.Services
+@inject IUserState userState
+
+<nav role="navigation">
     <div id="menuToggle">
         <input type="checkbox" />
         <span></span>
@@ -7,8 +10,23 @@
         <ul id="menu">
             <li><a href="#">Home</a></li>
             <li><a href="#">My Events</a></li>
-            <li><a href="#">My Vouchers</a></li>
-            <li><a href="#">Account</a></li>
+            <li><a href="/my-vouchers">My Vouchers</a></li>
+            <li><a href="/blogs">Blogs</a></li>
+            <li><a href="/businesses"></a></li>
+            <AuthorizeView>
+                <Authorized>
+                    <li>
+                        <a @onclick="userState.Logout">Log out</a>
+                    </li>
+
+                </Authorized>
+                <NotAuthorized>
+
+                    <li>
+                        <a @onclick="userState.Login">Log in</a>
+                    </li>
+                </NotAuthorized>
+            </AuthorizeView>
         </ul>
     </div>
 </nav>
