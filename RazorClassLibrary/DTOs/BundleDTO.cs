@@ -14,5 +14,7 @@ public class BundleDTO
     public decimal? FinalPrice { get; set; }
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
+    public string? StripeId { get; set; }
+    public string? PriceId { get; set; }
     public List<VoucherDTO>? Vouchers { get; set; }
 }

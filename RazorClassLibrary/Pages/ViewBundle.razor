@@ -1,0 +1,17 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Stripe
+
+@inject IUserVoucherService userVoucherService
+@inject IUserService userService
+@inject IStripeService stripeService
+@inject NavigationManager navManager
+
+@attribute [Authorize]
+
+@code {
+    [Parameter]
+    public int bundleId { get; set; }
+
+
+}

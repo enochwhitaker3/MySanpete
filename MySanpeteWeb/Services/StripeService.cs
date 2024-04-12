@@ -59,15 +59,15 @@ public class StripeService : IStripeService
 
         long numberOfCents = Convert.ToInt32(request.RetailPrice * 100);
 
-        var options = new ProductCreateOptions 
-        { 
-            Name = request.PromoName, 
-            Description = request.PromoDescription, 
-            DefaultPriceData = new() 
-            { 
-                Currency = "usd", 
+        var options = new ProductCreateOptions
+        {
+            Name = request.PromoName,
+            Description = request.PromoDescription,
+            DefaultPriceData = new()
+            {
+                Currency = "usd",
                 UnitAmount = numberOfCents
-            }, 
+            },
         };
         var service = new ProductService();
         var result = service.Create(options);
@@ -128,5 +128,30 @@ public class StripeService : IStripeService
         {
             throw new Exception($"Refund has status of {refund.Status}");
         }
+    }
+
+    public string[] AddBundleToStripe(AddBundleRequest bundle)
+    {
+        string[] stripeIds = new string[2];
+
+        long numberOfCents = Convert.ToInt32(bundle!.Vouchers!.Select(x => x.RetailPrice).Sum() * 100);
+
+        var options = new ProductCreateOptions
+        {
+            Name = bundle.Name,
+            Description = bundle!.Vouchers!.Select(x => x.PromoDescription).FirstOrDefault(),
+            DefaultPriceData = new()
+            {
+                Currency = "usd",
+                UnitAmount = numberOfCents
+            },
+        };
+        var service = new ProductService();
+        var result = service.Create(options);
+
+        stripeIds[0] = result.Id;
+        stripeIds[1] = result.DefaultPriceId;
+
+        return stripeIds;
     }
 }

@@ -27,11 +27,23 @@ public class WebBundleService : IBundleService
             throw new Exception("Insufficient Request");
         }
 
+        if (request.PriceId is null)
+        {
+            throw new Exception("The bundle needs a price id from stripe");
+        }
+
+        if (request.StripeId is null)
+        {
+            throw new Exception("The bundle needs a stripe id from stripe");
+        }
+
         var newBundle = new Bundle()
         {
             BundleName = request.Name,
             EndDate = request.EndDate,
             StartDate = request.StartDate,
+            PriceId = request.PriceId,
+            StripeId = request.StripeId,
         };
 
         await context.Bundles.AddAsync(newBundle);
@@ -50,12 +62,14 @@ public class WebBundleService : IBundleService
         {
             context.BundleVouchers.Add(newBundleVoucher);
         }
+
         await context.SaveChangesAsync();
         var bundle = await context.Bundles
             .Include(x => x.BundleVouchers)
                 .ThenInclude(x => x.Voucher)
                     .ThenInclude(x => x!.Business)
             .FirstOrDefaultAsync(x => x.Id == newBundle.Id);
+
         return bundle!.ToDto();
     }
 
@@ -125,8 +139,8 @@ public class WebBundleService : IBundleService
         //Get the bundle
         var bundleToPurchase = await context.Bundles
                                    .Include(b => b.BundleVouchers)
-                                    .ThenInclude(b => b.Voucher)
-                                     .ThenInclude(b => b!.UserVouchers)
+                                        .ThenInclude(b => b.Voucher)
+                                            .ThenInclude(b => b!.UserVouchers)
                                    .FirstOrDefaultAsync(b => b.Id == request.BundleId);
 
         if (bundleToPurchase is null)
@@ -194,6 +208,8 @@ public class WebBundleService : IBundleService
             StartDate = bundle.StartDate,
             BundleName = bundle.Name,
             Id = bundle.Id,
+            PriceId = bundle.PriceId,
+            StripeId = bundle.StripeId
         };
 
         context.Bundles.Update(buc);
