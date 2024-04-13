@@ -94,6 +94,8 @@ public static class DtoConverter
             StartDate = bundle.StartDate,
             FinalPrice = bundle.BundleVouchers.Sum(x => x.DiscountPrice),
             Vouchers = bundle.BundleVouchers.Select(x => x.Voucher!.ToDto()).ToList(),
+            StripeId = bundle.StripeId,
+            PriceId = bundle.PriceId
         };
     }
 

@@ -1,11 +1,59 @@
-﻿@layout MySanpeteMobile.Components.Layout.MainLayout
+﻿@page "/"
 
-@page "/"
+@layout MySanpeteMobile.Components.Layout.MainLayout
+@inject IJSRuntime JSRuntime
+@inject IOccasionService service
+
 @using System.Security.Claims
+@using RazorClassLibrary.Data
+@using RazorClassLibrary.Services
+@using System.Text.Json
 
-@* <RazorClassLibrary.Pages.Home></RazorClassLibrary.Pages.Home> *@
+<div id="mapDiv" style="width:100vw;height:90vh;"></div>
 
-<div style="position: absolute; top: 700px; left: 40%;">
-    <a class="btn btn-primary" href="/user-vouchers">My Vouchers</a><br />
-    <a class="btn btn-primary" href="/events">Events</a><br />
+
+<div class="container-fluid scroll-container">
+    <div class="row flex-row flex-nowrap">
+        @foreach (var o in AllOccasions)
+        {
+            <div class="col">
+                <div class="card card-block h-100 p-5" @onclick="() => focusMap(o.YCoordinate, o.XCoordinate)">
+                    <h1>@o.Title</h1>
+                    <h2>@o.Business</h2>
+                    <p class="card-subtitle mb-2 text-muted">@o.EndDate</p>
+                    <p>@o.Description</p>
+                </div>
+            </div>
+        }
+      
+    </div>
 </div>
+
+@code {
+    [Parameter]
+    public string? MapsKey { get; set; } = "Ku8vCROlGuzvfRtDnZP_8IHpn_hyAZ56EQX1l0R9lJc";
+
+    public List<Occasion> AllOccasions { get; set; } = new();
+
+    public string? jsonOccasions { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        AllOccasions = await service.GetAllOcassions();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        AllOccasions = await service.GetAllOcassions();
+        jsonOccasions = JsonSerializer.Serialize(AllOccasions);
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("initializeMap", MapsKey, jsonOccasions);
+        }
+    }
+
+    public async Task focusMap(decimal? yCoord, decimal? xCoord)
+    {
+        await JSRuntime.InvokeVoidAsync("focusMap", yCoord, xCoord);
+    }
+}

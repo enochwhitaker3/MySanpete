@@ -11,41 +11,79 @@ namespace MySanpeteWeb.Services;
 
 public class StripeService : IStripeService
 {
-    private readonly NavigationManager NavMan;
+    private readonly NavigationManager navManager;
     public StripeService(NavigationManager NavMan)
     {
-        this.NavMan = NavMan;
+        this.navManager = NavMan;
     }
 
     public StripeService()
     {
-        this.NavMan = null!;
+        this.navManager = null!;
     }
-    public async Task Checkout(AddVoucherRequest request)
+    public async Task Checkout(PurchaseVoucherRequest request)
     {
         var domain = "https://localhost:7059"; // TODO change when we post to azure
+        var metadata = new Dictionary<string, string>();
+        metadata.Add("VoucherId", request.VoucherId.ToString());
+        metadata.Add("UserId", request!.UserId!);
         var options = new SessionCreateOptions
         {
             LineItems = new List<SessionLineItemOptions>
-        {
-            new()
             {
-                // Provide the exact Price ID (for example, price_1234) of the product you want to sell
-                //Price = "price_1OyLIuDb4weiXajfjif0Porn",
-                Price = request.PriceId,
-                Quantity = 1,
+                new()
+                {
+                    Price = request.PriceId,
+                    Quantity = 1,
+                },
             },
-        },
             Mode = "payment",
             SuccessUrl = domain + "/OrderComplete",
-            CancelUrl = domain + "/OrderAbandoned"
+            CancelUrl = domain + "/OrderAbandoned",
+            Metadata = metadata,
+            ExpiresAt = DateTime.Now.AddMinutes(31)
         };
         try
         {
 
             var service = new SessionService();
             var session = await service.CreateAsync(options);
-            NavMan.NavigateTo(session.Url);
+            navManager.NavigateTo(session.Url);
+        }
+        catch (Exception)
+        {
+
+        }
+    }
+
+    public async Task BundleCheckout(PurchaseBundleRequest request)
+    {
+        var domain = "https://localhost:7059"; // TODO change when we post to azure
+        var metadata = new Dictionary<string, string>();
+        metadata.Add("UserId", request.UserId!);
+        metadata.Add("BundleId", request.BundleId!.ToString());
+
+        var options = new SessionCreateOptions
+        {
+            LineItems = new List<SessionLineItemOptions>
+        {
+            new()
+            {
+                Price = request.PriceId,
+                Quantity = 1,
+            },
+        },
+            Mode = "payment",
+            SuccessUrl = domain + "/OrderComplete?IsBundle=true",
+            CancelUrl = domain + "/OrderAbandoned",
+            Metadata = metadata,
+            ExpiresAt = DateTime.Now.AddMinutes(31)
+        };
+        try
+        {
+            var service = new SessionService();
+            var session = await service.CreateAsync(options);
+            navManager.NavigateTo(session.Url, true);
         }
         catch (Exception)
         {
@@ -59,15 +97,15 @@ public class StripeService : IStripeService
 
         long numberOfCents = Convert.ToInt32(request.RetailPrice * 100);
 
-        var options = new ProductCreateOptions 
-        { 
-            Name = request.PromoName, 
-            Description = request.PromoDescription, 
-            DefaultPriceData = new() 
-            { 
-                Currency = "usd", 
+        var options = new ProductCreateOptions
+        {
+            Name = request.PromoName,
+            Description = request.PromoDescription,
+            DefaultPriceData = new()
+            {
+                Currency = "usd",
                 UnitAmount = numberOfCents
-            }, 
+            },
         };
         var service = new ProductService();
         var result = service.Create(options);
@@ -128,5 +166,31 @@ public class StripeService : IStripeService
         {
             throw new Exception($"Refund has status of {refund.Status}");
         }
+    }
+
+    public string[] AddBundleToStripe(AddBundleRequest bundle)
+    {
+        string[] stripeIds = new string[2];
+
+        long numberOfCents = Convert.ToInt32(bundle!.Vouchers!.Select(x => x.RetailPrice).Sum() * 100);
+
+        var options = new ProductCreateOptions
+        {
+            Name = bundle.Name,
+            Description = bundle!.Vouchers!.Select(x => x.PromoDescription).FirstOrDefault(),
+            DefaultPriceData = new()
+            {
+                Currency = "usd",
+                UnitAmount = numberOfCents
+            },
+            
+        };
+        var service = new ProductService();
+        var result = service.Create(options);
+
+        stripeIds[0] = result.Id;
+        stripeIds[1] = result.DefaultPriceId;
+
+        return stripeIds;
     }
 }

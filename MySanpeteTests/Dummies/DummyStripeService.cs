@@ -11,12 +11,22 @@ namespace MySanpeteTests.Dummies
 {
     internal class DummyStripeService : IStripeService
     {
+        public string[] AddBundleToStripe(AddBundleRequest bundle)
+        {
+            throw new NotImplementedException();
+        }
+
         public string[] AddProductToStripe(AddVoucherRequest request)
         {
             throw new NotImplementedException();
         }
 
-        public Task Checkout(AddVoucherRequest request)
+        public Task BundleCheckout(PurchaseBundleRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task Checkout(PurchaseVoucherRequest request)
         {
             throw new NotImplementedException();
         }

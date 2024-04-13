@@ -11,8 +11,10 @@ namespace RazorClassLibrary.Services;
 
 public interface IStripeService
 {
-    public Task Checkout(AddVoucherRequest request);
+    public Task Checkout(PurchaseVoucherRequest request);
+    public Task BundleCheckout(PurchaseBundleRequest request);
     public string[] AddProductToStripe(AddVoucherRequest request);
+    public string[] AddBundleToStripe(AddBundleRequest bundle);
     public Task<string> CreateRefund(UserVoucherDTO userVoucher);
     public bool ValidateStripeId(string id);
 }

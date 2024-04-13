@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace RazorClassLibrary.Requests;
 
-public class PurchaseBundleRequest
+public class PostPurchaseBundleRequest
 {
     public int BundleId { get; set; }
-    public string? UserId { get; set; }
-    public string? PriceId { get; set; }    
+    public Guid UserId { get; set; }
+    public string? ChargeId { get; set; }
 }

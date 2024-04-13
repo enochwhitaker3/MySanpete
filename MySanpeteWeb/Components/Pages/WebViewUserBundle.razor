@@ -1,0 +1,9 @@
+﻿@page "/view-user-bundle"
+
+<RazorClassLibrary.Pages.ViewUserBundle ChargeId="@Id"></RazorClassLibrary.Pages.ViewUserBundle>
+
+@code
+{
+    [SupplyParameterFromQuery]
+    public string? Id { get; set; }
+}

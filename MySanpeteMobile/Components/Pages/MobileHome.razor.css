@@ -1,0 +1,21 @@
+.scroll-container {
+    position: absolute;
+    bottom: 20px;
+    overflow-x: scroll;
+    padding: 20px;
+}
+
+.card {
+    display: block;
+    width: 300px;
+    box-shadow: 3px 3px 10px #bfbfbf;
+    background-color: white;
+}
+
+
+    .card img {
+        height: 86px;
+        object-fit: cover;
+        object-position: center center;
+    }
+

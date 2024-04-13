@@ -25,7 +25,7 @@ public class UserController : Controller
         return result;
     }
 
-    [HttpGet("getauthuser/{userId}")]
+    [HttpGet("getauthuser/{authId}")]
     public async Task<UserDTO?> GetAuthUser(string authId)
     {
         var result = await userService.GetAuthUser(authId);

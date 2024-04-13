@@ -16,6 +16,7 @@ using DotNetEnv;
 using DotNetEnv.Configuration;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using MySanpeteWeb.Data;
 
 
 
@@ -94,6 +95,8 @@ builder.Services.AddControllersWithViews();
 builder.Configuration
 .AddDotNetEnv(".env", LoadOptions.TraversePath())
 .AddEnvironmentVariables();
+
+FeatureFlag.IsAvailable = builder.Configuration.GetValue<string>(FeatureFlag.FeatureFlagName) == "true";
 
 var app = builder.Build();
 

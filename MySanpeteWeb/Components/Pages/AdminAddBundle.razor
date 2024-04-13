@@ -8,6 +8,7 @@
 
 @inject IBundleService bundleService
 @inject IVoucherService voucherService
+@inject IStripeService stripeService
 @inject NavigationManager navManager;
 @attribute [Authorize(Roles = "Admin")]
 
@@ -144,7 +145,7 @@
                 throw new Exception("You need to select 2 or more voucher for a bundle");
             }
 
-            AddBundleRequest request = new AddBundleRequest()
+            AddBundleRequest newBundle = new AddBundleRequest()
                 {
                     EndDate = EndDate.ToUniversalTime(),
                     StartDate = StartDate.ToUniversalTime(),
@@ -152,10 +153,36 @@
                     Vouchers = SelectedVouchers
                 };
 
-            await bundleService.AddNewBundle(request);
-            errorMessage = "";
-            Success = "true";
-            ReloadPage();
+            string[] returnedStipeId = stripeService.AddBundleToStripe(newBundle);
+
+            newBundle = new AddBundleRequest()
+                {
+                    EndDate = EndDate.ToUniversalTime(),
+                    StartDate = StartDate.ToUniversalTime(),
+                    Name = Name,
+                    Vouchers = SelectedVouchers,
+                    StripeId = returnedStipeId[0],
+                    PriceId = returnedStipeId[1]
+                };
+
+            try
+            {
+                if (newBundle is not null)
+                {
+                    await bundleService.AddNewBundle(newBundle);
+                    errorMessage = "";
+                    Success = "true";
+                    ReloadPage();
+                }
+                else
+                {
+                    throw new Exception("Whoops the bundle was null and couldn't be added");
+                }
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+            }
         }
         catch (Exception ex)
         {

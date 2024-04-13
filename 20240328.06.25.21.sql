@@ -125,7 +125,9 @@ CREATE TABLE mysanpete.bundle (
     id integer NOT NULL,
     bundle_name text,
     start_date timestamp with time zone,
-    end_date timestamp with time zone
+    end_date timestamp with time zone,
+    price_id text,
+    stripe_id text
 );
 
 
