@@ -1,6 +1,12 @@
 ﻿@layout MySanpeteWeb.Components.Layout.AlternateLayout
 @page "/events"
+@using RazorClassLibrary.Services
+@using Microsoft.JSInterop
+@using System.Collections.Generic;
+@using System.Text.Json;
+@inject IJSRuntime JSRuntime
 @inject IConfiguration config
+@inject IOccasionService occasionService
 
 
 <div class="main-section">
@@ -10,21 +16,19 @@
         </div>
     </div>
     <img class="full-screen-image" src="Images/event.jpg" alt="Image">
-    <div class="event-container d-flex justify-content-center align-items-center" style="max-width: 100vw; margin-left: auto; margin-right: auto;  background-color:#fcfcf8; justify-content: center; align-items:center;">
+    <div class="event-container row" style="max-width: 100vw; margin-left: auto; margin-right: auto;  background-color:#fcfcf8; justify-content: center; align-items:center;">
 
-        <div class="map-vr-container justify-content-center align-items-center">
+        <div class="map-vr-container mt-10 col-3 d-flex justify-content-center align-items-center ">
             @if (MapsKey is not null)
             {
-                <div class="map-container col-3 shadow" style=" padding:0;">
-                    <RazorClassLibrary.Pages.Map MapsKey="@MapsKey" />
+                <div class="map-container p-0 col shadow">
+                    <div id="mapDiv" class="mapp"></div>
                 </div>
-                
             }
+            @*             <div class="vertical-rule vr"></div> *@
         </div>
-        <div class="col-3 d-flex justify-content-center align-items-center" style="height:50vh; max-width:7vw; margin-left:11vw;">
-            <div class="vertical-rule vr"></div>
-        </div>
-        <div class="event-container d-grid col mt-10 pb-15 justify-content-center" style="overflow-y:scroll; max-height: 50vh;">
+
+        <div class="event-container d-grid col-lg-6 mt-10 mb-15 justify-content-center" style="overflow-y:scroll; max-height: 50vh;">
             <div class="event-card row shadow mb-10">
                 <div class="event-date col-3 d-flex align-items-center" style="background-image: url(Images/green_wave.svg); background-repeat: repeat-y;">
                     <div class="event-date">
@@ -47,36 +51,36 @@
                 <div class="event-date col-3 d-flex align-items-center" style="background-image: url(Images/green_wave.svg); background-repeat: repeat-y;">
                     <div class="event-date">
                         <h2>MAY</h2>
-                        <h2>24</h2>
+                        <h2>25</h2>
                     </div>
                 </div>
                 <div class="event-details col-6 d-grid align-content-center" style="color: black">
-                    <h2>Scandinavian Days</h2>
-                    <h4>12PM - 8:30PM</h4>
+                    <h2>Nordic Fun Run</h2>
+                    <h4>6:30AM</h4>
                     <h4>
-                        Come and join for Scandinavia Festivities!
+                        Join us for our Festival Races! All ages are welcome!
                     </h4>
                 </div>
                 <div class="col-3 d-flex" style="padding-right: 0 !important; max-height:25vh;">
-                    <img src="https://scandinavianfestival.org/wp-content/uploads/2023/03/p3.png" style="width: 100%; object-fit: cover; object-position: center;" />
+                    <img src="https://scandinavianfestival.org/wp-content/uploads/2023/03/race.png" style="width: 100%; object-fit: cover;" />
                 </div>
             </div>
             <div class="event-card row shadow mb-10">
                 <div class="event-date col-3 d-flex align-items-center" style="background-image: url(Images/green_wave.svg); background-repeat: repeat-y;">
                     <div class="event-date">
                         <h2>MAY</h2>
-                        <h2>24</h2>
+                        <h2>25</h2>
                     </div>
                 </div>
                 <div class="event-details col-6 d-grid align-content-center" style="color: black">
-                    <h2>Scandinavian Days</h2>
-                    <h4>12PM - 8:30PM</h4>
+                    <h2>Axe Throwing</h2>
+                    <h4>10AM - 6PM</h4>
                     <h4>
-                        Come and join for Scandinavia Festivities!
+                        Axe Throwing and Viking Games open to the public
                     </h4>
                 </div>
                 <div class="col-3 d-flex" style="padding-right: 0 !important; max-height:25vh;">
-                    <img src="https://scandinavianfestival.org/wp-content/uploads/2023/03/p3.png" style="width: 100%; object-fit: cover; object-position: center;" />
+                    <img src="https://scandinavianfestival.org/wp-content/uploads/2022/11/cropped-slide6.png" style="width: 100%; object-fit: cover; object-position: center;" />
                 </div>
             </div>
             <div class="event-card row shadow mb-10">
@@ -107,11 +111,28 @@
 
 
 @code {
-    private string? MapsKey;
+    public string? MapsKey { get; set; }
+    public string? jsonOccasions { get; set; }
 
     protected override void OnInitialized()
     {
         MapsKey = config.GetValue<string>("MapKey") ?? throw new Exception("Map key is not in the secrets");
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        var allOccasion = await occasionService.GetAllOcassions();
+        jsonOccasions = JsonSerializer.Serialize(allOccasion);
+
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("initializeMap", MapsKey, jsonOccasions);
+        }
+    }
+
+
 }
+
+
+
+

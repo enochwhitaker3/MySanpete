@@ -22,10 +22,4 @@
 	<PackageReference Include="Stripe.net" Version="43.20.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Update="Pages\Map.razor">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    </Content>
-  </ItemGroup>
-
 </Project>
