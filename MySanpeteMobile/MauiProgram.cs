@@ -35,6 +35,7 @@ namespace MySanpeteMobile
             builder.Services.AddSingleton<IBundleService, MobileBundleService>();
             builder.Services.AddScoped<IUserVoucherService, MobileUserVoucherService>();
             builder.Services.AddSingleton<IUserOccasionService, MobileUserOccasionService>();
+            builder.Services.AddSingleton<IStripeService, MobileStripeService>();
 
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();

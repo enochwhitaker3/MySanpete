@@ -54,7 +54,7 @@ nav {
 #menuToggle {
     display: flex;
     flex-direction: column;
-    position: relative;
+    position: absolute;
     top: 25px;
     left: 25px;
     z-index: 1;

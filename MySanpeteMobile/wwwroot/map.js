@@ -6,8 +6,8 @@ function initializeMap(mapsKey, jsonOccasions) {
     // Create the map instance
     map = new atlas.Map("mapDiv", {
         view: "Auto",
-        center: [-122.129, 47.640],
-        zoom: 3
+        center: [-111.584933, 39.359856],
+        zoom: 13
     });
 
     // Get user's location
@@ -27,7 +27,7 @@ function initializeMap(mapsKey, jsonOccasions) {
             text: 'O',
             position: [item.YCoordinate, item.XCoordinate],
                 popup: new atlas.Popup({
-                content: `<div style="padding:10px">${item.Description}</div>`,
+                content: `<div style="padding:10px">${item.Title}</div>`,
                 pixelOffset: [0, -30]
             })
         });
@@ -41,5 +41,12 @@ function initializeMap(mapsKey, jsonOccasions) {
     //Add a click event to toggle the popup.
 
 
+}
+
+function focusMap(YCoordinate, XCoordinate) {
+    map.setCamera({
+        center: [YCoordinate, XCoordinate],
+        zoom: 17
+    });
 }
 
