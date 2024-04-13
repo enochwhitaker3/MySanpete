@@ -7,7 +7,9 @@ function initializeMap(mapsKey, jsonOccasions) {
     map = new atlas.Map("mapDiv", {
         view: "Auto",
         center: [-122.129, 47.640],
-        zoom: 3
+        zoom: 3,
+        showFeedbackLink: false,
+        showLogo: false
     });
 
     // Get user's location
@@ -19,6 +21,9 @@ function initializeMap(mapsKey, jsonOccasions) {
         });
     });
 
+
+
+
     var deserializedData = JSON.parse(jsonOccasions);
 
     deserializedData.forEach((item) => {
@@ -26,7 +31,7 @@ function initializeMap(mapsKey, jsonOccasions) {
             color: 'DodgerBlue',
             text: 'O',
             position: [item.YCoordinate, item.XCoordinate],
-                popup: new atlas.Popup({
+            popup: new atlas.Popup({
                 content: `<div style="padding:10px">${item.Description}</div>`,
                 pixelOffset: [0, -30]
             })

@@ -20,6 +20,10 @@
         <input id="title" class="form-control" @bind="Address" required />
     </div>
     <div class="form-group mt-5">
+        <label for="email">Email</label>
+        <input id="email" class="form-control" type="email" placeholder="email@email.com" @bind="Email" required />
+    </div>
+    <div class="form-group mt-5">
         <label for="title">Phone Number (Format like ***-***-****)</label>
         <input id="phone" class="form-control" type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="888-888-8888" @bind="PhoneNum" required />
     </div>
@@ -65,6 +69,7 @@
 
     public string? Name { get; set; } = "Default Name";
     public string? Address { get; set; } = "Default Address";
+    public string? Email { get; set; } = "Deafault Email";
     public byte[]? ImageBytes { get; set; }
     public string? PhoneNum { get; set; }
     public string? WebURL { get; set; } = "Default URL";
@@ -116,6 +121,7 @@
                 {
                     Name = Name,
                     Address = Address,
+                    Email = Email,
                     PhoneNum = PhoneNum,
                     WebURL = WebURL,
                     Logo = ImageBytes
@@ -128,6 +134,7 @@
                 {
                     Name = Name,
                     Address = Address,
+                    Email = Email,
                     PhoneNum = PhoneNum,
                     WebURL = WebURL,
                 };
