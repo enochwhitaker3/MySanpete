@@ -1,8 +1,10 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
+
 @inject IUserVoucherService userVoucherService
 @inject IUserService userService
 @inject IStripeService stripeService
+@inject IUserVoucherService userVoucherService
 
 @attribute [Authorize]
 
@@ -19,36 +21,41 @@
 
 @if (VouchersInBundle.Count() != 0)
 {
+    <div class="container">
+        @if (errorMessage == "")
+        {
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#refundModal">Refund this whole bundle</button>
+        }
+        else
+        {
+            <div class="alert alert-danger">
+                <p>Please fix the error to refund voucher</p>
+                <p>@errorMessage</p>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#refundModal">Refund this whole bundle</button>
+            </div>
+        }
+        @foreach (var voucher in VouchersInBundle)
+        {
+            <hr />
+            <div class="container">
+                <div class="content">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img class="img-fluid rounded-circle" width="300" src="@voucher!.Voucher!.BusinessLogoURL " />
+                        </div>
+                        <div class="col-md-6">
+                            <h2 class="card-title"><strong>@voucher!.Voucher!.PromoName</strong></h2>
+                            <p>Promo Code: @voucher.Promo_Code</p>
+                            <p>@voucher.Voucher.BusinessName</p>
+                            <p>Good Through @voucher.Voucher.StartDate to @voucher.Voucher.EndDate</p>
 
-    @foreach (var voucher in VouchersInBundle)
-    {
-        <div>
-            <div class="card mb-6 shadow" style="border: none;">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title"><strong>@voucher!.Voucher!.PromoName</strong></h5>
-
-                        <p>@voucher.Voucher.BusinessName</p>
-                        <p>Good Through @voucher.Voucher.StartDate to @voucher.Voucher.EndDate</p>
-
-
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    }
-    @if (errorMessage == "")
-    {
-        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#refundModal">Refund</button>
-    }
-    else
-    {
-        <div class="alert alert-danger">
-            <p>Please fix the error to refund voucher</p>
-            <p>@errorMessage</p>
-            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#refundModal">Refund</button>
-        </div>
-    }
+        }
+        <hr/>
+    </div>
 }
 <div class="modal fade" id="refundModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -82,7 +89,6 @@
 
     public string? errorMessage { get; set; } = "";
 
-
     protected async override Task OnInitializedAsync()
     {
         if (AuthStateTask is null)
@@ -94,7 +100,6 @@
         var userId = (await userService.GetAuthUser(authId) ?? new UserDTO()).Id;
         var userVouchers = await userVoucherService.GetAllByUser(userId);
         VouchersInBundle = userVouchers.Where(v => v.Charge_Id == ChargeId).ToList();
-
     }
 
     public async void CreateRefund()
@@ -105,7 +110,7 @@
 
             if (result == "succeeded")
             {
-                foreach(var voucher in VouchersInBundle)
+                foreach (var voucher in VouchersInBundle)
                 {
                     await userVoucherService.DeleteUserVoucher(voucher.Id);
                     errorMessage = "";
