@@ -14,9 +14,7 @@
 
 
 .main-section {
-    position: relative;
     width: 100%;
-    height: 100vh;
     background-color: #fcfcf8;
 }
 
@@ -37,12 +35,14 @@
 }
 
 .title {
-    font-size: 60px;
+    font-size: calc(4em - 0.1vw);
     font-family: Casual;
 }
 
-.map-container {
-    margin-right: 20px;
+
+.mapp {
+    height: 100%;
+    aspect-ratio: 1 / 1;
 }
 
 .map-vr-container {
@@ -50,7 +50,17 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    width: 40vh;
 }
+
+.map-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 40vh;
+}
+
 
 .vertical-rule {
     width: 2px !important;
@@ -149,26 +159,36 @@
     }
 }
 
+.full-page {
+    background-color: #fcfcf8;
+}
+
+.event-card {
+    background-color: #fff;
+    height: 17vh;
+    max-width: 35vw !important;
+}
+
 .event-date {
+    background-image: url(Images/green_wave.svg);
+    background-repeat: repeat-y;
+    color: #fcfcf8;
 }
 
     .event-date h2 {
         font-family: Inter-Bold;
-        font-size: 2.5vw;
+        font-size: 3vw;
         width: fit-content;
         transform-origin: bottom center;
-        color: #fcfcf8;
     }
 
-
 .event-details {
-    color: #3f4a49 !important;
+    color: black;
 }
 
     .event-details h2 {
         font-family: Inter-Bold;
         font-size: 1.5vw;
-
     }
 
     .event-details h4 {
@@ -176,11 +196,23 @@
         font-size: 1rem;
     }
 
-.event-card {
-    background-color: #fff;
-    height: 17vh;
-    max-width: 35vw;
+@media screen and (max-width: 600px) {
+    .event-card {
+        height: 15vh;
+        max-width: 75vw !important;
+    }
+
+    .event-details h2 {
+        font-size: 3.5vw;
+    }
+
+    .event-details h4 {
+        font-size: 0.6rem;
+    }
 }
+
+
+
 
 
 @media screen and (max-width: 600px) {
@@ -196,5 +228,19 @@
 
     .event-details h4 {
         font-size: .6rem;
+    }
+}
+
+@media (max-width: 379px) {
+    .title {
+        font-size: calc(3em - 1vw);
+    }
+
+}
+
+@media( max-height: 915px)
+{
+    .title {
+        font-size: calc(3em - 1vw);
     }
 }
