@@ -1,0 +1,124 @@
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@inject IUserVoucherService userVoucherService
+@inject IUserService userService
+@inject IStripeService stripeService
+
+@attribute [Authorize]
+
+@if (Success)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading">Success</h4>
+        <p>Your refund has successfully been processed... you can expect your money back within 7 days</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+@if (VouchersInBundle.Count() != 0)
+{
+
+    @foreach (var voucher in VouchersInBundle)
+    {
+        <div>
+            <div class="card mb-6 shadow" style="border: none;">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><strong>@voucher!.Voucher!.PromoName</strong></h5>
+
+                        <p>@voucher.Voucher.BusinessName</p>
+                        <p>Good Through @voucher.Voucher.StartDate to @voucher.Voucher.EndDate</p>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (errorMessage == "")
+    {
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#refundModal">Refund</button>
+    }
+    else
+    {
+        <div class="alert alert-danger">
+            <p>Please fix the error to refund voucher</p>
+            <p>@errorMessage</p>
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#refundModal">Refund</button>
+        </div>
+    }
+}
+<div class="modal fade" id="refundModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">REFUND</h5>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to refund this bundle?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" @onclick="CreateRefund">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code
+{
+    [Parameter]
+    public string? ChargeId { get; set; }
+
+    public bool Success { get; set; } = false;
+
+    [CascadingParameter]
+    Task<AuthenticationState>? AuthStateTask { get; set; }
+
+    List<UserVoucherDTO> VouchersInBundle { get; set; } = new();
+
+    public string? errorMessage { get; set; } = "";
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        if (AuthStateTask is null)
+        {
+            return;
+        }
+        var authState = await AuthStateTask;
+        var authId = authState.User.Claims.FirstOrDefault(x => x.Type == "authId")!.Value;
+        var userId = (await userService.GetAuthUser(authId) ?? new UserDTO()).Id;
+        var userVouchers = await userVoucherService.GetAllByUser(userId);
+        VouchersInBundle = userVouchers.Where(v => v.Charge_Id == ChargeId).ToList();
+
+    }
+
+    public async void CreateRefund()
+    {
+        try
+        {
+            var result = await stripeService.CreateRefund(VouchersInBundle[0]);
+
+            if (result == "succeeded")
+            {
+                foreach(var voucher in VouchersInBundle)
+                {
+                    await userVoucherService.DeleteUserVoucher(voucher.Id);
+                    errorMessage = "";
+                    Success = true;
+                }
+                StateHasChanged();
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            Success = false;
+            StateHasChanged();
+        }
+    }
+}
