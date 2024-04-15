@@ -1,8 +1,175 @@
-﻿@page "/view-user-voucher/{voucherId:int}"
+﻿@page "/view-user-voucher/{userVoucherId:int}"
 
-<RazorClassLibrary.Pages.ViewUserVoucher userVoucherId="@voucherId"></RazorClassLibrary.Pages.ViewUserVoucher>
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using RazorClassLibrary.DTOs
+@using RazorClassLibrary.Services
+@using Stripe
+
+@inject IUserVoucherService userVoucherService
+@inject IUserService userService
+@inject IStripeService stripeService
+@inject NavigationManager navManager
+
+@attribute [Authorize]
+
+@if (Success)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading">Success</h4>
+        <p>Your refund has successfully been processed... you can expect your money back within 7 days</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+@if (selectedUserVoucher is not null)
+{
+    <div class="container">
+        <div class="content">
+            <div class="row">
+                <div class="col-md-6">
+                    <img width="300" src="@imgDataURL" b class="img-fluid rounded-circle" />
+                </div>
+                <div class="col-md-6">
+                    <h2>@selectedUserVoucher!.Voucher!.PromoName</h2>
+                    <p>Promo Code: @selectedUserVoucher.Promo_Code</p>
+                    <p>Times Used: @selectedUserVoucher.Times_Claimed</p>
+                    @if (selectedUserVoucher.Total_Reclaimable == 0)
+                    {
+                        <p>Uses Left: No Limit</p>
+                    }
+                    else
+                    {
+                        <p>Uses Left: @(@selectedUserVoucher.Total_Reclaimable - @selectedUserVoucher.Times_Claimed)</p>
+                    }
+                    <p>Date Purchased: @selectedUserVoucher.Purchase_Date</p>
+                    <p>@selectedUserVoucher.Voucher.StartDate to @selectedUserVoucher.Voucher.EndDate</p>
+                    <p>@selectedUserVoucher.Voucher.PromoDescription</p>
+
+                    @if (errorMessage == "")
+                    {
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#refundModal">Refund</button>
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger">
+                            <p>Please fix the error to refund voucher</p>
+                            <p>@errorMessage</p>
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#refundModal">Refund</button>
+                        </div>
+                    }
+                    <div class="modal fade" id="refundModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to refund @selectedUserVoucher.Voucher.PromoName voucher?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal" @onclick="CreateRefund">Confirm</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <p>This voucher doesn't exist anymore (or never existed at all!).</p>
+    <p>View All Of Your Vouchers</p>
+}
+
 
 @code {
     [Parameter]
-    public int voucherId { get; set; }
+    public int userVoucherId { get; set; }
+    public string? imgDataURL { get; set; } = "";
+    public string? errorMessage { get; set; } = "";
+
+    [Parameter]
+    public string? authId { get; set; }
+    public string? paymentIntent { get; set; } = "";
+    public bool Success { get; set; } = false;
+
+    [CascadingParameter]
+    Task<AuthenticationState>? AuthStateTask { get; set; }
+
+    public UserVoucherDTO? selectedUserVoucher { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (AuthStateTask is null)
+        {
+            throw new Exception("BWAH");
+        }
+        var authState = await AuthStateTask;
+        try
+        {
+            if (authId == null)
+            {
+                authId = authState.User.Claims.FirstOrDefault(x => x.Type == "authId")!.Value;
+            }
+            //authId = userState.User.Claims.FirstOrDefault(x => x.Type == "authId")!.Value;
+            if (authId is null)
+            {
+                throw new Exception("User was not found");
+            }
+
+            var userId = (await userService.GetAuthUser(authId))!.Id;
+            var maybeTheirVoucher = await userVoucherService.GetById(userVoucherId);
+
+            if (maybeTheirVoucher!.User!.Id != userId)
+            {
+                throw new Exception($"This is not {userId}'s voucher to see");
+            }
+
+            selectedUserVoucher = maybeTheirVoucher;
+            paymentIntent = maybeTheirVoucher.Charge_Id;
+            imgDataURL = selectedUserVoucher!.Voucher!.BusinessLogoURL;
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            // navManager.NavigateTo("/404", true);
+        }
+
+    }
+
+    public async void CreateRefund()
+    {
+        try
+        {
+            if (selectedUserVoucher is null)
+            {
+                throw new Exception("user voucher didn't exist");
+            }
+
+            var result = await stripeService.CreateRefund(selectedUserVoucher);
+
+            if (result == "succeeded")
+            {
+                await userVoucherService.DeleteUserVoucher(selectedUserVoucher.Id);
+                errorMessage = "";
+                Success = true;
+                StateHasChanged();
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            Success = false;
+            StateHasChanged();
+        }
+    }
 }

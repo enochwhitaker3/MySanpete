@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Authorization
+﻿
+@using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 @using Stripe
 
@@ -92,6 +93,8 @@ else
     public int userVoucherId { get; set; }
     public string? imgDataURL { get; set; } = "";
     public string? errorMessage { get; set; } = "";
+
+    [Parameter]
     public string? authId { get; set; }
     public string? paymentIntent { get; set; } = "";
     public bool Success { get; set; } = false;
@@ -101,7 +104,7 @@ else
 
     public UserVoucherDTO? selectedUserVoucher { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         if (AuthStateTask is null)
         {
@@ -110,8 +113,11 @@ else
         var authState = await AuthStateTask;
         try
         {
-            authId = authState.User.Claims.FirstOrDefault(x => x.Type == "authId")!.Value;
-
+            if(authId == null)
+            {
+                authId = authState.User.Claims.FirstOrDefault(x => x.Type == "authId")!.Value;
+            }
+            //authId = userState.User.Claims.FirstOrDefault(x => x.Type == "authId")!.Value;
             if (authId is null)
             {
                 throw new Exception("User was not found");

@@ -11,7 +11,7 @@ namespace MySanpeteMobile.Services
 {
     public class Auth0AuthenticationStateProvider : AuthenticationStateProvider
     {
-        private ClaimsPrincipal currentUser = new ClaimsPrincipal(new ClaimsIdentity());
+        private static ClaimsPrincipal currentUser = new ClaimsPrincipal(new ClaimsIdentity());
         private readonly Auth0Client auth0Client;
 
         public Auth0AuthenticationStateProvider(Auth0Client client)
