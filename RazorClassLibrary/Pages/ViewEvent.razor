@@ -25,10 +25,7 @@ else
 @code {
     [Parameter]
     public int EventId { get; set; }
-
-    public string errorMessage { get; set; } = "";
-
-    public Occasion Occasion { get; set; } = new();
+    public OccasionDTO Event { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {

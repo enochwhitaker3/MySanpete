@@ -1,3 +1,94 @@
-﻿@page "/user-vouchers"
+﻿@page "/my-vouchers"
 
-<RazorClassLibrary.Pages.UserVouchers></RazorClassLibrary.Pages.UserVouchers>
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using RazorClassLibrary.DTOs
+@using RazorClassLibrary.Services
+
+@inject IUserVoucherService userVoucherService
+@inject IUserService userService
+@inject NavigationManager navManager
+
+@attribute [Authorize]
+
+<div style="height: 90vh !important;">
+    <center class="my-6"><h3><strong>My Vouchers</strong></h3></center>
+    @if (allUserVouchers!.Count == 0)
+    {
+        <div class="mx-auto w-75">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">No vouchers to show</h5>
+                    <p class="card-text">Go to our website to purchase voucher to use around Sanpete!</p>
+                    <a href="/Vouchers" class="btn btn-primary">Find Vouchers</a>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="mx-auto w-75">
+        @foreach (var userVoucher in allUserVouchers!)
+        {
+            <div>
+                <div class="card mb-6 shadow" style="border: none;">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><strong>@userVoucher!.Voucher!.PromoName</strong></h5>
+
+                            <p>@userVoucher.Voucher.BusinessName</p>
+                            <p>Good Through @userVoucher.Voucher.StartDate to @userVoucher.Voucher.EndDate</p>
+
+                            <button class="btn btn-primary" style="text-align: right;" @onclick="()=> GoToDetailsPage(userVoucher.Id)">View Voucher</button>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+@code {
+    public List<UserVoucherDTO>? allUserVouchers { get; set; } = new();
+    public UserDTO? currentUser { get; set; } = new();
+    public string? authId { get; set; }
+
+    public string errorMessage { get; set; } = "";
+
+    [CascadingParameter]
+    Task<AuthenticationState>? AuthStateTask { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (AuthStateTask is null)
+        {
+            throw new Exception("BWAH");
+        }
+        var authState = await AuthStateTask;
+        try
+        {
+            authId = authState.User.Claims.FirstOrDefault(x => x.Type == "authId")!.Value;
+            if (authId is null)
+            {
+                throw new Exception("User was not found");
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            navManager.NavigateTo("/", true);
+        }
+
+        currentUser = await userService.GetAuthUser(authId!);
+        allUserVouchers = await userVoucherService.GetAllUserVouchers();
+
+        allUserVouchers = allUserVouchers.Where(x => x.User!.Id == currentUser!.Id).ToList();
+    }
+
+    public void GoToDetailsPage(int id)
+    {
+        navManager.NavigateTo($"/view-user-voucher/{id}", true);
+    }
+}

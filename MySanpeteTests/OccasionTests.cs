@@ -3,6 +3,7 @@ using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using MySanpeteWeb;
 using RazorClassLibrary.Requests;
+using RazorClassLibrary.Data;
 
 namespace MySanpeteTests;
 
@@ -274,9 +275,25 @@ public class OccasionTests : IClassFixture<MySanpeteFactory>
 
         var occasion = await occasionService.AddOccasion(request);
 
+
         occasion.Description = "New Test Description";
 
-        var result = await occasionService.UpdateOccasion(occasion);
+        UpdateOccasionRequest occasionRequest = new UpdateOccasionRequest()
+        { 
+            Id = occasion.Id,
+            Title = occasion.Title,
+            XCoordinate= occasion.XCoordinate,
+            YCoordinate= occasion.YCoordinate,
+            StartDate = occasion.StartDate,
+            EndDate = occasion.EndDate,
+            BusinessId = occasion.BusinessId,
+            Description = occasion.Description,
+            //Photo = occasion.PhotoURL
+        };
+
+
+
+        var result = await occasionService.UpdateOccasion(occasionRequest);
 
         result.Description.Should().Be("New Test Description");
     }

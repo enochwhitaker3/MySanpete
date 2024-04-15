@@ -1,4 +1,5 @@
 ﻿using RazorClassLibrary.Data;
+using RazorClassLibrary.DTOs;
 using RazorClassLibrary.Requests;
 using System;
 using System.Collections.Generic;
@@ -10,10 +11,10 @@ namespace RazorClassLibrary.Services;
 
 public interface IOccasionService
 {
-    public Task<Occasion> GetOccasion(int id);
-    public Task<List<Occasion>> GetAllOcassions();
-    public Task<Occasion> AddOccasion(AddOccasionRequest request);
+    public Task<OccasionDTO> GetOccasion(int id);
+    public Task<List<OccasionDTO>> GetAllOcassions();
+    public Task<OccasionDTO> AddOccasion(AddOccasionRequest request);
     public Task<bool> DeleteOccasion(int id);
-    public Task<Occasion> UpdateOccasion(Occasion occasion);
+    public Task<OccasionDTO> UpdateOccasion(UpdateOccasionRequest occasion);
 
 }

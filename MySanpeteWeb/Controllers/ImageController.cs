@@ -24,6 +24,9 @@ public class ImageController(IDbContextFactory<MySanpeteDbContext> factory, IApp
     [HttpGet("blogs/{id}")]
     public async Task<IActionResult> GetBlogImage(int id) => await cache.GetOrAddAsync($"Blogs{id}", () => GetBlogImageAsync(id));
 
+    [HttpGet("occasion/{id}")]
+    public async Task<IActionResult> GetOccasionImage(int id) => await cache.GetOrAddAsync($"Occasion{id}", () => GetOccasionImageAsync(id));
+
     [HttpGet("user/{userId}")]
     public async Task<IActionResult> GetUserImage(int userId)
     {
@@ -64,6 +67,26 @@ public class ImageController(IDbContextFactory<MySanpeteDbContext> factory, IApp
         }
 
         var image = blog.Photo;
+
+        if (image == null)
+        {
+            return NotFound();
+        }
+
+        return File(image, "image/jpeg");
+    }
+
+    private async Task<IActionResult> GetOccasionImageAsync(int id)
+    {
+        using var context = await factory.CreateDbContextAsync();
+        var occasion = await context.Occasions.FirstOrDefaultAsync(i => i.Id == id);
+
+        if (occasion == null)
+        {
+            return NotFound();
+        }
+
+        var image = occasion.Photo;
 
         if (image == null)
         {

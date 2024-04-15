@@ -4,6 +4,7 @@ using RazorClassLibrary.Data;
 using RazorClassLibrary.DTOs;
 using RazorClassLibrary.Services;
 using RazorClassLibrary.Requests;
+using System.Security.Cryptography.X509Certificates;
 
 namespace MySanpeteWeb.Controllers;
 
@@ -28,6 +29,7 @@ public class UserController : Controller
     [HttpGet("getauthuser/{authId}")]
     public async Task<UserDTO?> GetAuthUser(string authId)
     {
+        authId = authId.Replace("%7C", "|");
         var result = await userService.GetAuthUser(authId);
         if (result is null)
         {

@@ -54,7 +54,7 @@ namespace MySanpeteMobile
             builder.Services.AddSingleton(o =>
             {
                 var client = new HttpClient();
-                client.BaseAddress = new Uri("https://localhost:7059");
+                client.BaseAddress = new Uri("https://mysanpete.azurewebsites.net");
                 return client;
             });
 

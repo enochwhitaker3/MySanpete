@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RazorClassLibrary.Data;
+using RazorClassLibrary.DTOs;
 using RazorClassLibrary.Pages;
 using RazorClassLibrary.Requests;
 using RazorClassLibrary.Services;
@@ -14,7 +15,7 @@ public class WebOccasionService : IOccasionService
         this.dbContextFactory = dbContextFactory;
     }
 
-    public async Task<Occasion> AddOccasion(AddOccasionRequest request)
+    public async Task<OccasionDTO> AddOccasion(AddOccasionRequest request)
     {
         if (request.BusinessId == 0)
         {
@@ -62,7 +63,7 @@ public class WebOccasionService : IOccasionService
 
         await context.Occasions.AddAsync(newOccasion);
         await context.SaveChangesAsync();
-        return newOccasion;
+        return newOccasion.ToDto();
     }
 
     public async Task<bool> DeleteOccasion(int id)
@@ -81,14 +82,14 @@ public class WebOccasionService : IOccasionService
         return true;
     }
 
-    public async Task<List<Occasion>> GetAllOcassions()
+    public async Task<List<OccasionDTO>> GetAllOcassions()
     {
         var context = await dbContextFactory.CreateDbContextAsync();
 
-        return await context.Occasions.ToListAsync();
+        return await context.Occasions.Select(x => x.ToDto()).ToListAsync();
     }
 
-    public async Task<Occasion> GetOccasion(int id)
+    public async Task<OccasionDTO> GetOccasion(int id)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
 
@@ -99,10 +100,10 @@ public class WebOccasionService : IOccasionService
             throw new Exception("No occasion was found with given ID");
         }
 
-        return isExist;
+        return isExist.ToDto();
     }
 
-    public async Task<Occasion> UpdateOccasion(Occasion occasion)
+    public async Task<OccasionDTO> UpdateOccasion(UpdateOccasionRequest occasion)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
 
@@ -113,7 +114,6 @@ public class WebOccasionService : IOccasionService
             throw new Exception("No occasion was found with given ID");
         }
 
-        occasionToPatch.Business = occasion.Business;
         occasionToPatch.Title = occasion.Title;
         occasionToPatch.BusinessId = occasion.BusinessId;
         occasionToPatch.Description = occasion.Description;
@@ -126,6 +126,6 @@ public class WebOccasionService : IOccasionService
         context.Update(occasionToPatch);
         await context.SaveChangesAsync();
 
-        return occasionToPatch;
+        return occasionToPatch.ToDto();
     }
 }
