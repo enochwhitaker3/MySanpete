@@ -14,29 +14,34 @@
 
 <div id="mapDiv" style="width:100vw;height:90vh;"></div>
 
-
-<div class="container-fluid scroll-container">
-    <div class="row flex-row flex-nowrap">
-        @foreach (var o in AllOccasions)
-        {
-            getBusinessName(o.BusinessId);
-            <div class="col">
-                <div class="card card-block h-100 p-5" @onclick="() => focusMap(o.YCoordinate, o.XCoordinate)">
-                    <h1>@o.Title</h1>
-                    @if(SelectedBusiness.BusinessName is null)
-                    {
-                        <h2>Business Not Found</h2>
-                    }
-                    <h2>@SelectedBusiness.BusinessName</h2>
-                    <p class="card-subtitle mb-2 text-muted">@o.EndDate</p>
-                    <p>@o.Description</p>
-                    <button>View Details</button>
+@if(isLoading)
+{
+    <RazorClassLibrary.Pages.LoadingComponent></RazorClassLibrary.Pages.LoadingComponent>
+}
+else
+{
+    <div class="container-fluid scroll-container">
+        <div class="row flex-row flex-nowrap">
+            @foreach (var o in AllOccasions)
+            {
+                getBusinessName(o.BusinessId);
+                <div class="col">
+                    <div class="card card-block h-100 p-5" @onclick="() => focusMap(o.YCoordinate, o.XCoordinate)">
+                        <h1>@o.Title</h1>
+                        @if(SelectedBusiness.BusinessName is null)
+                        {
+                            <h2>Business Not Found</h2>
+                        }
+                        <h2>@SelectedBusiness.BusinessName</h2>
+                        <p class="card-subtitle mb-2 text-muted">@o.EndDate</p>
+                        <p>@o.Description</p>
+                        <button class="btn" @onclick="() => NavigateToDetails(o.BusinessId)">View Details</button>
+                    </div>
                 </div>
-            </div>
-        }
-      
+            }
+        </div>
     </div>
-</div>
+}
 
 @code {
     [Parameter]
@@ -45,13 +50,16 @@
     public List<OccasionDTO> AllOccasions { get; set; } = new();
     public List<BusinessDTO> AllBusinesses { get; set; } = new();
     public BusinessDTO SelectedBusiness { get; set; } = new();
+    public bool isLoading { get; set; } = true;
 
     public string? jsonOccasions { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+        isLoading = true;
         AllOccasions = await occasionService.GetAllOcassions();
         AllBusinesses = await businessService.GetAllBusinesses();
+        isLoading = false;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -75,5 +83,8 @@
         SelectedBusiness = AllBusinesses!.Where(x => x.Id == businessID)!.FirstOrDefault()!;
     }
 
-    
+    public void NavigateToDetails(int businessId)
+    {
+        // TODO go to details page
+    }
 }
