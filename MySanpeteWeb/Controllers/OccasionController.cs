@@ -19,16 +19,16 @@ public class OccasionController : ControllerBase
     }
 
     [HttpGet()]
-    public async Task<List<Occasion>> GetAll()
+    public async Task<List<OccasionDTO>> GetAll()
     {
-        List<Occasion> allOccasions = await occasionService.GetAllOcassions();
+        List<OccasionDTO> allOccasions = await occasionService.GetAllOcassions();
         return allOccasions;
     }
 
     [HttpGet("{id}")]
-    public async Task<Occasion?> GetById(int id)
+    public async Task<OccasionDTO?> GetById(int id)
     {
-        Occasion occasion = await occasionService.GetOccasion(id);
+        OccasionDTO occasion = await occasionService.GetOccasion(id);
         if (occasion is null)
         {
             return null;

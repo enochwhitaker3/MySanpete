@@ -1,4 +1,5 @@
 ﻿using RazorClassLibrary.Data;
+using RazorClassLibrary.DTOs;
 using RazorClassLibrary.Requests;
 using RazorClassLibrary.Services;
 using System.Net.Http.Json;
@@ -12,7 +13,7 @@ internal class MobileOccasionService : IOccasionService
     {
         this.httpClient = HttpClient;
     }
-    public Task<Occasion> AddOccasion(AddOccasionRequest request)
+    public Task<OccasionDTO> AddOccasion(AddOccasionRequest request)
     {
         throw new NotImplementedException();
     }
@@ -22,19 +23,19 @@ internal class MobileOccasionService : IOccasionService
         throw new NotImplementedException();
     }
 
-    public async Task<List<Occasion>> GetAllOcassions()
+    public async Task<List<OccasionDTO>> GetAllOcassions()
     {
-        var result = await httpClient.GetFromJsonAsync<List<Occasion>>("/api/occasion/");
+        var result = await httpClient.GetFromJsonAsync<List<OccasionDTO>>("/api/occasion/");
         return result!;
     }
 
-    public async Task<Occasion> GetOccasion(int id)
+    public async Task<OccasionDTO> GetOccasion(int id)
     {
-        var result = await httpClient.GetFromJsonAsync<Occasion>($"/api/occasion/{id}");
+        var result = await httpClient.GetFromJsonAsync<OccasionDTO>($"/api/occasion/{id}");
         return result!;
     }
 
-    public Task<Occasion> UpdateOccasion(Occasion occasion)
+    public Task<OccasionDTO> UpdateOccasion(UpdateOccasionRequest occasion)
     {
         throw new NotImplementedException();
     }
