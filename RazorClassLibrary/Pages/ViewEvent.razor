@@ -20,7 +20,7 @@
 @code {
     [Parameter]
     public int EventId { get; set; }
-    public Occasion Event { get; set; } = new();
+    public OccasionDTO Event { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {

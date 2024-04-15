@@ -2,10 +2,12 @@
 
 @layout MySanpeteMobile.Components.Layout.MainLayout
 @inject IJSRuntime JSRuntime
-@inject IOccasionService service
+@inject IOccasionService occasionService
+@inject IBusinessService businessService
 
 
 @using System.Security.Claims
+@using RazorClassLibrary.DTOs
 @using RazorClassLibrary.Data
 @using RazorClassLibrary.Services
 @using System.Text.Json
@@ -17,10 +19,15 @@
     <div class="row flex-row flex-nowrap">
         @foreach (var o in AllOccasions)
         {
+            getBusinessName(o.BusinessId);
             <div class="col">
                 <div class="card card-block h-100 p-5" @onclick="() => focusMap(o.YCoordinate, o.XCoordinate)">
                     <h1>@o.Title</h1>
-                    <h2>@o.Business</h2>
+                    @if(SelectedBusiness.BusinessName is null)
+                    {
+                        <h2>Business Not Found</h2>
+                    }
+                    <h2>@SelectedBusiness.BusinessName</h2>
                     <p class="card-subtitle mb-2 text-muted">@o.EndDate</p>
                     <p>@o.Description</p>
                     <button>View Details</button>
@@ -35,18 +42,22 @@
     [Parameter]
     public string? MapsKey { get; set; } = "Ku8vCROlGuzvfRtDnZP_8IHpn_hyAZ56EQX1l0R9lJc";
 
-    public List<Occasion> AllOccasions { get; set; } = new();
+    public List<OccasionDTO> AllOccasions { get; set; } = new();
+    public List<BusinessDTO> AllBusinesses { get; set; } = new();
+    public BusinessDTO SelectedBusiness { get; set; } = new();
 
     public string? jsonOccasions { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        AllOccasions = await service.GetAllOcassions();
+        AllOccasions = await occasionService.GetAllOcassions();
+        AllBusinesses = await businessService.GetAllBusinesses();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        AllOccasions = await service.GetAllOcassions();
+        AllOccasions = await occasionService.GetAllOcassions();
+        AllBusinesses = await businessService.GetAllBusinesses();
         jsonOccasions = JsonSerializer.Serialize(AllOccasions);
         if (firstRender)
         {
@@ -57,6 +68,11 @@
     public async Task focusMap(decimal? yCoord, decimal? xCoord)
     {
         await JSRuntime.InvokeVoidAsync("focusMap", yCoord, xCoord);
+    }
+
+    public void getBusinessName(int businessID)
+    {
+        SelectedBusiness = AllBusinesses!.Where(x => x.Id == businessID)!.FirstOrDefault()!;
     }
 
     
