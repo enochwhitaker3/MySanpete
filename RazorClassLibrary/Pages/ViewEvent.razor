@@ -1,0 +1,30 @@
+﻿@inject IOccasionService eventService;
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <img class="img-fluid" src=""/>
+        </div>
+        <div class="col-md-6">
+            <h1>Event Title</h1>
+            <h5><strong>March 14, 2024 to March 19, 2024</strong></h5>
+            <p>This is some short description of the event. Create lasting memories in Sanpete County with Scandinavian days. Bring our your inner viking with food, dance and drink.</p>
+
+            <small>2 other users have saved this event!</small>
+            <button>Save this Event</button>
+        </div>
+    </div>
+
+</div>
+
+@code {
+    [Parameter]
+    public int EventId { get; set; }
+    public Occasion Event { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Event = await eventService.GetOccasion(EventId);
+    }
+
+}

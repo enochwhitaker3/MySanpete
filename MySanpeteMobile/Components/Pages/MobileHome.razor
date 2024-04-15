@@ -4,6 +4,7 @@
 @inject IJSRuntime JSRuntime
 @inject IOccasionService service
 
+
 @using System.Security.Claims
 @using RazorClassLibrary.Data
 @using RazorClassLibrary.Services
@@ -22,6 +23,7 @@
                     <h2>@o.Business</h2>
                     <p class="card-subtitle mb-2 text-muted">@o.EndDate</p>
                     <p>@o.Description</p>
+                    <button>View Details</button>
                 </div>
             </div>
         }
@@ -56,4 +58,6 @@
     {
         await JSRuntime.InvokeVoidAsync("focusMap", yCoord, xCoord);
     }
+
+    
 }
