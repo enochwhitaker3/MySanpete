@@ -1,16 +1,16 @@
 ﻿@inject IOccasionService occasionService;
 
-@if (Occasion is not null)
+@if (Event is not null)
 {
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <img width="300" src="@Occasion.Photo" b class="img-fluid rounded-circle" />
+                <img width="300" src="@Event.PhotoURL" b class="img-fluid rounded-circle" />
             </div>
             <div class="col-md-6">
-                <h2>@Occasion.Title</h2>
-                <p>@Occasion.Description</p>
-                <p>Put on by: @Occasion.Business</p>
+                <h2>@Event.Title</h2>
+                <p>@Event.Description</p>
+                <p>Put on by: @Event</p>
 
             </div>
         </div>
@@ -25,11 +25,12 @@ else
 @code {
     [Parameter]
     public int EventId { get; set; }
+
     public OccasionDTO Event { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
-        Occasion = await occasionService.GetOccasion(EventId);
+        Event = await occasionService.GetOccasion(EventId);
     }
 
 }

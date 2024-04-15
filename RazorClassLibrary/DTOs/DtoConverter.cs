@@ -164,6 +164,7 @@ public static class DtoConverter
             EndDate = occasion.EndDate,
             BusinessId  = occasion.BusinessId,
             Description = occasion.Description,
+            Business = occasion.Business.ToDto(),
             PhotoURL = $"https://mysanpete.azurewebsites.net/api/image/occasion/{occasion.Id}"
         };
 
