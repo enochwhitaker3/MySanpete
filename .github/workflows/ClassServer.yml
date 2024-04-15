@@ -30,8 +30,8 @@ jobs:
 
             docker push 144.17.92.12:5000/codebras/mysanpete:1
             
-            kubectl -n ethan delete configmap my-sanpete-postgres-init || true
-            kubectl -n ethan create configmap my-sanpete-postgres-init --from-file=20240328.06.25.21.sql
+            kubectl -n codebras delete configmap my-sanpete-postgres-init || true
+            kubectl -n codebras create configmap my-sanpete-postgres-init --from-file=20240328.06.25.21.sql
             
             cd ./Telemetry
             kubectl apply -f Kubernetes/
