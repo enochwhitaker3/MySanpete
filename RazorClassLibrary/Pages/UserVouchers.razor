@@ -9,7 +9,7 @@
 
 @attribute [Authorize]
 
-<div style="height: 90vh !important;">
+<div>
     <center class="my-6"><h3><strong>My Vouchers</strong></h3></center>
     @if (allUserVouchers!.Count == 0)
     {
@@ -37,8 +37,6 @@
                             <p>Good Through @userVoucher.Voucher.StartDate to @userVoucher.Voucher.EndDate</p>
 
                             <button class="btn btn-primary" style="text-align: right;" @onclick="()=> GoToDetailsPage(userVoucher.Id)">View Voucher</button>
-
-
                         </div>
                     </div>
                 </div>
@@ -82,7 +80,11 @@
         currentUser = await userService.GetAuthUser(authId!);
         allUserVouchers = await userVoucherService.GetAllUserVouchers();
 
-        allUserVouchers = allUserVouchers.Where(x => x.User!.Id == currentUser!.Id).ToList();
+        allUserVouchers = allUserVouchers.Where(x => x.User!.Id == currentUser!.Id)
+            .GroupBy(x => x.Charge_Id)
+            .Where(x => x.Count() <= 1)
+            .Select(x => x.First())
+            .ToList();
     }
 
     public void GoToDetailsPage(int id)
