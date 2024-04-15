@@ -55,8 +55,3 @@ jobs:
         with:
           webhook_url: ${{ secrets.TEAMS_WEBHOOK }}
           overwrite: "{title: `THE SERVER IS DOWN! Check it here :) -> ${workflow_link}`}"
-      - name: Microsoft Teams Notification
-        uses: skitionek/notify-microsoft-teams@master
-        if: steps.compose.outcome == 'success'
-        with:
-          webhook_url: ${{ secrets.TEAMS_WEBHOOK }}
