@@ -83,6 +83,7 @@
 else
 {
     <p>This voucher doesn't exist anymore (or never existed at all!).</p>
+    <button class="btn-primary" @onclick="() => NavigateToAllVouchers()"></button>
     <p>View All Of Your Vouchers</p>
 }
 
@@ -162,5 +163,10 @@ else
             Success = false;
             StateHasChanged();
         }
+    }
+
+    public void NavigateToAllVouchers()
+    {
+        navManager.NavigateTo("/user-vouchers", true);
     }
 }
