@@ -5,8 +5,8 @@
 @inject IUserVoucherService userVoucherService
 @inject NavigationManager navManager
 
-<div style="height: 90vh !important;">
-    <center class="my-6"><h3><strong>My Vouchers</strong></h3></center>
+<div class="container">
+    <center class="my-6"><h3><strong>My Bundles</strong></h3></center>
     @if (allBundles is null || allBundles.Count == 0)
     {
         <div class="mx-auto w-75">
@@ -24,7 +24,7 @@
         <div class="mx-auto w-75">
             @foreach (var group in allBundles)
             {
-                <div style="background-color: lightgray">
+                <div class="container" style="background-color: lightgray; padding-bottom: 25px; padding-top: 25px;">
                     @foreach (var voucher in group)
                     {
                         <div>
@@ -35,18 +35,20 @@
 
                                         <p>@voucher.Voucher.BusinessName</p>
                                         <p>Good Through @voucher.Voucher.StartDate to @voucher.Voucher.EndDate</p>
-
-
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <hr>
                     }
-                    <button class="btn btn-primary" style="text-align: right;" @onclick="()=> GoToDetailsPage(group!.Key!)">View Bundle</button>
+                    <div class="card">
+                        <button class="btn btn-primary" style="text-align: center;" @onclick="()=> GoToDetailsPage(group!.Key!)">View Bundle</button>
+                    </div>
                 </div>
+                <br />
             }
         </div>
-        <br/>
+        <br>
     }
 </div>
 
