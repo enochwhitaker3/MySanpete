@@ -39,6 +39,28 @@
     font-family: Casual;
 }
 
+a:hover{
+    text-decoration: none;
+}
+
+.vl {
+    border-left: 2px solid black;
+    height: 50vh;
+}
+
+.hl {
+    border-bottom: 2px solid black;
+}
+
+.lg-view {
+    display: flex !important;
+}
+
+.sm-view {
+    display: none !important;
+}
+
+
 
 .mapp {
     height: 100%;
@@ -62,12 +84,7 @@
 }
 
 
-.vertical-rule {
-    width: 2px !important;
-    margin-left: 100px;
-    padding: 0;
-    opacity: .50;
-}
+
 
 /*----------Map Pin Styles Ignore----------*/
 .pin {
@@ -166,7 +183,7 @@
 .event-card {
     background-color: #fff;
     height: 17vh;
-    max-width: 35vw !important;
+    width: 35vw;
 }
 
 .event-date {
@@ -177,7 +194,7 @@
 
     .event-date h2 {
         font-family: Inter-Bold;
-        font-size: 3vw;
+        font-size: 2.25vw;
         width: fit-content;
         transform-origin: bottom center;
     }
@@ -188,7 +205,7 @@
 
     .event-details h2 {
         font-family: Inter-Bold;
-        font-size: 1.5vw;
+        font-size: 1.5rem;
     }
 
     .event-details h4 {
@@ -196,10 +213,34 @@
         font-size: 1rem;
     }
 
+@media screen and (max-width: 1200px) 
+{
+    .lg-view {
+        display: none !important;
+    }
+
+    .sm-view {
+        display: inline-block !important;
+    }
+    .event-card {
+        height: 15vh;
+        width: 50vw !important;
+    }
+    .event-date h2 {
+        font-size: 3vw;
+    }
+    .map-vr-container{
+        margin-top: 25px;
+    }
+}
+
 @media screen and (max-width: 600px) {
     .event-card {
         height: 15vh;
-        max-width: 75vw !important;
+        width: 75vw !important;
+    }
+    .event-date h2{
+        font-size: 3vw;
     }
 
     .event-details h2 {
@@ -212,25 +253,6 @@
 }
 
 
-
-
-
-@media screen and (max-width: 600px) {
-    .event-card {
-        height: 15vh;
-        max-width: 75vw !important;
-
-    }
-
-    .event-details h2 {
-        font-size: 3.5vw;
-    }
-
-    .event-details h4 {
-        font-size: .6rem;
-    }
-}
-
 @media (max-width: 379px) {
     .title {
         font-size: calc(3em - 1vw);
@@ -242,5 +264,11 @@
 {
     .title {
         font-size: calc(3em - 1vw);
+    }
+}
+
+@media( max-height: 798px) {
+    .title {
+        font-size: calc(2.25em - 1vw);
     }
 }

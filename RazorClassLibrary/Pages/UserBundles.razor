@@ -5,30 +5,52 @@
 @inject IUserVoucherService userVoucherService
 @inject NavigationManager navManager
 
-@foreach(var group in allBundles)
-{
-    <div style="background-color: lightgray">
-    @foreach(var voucher in group)
+<div class="container">
+    <center class="my-6"><h3><strong>My Bundles</strong></h3></center>
+    @if (allBundles is null || allBundles.Count == 0)
     {
-            <div>
-                <div class="card mb-6 shadow" style="border: none;">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title"><strong>@voucher!.Voucher!.PromoName</strong></h5>
-
-                            <p>@voucher.Voucher.BusinessName</p>
-                            <p>Good Through @voucher.Voucher.StartDate to @voucher.Voucher.EndDate</p>
-
-
-                        </div>
-                    </div>
+        <div class="mx-auto w-75">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">No bundles to show</h5>
+                    <p class="card-text">Go to our website to purchase bundles to use around Sanpete!</p>
+                    <a href="/Vouchers" class="btn btn-primary">Find Bundles</a>
                 </div>
             </div>
+        </div>
     }
-    <button class="btn btn-primary" style="text-align: right;" @onclick="()=> GoToDetailsPage(group!.Key!)">View Bundle</button>
-    </div>
-    <br/>
-}
+    else
+    {
+        <div class="mx-auto w-75">
+            @foreach (var group in allBundles)
+            {
+                <div class="container" style="background-color: lightgray; padding-bottom: 25px; padding-top: 25px;">
+                    @foreach (var voucher in group)
+                    {
+                        <div>
+                            <div class="card mb-6 shadow" style="border: none;">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><strong>@voucher!.Voucher!.PromoName</strong></h5>
+
+                                        <p>@voucher.Voucher.BusinessName</p>
+                                        <p>Good Through @voucher.Voucher.StartDate to @voucher.Voucher.EndDate</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                    }
+                    <div class="card">
+                        <button class="btn btn-primary" style="text-align: center;" @onclick="()=> GoToDetailsPage(group!.Key!)">View Bundle</button>
+                    </div>
+                </div>
+                <br />
+            }
+        </div>
+        <br>
+    }
+</div>
 
 @code
 {
@@ -39,15 +61,22 @@
 
     protected async override Task OnInitializedAsync()
     {
-        if(AuthStateTask is null)
+        if (AuthStateTask is null)
         {
             return;
         }
-        var authState = await AuthStateTask;
-        var authId = authState.User.Claims.FirstOrDefault(x => x.Type == "authId")!.Value;
-        var userId = (await userService.GetAuthUser(authId) ?? new UserDTO()).Id;
-        var userVouchers = await userVoucherService.GetAllByUser(userId);
-        allBundles = userVouchers.Where(v => v.Charge_Id != "Free Voucher Claimed").GroupBy(b => b.Charge_Id).Where(g => g.Count() > 1).ToList();
+        try
+        {
+            var authState = await AuthStateTask;
+            var authId = authState.User.Claims.FirstOrDefault(x => x.Type == "authId")!.Value;
+            var userId = (await userService.GetAuthUser(authId) ?? new UserDTO()).Id;
+            var userVouchers = await userVoucherService.GetAllByUser(userId);
+            allBundles = userVouchers.Where(v => v.Charge_Id != "Free Voucher Claimed").GroupBy(b => b.Charge_Id).Where(g => g.Count() > 1).ToList();
+        }
+        catch (Exception)
+        {
+            navManager.NavigateTo("/", true);
+        }
 
     }
 

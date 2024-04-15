@@ -18,18 +18,28 @@
     <img class="full-screen-image" src="Images/event.jpg" alt="Image">
     <div class="event-container row" style="max-width: 100vw; margin-left: auto; margin-right: auto;  background-color:#fcfcf8; justify-content: center; align-items:center;">
 
-        <div class="map-vr-container mt-10 col-3 d-flex justify-content-center align-items-center ">
+        <div class="map-vr-container col-3 d-flex justify-content-center align-items-center ">
             @if (MapsKey is not null)
             {
                 <div class="map-container p-0 col shadow">
                     <div id="mapDiv" class="mapp"></div>
                 </div>
             }
-            @*             <div class="vertical-rule vr"></div> *@
         </div>
 
+        <div class="lg-view col-1 d-flex justify-content-center align-items-center">
+            <div class="vl"></div>
+        </div>
+
+        <div class="sm-view col-8 mt-10 d-flex justify-content-center align-items-center">
+            <div class="hl"></div>
+        </div>
+
+
+
+
         <div class="event-container d-grid col-lg-6 mt-10 mb-15 justify-content-center" style="overflow-y:scroll; max-height: 50vh;">
-            <div class="event-card row shadow mb-10">
+            <a class="event-card row shadow mb-10" href="/view-event/2">
                 <div class="event-date col-3 d-flex align-items-center" style="background-image: url(Images/green_wave.svg); background-repeat: repeat-y;">
                     <div class="event-date">
                         <h2>MAY</h2>
@@ -46,8 +56,8 @@
                 <div class="col-3 d-flex" style="padding-right: 0 !important; max-height:25vh;">
                     <img src="https://scandinavianfestival.org/wp-content/uploads/2023/03/p3.png" style="width: 100%; object-fit: cover; object-position: center;" />
                 </div>
-            </div>
-            <div class="event-card row shadow mb-10">
+            </a>
+            <a class="event-card row shadow mb-10" href="/view-event/2">
                 <div class="event-date col-3 d-flex align-items-center" style="background-image: url(Images/green_wave.svg); background-repeat: repeat-y;">
                     <div class="event-date">
                         <h2>MAY</h2>
@@ -64,8 +74,8 @@
                 <div class="col-3 d-flex" style="padding-right: 0 !important; max-height:25vh;">
                     <img src="https://scandinavianfestival.org/wp-content/uploads/2023/03/race.png" style="width: 100%; object-fit: cover;" />
                 </div>
-            </div>
-            <div class="event-card row shadow mb-10">
+            </a>
+            <a class="event-card row shadow mb-10" href="/view-event/2">
                 <div class="event-date col-3 d-flex align-items-center" style="background-image: url(Images/green_wave.svg); background-repeat: repeat-y;">
                     <div class="event-date">
                         <h2>MAY</h2>
@@ -82,8 +92,8 @@
                 <div class="col-3 d-flex" style="padding-right: 0 !important; max-height:25vh;">
                     <img src="https://scandinavianfestival.org/wp-content/uploads/2022/11/cropped-slide6.png" style="width: 100%; object-fit: cover; object-position: center;" />
                 </div>
-            </div>
-            <div class="event-card row shadow mb-10">
+            </a>
+            <a class="event-card row shadow mb-10" href="/view-event/2">
                 <div class="event-date col-3 d-flex align-items-center" style="background-image: url(Images/green_wave.svg); background-repeat: repeat-y;">
                     <div class="event-date">
                         <h2>MAY</h2>
@@ -100,7 +110,7 @@
                 <div class="col-3 d-flex" style="padding-right: 0 !important; max-height:25vh;">
                     <img src="https://scandinavianfestival.org/wp-content/uploads/2023/03/p3.png" style="width: 100%; object-fit: cover; object-position: center;" />
                 </div>
-            </div>
+            </a>
         </div>
     </div>
 </div>
