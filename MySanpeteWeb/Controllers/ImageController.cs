@@ -7,6 +7,7 @@ using RazorClassLibrary.Requests;
 using Microsoft.EntityFrameworkCore;
 using LazyCache;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
 
 namespace MySanpeteWeb.Controllers;
 
@@ -22,7 +23,10 @@ public class ImageController(IDbContextFactory<MySanpeteDbContext> factory, IApp
     public async Task<IActionResult> GetImage(int id) => await cache.GetOrAddAsync($"Business{id}", () => GetBusinessImageAsync(id));
 
     [HttpGet("blogs/{id}")]
-    public async Task<IActionResult> GetBlogImage(int id) => await cache.GetOrAddAsync($"Blogs{id}", () => GetBlogImageAsync(id));
+    public async Task<IActionResult> GetBlogImage(int id)
+    {
+        return await cache.GetOrAddAsync($"Blogs{id}", () => GetBlogImageAsync(id));
+    }
 
     [HttpGet("occasion/{id}")]
     public async Task<IActionResult> GetOccasionImage(int id) => await cache.GetOrAddAsync($"Occasion{id}", () => GetOccasionImageAsync(id));
@@ -70,7 +74,10 @@ public class ImageController(IDbContextFactory<MySanpeteDbContext> factory, IApp
 
         if (image == null)
         {
-            return NotFound();
+            // If the image is null, return a default image from your project files
+            string imagePath = "wwwroot/Images/My_Sanpete.png"; //Path.Combine(environment.WebRootPath, "images", "default.jpg");
+            image = System.IO.File.ReadAllBytes(imagePath);
+            return File(image, "image/jpeg");
         }
 
         return File(image, "image/jpeg");
