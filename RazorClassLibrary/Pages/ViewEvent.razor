@@ -1,36 +1,69 @@
-﻿@inject IOccasionService occasionService;
+﻿@using RazorClassLibrary.Requests
 
-@if (Event is not null)
-{
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <img width="300" src="@Event.PhotoURL" b class="img-fluid rounded-circle" />
-            </div>
-            <div class="col-md-6">
-                <h2>@Event.Title</h2>
-                <p>@Event.Description</p>
-                <p>Put on by: @Event</p>
+@inject IOccasionService occasionService
+@inject IUserOccasionService userOccassionService
+@inject IUserService userService
 
+<div class="container">
+    @if (Event is not null)
+    {
+        <div class="container">
+            <div class="content rounded-3 shadow">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img width="300" src="@Event.PhotoURL" style="height: 100%; width: 100%; padding-left: 20px; padding-right: 20px; padding-bottom: 20px;"/>
+                    </div>
+                    <div class="col-md-6" style="padding: 15px;">
+                        <h2>@Event.Title</h2>
+                        <p>@Event.Description</p>
+                        <strong><p>@Event!.Business!.BusinessName</p></strong>
+                        <p>Taking place at: @Event.XCoordinate, @Event.YCoordinate</p>
+                        <p>Event starts: @Event.StartDate through @Event.EndDate</p>
+                        <button type="submit" class="btn btn-primary">
+                            Subscribe to @Event.Title
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
-
-    </div>
-}
-else
-{
-    <p>The Occasion you are trying to see doens't exist</p>
-}
+        <br>
+    }
+    else
+    {
+        <p>The Occasion you are trying to see doens't exist</p>
+    }
+</div>
 
 @code {
     [Parameter]
     public int EventId { get; set; }
 
-    public OccasionDTO Event { get; set; } = new();
+    public OccasionDTO? Event { get; set; }
+    public int UserId { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         Event = await occasionService.GetOccasion(EventId);
+    }
+
+    public async void Subscribe()
+    {
+        if (EventId <= 0)
+        {
+            throw new Exception("Event did not exist had too low of an ID");
+        }
+        if (UserId <= 0)
+        {
+            throw new Exception("User did not exist had too low of an ID");
+        }
+
+        var userOccasion = new AddUserOccasionRequest()
+        {
+            OccasionId = EventId,
+            UserId = UserId
+        };
+
+        await userOccassionService.AddNewUserOccasion(userOccasion);
     }
 
 }
