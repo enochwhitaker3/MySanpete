@@ -10,5 +10,5 @@ public class PurchaseVoucherRequest
 {
     public int VoucherId { get; set; }
     public string? UserId { get; set; }
-    public string? PriceId { get; set; }   
+    public string? PriceId { get; set; }
 }

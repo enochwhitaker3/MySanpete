@@ -279,11 +279,11 @@ public class OccasionTests : IClassFixture<MySanpeteFactory>
         occasion.Description = "New Test Description";
 
         UpdateOccasionRequest occasionRequest = new UpdateOccasionRequest()
-        { 
+        {
             Id = occasion.Id,
             Title = occasion.Title,
-            XCoordinate= occasion.XCoordinate,
-            YCoordinate= occasion.YCoordinate,
+            XCoordinate = occasion.XCoordinate,
+            YCoordinate = occasion.YCoordinate,
             StartDate = occasion.StartDate,
             EndDate = occasion.EndDate,
             BusinessId = occasion.BusinessId,
