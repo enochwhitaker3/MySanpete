@@ -14,7 +14,9 @@ public class OccasionDTO
     public decimal? XCoordinate { get; set; }
     public decimal? YCoordinate { get; set; }
     public DateTime StartDate { get; set; }
-    public DateTime? EndDate { get; set; }
+
+    public DateTime EndDate { get; set; }
+
     public int BusinessId { get; set; }
     public string? Description { get; set; }
     public string? PhotoURL { get; set; }

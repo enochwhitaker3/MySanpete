@@ -24,7 +24,12 @@
     </div>
 }
 
-@if (selectedUserVoucher is not null)
+
+@if (isLoading)
+{
+    <RazorClassLibrary.Pages.LoadingComponent></RazorClassLibrary.Pages.LoadingComponent>
+}
+else 
 {
     <div class="container">
         <div class="content">
@@ -60,11 +65,6 @@
         </div>
     </div>
 }
-else
-{
-    <p>This voucher doesn't exist anymore (or never existed at all!).</p>
-    <p>View All Of Your Vouchers</p>
-}
 
 
 @code {
@@ -76,6 +76,8 @@ else
     [Parameter]
     public string? authId { get; set; }
     public string? paymentIntent { get; set; } = "";
+
+    public bool isLoading { get; set; } = true;
     public bool Success { get; set; } = false;
 
     [CascadingParameter]
@@ -85,6 +87,7 @@ else
 
     protected override async Task OnParametersSetAsync()
     {
+        isLoading = true;
         if (AuthStateTask is null)
         {
             throw new Exception("BWAH");
@@ -113,6 +116,7 @@ else
             selectedUserVoucher = maybeTheirVoucher;
             paymentIntent = maybeTheirVoucher.Charge_Id;
             imgDataURL = selectedUserVoucher!.Voucher!.BusinessLogoURL;
+            isLoading = false;
         }
         catch (Exception ex)
         {

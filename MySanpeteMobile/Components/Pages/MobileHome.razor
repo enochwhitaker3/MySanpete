@@ -12,6 +12,8 @@
 @using RazorClassLibrary.Services
 @using System.Text.Json
 
+@inject NavigationManager NavMan
+
 <div id="mapDiv" style="width:100vw;height:90vh;"></div>
 
 
@@ -20,12 +22,12 @@
         @foreach (var o in AllOccasions)
         {
             <div class="col">
-                <div class="card card-block h-100 p-5" @onclick="() => focusMap(o.YCoordinate, o.XCoordinate)">
-                    <h1>@o.Title</h1>
-                    <h2>@o.Business!.BusinessName</h2>
+                <div class="card card-block h-100 p-4" @onclick="() => focusMap(o.YCoordinate, o.XCoordinate)">
+                    <h1 style="font-size: 20px;">@o.Title</h1>
+                    <h3 style="font-size: 15px;">@o.Business!.BusinessName</h3>
                     <p class="card-subtitle mb-2 text-muted">@o.EndDate</p>
                     <p>@o.Description</p>
-                    <button>View Details</button>
+                    <button class="p-1 px-3" style="border: 1px solid black; border-radius: 30px;" @onclick="() => NavigateToDetails(o.Id)"> View Details</button>
                 </div>
             </div>
         }
@@ -46,40 +48,29 @@
 
     protected override async Task OnInitializedAsync()
     {
-        // try
-        // {
-
-            AllBusinesses = await businessService.GetAllBusinesses();
-            AllOccasions = await occasionService.GetAllOcassions();
-            isLoading = false;
-        // }
-        // catch (Exception ex)
-        // {
-
-        // }
+        AllBusinesses = await businessService.GetAllBusinesses();
+        AllOccasions = await occasionService.GetAllOcassions();
+        isLoading = false;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        // try
-        // {
-
-            AllBusinesses = await businessService.GetAllBusinesses();
+        AllBusinesses = await businessService.GetAllBusinesses();
         AllOccasions = await occasionService.GetAllOcassions();
-            jsonOccasions = JsonSerializer.Serialize(AllOccasions);
-            if (firstRender)
-            {
-                await JSRuntime.InvokeVoidAsync("initializeMap", MapsKey, jsonOccasions);
-            }
-        // }
-        // catch (Exception ex)
-        // {
-            
-        // }
+        jsonOccasions = JsonSerializer.Serialize(AllOccasions);
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("initializeMap", MapsKey, jsonOccasions);
+        }
     }
 
     public async Task focusMap(decimal? yCoord, decimal? xCoord)
     {
         await JSRuntime.InvokeVoidAsync("focusMap", yCoord, xCoord);
+    }
+
+    public void NavigateToDetails(int id)
+    {
+        NavMan.NavigateTo($"/view-event/{id}", true);
     }
 }

@@ -1,36 +1,99 @@
-﻿@inject IOccasionService occasionService;
+﻿@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using RazorClassLibrary.Requests
 
-@if (Event is not null)
-{
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <img width="300" src="@Event.PhotoURL" b class="img-fluid rounded-circle" />
-            </div>
-            <div class="col-md-6">
-                <h2>@Event.Title</h2>
-                <p>@Event.Description</p>
-                <p>Put on by: @Event</p>
+@inject IOccasionService occasionService
+@inject IUserOccasionService userOccassionService
+@inject IUserService userService
+@inject NavigationManager navManager
 
+@attribute [Authorize]
+
+<div class="container">
+    @if (Event is not null && Event.Business is not null)
+    {
+        <div class="container">
+            <div class="content rounded-3 shadow">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img width="300" src="@Event.PhotoURL" style="height: 90%; width: 90%; padding-left: 20px; padding-right: 20px; padding-top: 10px" />
+                    </div>
+                    <div class="col-md-6" style="padding: 15px;">
+                        <h2>@Event.Title</h2>
+                        <p>@Event.Description</p>
+                        <strong><p>@Event!.Business.BusinessName</p></strong>
+                        <p>Taking place at: @Event.XCoordinate, @Event.YCoordinate</p>
+                        <p>Event starts: @Event.StartDate through @Event.EndDate</p>
+                        <button type="submit" class="btn btn-primary" @onclick="Subscribe">
+                            Subscribe to @Event.Title
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
-
-    </div>
-}
-else
-{
-    <p>The Occasion you are trying to see doens't exist</p>
-}
+        <br>
+    }
+    else
+    {
+        <p>The Occasion you are trying to see doens't exist</p>
+    }
+</div>
 
 @code {
     [Parameter]
     public int EventId { get; set; }
 
-    public OccasionDTO Event { get; set; } = new();
+    public OccasionDTO? Event { get; set; } = new();
+    public UserDTO? currentUser { get; set; } = new();
+    public string? authId { get; set; }
+
+    [CascadingParameter]
+    Task<AuthenticationState>? AuthStateTask { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+        if (AuthStateTask is null)
+        {
+            throw new Exception("User State Task was null");
+        }
+
+        var authState = await AuthStateTask;
+
+        try
+        {
+            authId = authState.User.Claims.FirstOrDefault(x => x.Type == "authId")!.Value;
+            if (authId is null)
+            {
+                throw new Exception("User was not found");
+            }
+        }
+        catch(Exception)
+        {
+            navManager.NavigateTo("/", true);
+        }
+
         Event = await occasionService.GetOccasion(EventId);
+        currentUser = await userService.GetAuthUser(authId!);
+    }
+
+    public async void Subscribe()
+    {
+        if (EventId <= 0)
+        {
+            throw new Exception("Event did not exist had too low of an ID");
+        }
+        if (currentUser!.Id <= 0)
+        {
+            throw new Exception("User did not exist had too low of an ID");
+        }
+
+        var userOccasion = new AddUserOccasionRequest()
+            {
+                OccasionId = EventId,
+                UserId = currentUser.Id
+            };
+
+        await userOccassionService.AddNewUserOccasion(userOccasion);
     }
 
 }

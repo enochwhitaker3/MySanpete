@@ -1,4 +1,6 @@
-﻿@using Microsoft.AspNetCore.Components.Authorization
+﻿@page "/blog/{blogId:int}"
+
+@using Microsoft.AspNetCore.Components.Authorization
 @using RazorClassLibrary.DTOs
 @using Blazored.TextEditor
 @using RazorClassLibrary.Requests
@@ -7,7 +9,7 @@
 @inject IBlogService service
 @inject ICommentService commentService
 @inject IUserService userService
-@inject IUserState userState
+@* @inject IUserState userState *@
 @inject NavigationManager NavMan
 
 
@@ -30,15 +32,16 @@ else
                 @((MarkupString)blog.Content)
             </div>
 
+
             <div class="d-flex align-items-center justify-content-center" style="margin-top: 10vh;">
                 <div class="container">
-                    <div class="row justify-content-center mb-4">
-                        <div class="col-lg-10">
-                            <h5>@AllComments!.Count() Comments</h5>
-                        </div>
-                    </div>
-                    @if (AllComments!.Count() > 0)
+                    @if (AllComments is not null && AllComments.Count() > 0 && TopLevelComments is not null)
                     {
+                        <div class="row justify-content-center mb-4">
+                            <div class="col-lg-10">
+                                <h5>@AllComments!.Count() Comments</h5>
+                            </div>
+                        </div>
                         <div class="row justify-content-center mb-4">
                             <div class="col-lg-10">
                                 <div class="comments">
@@ -60,7 +63,7 @@ else
                                                     @c.Content
                                                 </div>
                                                 <div class="row justify-content-center mb-5">
-                                                    @if (loggedInUser is not null)
+                                                    @if (loggedInUser.UserEmail is not null)
                                                     {
                                                         <a data-toggle="collapse" href="@("#collapseExample" + c.Id)" role="button" aria-expanded="false" aria-controls="@("collapseExample" + c.Id)" class="reply-btn">
                                                             Reply
@@ -86,7 +89,7 @@ else
                                                     </div>
                                                 </div>
 
-                                                @if (c.Replies!.Count() > 0)
+                                                @if (c.Replies is not null && c.Replies.Count() > 0)
                                                 {
                                                     <div class="comment-replies mb-5 p-3 mt-3 rounded">
                                                         <h6 class="comment-replies-title text-muted text-uppercase"> replies</h6>
@@ -119,7 +122,7 @@ else
                             </div>
                         </div>
                     }
-                    @if (loggedInUser is not null)
+                    @if (loggedInUser.UserEmail is not null)
                     {
                         <div class="row justify-content-center mb-5">
                             <div class="col-lg-10">
@@ -163,9 +166,11 @@ else
     public List<CommentDTO>? AllComments { get; set; }
     public List<CommentDTO>? TopLevelComments { get; set; }
     public string? inputedComment { get; set; }
-    UserDTO? loggedInUser { get; set; }
+    UserDTO loggedInUser { get; set; } = new();
     public bool isLoading { get; set; } = true;
 
+    [CascadingParameter]
+    Task<AuthenticationState>? AuthStateTask{ get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -175,12 +180,23 @@ else
 
         TopLevelComments = AllComments!.Where(x => x.ReplyId is null).ToList();
 
+        inputedComment = "";
 
-        if (userState!.User!.Identity!.IsAuthenticated)
+        if(AuthStateTask is not null)
         {
-            var authId = userState!.User!.Claims!.FirstOrDefault(x => x.Type == "authId")!.Value;
-            loggedInUser = await userService.GetAuthUser(authId);
+            var authState = await AuthStateTask;
+
+            if(authState is not null && authState.User is not null && authState.User.Identity is not null && authState.User.Identity.IsAuthenticated)
+            {
+                var authId = authState.User.Claims.FirstOrDefault(x => x.Type == "authId")!.Value;
+                var possibleUser = await userService.GetAuthUser(authId);
+                if (possibleUser is not null)
+                {
+                    loggedInUser = possibleUser;
+                }
+            }
         }
+
         isLoading = false;
     }
 
@@ -218,7 +234,7 @@ else
         await commentService.AddBlogComment(newRequest);
         inputedComment = "";
         blog = await service.GetBlog(blogId);
-        if(blog?.Comments is not null)
+        if (blog?.Comments is not null)
         {
             AllComments = blog.Comments;
         }

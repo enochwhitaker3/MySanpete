@@ -92,7 +92,12 @@ else
         currentUser = await userService.GetAuthUser(authId!);
         allUserVouchers = await userVoucherService.GetAllUserVouchers();
 
-        allUserVouchers = allUserVouchers.Where(x => x.User!.Id == currentUser!.Id).ToList();
+        allUserVouchers = allUserVouchers.Where(x => x.User!.Id == currentUser!.Id)
+            .GroupBy(x => x.Charge_Id)
+            .Where(x => x.Count() <= 1)
+            .Select(x => x.First())
+            .ToList();
+
         isLoading = false;
     }
 
