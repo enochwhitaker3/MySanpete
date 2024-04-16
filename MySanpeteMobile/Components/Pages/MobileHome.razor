@@ -12,6 +12,8 @@
 @using RazorClassLibrary.Services
 @using System.Text.Json
 
+@inject NavigationManager NavMan
+
 <div id="mapDiv" style="width:100vw;height:90vh;"></div>
 
 
@@ -25,7 +27,7 @@
                     <h3 style="font-size: 15px;">@o.Business!.BusinessName</h3>
                     <p class="card-subtitle mb-2 text-muted">@o.EndDate</p>
                     <p>@o.Description</p>
-                    <button class="p-1 px-3" style="border: 1px solid black; border-radius: 30px;">View Details</button>
+                    <button class="p-1 px-3" style="border: 1px solid black; border-radius: 30px;" @onclick="() => NavigateToDetails(o.Id)"> View Details</button>
                 </div>
             </div>
         }
@@ -49,9 +51,9 @@
         // try
         // {
 
-            AllBusinesses = await businessService.GetAllBusinesses();
-            AllOccasions = await occasionService.GetAllOcassions();
-            isLoading = false;
+        AllBusinesses = await businessService.GetAllBusinesses();
+        AllOccasions = await occasionService.GetAllOcassions();
+        isLoading = false;
         // }
         // catch (Exception ex)
         // {
@@ -64,22 +66,27 @@
         // try
         // {
 
-            AllBusinesses = await businessService.GetAllBusinesses();
+        AllBusinesses = await businessService.GetAllBusinesses();
         AllOccasions = await occasionService.GetAllOcassions();
-            jsonOccasions = JsonSerializer.Serialize(AllOccasions);
-            if (firstRender)
-            {
-                await JSRuntime.InvokeVoidAsync("initializeMap", MapsKey, jsonOccasions);
-            }
+        jsonOccasions = JsonSerializer.Serialize(AllOccasions);
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("initializeMap", MapsKey, jsonOccasions);
+        }
         // }
         // catch (Exception ex)
         // {
-            
+
         // }
     }
 
     public async Task focusMap(decimal? yCoord, decimal? xCoord)
     {
         await JSRuntime.InvokeVoidAsync("focusMap", yCoord, xCoord);
+    }
+
+    public void NavigateToDetails(int id)
+    {
+        NavMan.NavigateTo($"/view-event/{id}", true);
     }
 }

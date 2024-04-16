@@ -1,0 +1,8 @@
+﻿@page "/view-event/{EventId:int}"
+
+<RazorClassLibrary.Pages.ViewEvent eventId="@EventId"></RazorClassLibrary.Pages.ViewEvent>
+
+@code {
+    [Parameter]
+    public int EventId { get; set; }
+}
