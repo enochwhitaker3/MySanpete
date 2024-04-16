@@ -46,18 +46,36 @@
 
     protected override async Task OnInitializedAsync()
     {
-        AllBusinesses = await businessService.GetAllBusinesses();
-        isLoading = false;
+        // try
+        // {
+
+            AllBusinesses = await businessService.GetAllBusinesses();
+            AllOccasions = await occasionService.GetAllOcassions();
+            isLoading = false;
+        // }
+        // catch (Exception ex)
+        // {
+
+        // }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        AllBusinesses = await businessService.GetAllBusinesses();
-        jsonOccasions = JsonSerializer.Serialize(AllOccasions);
-        if (firstRender)
-        {
-            await JSRuntime.InvokeVoidAsync("initializeMap", MapsKey, jsonOccasions);
-        }
+        // try
+        // {
+
+            AllBusinesses = await businessService.GetAllBusinesses();
+        AllOccasions = await occasionService.GetAllOcassions();
+            jsonOccasions = JsonSerializer.Serialize(AllOccasions);
+            if (firstRender)
+            {
+                await JSRuntime.InvokeVoidAsync("initializeMap", MapsKey, jsonOccasions);
+            }
+        // }
+        // catch (Exception ex)
+        // {
+            
+        // }
     }
 
     public async Task focusMap(decimal? yCoord, decimal? xCoord)
