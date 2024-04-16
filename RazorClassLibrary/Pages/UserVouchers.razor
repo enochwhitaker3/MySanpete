@@ -58,7 +58,7 @@
     {
         if (AuthStateTask is null)
         {
-            throw new Exception("BWAH");
+            throw new Exception("User State Task was null");
         }
         var authState = await AuthStateTask;
         try
@@ -69,9 +69,8 @@
                 throw new Exception("User was not found");
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            errorMessage = ex.Message;
             navManager.NavigateTo("/", true);
         }
 
