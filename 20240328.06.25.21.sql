@@ -186,7 +186,10 @@ CREATE TABLE mysanpete.business (
     logo bytea,
     phone_number text,
     website text,
-    email text NOT NULL
+    email text NOT NULL,
+    x_coordinate float,
+    y_coordinate float,
+    description text
 );
 
 
@@ -278,7 +281,8 @@ CREATE TABLE mysanpete.podcast (
     id integer NOT NULL,
     podcast_name text NOT NULL,
     podcast_url text NOT NULL,
-    commentable boolean DEFAULT true NOT NULL
+    commentable boolean DEFAULT true NOT NULL,
+    publish_date timestamptz
 );
 
 
@@ -516,7 +520,9 @@ CREATE TABLE mysanpete.voucher (
     retail_price money,
     total_reclaimable integer,
     stripe_id text,
-    price_id text
+    price_id text,
+    is_active bool DEFAULT true,
+    is_bundle bool DEFAULT false
 );
 
 

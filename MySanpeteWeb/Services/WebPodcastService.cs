@@ -28,6 +28,7 @@ public class WebPodcastService : IPodcastService
             Commentable = request.Commentable,
             PodcastUrl = request.URL,
             PodcastName = request.PodcastName,
+            PublishDate = DateTime.Now.ToUniversalTime(),
         };
         await context.Podcasts.AddAsync(podcast);
         await context.SaveChangesAsync();
