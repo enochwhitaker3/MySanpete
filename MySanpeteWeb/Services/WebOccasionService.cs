@@ -60,10 +60,9 @@ public class WebOccasionService : IOccasionService
             YCoordinate = request.YCoordinate,
             Photo = request.Photo,
         };
-
         await context.Occasions.AddAsync(newOccasion);
         await context.SaveChangesAsync();
-        return newOccasion.ToDto();
+        return await GetOccasion(newOccasion.Id);
     }
 
     public async Task<bool> DeleteOccasion(int id)
@@ -86,14 +85,22 @@ public class WebOccasionService : IOccasionService
     {
         var context = await dbContextFactory.CreateDbContextAsync();
 
-        return await context.Occasions.Select(x => x.ToDto()).ToListAsync();
+        return await context.Occasions
+            .Include(x => x.Business)
+                .ThenInclude(x => x.Vouchers)
+            .Select(x => x.ToDto())
+            .ToListAsync();
     }
 
     public async Task<OccasionDTO> GetOccasion(int id)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
 
-        var isExist = await context.Occasions.Where(o => o.Id == id).FirstOrDefaultAsync();
+        var isExist = await context.Occasions
+            .Include(x => x.Business)
+                .ThenInclude(x => x.Vouchers)
+            .Where(o => o.Id == id)
+            .FirstOrDefaultAsync();
 
         if (isExist is null)
         {
@@ -107,7 +114,11 @@ public class WebOccasionService : IOccasionService
     {
         var context = await dbContextFactory.CreateDbContextAsync();
 
-        var occasionToPatch = await context.Occasions.Where(o => o.Id == occasion.Id).FirstOrDefaultAsync();
+        var occasionToPatch = await context.Occasions
+            .Include(x => x.Business)
+                .ThenInclude(x => x.Vouchers)
+            .Where(o => o.Id == occasion.Id)
+            .FirstOrDefaultAsync();
 
         if (occasionToPatch is null)
         {

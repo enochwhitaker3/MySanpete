@@ -19,15 +19,10 @@
     <div class="row flex-row flex-nowrap">
         @foreach (var o in AllOccasions)
         {
-            getBusinessName(o.BusinessId);
             <div class="col">
                 <div class="card card-block h-100 p-5" @onclick="() => focusMap(o.YCoordinate, o.XCoordinate)">
                     <h1>@o.Title</h1>
-                    @if(SelectedBusiness.BusinessName is null)
-                    {
-                        <h2>Business Not Found</h2>
-                    }
-                    <h2>@SelectedBusiness.BusinessName</h2>
+                    <h2>@o.Business!.BusinessName</h2>
                     <p class="card-subtitle mb-2 text-muted">@o.EndDate</p>
                     <p>@o.Description</p>
                     <button>View Details</button>
@@ -45,35 +40,46 @@
     public List<OccasionDTO> AllOccasions { get; set; } = new();
     public List<BusinessDTO> AllBusinesses { get; set; } = new();
     public BusinessDTO SelectedBusiness { get; set; } = new();
+    public bool isLoading { get; set; } = true;
 
     public string? jsonOccasions { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        AllOccasions = await occasionService.GetAllOcassions();
-        AllBusinesses = await businessService.GetAllBusinesses();
+        // try
+        // {
+
+            AllBusinesses = await businessService.GetAllBusinesses();
+            AllOccasions = await occasionService.GetAllOcassions();
+            isLoading = false;
+        // }
+        // catch (Exception ex)
+        // {
+
+        // }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        // try
+        // {
+
+            AllBusinesses = await businessService.GetAllBusinesses();
         AllOccasions = await occasionService.GetAllOcassions();
-        AllBusinesses = await businessService.GetAllBusinesses();
-        jsonOccasions = JsonSerializer.Serialize(AllOccasions);
-        if (firstRender)
-        {
-            await JSRuntime.InvokeVoidAsync("initializeMap", MapsKey, jsonOccasions);
-        }
+            jsonOccasions = JsonSerializer.Serialize(AllOccasions);
+            if (firstRender)
+            {
+                await JSRuntime.InvokeVoidAsync("initializeMap", MapsKey, jsonOccasions);
+            }
+        // }
+        // catch (Exception ex)
+        // {
+            
+        // }
     }
 
     public async Task focusMap(decimal? yCoord, decimal? xCoord)
     {
         await JSRuntime.InvokeVoidAsync("focusMap", yCoord, xCoord);
     }
-
-    public void getBusinessName(int businessID)
-    {
-        SelectedBusiness = AllBusinesses!.Where(x => x.Id == businessID)!.FirstOrDefault()!;
-    }
-
-    
 }

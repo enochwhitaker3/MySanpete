@@ -15,11 +15,11 @@ jobs:
         run: | 
             git clone https://${{secrets.MYSANPETEPAT}}@github.com/enochwhitaker3/MySanpete.git
         working-directory: ./../../../../
-    #   - name: "Lint and Build Warnings"
-    #     run: |
-    #         dotnet format --verify-no-changes
-    #         dotnet build --warnaserror
-    #     working-directory: ./../../../../MySanpete/MySanpeteWeb
+      - name: "Lint and Build Warnings"
+        run: |
+            dotnet build --warnaserror
+            dotnet format --verify-no-changes --no-restore
+        working-directory: ./../../../../MySanpete/MySanpeteWeb
       - name: "Integration tests"
         run: |
             dotnet test
@@ -30,8 +30,8 @@ jobs:
 
             docker push 144.17.92.12:5000/codebras/mysanpete:1
             
-            kubectl -n ethan delete configmap my-sanpete-postgres-init || true
-            kubectl -n ethan create configmap my-sanpete-postgres-init --from-file=20240328.06.25.21.sql
+            kubectl -n codebras delete configmap my-sanpete-postgres-init || true
+            kubectl -n codebras create configmap my-sanpete-postgres-init --from-file=20240328.06.25.21.sql
             
             cd ./Telemetry
             kubectl apply -f Kubernetes/
