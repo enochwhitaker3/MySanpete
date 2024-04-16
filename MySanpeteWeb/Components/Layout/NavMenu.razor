@@ -34,14 +34,14 @@
             }
             else
             {
-                <li class="nav-item dropdown" style="margin-right: 40px; background-color: rgba(7,9,14,0.6);">
+                <li class="nav-item dropdown" style="margin-right: 40px; ">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                         Profile
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown" >
                         @if (userState!.User.IsInRole("Admin"))
                         {
-                            <a class="dropdown-item" style=" color: white;" href="admin">Admin Controls</a>
+                            <a class="dropdown-item" href="admin">Admin Controls</a>
                         }
                         <a class="dropdown-item" href="/Account">My Account</a>
                         <a class="dropdown-item"  href="/user-vouchers">My Vouchers</a>
