@@ -20,12 +20,12 @@
         @foreach (var o in AllOccasions)
         {
             <div class="col">
-                <div class="card card-block h-100 p-5" @onclick="() => focusMap(o.YCoordinate, o.XCoordinate)">
-                    <h1>@o.Title</h1>
-                    <h2>@o.Business!.BusinessName</h2>
+                <div class="card card-block h-100 p-4" @onclick="() => focusMap(o.YCoordinate, o.XCoordinate)">
+                    <h1 style="font-size: 20px;">@o.Title</h1>
+                    <h3 style="font-size: 15px;">@o.Business!.BusinessName</h3>
                     <p class="card-subtitle mb-2 text-muted">@o.EndDate</p>
                     <p>@o.Description</p>
-                    <button>View Details</button>
+                    <button class="p-1 px-3" style="border: 1px solid black; border-radius: 30px;">View Details</button>
                 </div>
             </div>
         }
