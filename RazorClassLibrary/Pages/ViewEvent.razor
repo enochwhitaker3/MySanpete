@@ -2,15 +2,16 @@
 
 @if (Event is not null)
 {
-    <div class="container">
+    <div class="container" style="height: 90vh;">
         <div class="row">
             <div class="col-md-6">
-                <img width="300" src="@Event.PhotoURL" b class="img-fluid rounded-circle" />
+                <img src="@Event.PhotoURL" class="img-fluid m-0 mb-3" />
             </div>
             <div class="col-md-6">
                 <h2>@Event.Title</h2>
                 <p>@Event.Description</p>
-                <p>Put on by: @Event</p>
+                <p>Hosted by <strong>@Event?.Business?.BusinessName</strong></p>
+                <p style="color: gray;">@Event?.StartDate to @Event?.EndDate</p>
 
             </div>
         </div>
@@ -32,5 +33,4 @@ else
     {
         Event = await occasionService.GetOccasion(EventId);
     }
-
 }
