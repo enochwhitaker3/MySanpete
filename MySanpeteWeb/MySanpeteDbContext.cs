@@ -167,10 +167,13 @@ public partial class MySanpeteDbContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Address).HasColumnName("address");
             entity.Property(e => e.BusinessName).HasColumnName("business_name");
+            entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.Email).HasColumnName("email");
             entity.Property(e => e.Logo).HasColumnName("logo");
             entity.Property(e => e.PhoneNumber).HasColumnName("phone_number");
             entity.Property(e => e.Website).HasColumnName("website");
+            entity.Property(e => e.XCoordinate).HasColumnName("x_coordinate");
+            entity.Property(e => e.YCoordinate).HasColumnName("y_coordinate");
         });
 
         modelBuilder.Entity<EndUser>(entity =>
@@ -226,6 +229,7 @@ public partial class MySanpeteDbContext : DbContext
                 .HasColumnName("commentable");
             entity.Property(e => e.PodcastName).HasColumnName("podcast_name");
             entity.Property(e => e.PodcastUrl).HasColumnName("podcast_url");
+            entity.Property(e => e.PublishDate).HasColumnName("publish_date");
         });
 
         modelBuilder.Entity<PodcastComment>(entity =>
@@ -397,6 +401,12 @@ public partial class MySanpeteDbContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.BusinessId).HasColumnName("business_id");
             entity.Property(e => e.EndDate).HasColumnName("end_date");
+            entity.Property(e => e.IsActive)
+                .HasDefaultValue(true)
+                .HasColumnName("is_active");
+            entity.Property(e => e.IsBundle)
+                .HasDefaultValue(false)
+                .HasColumnName("is_bundle");
             entity.Property(e => e.PriceId).HasColumnName("price_id");
             entity.Property(e => e.PromoCode).HasColumnName("promo_code");
             entity.Property(e => e.PromoDescription).HasColumnName("promo_description");
