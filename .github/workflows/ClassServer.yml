@@ -18,8 +18,7 @@ jobs:
       - name: "Lint and Build Warnings"
         run: |
             dotnet build --warnaserror
-            cd ..
-            dotnet format --verify-no-changes
+            dotnet format --verify-no-changes --no-restore
         working-directory: ./../../../../MySanpete/MySanpeteWeb
       - name: "Integration tests"
         run: |
