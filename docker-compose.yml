@@ -47,5 +47,53 @@ services:
       # - 80:80 #optional
     restart: unless-stopped
 
+  blackbox:
+    image: prom/blackbox-exporter:v0.12.0
+    command:
+    - --config.file=/etc/blackbox/blackbox.yml
+    volumes:
+    - ./Telemetry/blackbox.yml:/etc/blackbox/blackbox.yml
+    depends_on:
+        - mysanpeteweb
+
+  prometheus:
+    image: prom/prometheus:v2.5.0
+    command:
+    - --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+    - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+    - blackbox
+
+  otel-collector:
+    hostname: otel
+    image: otel/opentelemetry-collector-contrib:0.75.0
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - ./otel.yml:/etc/otel-collector-config.yaml
+    restart: unless-stopped
+
+  loki:
+    image: grafana/loki:2.8.0
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:  
+      - ./loki.yml:/etc/loki/local-config.yaml
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:9.4.7
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - grafana-data:/var/lib/grafana
+      - ./Telemetry/grafana:/etc/grafana/provisioning
+    ports:
+     - 3210:3000
+
 volumes:
+  grafana-data:
   swag-data:
