@@ -92,7 +92,7 @@ services:
       - grafana-data:/var/lib/grafana
       - ./Telemetry/grafana:/etc/grafana/provisioning
     ports:
-     - 3210:3000
+     - 3211:3000
 
 volumes:
   grafana-data:
