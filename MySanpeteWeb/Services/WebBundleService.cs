@@ -259,7 +259,7 @@ public class WebBundleService : IBundleService
                     .ThenInclude(x => x!.Business)
             .Include(x => x.BundleVouchers)
                 .ThenInclude(x => x.Voucher)
-                    .ThenInclude(x => x.UserVouchers)
+                    .ThenInclude(x => x!.UserVouchers)
             .FirstOrDefaultAsync(x => x.Id == buc.Id);
 
         return newBundle!.ToDto();
