@@ -15,11 +15,12 @@ jobs:
         run: | 
             git clone https://${{secrets.MYSANPETEPAT}}@github.com/enochwhitaker3/MySanpete.git
         working-directory: ./../../../../
-    #   - name: "Lint and Build Warnings"
-    #     run: |
-    #         dotnet format --verify-no-changes
-    #         dotnet build --warnaserror
-    #     working-directory: ./../../../../MySanpete/MySanpeteWeb
+      - name: "Lint and Build Warnings"
+        run: |
+            dotnet build --warnaserror
+            cd ..
+            dotnet format --verify-no-changes
+        working-directory: ./../../../../MySanpete/MySanpeteWeb
       - name: "Integration tests"
         run: |
             dotnet test

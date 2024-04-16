@@ -10,5 +10,5 @@ public class PurchaseBundleRequest
 {
     public int BundleId { get; set; }
     public string? UserId { get; set; }
-    public string? PriceId { get; set; }    
+    public string? PriceId { get; set; }
 }
