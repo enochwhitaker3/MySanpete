@@ -12,17 +12,21 @@
 
 @attribute [Authorize]
 
-<div style="height: 80vh; margin-top: 100px">
+<div style="padding-bottom: 25px;">
     @if (bundle is not null)
     {
         <div class="container">
             <div class="content rounded-3 shadow">
+                <center>
+                    <h2>@bundle.Name</h2>
+                    <p>@bundle.Name is good through @bundle.EndDate</p>
+                </center>
+                <hr />
                 <div class="row">
                     <div class="col-md-6">
                         <img width="300" src="Images/My_Sanpete.png" class="img-fluid img rounded-circle" />
                     </div>
                     <div class="col-md-6">
-                        <h2>@bundle.Name</h2>
                         @foreach (var voucher in bundle!.Vouchers!)
                         {
                             @if (voucher is not null)
@@ -31,7 +35,7 @@
                                     <div class="content rounded-3 shadow">
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <img width="300" src="@voucher.BusinessLogoURL" class="img-fluid img rounded-circle" />
+                                                <img width="300" src="@voucher.BusinessLogoURL" class="img-fluid img rounded-circle" style="padding-left: 5px" />
                                             </div>
                                             <div class="col-md-6">
                                                 <h2>@voucher.PromoName</h2>
@@ -43,15 +47,19 @@
                                         </div>
                                     </div>
                                 </div>
+                                <br />
                             }
                         }
-                        <p>Bundle Is Good through @bundle.EndDate</p>
-                        <form method="post" @formname="checkout" @onsubmit="Checkout">
-                            <button type="submit" class="btn btn-primary">
-                                Checkout with Stripe
-                            </button>
-                            <AntiforgeryToken />
-                        </form>
+                        <div class="container" style="padding-bottom: 10px; padding-top: 10px;">
+                            <form method="post" @formname="checkout" @onsubmit="Checkout" style="justify-content: right">
+                                <div class="card" >
+                                    <button type="submit" class="btn btn-primary">
+                                        Checkout with Stripe
+                                    </button>
+                                    <AntiforgeryToken />
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -93,9 +101,9 @@
                 throw new Exception("User was not found");
             }
 
-            bundle = await bundleService.GetBundle(bundleId);   
+            bundle = await bundleService.GetBundle(bundleId);
         }
-        catch(Exception)
+        catch (Exception)
         {
             navManager.NavigateTo("/404", true);
         }

@@ -12,6 +12,7 @@ public partial class Podcast
     public string PodcastUrl { get; set; } = null!;
 
     public bool Commentable { get; set; }
+    public DateTime? PublishDate { get; set; }
 
     public virtual ICollection<PodcastComment> PodcastComments { get; set; } = new List<PodcastComment>();
 

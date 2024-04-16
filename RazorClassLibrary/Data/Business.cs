@@ -19,6 +19,12 @@ public partial class Business
 
     public string Email { get; set; } = null!;
 
+    public string? Description { get; set; }
+
+    public double? XCoordinate { get; set; }
+
+    public double? YCoordinate { get; set; }
+
     public virtual ICollection<Occasion> Occasions { get; set; } = new List<Occasion>();
 
     public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();

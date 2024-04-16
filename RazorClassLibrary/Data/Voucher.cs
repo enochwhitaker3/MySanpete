@@ -30,6 +30,10 @@ public partial class Voucher
 
     public string? PriceId { get; set; }
 
+    public bool? IsBundle { get; set; }
+
+    public bool? IsActive { get; set; }
+
     public virtual ICollection<BundleVoucher> BundleVouchers { get; set; } = new List<BundleVoucher>();
 
     public virtual Business Business { get; set; } = null!;
