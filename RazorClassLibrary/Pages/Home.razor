@@ -4,6 +4,7 @@
 @inject IVoucherService voucherService
 @inject NavigationManager NavMan
 @inject IBusinessService businessService
+@inject IOccasionService occasionService
 
 
 <div class="full-page">
@@ -97,96 +98,71 @@
                 <div class="carousel-item active">
                     <div class="cards-wrapper">
                         <div class="w-100 mt-10 pb-15 d-flex justify-content-center">
-                            <div class="event-card row shadow" style="max-width: 55vw;">
+                            <a class="event-card row shadow" href="/view-event/@firstOccasion.Id" style="max-width: 55vw;">
                                 <div class="event-date col-3 d-flex align-items-center" style="background-image: url(Images/green_wave.svg); background-repeat: repeat-y;">
                                     <div class="event-date">
-                                        <h2>MAY</h2>
-                                        <h2>24</h2>
+                                        <h2>@firstOccasion.StartDate.ToString("MMMM")</h2>
+                                        <h2>@firstOccasion.StartDate.Day</h2>
                                     </div>
                                 </div>
                                 <div class="event-details col-6 d-grid align-content-center" style="color: black">
-                                    <h2>Scandinavian Days</h2>
-                                    <h4>12PM - 8:30PM</h4>
+                                    <h2>@firstOccasion.Title</h2>
+                                    <h4>@firstOccasion.StartDate.ToString("hh:mm tt") - @firstOccasion.EndDate.ToString("hh:mm tt")</h4>
                                     <h4>
-                                        Come and join for Scandinavia Festivities!
+                                        @firstOccasion.Description
                                     </h4>
                                 </div>
                                 <div class="col-3 d-flex" style="padding-right: 0 !important; max-height:25vh;">
-                                    <img src="https://scandinavianfestival.org/wp-content/uploads/2023/03/p3.png" style="width: 100%; object-fit: cover; object-position: center;" />
+                                    <img src="@firstOccasion.PhotoURL" style="width: 100%; object-fit: cover; object-position: center;" />
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     </div>
                 </div>
-                <div class="carousel-item">
-                    <div class="cards-wrapper">
-                        <div class="w-100 mt-10 pb-15 d-flex justify-content-center">
-                            <div class="event-card row shadow" style="max-width: 55vw;">
-                                <div class="event-date col-3 d-flex align-items-center" style="background-image: url(Images/green_wave.svg); background-repeat: repeat-y;">
-                                    <div class="event-date">
-                                        <h2>MAY</h2>
-                                        <h2>25</h2>
+                @foreach (var o in restOccasions)
+                {
+                    o.StartDate = o.StartDate.AddHours(-6);
+                    o.EndDate = o.EndDate.AddHours(-6);
+                    <div class="carousel-item">
+                        <div class="cards-wrapper">
+                            <div class="w-100 mt-10 pb-15 d-flex justify-content-center">
+                                <a class="event-card row shadow" href="/view-event/@o.Id"  style="max-width: 55vw;">
+                                    <div class="event-date col-3 d-flex align-items-center" style="background-image: url(Images/green_wave.svg); background-repeat: repeat-y;">
+                                        <div class="event-date">
+                                            <h2>@o.StartDate.ToString("MMMM")</h2>
+                                            <h2>@o.StartDate.Day</h2>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="event-details col-6 d-grid align-content-center" style="color: black">
-                                    <h2>Nordic Fun Run</h2>
-                                    <h4>6:30AM</h4>
-                                    <h4>
-                                        Join us for our Festival Races! All ages are welcome!
-                                    </h4>
-                                </div>
-                                <div class="col-3 d-flex" style="padding-right: 0 !important; max-height:25vh;">
-                                    <img src="https://scandinavianfestival.org/wp-content/uploads/2023/03/race.png" style="width: 100%; object-fit: cover;" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="cards-wrapper">
-
-                        <div class="w-100 mt-10 pb-15 d-flex justify-content-center">
-                            <div class="event-card row shadow" style="max-width: 55vw;">
-                                <div class="event-date col-3 d-flex align-items-center" style="background-image: url(Images/green_wave.svg); background-repeat: repeat-y;">
-                                    <div class="event-date">
-                                        <h2>MAY</h2>
-                                        <h2>25</h2>
+                                    <div class="event-details col-6 d-grid align-content-center" style="color: black">
+                                        <h2>@o.Title</h2>
+                                        <h4>@o.StartDate.ToString("hh:mm tt") - @o.EndDate.ToString("hh:mm tt")</h4>
+                                        <h4>
+                                            @o.Description
+                                        </h4>
                                     </div>
-                                </div>
-                                <div class="event-details col-6 d-grid align-content-center" style="color: black">
-                                    <h2>Axe Throwing</h2>
-                                    <h4>10AM - 6PM</h4>
-                                    <h4>
-                                        Axe Throwing and Viking Games open to the public
-                                    </h4>
-                                </div>
-                                <div class="col-3 d-flex" style="padding-right: 0 !important; max-height:25vh;">
-                                    <img src="https://scandinavianfestival.org/wp-content/uploads/2022/11/cropped-slide6.png" style="width: 100%; object-fit: cover; object-position: center;" />
-                                </div>
+                                    <div class="col-3 d-flex" style="padding-right: 0 !important; max-height:25vh;">
+                                        <img src="@o.PhotoURL" style="width: 100%; object-fit: cover;" />
+                                    </div>
+                                </a>
                             </div>
                         </div>
                     </div>
-                </div>
+                }
             </div>
-            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+            <a class="carousel-control-prev ml-10" href="#carouselExampleControls" role="button" data-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="sr-only">Previous</span>
             </a>
-            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+            <a class="carousel-control-next mr-10" href="#carouselExampleControls" role="button" data-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="sr-only">Next</span>
             </a>
         </div>
-
-
-
-
-
-        <div class="d-flex justify-content-center m-5 mt-0">
-            <a href="/events">
-                <button class="button2 shadow">
-                Discover More
-                </button>
+        <div class="download-button d-flex p-3 align-content-center justify-content-center">
+            <a class="playstore-button" href="/#" style="color: black !important;">
+                <span class="texts" style="margin-left:0px;">
+                    <span class="text-2">Discover More</span>
+                </span>
             </a>
         </div>
     </div>
@@ -223,10 +199,12 @@
                     <p>Keep in touch with content that can help your business stand out.</p>
                 </div>
             </div>
-            <div class="d-flex justify-content-center m-5 mt-0">
-                <button class="button2 shadow">
-                    Contact Now
-                </button>
+            <div class="download-button d-flex p-3 align-content-center justify-content-center">
+                <a class="playstore-button" href="/#" style="color: black !important;">
+                    <span class="texts" style="margin-left:0px;">
+                        <span class="text-2">Contact Now</span>
+                    </span>
+                </a>
             </div>
         </div>
     </div>
@@ -234,22 +212,25 @@
     <!-- Download Our App Section-->
     <div class="app-container">
         <div class="app-header row g-0 p-5 pb-0 w-100 d-flex justify-content-center">
-            <img class="lg-view app-person col-6 img-fluid" src="Images/app.svg" />
+            <img class="lg-view app-person col-6 img-fluid" src="Images/app.svg" style="width:35% !important" />
             <img class="sm-view app-person col-12 img-fluid" src="Images/app.svg" />
-            <span class="lg-view col-6" style="font-family: Inter-Bold">Discover exciting events near you and unlock exclusive deals with MySanpete! Download our app now to stay updated on the latest happenings in Sanpete County and enjoy great savings through our exclusive vouchers and coupons. Whether you're looking for entertainment, dining, or shopping deals, MySanpete has you covered. Don't miss out on the fun – download MySanpete today and start exploring Sanpete County like never before!</span>
-            <span class="sm-view col-12 text-center p-3" style="font-family: Inter-Bold">Discover exciting events near you and unlock exclusive deals with MySanpete! Download our app today!</span>
-        </div>
-        <div class="download-button d-flex p-3 justify-content-center" >
-            <a class="playstore-button">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="google-icon" viewBox="0 0 512 512">
-                    <path d="M99.617 8.057a50.191 50.191 0 00-38.815-6.713l230.932 230.933 74.846-74.846L99.617 8.057zM32.139 20.116c-6.441 8.563-10.148 19.077-10.148 30.199v411.358c0 11.123 3.708 21.636 10.148 30.199l235.877-235.877L32.139 20.116zM464.261 212.087l-67.266-37.637-81.544 81.544 81.548 81.548 67.273-37.64c16.117-9.03 25.738-25.442 25.738-43.908s-9.621-34.877-25.749-43.907zM291.733 279.711L60.815 510.629c3.786.891 7.639 1.371 11.492 1.371a50.275 50.275 0 0027.31-8.07l266.965-149.372-74.849-74.847z"></path>
-                </svg>
-                <span class="texts">
-                    <span class="text-1">GET IT ON</span>
-                    <span class="text-2">Google Play</span>
+            <span class="discover col-6 text-center p-3">
+                Discover exciting events near you and unlock exclusive deals with MySanpete! Download our app today!
+                <span class="download-button d-flex p-3 justify-content-center">
+                    <a class="playstore-button" style="font-size: calc(.5em - 0.1vw);">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="google-icon" viewBox="0 0 512 512">
+                            <path d="M99.617 8.057a50.191 50.191 0 00-38.815-6.713l230.932 230.933 74.846-74.846L99.617 8.057zM32.139 20.116c-6.441 8.563-10.148 19.077-10.148 30.199v411.358c0 11.123 3.708 21.636 10.148 30.199l235.877-235.877L32.139 20.116zM464.261 212.087l-67.266-37.637-81.544 81.544 81.548 81.548 67.273-37.64c16.117-9.03 25.738-25.442 25.738-43.908s-9.621-34.877-25.749-43.907zM291.733 279.711L60.815 510.629c3.786.891 7.639 1.371 11.492 1.371a50.275 50.275 0 0027.31-8.07l266.965-149.372-74.849-74.847z"></path>
+                        </svg>
+                        <span class="texts">
+                            <span class="text-1">GET IT ON</span>
+                            <span class="text-2">Google Play</span>
+                        </span>
+                    </a>
                 </span>
-            </a>
+            </span>
+
         </div>
+
 
     </div>
 
@@ -260,14 +241,24 @@
 @code {
     public List<VoucherDTO> allVouchers { get; set; } = new();
     public List<BusinessDTO> allBusinesses { get; set; } = new();
+    public OccasionDTO firstOccasion { get; set; } = new();
+    public List<OccasionDTO> restOccasions { get; set; } = new();
     public bool isLoading { get; set; } = true;
 
     protected override async Task OnInitializedAsync()
     {
         isLoading = true;
+
         allVouchers = await voucherService.GetAllVouchers();
         allVouchers = allVouchers.Where(x => x.EndDate >= DateTime.UtcNow).ToList();
         allBusinesses = await businessService.GetAllBusinesses();
+
+        restOccasions = await occasionService.GetAllOcassions();
+        firstOccasion = restOccasions.FirstOrDefault()!;
+        firstOccasion.StartDate = firstOccasion.StartDate.AddHours(-6);
+        firstOccasion.EndDate = firstOccasion.EndDate.AddHours(-6);
+        restOccasions.Remove(firstOccasion);
+
         isLoading = false;
     }
 

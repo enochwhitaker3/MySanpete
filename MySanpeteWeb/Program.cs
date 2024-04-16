@@ -17,6 +17,8 @@ using DotNetEnv.Configuration;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using MySanpeteWeb.Data;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Logs;
 
 
 
@@ -82,6 +84,24 @@ builder.Services.AddLazyCache(serviceProvider =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+//Telemetry
+
+const string serviceName = "MySanpete";
+
+builder.Logging.AddOpenTelemetry(options =>
+{
+    options
+        .SetResourceBuilder(
+            ResourceBuilder.CreateDefault()
+                .AddService(serviceName))
+        .AddOtlpExporter(o =>
+        {
+            o.Endpoint = new Uri("http://otel-collector:4317");
+        })
+       //.AddConsoleExporter()
+       ;
+});
 
 builder.Services.AddAuth0WebAppAuthentication(options =>
 {

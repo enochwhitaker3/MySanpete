@@ -48,17 +48,17 @@
     <tr>
       <td>near real time logs</td>
       <td>04/13/2024</td>
-      <td></td>
+      <td>X</td>
     </tr>
     <tr>
       <td>Automated building enforcing no build warnings</td>
       <td>04/13/2024</td>
-      <td></td>
+      <td>X</td>
     </tr>
     <tr>
       <td>Automated linting enforcing code style</td>
       <td>04/13/2024</td>
-      <td></td>
+      <td>X</td>
     </tr>
      <tr>
       <td>Automated testing (unit and integration testing)</td>
@@ -108,7 +108,7 @@
     <tr>
       <td>Need kubernetes</td>
       <td>04/13/2024</td>
-      <td></td>
+      <td>X</td>
     </tr>
     <tr>
       <td>duckdns subdomain is the commit id?</td>

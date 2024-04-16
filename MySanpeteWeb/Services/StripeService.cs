@@ -183,7 +183,7 @@ public class StripeService : IStripeService
                 Currency = "usd",
                 UnitAmount = numberOfCents
             },
-            
+
         };
         var service = new ProductService();
         var result = service.Create(options);

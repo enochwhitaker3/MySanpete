@@ -154,15 +154,15 @@ public static class DtoConverter
 
     public static OccasionDTO ToDto(this Occasion occasion)
     {
-        return new OccasionDTO() 
-        { 
+        return new OccasionDTO()
+        {
             Id = occasion.Id,
             Title = occasion.Title,
             XCoordinate = occasion.XCoordinate,
             YCoordinate = occasion.YCoordinate,
-            StartDate   = occasion.StartDate,
+            StartDate = occasion.StartDate,
             EndDate = occasion.EndDate,
-            BusinessId  = occasion.BusinessId,
+            BusinessId = occasion.BusinessId,
             Description = occasion.Description,
             Business = occasion.Business.ToDto(),
             PhotoURL = $"https://mysanpete.azurewebsites.net/api/image/occasion/{occasion.Id}"
