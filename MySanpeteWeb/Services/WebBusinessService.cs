@@ -52,6 +52,12 @@ public class WebBusinessService : IBusinessService
         }
         var coords = await googleApiService.GetCoordsOfAddress(business.Address);
 
+        if (coords is not null)
+        {
+            business.XCoordinate = coords.X;
+            business.YCoordinate = coords.Y;
+        }
+
         await context.Businesses.AddAsync(business);
         await context.SaveChangesAsync();
 
