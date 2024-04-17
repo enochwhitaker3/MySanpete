@@ -6,6 +6,7 @@ namespace RazorClassLibrary.DTOs;
 
 public static class DtoConverter
 {
+    public static string websiteUrl { get; set; } = "https://mysanpete.azurewebsites.net";
     public static UserDTO ToDto(this EndUser user)
     {
         return new UserDTO()
@@ -14,7 +15,7 @@ public static class DtoConverter
             Guid = user.Guid,
             Username = user.UserName,
             UserEmail = user.UserEmail,
-            PhotoURL = $"https://mysanpete.azurewebsites.net/api/image/user/{user.Id}", // $"https://localhost:7059/api/image/user/{user.Id}",
+            PhotoURL = $"{websiteUrl}/api/image/user/{user.Id}", // $"https://localhost:7059/api/image/user/{user.Id}",
         };
     }
 
@@ -29,7 +30,7 @@ public static class DtoConverter
         {
             Id = voucher.Id,
             BusinessName = voucher.Business.BusinessName,
-            BusinessLogoURL = $"https://mysanpete.azurewebsites.net/api/image/business/{voucher.Business.Id}",
+            BusinessLogoURL = $"{websiteUrl}/api/image/business/{voucher.Business.Id}",
             StartDate = voucher.StartDate,
             EndDate = voucher.EndDate,
             PromoCode = voucher.PromoCode,
@@ -53,7 +54,7 @@ public static class DtoConverter
             AuthorName = blog.Author.UserName,
             PublishDate = blog.PublishDate,
             Commentable = blog.Commentable,
-            PhotoURL = $"https://mysanpete.azurewebsites.net/api/image/blogs/{blog.Id}",
+            PhotoURL = $"{websiteUrl}/api/image/blogs/{blog.Id}",
             Comments = blog.BlogComments.Select(x => x.Comment.ToDto()).ToList(),
             Reactions = blog.BlogReactions.Select(x => x.Reaction).ToList()
         };
@@ -68,7 +69,7 @@ public static class DtoConverter
             Content = comment.CommentText,
             Replies = comment.InverseReply.Where(x => x.ReplyId == comment.Id).Select(x => x.ToDto()).ToList(),
             UserName = comment.User.UserName,
-            UserPhotoURL = $"https://mysanpete.azurewebsites.net/api/image/user/{comment.User.Id}",
+            UserPhotoURL = $"{websiteUrl}/api/image/user/{comment.User.Id}",
             PostedDate = comment.PostDate,
         };
     }
@@ -145,7 +146,7 @@ public static class DtoConverter
             Address = business.Address,
             BusinessName = business.BusinessName,
             Email = business.Email,
-            LogoURL = $"https://mysanpete.azurewebsites.net/api/image/business/{business.Id}",
+            LogoURL = $"{websiteUrl}/api/image/business/{business.Id}",
             PhoneNumber = business.PhoneNumber,
             WebsiteURL = business.Website,
             Vouchers = vouchers,
@@ -168,7 +169,7 @@ public static class DtoConverter
             BusinessId = occasion.BusinessId,
             Description = occasion.Description,
             Business = occasion.Business.ToDto(),
-            PhotoURL = $"https://mysanpete.azurewebsites.net/api/image/occasion/{occasion.Id}"
+            PhotoURL = $"{websiteUrl}/api/image/occasion/{occasion.Id}"
         };
 
     }
