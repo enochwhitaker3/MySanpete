@@ -93,12 +93,12 @@
     <tr>
       <td>automated backups of persistant storage (database and other volumes)</td>
       <td>04/27/2024</td>
-      <td></td>
+      <td>X</td>
     </tr>
     <tr>
       <td>automated restore of persistant storage</td>
       <td>04/27/2024</td>
-      <td></td>
+      <td>X</td>
     </tr>
     <tr>
       <td>feature flags</td>
@@ -113,7 +113,7 @@
     <tr>
       <td>duckdns subdomain is the commit id?</td>
       <td>04/20/2024</td>
-      <td></td>
+      <td>X</td>
     </tr>
     <tr>
       <td>turn on at the beginning of the pull request</td>

@@ -19,6 +19,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using MySanpeteWeb.Data;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Logs;
+using RazorClassLibrary.DTOs;
 
 
 
@@ -118,6 +119,8 @@ builder.Configuration
 .AddEnvironmentVariables();
 
 FeatureFlag.IsAvailable = builder.Configuration.GetValue<string>(FeatureFlag.FeatureFlagName) == "true";
+
+DtoConverter.websiteUrl = builder.Configuration.GetValue<string>("WebsiteUrl") ?? "https://mysanpete.azurewebsites.net";
 
 var app = builder.Build();
 
