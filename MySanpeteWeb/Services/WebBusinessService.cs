@@ -10,9 +10,11 @@ namespace MySanpeteWeb.Services;
 public class WebBusinessService : IBusinessService
 {
     private IDbContextFactory<MySanpeteDbContext> dbContextFactory;
-    public WebBusinessService(IDbContextFactory<MySanpeteDbContext> dbContextFactory)
+    private IGoogleApiService googleApiService;
+    public WebBusinessService(IDbContextFactory<MySanpeteDbContext> dbContextFactory, IGoogleApiService googleApiService)
     {
         this.dbContextFactory = dbContextFactory;
+        this.googleApiService = googleApiService;
     }
     public async Task<BusinessDTO?> AddBusiness(AddBusinessRequest request)
     {
@@ -47,6 +49,13 @@ public class WebBusinessService : IBusinessService
         if (business.Email == "" || business.Email is null)
         {
             throw new Exception("Can't make a business without an email");
+        }
+        var coords = await googleApiService.GetCoordsOfAddress(business.Address);
+
+        if (coords is not null)
+        {
+            business.XCoordinate = coords.X;
+            business.YCoordinate = coords.Y;
         }
 
         await context.Businesses.AddAsync(business);

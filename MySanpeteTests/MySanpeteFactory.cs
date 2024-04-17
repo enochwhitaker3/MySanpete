@@ -40,6 +40,8 @@ public class MySanpeteFactory : WebApplicationFactory<Program>, IAsyncLifetime
             services.AddDbContextFactory<MySanpeteDbContext>(options => options.UseNpgsql(_dbContainer.GetConnectionString()));
             services.RemoveAll(typeof(IStripeService));
             services.AddScoped<IStripeService, DummyStripeService>();
+            services.RemoveAll(typeof(IGoogleApiService));
+            services.AddSingleton<IGoogleApiService, StubGoogleApiService>();
         });
     }
     public async Task InitializeAsync()

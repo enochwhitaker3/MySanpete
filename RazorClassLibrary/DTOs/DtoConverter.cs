@@ -148,7 +148,10 @@ public static class DtoConverter
             LogoURL = $"https://mysanpete.azurewebsites.net/api/image/business/{business.Id}",
             PhoneNumber = business.PhoneNumber,
             WebsiteURL = business.Website,
-            Vouchers = vouchers
+            Vouchers = vouchers,
+            Description = business.Description,
+            XCoordinate = business.XCoordinate,
+            YCoordinate = business.YCoordinate
         };
     }
 
@@ -175,7 +178,7 @@ public static class DtoConverter
         return new UserOccasionDTO()
         {
             Id = userOccasion.Id,
-            Occasion = userOccasion.Occasion,
+            Occasion = userOccasion.Occasion.ToDto(),
             User = userOccasion.User.ToDto()
         };
     }

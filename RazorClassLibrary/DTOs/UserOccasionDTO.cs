@@ -10,6 +10,6 @@ namespace RazorClassLibrary.DTOs;
 public class UserOccasionDTO
 {
     public int Id { get; set; }
-    public Occasion? Occasion { get; set; }
+    public OccasionDTO? Occasion { get; set; }
     public UserDTO? User { get; set; }
 }

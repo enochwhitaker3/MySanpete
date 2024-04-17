@@ -100,7 +100,7 @@ public class WebUserOccasionService : IUserOccasionService
         return allUserOccasions!;
     }
 
-    public async Task<List<UserOccasionDTO?>> GetAllUserOccasionsByUser(Guid userGuid)
+    public async Task<List<UserOccasionDTO?>> GetAllUserOccasionsByUser(Guid? userGuid)
     {
         using var context = await dbContextFactory.CreateDbContextAsync();
 

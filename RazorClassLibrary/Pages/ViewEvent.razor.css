@@ -36,6 +36,10 @@ button {
     padding: 10px;
 }
 
+.close {
+    background-color: transparent !important;
+}
+
     button:hover {
         background-color: white;
         color: black;

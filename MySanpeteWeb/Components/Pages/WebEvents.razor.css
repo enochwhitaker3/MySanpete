@@ -83,6 +83,10 @@ a:hover{
     height: 40vh;
 }
 
+.close {
+    background-color: transparent !important;
+}
+
 
 
 
