@@ -14,33 +14,33 @@
 
 @inject NavigationManager NavMan
 
-@if(isLoading)
+@if (isLoading)
 {
     <RazorClassLibrary.Pages.LoadingComponent />
 }
 else
 {
 
-<div id="mapDiv" style="width:100vw;height:90vh;"></div>
+    <div id="mapDiv" style="width:100vw;height:90vh;"></div>
 
 
-<div class="container-fluid scroll-container">
-    <div class="row flex-row flex-nowrap">
-        @foreach (var o in AllOccasions)
-        {
-            <div class="col">
-                <div class="card card-block h-100 p-4" @onclick="() => focusMap(o.YCoordinate, o.XCoordinate)">
-                    <h1 style="font-size: 20px;">@o.Title</h1>
-                    <h3 style="font-size: 15px;">@o.Business!.BusinessName</h3>
-                    <p class="card-subtitle mb-2 text-muted">@o.EndDate</p>
-                    <p>@o.Description</p>
-                    <button class="p-1 px-3" style="border: 1px solid black; border-radius: 30px;" @onclick="() => NavigateToDetails(o.Id)"> View Details</button>
+    <div class="container-fluid scroll-container">
+        <div class="row flex-row flex-nowrap">
+            @foreach (var o in AllOccasions)
+            {
+                <div class="col">
+                    <div class="card card-block h-100 p-4" @onclick="() => focusMap(o.YCoordinate, o.XCoordinate)">
+                        <h1 style="font-size: 20px;">@o.Title</h1>
+                        <h3 style="font-size: 15px;">@o.Business!.BusinessName</h3>
+                        <p class="card-subtitle mb-2 text-muted">@o.EndDate</p>
+                        <p>@o.Description</p>
+                        <button class="p-1 px-3" style="border: 1px solid black; border-radius: 30px;" @onclick="() => NavigateToDetails(o.Id)"> View Details</button>
+                    </div>
                 </div>
-            </div>
-        }
-      
+            }
+
+        </div>
     </div>
-</div>
 }
 
 @code {
@@ -83,6 +83,8 @@ else
 
     public void NavigateToDetails(int id)
     {
+
         NavMan.NavigateTo($"/view-event/{id}", true);
+
     }
 }
