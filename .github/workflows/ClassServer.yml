@@ -34,7 +34,14 @@ jobs:
             kubectl -n codebras create configmap my-sanpete-postgres-init --from-file=20240328.06.25.21.sql
             
             cd ./Telemetry
-            kubectl apply -f Kubernetes/
+            #kubectl delete -f Kubernetes/
+
+            for file in ./Kubernetes/*; do
+                # Apply the file using kubectl
+                echo "Applying $file"
+                cat $file | envsubst | kubectl apply -f -
+            done
+ 
         working-directory: ./../../../../MySanpete
       - name: "Not making an env file"
         run: | 
