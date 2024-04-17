@@ -74,6 +74,7 @@ builder.Services.AddScoped<IStripeService, StripeService>();
 builder.Services.AddScoped<IUserVoucherService, WebUserVoucherService>();
 builder.Services.AddScoped<IUserState, WindowsUserState>();
 builder.Services.AddSingleton<IUserOccasionService, WebUserOccasionService>();
+builder.Services.AddSingleton<IGoogleApiService, GoogleApiService>();
 
 builder.Services.AddLazyCache(serviceProvider =>
 {

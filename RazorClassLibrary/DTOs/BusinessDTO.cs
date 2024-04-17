@@ -15,5 +15,9 @@ public class BusinessDTO
     public string? PhoneNumber { get; set; }
     public string? WebsiteURL { get; set; }
     public string? Email { get; set; }
+    public string? Description { get; set; }
+    public double? XCoordinate { get; set; }
+    public double? YCoordinate { get; set; }
+
     public IEnumerable<VoucherDTO>? Vouchers { get; set; }
 }

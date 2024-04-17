@@ -52,15 +52,19 @@ function initializeMap(mapsKey, jsonOccasions, jsonBusinesses) {
             text: 'B',
             position: [item.YCoordinate, item.XCoordinate],
             popup: new atlas.Popup({
-                content: `<div style="padding:10px">${item.Description}</div>`,
+                content: `<div style="padding:10px">${item.BusinessName}</div>`,
                 pixelOffset: [0, -30]
             })
         });
-        map.markers.add(marker);
 
-        map.events.add('click', marker, () => {
-            marker.togglePopup();
-        });
+        if (item.YCoordinate !== null || item.XCoordinate !== null)
+        {
+            map.markers.add(marker);
+
+            map.events.add('click', marker, () => {
+                marker.togglePopup();
+            });
+        }
     })
 
 }
