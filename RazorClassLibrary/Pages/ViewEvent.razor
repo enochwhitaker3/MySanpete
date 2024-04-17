@@ -12,6 +12,17 @@
 <div class="container">
     @if (Event is not null && Event.Business is not null)
     {
+        @if (Success)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <h4 class="alert-heading">Success</h4>
+                <p>You have successfully subscribed to @Event.Title</p>
+                <button type="button" class="close" data-dismiss="alert" style="background-color: transparent !important;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        }
+
         <div class="container">
             <div class="content rounded-3 shadow">
                 <div class="row">
@@ -46,6 +57,7 @@
     public OccasionDTO? Event { get; set; } = new();
     public UserDTO? currentUser { get; set; } = new();
     public string? authId { get; set; }
+    public bool Success { get; set; } = false;
 
     [CascadingParameter]
     Task<AuthenticationState>? AuthStateTask { get; set; }
@@ -67,7 +79,7 @@
                 throw new Exception("User was not found");
             }
         }
-        catch(Exception)
+        catch (Exception)
         {
             navManager.NavigateTo("/", true);
         }
@@ -78,6 +90,7 @@
 
     public async void Subscribe()
     {
+        Success = false;
         if (EventId <= 0)
         {
             throw new Exception("Event did not exist had too low of an ID");
@@ -94,6 +107,8 @@
             };
 
         await userOccassionService.AddNewUserOccasion(userOccasion);
+        Success = true;
+        StateHasChanged();
     }
 
 }

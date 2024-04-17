@@ -129,3 +129,7 @@ nav {
 #menuToggle input:checked ~ ul {
     transform: none;
 }
+
+#menu *:focus {
+    text-decoration: underline;
+}
