@@ -6,7 +6,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: mysanpetekube.duckdns.org
+  - host: ${GITHUB_RUN_ID}.mysanpetekube.duckdns.org
     http:
       paths:
       - path: /
