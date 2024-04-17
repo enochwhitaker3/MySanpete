@@ -1,0 +1,119 @@
+﻿@page "/edit-bundle/{Success}"
+@page "/edit-bundle"
+
+@using RazorClassLibrary.DTOs
+@using RazorClassLibrary.Data
+@using RazorClassLibrary.Requests
+@using RazorClassLibrary.Services
+
+@inject IBundleService bundleService
+@inject IVoucherService voucherService
+@inject NavigationManager navManager;
+
+@attribute [Authorize(Roles = "Admin")]
+
+@if (allBundles is not null)
+{
+    <div class="form-container" onsubmit="return false">
+        <h3>Admin Edit Bundle</h3>
+        <form class="mt-5">
+            <div class="form-group mt-5">
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#voucherPopup">Select Bundle</button>
+            </div>
+
+            <div class="modal fade" id="voucherPopup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Add Voucher</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Bundle Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var bundle in allBundles)
+                                    {
+                                        <tr @onclick="() => AddBundle(bundle.Id)" data-dismiss="modal">
+                                            <td>@bundle.Name</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @if (selectedBundle is not null)
+            {
+                <div class="form-group mt-5">
+                    <label for="name">@selectedBundle.Name</label>
+                    <input id="name" class="form-control" @bind="Name" required />
+                </div>
+                <div class="form-group mt-5">
+                    <label for="startDate">@selectedBundle.StartDate</label>
+                    <input id="startDate" type="datetime-local" class="form-control" @bind="StartDate" required />
+                </div>
+                <div class="form-group mt-5">
+                    <label for="endDate">@selectedBundle.EndDate</label>
+                    <input id="endDate" type="datetime-local" class="form-control" @bind="EndDate" required />
+                </div>
+            }
+            else
+            {
+                <p>Select a bundle to be able to edit it</p>
+            }
+        </form>
+    </div>
+}
+else
+{
+
+}
+
+@code {
+    [Parameter]
+    public string? Success { get; set; }
+
+    public string? Name { get; set; }
+    public string? errorMessage { get; set; }
+
+    public DateTime StartDate { get; set; } = DateTime.Today.ToUniversalTime();
+    public DateTime EndDate { get; set; } = DateTime.Today.ToUniversalTime();
+
+    public List<BundleDTO>? allBundles { get; set; }
+    public BundleDTO? selectedBundle { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        allBundles = await bundleService.GetAllBundles();
+    }
+
+    public async void AddBundle(int selectedBundleId)
+    {
+        try
+        {
+            selectedBundle = await bundleService.GetBundle(selectedBundleId);
+            if (selectedBundle is null)
+            {
+                throw new Exception("Bundle not found");
+            }
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+
+    }
+}
