@@ -14,7 +14,7 @@ public class WebBusinessService : IBusinessService
     public WebBusinessService(IDbContextFactory<MySanpeteDbContext> dbContextFactory, IGoogleApiService googleApiService)
     {
         this.dbContextFactory = dbContextFactory;
-        this.googleApiService = googleApiService; 
+        this.googleApiService = googleApiService;
     }
     public async Task<BusinessDTO?> AddBusiness(AddBusinessRequest request)
     {

@@ -12,6 +12,6 @@ internal class StubGoogleApiService : IGoogleApiService
     public async Task<Coords?> GetCoordsOfAddress(string address)
     {
         await Task.CompletedTask;
-        return new Coords() { X=0, Y=0 };
+        return new Coords() { X = 0, Y = 0 };
     }
 }
