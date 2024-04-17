@@ -86,7 +86,11 @@
         }
 
         currentUser = await userService.GetAuthUser(authId!);
+
         allUserOccasions = await userOccasionService.GetAllUserOccasionsByUser(currentUser!.Guid)!;
+
+
+
         isLoading = false;
     }
 

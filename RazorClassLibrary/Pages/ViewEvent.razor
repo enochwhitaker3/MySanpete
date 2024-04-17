@@ -42,7 +42,7 @@
                             <strong><p>@Event!.Business.BusinessName</p></strong>
                             <p>Taking place at: @Event.XCoordinate, @Event.YCoordinate</p>
                             <p>Event starts: @Event.StartDate through @Event.EndDate</p>
-                            @if (currentUser is null)
+                            @if (authId is not null)
                             {
 
                                 <button type="submit" class="btn btn-primary" @onclick="Subscribe">
