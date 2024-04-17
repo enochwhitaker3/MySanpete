@@ -57,8 +57,7 @@ function initializeMap(mapsKey, jsonOccasions, jsonBusinesses) {
             })
         });
 
-        if (item.YCoordinate !== null || item.XCoordinate !== null)
-        {
+        if (item.YCoordinate !== null || item.XCoordinate !== null) {
             map.markers.add(marker);
 
             map.events.add('click', marker, () => {
@@ -68,4 +67,3 @@ function initializeMap(mapsKey, jsonOccasions, jsonBusinesses) {
     })
 
 }
-

@@ -58,9 +58,10 @@
         AllBusinesses = await businessService.GetAllBusinesses();
         AllOccasions = await occasionService.GetAllOcassions();
         jsonOccasions = JsonSerializer.Serialize(AllOccasions);
+        var jsonBusiness = JsonSerializer.Serialize(AllBusinesses);
         if (firstRender)
         {
-            await JSRuntime.InvokeVoidAsync("initializeMap", MapsKey, jsonOccasions);
+            await JSRuntime.InvokeVoidAsync("initializeMap", MapsKey, jsonOccasions, jsonBusiness);
         }
     }
 
