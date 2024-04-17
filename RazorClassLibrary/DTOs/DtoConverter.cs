@@ -14,7 +14,7 @@ public static class DtoConverter
             Guid = user.Guid,
             Username = user.UserName,
             UserEmail = user.UserEmail,
-            PhotoURL = $"https://mysanpete.azurewebsites.net/api/image/user/{user.Id}",
+            PhotoURL = $"https://mysanpete.azurewebsites.net/api/image/user/{user.Id}", // $"https://localhost:7059/api/image/user/{user.Id}",
         };
     }
 
@@ -148,7 +148,10 @@ public static class DtoConverter
             LogoURL = $"https://mysanpete.azurewebsites.net/api/image/business/{business.Id}",
             PhoneNumber = business.PhoneNumber,
             WebsiteURL = business.Website,
-            Vouchers = vouchers
+            Vouchers = vouchers,
+            Description = business.Description,
+            XCoordinate = business.XCoordinate,
+            YCoordinate = business.YCoordinate
         };
     }
 

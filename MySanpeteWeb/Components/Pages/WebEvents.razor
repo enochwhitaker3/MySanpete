@@ -6,6 +6,7 @@
 @using System.Text.Json;
 @inject IJSRuntime JSRuntime
 @inject IConfiguration config
+@inject IBusinessService businessService
 @inject IOccasionService occasionService
 
 
@@ -132,11 +133,13 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         var allOccasion = await occasionService.GetAllOcassions();
+        var allBusiness = await businessService.GetAllBusinesses();
         jsonOccasions = JsonSerializer.Serialize(allOccasion);
+        var jsonBusinesses = JsonSerializer.Serialize(allBusiness);
 
         if (firstRender)
         {
-            await JSRuntime.InvokeVoidAsync("initializeMap", MapsKey, jsonOccasions);
+            await JSRuntime.InvokeVoidAsync("initializeMap", MapsKey, jsonOccasions, jsonBusinesses);
         }
     }
 

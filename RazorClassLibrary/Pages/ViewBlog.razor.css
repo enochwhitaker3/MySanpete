@@ -28,6 +28,11 @@
     font-family: Tenor;
 }
 
+::deep a {
+    color: #2365d9;
+    text-decoration: underline;
+}
+
 
 .avatar-img {
     width: 3.5rem;

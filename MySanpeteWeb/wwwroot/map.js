@@ -1,6 +1,6 @@
 var map;
 
-function initializeMap(mapsKey, jsonOccasions) {
+function initializeMap(mapsKey, jsonOccasions, jsonBusinesses) {
     // Initialize the Azure Maps
     atlas.setSubscriptionKey(mapsKey);
     // Create the map instance
@@ -44,7 +44,26 @@ function initializeMap(mapsKey, jsonOccasions) {
     })
 
     //Add a click event to toggle the popup.
+    var deserializedData = JSON.parse(jsonBusinesses);
 
+    deserializedData.forEach((item) => {
+        var marker = new atlas.HtmlMarker({
+            color: 'DodgerBlue',
+            text: 'B',
+            position: [item.YCoordinate, item.XCoordinate],
+            popup: new atlas.Popup({
+                content: `<div style="padding:10px">${item.BusinessName}</div>`,
+                pixelOffset: [0, -30]
+            })
+        });
+
+        if (item.YCoordinate !== null || item.XCoordinate !== null) {
+            map.markers.add(marker);
+
+            map.events.add('click', marker, () => {
+                marker.togglePopup();
+            });
+        }
+    })
 
 }
-
