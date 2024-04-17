@@ -32,7 +32,7 @@ public class UserOccasionTests : IClassFixture<MySanpeteFactory>
 
         var userOccasion = await userOccasionService.AddNewUserOccasion(request);
         userOccasion.Should().NotBeNull();
-        userOccasion!.Occasion!.Business.BusinessName.Should().Be("McDonalds");
+        userOccasion!.Occasion!.Business!.BusinessName.Should().Be("McDonalds");
         userOccasion!.User!.Username.Should().Be("[Deleted]");
     }
 

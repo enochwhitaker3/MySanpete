@@ -25,6 +25,7 @@ public class BusinessController : Controller
         return allBusinesses;
     }
 
+    // If this endpoint isn't working, remove the beginning slash. 
     [HttpGet("/byid/{id}")]
     public async Task<BusinessDTO?> GetById(int id)
     {

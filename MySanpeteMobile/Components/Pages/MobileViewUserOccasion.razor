@@ -1,0 +1,8 @@
+﻿@page "/view-user-occasions/{userOccasionId:int}"
+
+<RazorClassLibrary.Pages.ViewUserOccasion userOccasionId="@userOccasionId"></RazorClassLibrary.Pages.ViewUserOccasion>
+
+@code {
+    [Parameter]
+    public int userOccasionId { get; set; }
+}
