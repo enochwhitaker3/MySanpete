@@ -1,4 +1,4 @@
-name: backup database
+name: reload database
 on: 
   - workflow_dispatch
 jobs:
@@ -11,7 +11,7 @@ jobs:
 
           CONTAINER_NAME=$(kubectl -n codebras get pods --no-headers -o custom-columns=":metadata.name" | grep my-sanpete-database-deployment)
 
-          kubectl cp /home/enoch/dumps/mysanpetedump.sql \
+          kubectl -n codebras cp /home/enoch/dumps/mysanpetedump.sql \
           $CONTAINER_NAME:/tmp/mysanpetedump.sql \
-          && kubectl exec -i $CONTAINER_NAME -- sh -c \
+          && kubectl -n codebras exec -i $CONTAINER_NAME -- sh -c \
           'cat /tmp/mysanpetedump.sql | psql -U postgres -d postgres'
