@@ -14,6 +14,13 @@
 
 @inject NavigationManager NavMan
 
+@if(isLoading)
+{
+    <RazorClassLibrary.Pages.LoadingComponent />
+}
+else
+{
+
 <div id="mapDiv" style="width:100vw;height:90vh;"></div>
 
 
@@ -34,6 +41,7 @@
       
     </div>
 </div>
+}
 
 @code {
     [Parameter]
@@ -48,6 +56,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        isLoading = true;
         AllBusinesses = await businessService.GetAllBusinesses();
         AllOccasions = await occasionService.GetAllOcassions();
         isLoading = false;
@@ -55,6 +64,7 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        isLoading = true;
         AllBusinesses = await businessService.GetAllBusinesses();
         AllOccasions = await occasionService.GetAllOcassions();
         jsonOccasions = JsonSerializer.Serialize(AllOccasions);
@@ -62,6 +72,7 @@
         {
             await JSRuntime.InvokeVoidAsync("initializeMap", MapsKey, jsonOccasions);
         }
+        isLoading = false;
     }
 
     public async Task focusMap(decimal? yCoord, decimal? xCoord)
