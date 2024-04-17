@@ -36,7 +36,8 @@ public class ImageController(IDbContextFactory<MySanpeteDbContext> factory, IApp
     {
         using var context = await factory.CreateDbContextAsync();
         var user = await context.EndUsers.FirstOrDefaultAsync(i => i.Id == userId) ?? throw new NullReferenceException("The user does not exist");
-        var image = user.Photo ?? throw new NullReferenceException("The user does not have a photo");
+
+        var image = user?.Photo ?? System.IO.File.ReadAllBytes("wwwroot/Images/default_avatar.jpg");
         return File(image, "image/jpeg");
     }
 
