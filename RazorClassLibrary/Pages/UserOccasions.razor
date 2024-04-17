@@ -1,0 +1,97 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+
+@inject IUserOccasionService userOccasionService
+@inject IUserService userService
+@inject NavigationManager navManager
+
+@attribute [Authorize]
+
+<div>
+    <center class="my-6"><h3><strong>My Occasions</strong></h3></center>
+    @if (isLoading)
+    {
+        <LoadingComponent></LoadingComponent>
+    }
+    else
+    {
+        if (allUserOccasions!.Count == 0)
+        {
+            <div class="mx-auto w-75">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">No events to show</h5>
+                        <p class="card-text">Go to our website to subscribe to events around Sanpete!</p>
+                        <a href="/Events" class="btn btn-primary">Find Events</a>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="mx-auto w-75">
+                @foreach (var userOccasion in allUserOccasions!)
+                {
+                    <div>
+                        <div class="card mb-6 shadow" style="border: none;">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><strong>@userOccasion!.Occasion!.Title</strong></h5>
+
+                                    <p>Put on by: @userOccasion!.Occasion!.Business!.BusinessName</p>
+                                    <p>Starting: @userOccasion.Occasion.StartDate Ending: @userOccasion.Occasion.EndDate</p>
+
+                                    <button class="btn btn-primary" style="text-align: right;" @onclick="()=> GoToDetailsPage(userOccasion.Id)">View Voucher</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    }
+</div>
+
+@code {
+    [Parameter]
+    public int userOccasionId { get; set; }
+
+    [CascadingParameter]
+    Task<AuthenticationState>? AuthStateTask { get; set; }
+    public UserDTO? currentUser { get; set; } = new();
+    public List<UserOccasionDTO?> allUserOccasions { get; set; } = new();
+    public string? authId { get; set; }
+
+    public bool isLoading { get; set; } = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+        if (AuthStateTask is null)
+        {
+            throw new Exception("User State Task was null");
+        }
+        var authState = await AuthStateTask;
+        try
+        {
+            authId = authState.User.Claims.FirstOrDefault(x => x.Type == "authId")!.Value;
+            if (authId is null)
+            {
+                throw new Exception("User was not found");
+            }
+        }
+        catch (Exception)
+        {
+            navManager.NavigateTo("/", true);
+        }
+
+        currentUser = await userService.GetAuthUser(authId!);
+        allUserOccasions = await userOccasionService.GetAllUserOccasionsByUser(currentUser!.Guid)!;
+        isLoading = false;
+    }
+
+    public void GoToDetailsPage(int id)
+    {
+        navManager.NavigateTo($"/view-user-occasions/{id}", true);
+    }
+}

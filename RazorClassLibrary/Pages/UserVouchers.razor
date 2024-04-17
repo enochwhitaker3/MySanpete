@@ -9,38 +9,45 @@
 
 <div>
     <center class="my-6"><h3><strong>My Vouchers</strong></h3></center>
-    @if (allUserVouchers!.Count == 0)
+    @if (isLoading)
     {
-        <div class="mx-auto w-75">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">No vouchers to show</h5>
-                    <p class="card-text">Go to our website to purchase voucher to use around Sanpete!</p>
-                    <a href="/Vouchers" class="btn btn-primary">Find Vouchers</a>
-                </div>
-            </div>
-        </div>
+        <LoadingComponent></LoadingComponent>
     }
-
-    <div class="mx-auto w-75">
-        @foreach (var userVoucher in allUserVouchers!)
+    else
+    {
+        @if (allUserVouchers!.Count == 0)
         {
-            <div>
-                <div class="card mb-6 shadow" style="border: none;">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title"><strong>@userVoucher!.Voucher!.PromoName</strong></h5>
-
-                            <p>@userVoucher.Voucher.BusinessName</p>
-                            <p>Good Through @userVoucher.Voucher.StartDate to @userVoucher.Voucher.EndDate</p>
-
-                            <button class="btn btn-primary" style="text-align: right;" @onclick="()=> GoToDetailsPage(userVoucher.Id)">View Voucher</button>
-                        </div>
+            <div class="mx-auto w-75">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">No vouchers to show</h5>
+                        <p class="card-text">Go to our website to purchase voucher to use around Sanpete!</p>
+                        <a href="/Vouchers" class="btn btn-primary">Find Vouchers</a>
                     </div>
                 </div>
             </div>
         }
-    </div>
+
+        <div class="mx-auto w-75">
+            @foreach (var userVoucher in allUserVouchers!)
+            {
+                <div>
+                    <div class="card mb-6 shadow" style="border: none;">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title"><strong>@userVoucher!.Voucher!.PromoName</strong></h5>
+
+                                <p>@userVoucher.Voucher.BusinessName</p>
+                                <p>Good Through @userVoucher.Voucher.StartDate to @userVoucher.Voucher.EndDate</p>
+
+                                <button class="btn btn-primary" style="text-align: right;" @onclick="()=> GoToDetailsPage(userVoucher.Id)">View Voucher</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
 </div>
 
 
@@ -50,12 +57,14 @@
     public string? authId { get; set; }
 
     public string errorMessage { get; set; } = "";
+    public bool isLoading { get; set; } = false;
 
     [CascadingParameter]
     Task<AuthenticationState>? AuthStateTask { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+        isLoading = true;
         if (AuthStateTask is null)
         {
             throw new Exception("User State Task was null");
@@ -82,6 +91,8 @@
             .Where(x => x.Count() <= 1)
             .Select(x => x.First())
             .ToList();
+
+        isLoading = false;
     }
 
     public void GoToDetailsPage(int id)

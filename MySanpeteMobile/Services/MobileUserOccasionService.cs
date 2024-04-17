@@ -36,7 +36,7 @@ public class MobileUserOccasionService : IUserOccasionService
         return result!;
     }
 
-    public async Task<List<UserOccasionDTO?>> GetAllUserOccasionsByUser(Guid userId)
+    public async Task<List<UserOccasionDTO?>> GetAllUserOccasionsByUser(Guid? userId)
     {
         var result = await httpClient.GetFromJsonAsync<List<UserOccasionDTO>>($"/api/useroccasion/getallbyuser/{userId}");
         return result!;

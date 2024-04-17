@@ -1,0 +1,109 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+
+@inject IUserOccasionService userOccasionService
+@inject IUserService userService
+@inject NavigationManager navManager
+
+@attribute [Authorize]
+
+@if (isLoading)
+{
+    <LoadingComponent></LoadingComponent>
+}
+else
+{
+    @if (Success)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <h4 class="alert-heading">Success</h4>
+            <p>You have successfully unsubscribed from </p>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+
+    @if (selectedUserOccasion is not null)
+    {
+        <div class="container">
+            <div class="content">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img width="300" src="@imgDataURL" b class="img-fluid rounded-circle" />
+                    </div>
+                    <div class="col-md-6">
+                        <h2>@selectedUserOccasion!.Occasion!.Title</h2>
+                        <p>Put on by: @selectedUserOccasion!.Occasion!.Business!.BusinessName</p>
+                        <p>Starting: @selectedUserOccasion.Occasion.StartDate Ending: @selectedUserOccasion.Occasion.EndDate</p>
+                        <p>Located at: @selectedUserOccasion.Occasion.XCoordinate , @selectedUserOccasion.Occasion.YCoordinate</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+
+        <p>This occasion doesn't exist anymore (or never existed at all!).</p>
+        <button class="btn-primary" @onclick="() => NavigateToAllOccasions()"></button>
+        <p>View All Of Your Occasions</p>
+    }
+}
+
+@code {
+    [Parameter]
+    public int userOccasionId { get; set; }
+
+    [Parameter]
+    public string? authId { get; set; }
+    public string? imgDataURL { get; set; } = "";
+
+    [CascadingParameter]
+    Task<AuthenticationState>? AuthStateTask { get; set; }
+
+    public bool isLoading { get; set; } = true;
+    public bool Success { get; set; } = false;
+
+    public UserOccasionDTO? selectedUserOccasion { get; set; }
+    public UserDTO? currentUser { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+        if (AuthStateTask is null)
+        {
+            throw new Exception("BWAH");
+        }
+        var authState = await AuthStateTask;
+        try
+        {
+            if (authId == null)
+            {
+                authId = authState.User.Claims.FirstOrDefault(x => x.Type == "authId")!.Value;
+            }
+
+            if (authId is null)
+            {
+                throw new Exception("User was not found");
+            }
+
+            var userId = (await userService.GetAuthUser(authId))!.Id;
+
+            currentUser = await userService.GetAuthUser(authId!);
+            selectedUserOccasion = await userOccasionService.GetUserOccasion(userOccasionId);
+            imgDataURL = selectedUserOccasion!.Occasion!.PhotoURL;
+            isLoading = false;
+        }
+        catch (Exception)
+        {
+            navManager.NavigateTo("/404", true);
+        }
+        isLoading = false;
+    }
+
+    public void NavigateToAllOccasions()
+    {
+        navManager.NavigateTo("/user-occasions", true);
+    }
+}

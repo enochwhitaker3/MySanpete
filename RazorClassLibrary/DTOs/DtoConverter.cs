@@ -175,7 +175,7 @@ public static class DtoConverter
         return new UserOccasionDTO()
         {
             Id = userOccasion.Id,
-            Occasion = userOccasion.Occasion,
+            Occasion = userOccasion.Occasion.ToDto(),
             User = userOccasion.User.ToDto()
         };
     }
