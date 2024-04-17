@@ -83,6 +83,14 @@ else
 
     public void NavigateToDetails(int id)
     {
-        NavMan.NavigateTo($"/view-event/{id}", true);
+        try
+        {
+
+            NavMan.NavigateTo($"/view-event/{id}", true);
+        }
+        catch (Exception ex)
+        {
+            
+        }
     }
 }

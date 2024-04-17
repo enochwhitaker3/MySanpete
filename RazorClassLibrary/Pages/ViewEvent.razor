@@ -10,43 +10,59 @@
 @attribute [Authorize]
 
 <div class="container">
-    @if (Event is not null && Event.Business is not null)
+    @if (isLoading)
     {
-        @if (Success)
-        {
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <h4 class="alert-heading">Success</h4>
-                <p>You have successfully subscribed to @Event.Title</p>
-                <button type="button" class="close" data-dismiss="alert" style="background-color: transparent !important;">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        }
-
-        <div class="container">
-            <div class="content rounded-3 shadow">
-                <div class="row">
-                    <div class="col-md-6">
-                        <img width="300" src="@Event.PhotoURL" style="height: 90%; width: 90%; padding-left: 20px; padding-right: 20px; padding-top: 10px" />
-                    </div>
-                    <div class="col-md-6" style="padding: 15px;">
-                        <h2>@Event.Title</h2>
-                        <p>@Event.Description</p>
-                        <strong><p>@Event!.Business.BusinessName</p></strong>
-                        <p>Taking place at: @Event.XCoordinate, @Event.YCoordinate</p>
-                        <p>Event starts: @Event.StartDate through @Event.EndDate</p>
-                        <button type="submit" class="btn btn-primary" @onclick="Subscribe">
-                            Subscribe to @Event.Title
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <br>
+        <LoadingComponent></LoadingComponent>
     }
     else
     {
-        <p>The Occasion you are trying to see doens't exist</p>
+
+        @if (Event is not null && Event.Business is not null)
+        {
+            @if (Success)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <h4 class="alert-heading">Success</h4>
+                    <p>You have successfully subscribed to @Event.Title</p>
+                    <button type="button" class="close" data-dismiss="alert" style="background-color: transparent !important;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+
+            <div class="container">
+                <div class="content rounded-3 shadow">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img width="300" src="@Event.PhotoURL" style="height: 90%; width: 90%; padding-left: 20px; padding-right: 20px; padding-top: 10px" />
+                        </div>
+                        <div class="col-md-6 p-3" style="padding: 15px;">
+                            <h2>@Event.Title</h2>
+                            <p>@Event.Description</p>
+                            <strong><p>@Event!.Business.BusinessName</p></strong>
+                            <p>Taking place at: @Event.XCoordinate, @Event.YCoordinate</p>
+                            <p>Event starts: @Event.StartDate through @Event.EndDate</p>
+                            @if (currentUser is null)
+                            {
+
+                                <button type="submit" class="btn btn-primary" @onclick="Subscribe">
+                                    Subscribe to @Event.Title
+                                </button>
+                            }
+                            else
+                            {
+                                <p>Log in to save this event.</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+        }
+        else
+        {
+            <p>The Occasion you are trying to see doens't exist</p>
+        }
     }
 </div>
 
@@ -58,12 +74,15 @@
     public UserDTO? currentUser { get; set; } = new();
     public string? authId { get; set; }
     public bool Success { get; set; } = false;
+    public bool isLoading { get; set; } = true;
 
     [CascadingParameter]
     Task<AuthenticationState>? AuthStateTask { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+        isLoading = true;
+
         if (AuthStateTask is null)
         {
             throw new Exception("User State Task was null");
@@ -74,18 +93,20 @@
         try
         {
             authId = authState.User.Claims.FirstOrDefault(x => x.Type == "authId")!.Value;
-            if (authId is null)
-            {
-                throw new Exception("User was not found");
-            }
+            currentUser = await userService.GetAuthUser(authId!);
+            // if (authId is null)
+            // {
+            //     throw new Exception("User was not found");
+            // }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            navManager.NavigateTo("/", true);
+            //navManager.NavigateTo("/", true);
         }
 
         Event = await occasionService.GetOccasion(EventId);
-        currentUser = await userService.GetAuthUser(authId!);
+
+        isLoading = false;
     }
 
     public async void Subscribe()

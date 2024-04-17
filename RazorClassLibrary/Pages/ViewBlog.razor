@@ -4,6 +4,7 @@
 @using RazorClassLibrary.DTOs
 @using Blazored.TextEditor
 @using RazorClassLibrary.Requests
+@using System.Text.RegularExpressions
 
 
 @inject IBlogService service
@@ -48,6 +49,8 @@ else
 
                                     @foreach (var c in TopLevelComments!)
                                     {
+                                        string pattern = @"(?<=[\w]{1})[\w\-._\+%]*(?=[\w]{1}@)";
+                                        c.UserName = Regex.Replace(c.UserName!, pattern, m => new string('*', m.Length));
                                         <div class="comment d-flex mb-5">
                                             <div class="flex-shrink-0">
                                                 <div class="avatar avatar-sm rounded-circle">
@@ -199,6 +202,13 @@ else
 
         isLoading = false;
     }
+
+    public void HideEmail(string UserEmail)
+    {
+        string pattern = @"(?<=[\w]{1})[\w\-._\+%]*(?=[\w]{1}@)";
+        string result = Regex.Replace(UserEmail, pattern, m => new string('*', m.Length));
+    }
+
 
     public async Task AddResponse()
     {
