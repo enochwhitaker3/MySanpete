@@ -35,6 +35,7 @@ body, html {
 .card-container {
     height: 45vh;
     max-width: 425px;
+    margin-bottom: 3rem;
 }
 
 
@@ -67,11 +68,12 @@ body, html {
     font-family: Tenor;
 }
 
-    .card-body p {
+    .card-body span {
         margin-top: 15px;
         margin-bottom: 5px;
         font-size: 20px;
         color: #828181;
+        font-weight: normal;
     }
 
     .card-body h2 {
@@ -153,15 +155,15 @@ body, html {
         border-radius: 0;
     }
 
-    .btn span {
-        font-size: 1vw;
+    .btn h5 {
         font-weight: 500;
+        margin: 0px !important; 
         overflow: hidden;
         position: relative;
         color: black;
     }
 
-        .btn span:after {
+        .btn h5:after {
             width: 100%;
             height: 100%;
             transition: transform 0.5s cubic-bezier(0.4, 0, 0, 1);
@@ -177,7 +179,7 @@ body, html {
             color: white;
         }
 
-    .btn:hover span:after {
+    .btn:hover h5:after {
         transform: translate(-50%, 0);
     }
 
@@ -218,9 +220,6 @@ body, html {
     }
     .btn{
         width:65%;
-    }
-    .btn span{
-        font-size: 3vw;
     }
 
 }

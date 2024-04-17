@@ -29,14 +29,49 @@ else
         <div class="container">
             <div class="content">
                 <div class="row">
-                    <div class="col-md-6">
-                        <img width="300" src="@imgDataURL" b class="img-fluid rounded-circle" />
+                    <div class="col-md-6" style="padding-bottom: 10px;">
+                        <img width="350" src="@imgDataURL">
                     </div>
                     <div class="col-md-6">
                         <h2>@selectedUserOccasion!.Occasion!.Title</h2>
                         <p>Put on by: @selectedUserOccasion!.Occasion!.Business!.BusinessName</p>
+                        <p>@selectedUserOccasion.Occasion.Description</p>
                         <p>Starting: @selectedUserOccasion.Occasion.StartDate Ending: @selectedUserOccasion.Occasion.EndDate</p>
                         <p>Located at: @selectedUserOccasion.Occasion.XCoordinate , @selectedUserOccasion.Occasion.YCoordinate</p>
+
+                        @if (errorMessage == "")
+                        {
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#refundModal">Refund</button>
+                        }
+                        else
+                        {
+                            <div class="alert alert-danger">
+                                <p>Please fix the error to refund voucher</p>
+                                <p>@errorMessage</p>
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#refundModal">UnSubscribe</button>
+                            </div>
+                        }
+
+                        <div class="modal fade" id="refundModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">UnSubscribe from @selectedUserOccasion.Occasion.Title</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Are you sure you want to unsubscribe from @selectedUserOccasion.Occasion.Title?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal" @onclick="UnSubscribe">Confirm</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -58,6 +93,7 @@ else
     [Parameter]
     public string? authId { get; set; }
     public string? imgDataURL { get; set; } = "";
+    public string? errorMessage { get; set; } = "";
 
     [CascadingParameter]
     Task<AuthenticationState>? AuthStateTask { get; set; }
@@ -105,5 +141,31 @@ else
     public void NavigateToAllOccasions()
     {
         navManager.NavigateTo("/user-occasions", true);
+    }
+
+    public async void UnSubscribe()
+    {
+        try
+        {
+            if (selectedUserOccasion is null)
+            {
+                throw new Exception("User occasion didn't exist");
+            }
+
+            var result = await userOccasionService.DeleteUserOccasion(selectedUserOccasion.Id);
+
+            if (result == false)
+            {
+                throw new Exception($"Unable to unsubscribe from {selectedUserOccasion!.Occasion!.Title}");
+            }
+
+            errorMessage = "";
+            Success = true;
+            StateHasChanged();
+        }
+        catch(Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
     }
 }

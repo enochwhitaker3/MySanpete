@@ -5,4 +5,9 @@
 @code {
     [Parameter]
     public int EventId { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
 }

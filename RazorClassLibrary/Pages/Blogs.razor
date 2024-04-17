@@ -18,18 +18,20 @@
             @foreach(var blog in featuredBlogs)
             {
                 <div class="col-md-4 m-4">
-                    <div class="card shadow" style="height: 99%">
+                    <div class="card shadow" style="height: 99%; transition: none !important; transform:none !important;">
                         <div class="logo-container d-flex justify-content-center" style="height: 55%;">
                             <img class="card-img-top"
                                 src="@blog.PhotoURL" alt="Blog Photo" />
                         </div>
-                        <div class="card-body">
+                        <div class="card-body w-100">
                             <div class="main-text">
-                                <p>@blog.PublishDate</p>
-                                <h2>@blog.Title</h2>
-                                <p>@blog.AuthorName</p>
+                                <p>@blog.PublishDate?.ToString("MMMM dd, yyyy")</p>
+                                <h2 class="d-grid">
+                                    @blog.Title
+                                    <span>@blog.AuthorName</span>
+                                </h2>
                             </div>
-                            <div class="btn mt-5 mb-5" @onclick="() => NavigateToBlog(blog.Id)"><span data-text="Read Now">Read Now</span></div>
+                            <div class="btn mb-5" @onclick="() => NavigateToBlog(blog.Id)"><h5 data-text="Read Now">Read Now</h5></div>
                         </div>
                     </div>
                 </div>
@@ -41,14 +43,14 @@
             @foreach (var blog in restBlogs)
             {
                 <div class="card-container col-md-3">
-                    <div class="card shadow w-65">
+                    <div class="card shadow w-65" @onclick="() => NavigateToBlog(blog.Id)">
                         <div class="image-container d-flex justify-content-center" style="height: 55%;">
                             <img class="card-img-top img-fluid"
                                  src="@blog.PhotoURL" alt="city" />
                         </div>
                         <div class="card-body mt-3">
                             <div class="sub-text">
-                                <p>@blog.PublishDate</p>
+                                <p>@blog.PublishDate?.ToString("MMMM dd, yyyy")</p>
                                 <h2>@blog.Title</h2>
                                 <p>@blog.AuthorName</p>
                             </div>
