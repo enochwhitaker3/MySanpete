@@ -1,6 +1,7 @@
 ﻿@page "/edit-bundle/{Success}"
 @page "/edit-bundle"
 
+@using MySanpeteWeb.Services
 @using RazorClassLibrary.DTOs
 @using RazorClassLibrary.Data
 @using RazorClassLibrary.Requests
@@ -40,7 +41,7 @@
                                 <tbody>
                                     @foreach (var bundle in AllBundles)
                                     {
-                                        <tr @onclick="() => AddBundle(bundle.Id)" data-dismiss="modal">
+                                        <tr @onclick="() => SelectBundle(bundle.Id)" data-dismiss="modal">
                                             <td>@bundle.Name</td>
                                         </tr>
                                     }
@@ -58,7 +59,7 @@
             {
                 <div class="form-group mt-5">
                     <label for="name">@SelectedBundle.Name</label>
-                    <input id="name" class="form-control" placeholder="@SelectedBundle.Name" @bind="@SelectedBundle.Name" required />
+                    <input id="name" class="form-control" @bind="@SelectedBundle.Name" required />
                 </div>
                 <div class="form-group mt-5">
                     <label for="startDate">@SelectedBundle.StartDate</label>
@@ -170,7 +171,6 @@ else
     [Parameter]
     public string? Success { get; set; }
 
-    public string? Name { get; set; }
     public string? errorMessage { get; set; } = "";
 
     public DateTime StartDate { get; set; } = DateTime.Today.ToUniversalTime();
@@ -190,7 +190,7 @@ else
         AllVouchers = AllVouchers.Where(x => x.IsBundle == true).ToList();
     }
 
-    public async void AddBundle(int selectedBundleId)
+    public async void SelectBundle(int selectedBundleId)
     {
         try
         {
@@ -199,7 +199,19 @@ else
             {
                 throw new Exception("Bundle not found");
             }
+            if (AllVouchers is null)
+            {
+                throw new Exception("There were no vouchers found");
+            }
             allSelectedVouchers = SelectedBundle.Vouchers;
+
+            if (allSelectedVouchers is null)
+            {
+                throw new Exception("No vouchers were found in the slected bundle");
+            }
+            AllVouchers = await voucherService.GetAllVouchers();
+            AllVouchers = AllVouchers.Where(x => x.IsBundle == true).ToList();
+            AllVouchers = AllVouchers.Where(x => !allSelectedVouchers.Any(y => y.Id == x.Id)).ToList();
             StateHasChanged();
         }
         catch (Exception ex)
@@ -231,7 +243,6 @@ else
 
     public void AddVoucher(int selectedVoucherId)
     {
-        //AllVouchers = AllVouchers.Where(x => x.Id )
         try
         {
             if (AllVouchers is null || AllVouchers.Count == 0)
