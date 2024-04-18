@@ -143,6 +143,10 @@ public class WebBusinessService : IBusinessService
 
         buc.BusinessName = businessRequest.BusinessName!;
         buc.Address = businessRequest.Address!;
+        buc.PhoneNumber = businessRequest.PhoneNumber!;
+        buc.Website = businessRequest.WebsiteURL;
+        buc.Email = businessRequest.Email!;
+        buc.Description = businessRequest.Description!;
 
         if (businessRequest.Logo is not null)
         {
