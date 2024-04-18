@@ -1,5 +1,7 @@
 name: MySanpete Class Server Deployment Pipeline
-on: [push]
+on: 
+  push:
+    branches: [master] 
 jobs:
   DeployingPipeline:
     runs-on: MySanpete
