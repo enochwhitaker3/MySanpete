@@ -129,6 +129,7 @@ public class BusinessTests : IClassFixture<MySanpeteFactory>
         {
             Address = business.Address,
             BusinessName = business.BusinessName,
+            Email = business.Email,
             Id = business.Id,
             Logo = [146]
         };
