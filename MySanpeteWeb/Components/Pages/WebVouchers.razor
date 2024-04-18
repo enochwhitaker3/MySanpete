@@ -250,6 +250,9 @@
 
     protected override async Task OnInitializedAsync()
     {
+        MySanpeteMetrics.VoucherPageHitCount.Add(1);
+
+
         isLoading = true;
         allVouchers = await voucherService.GetAllVouchers();
         searchedVouchers = allVouchers = allVouchers.Where(x => x.EndDate >= DateTime.UtcNow).ToList();

@@ -13,5 +13,5 @@ jobs:
 
           kubectl -n codebras cp /home/enoch/dumps/mysanpetedump.sql \
           $CONTAINER_NAME:/mysanpetedump.sql \
-          && kubectl -n codebras exec -i $CONTAINER_NAME -- sh -c \
-          'pg_restore -U postgres -d postgres --no-owner -1 /mysanpetedump.sql'
+          && kubectl -n codebras exec -t $CONTAINER_NAME -- \
+          pg_restore -U postgres -d postgres --no-owner -1 /mysanpetedump.sql

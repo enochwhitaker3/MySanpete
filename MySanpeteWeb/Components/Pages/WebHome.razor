@@ -1,4 +1,18 @@
 ﻿@layout MySanpeteWeb.Components.Layout.AlternateLayout
 @page "/"
+@using MySanpeteWeb.Telemetry
+@implements IDisposable
 
 <RazorClassLibrary.Pages.Home></RazorClassLibrary.Pages.Home>
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        MySanpeteMetrics.UsersOnHomePageCount.Add(1);
+    }
+    public void Dispose()
+    {
+        MySanpeteMetrics.UsersOnHomePageCount.Add(-1);
+    }
+}

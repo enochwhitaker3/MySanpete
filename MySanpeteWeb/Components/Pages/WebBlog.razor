@@ -6,4 +6,9 @@
 @code {
     [Parameter]
     public int blogId { get; set; }
+
+    protected override void OnInitialized()
+    {
+        MySanpeteMetrics.BlogPageHitCount.Add(1);
+    }
 }

@@ -20,6 +20,9 @@ using MySanpeteWeb.Data;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Logs;
 using RazorClassLibrary.DTOs;
+using Microsoft.AspNetCore.Html;
+using OpenTelemetry.Metrics;
+using MySanpeteWeb.Telemetry;
 
 
 
@@ -90,6 +93,7 @@ builder.Services.AddSwaggerGen();
 //Telemetry
 
 const string serviceName = "MySanpete";
+const string otelUrl = "http://otel-collector:4317";
 
 builder.Logging.AddOpenTelemetry(options =>
 {
@@ -99,11 +103,34 @@ builder.Logging.AddOpenTelemetry(options =>
                 .AddService(serviceName))
         .AddOtlpExporter(o =>
         {
-            o.Endpoint = new Uri("http://otel-collector:4317");
+            o.Endpoint = new Uri(otelUrl);
         })
        //.AddConsoleExporter()
        ;
 });
+
+builder.Services.AddOpenTelemetry()
+     .ConfigureResource(resource => resource.AddService(serviceName))
+     //.WithTracing(tracing => tracing
+     //    .AddSource(EthanTraces.Name)
+     //    .AddAspNetCoreInstrumentation()
+     ////.AddConsoleExporter()
+     //    .AddOtlpExporter(o =>
+     //      o.Endpoint = new Uri(otelUrl)))
+     .WithMetrics(metrics => metrics
+         .AddAspNetCoreInstrumentation()
+         .AddMeter(MySanpeteMetrics.Meter.Name)
+     // .AddConsoleExporter()
+         .AddOtlpExporter(o =>
+           o.Endpoint = new Uri(otelUrl)))
+           //.ConfigureResource(res => res.AddService("NewOne"))
+           //.WithTracing(t => t
+           //     .AddSource(EthanSecondTraces.Name)
+           //     .AddAspNetCoreInstrumentation()
+           ////.AddConsoleExporter()
+           //     .AddOtlpExporter(o =>
+           //       o.Endpoint = new Uri(otelUrl)))
+           ;
 
 builder.Services.AddAuth0WebAppAuthentication(options =>
 {
