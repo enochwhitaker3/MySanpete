@@ -9,7 +9,7 @@
 @inject IVoucherService voucherService
 @inject IBusinessService businessService
 @inject IStripeService stripeService
-@inject NavigationManager navManager;
+@inject NavigationManager navManager
 @attribute [Authorize(Roles = "Admin")]
 
 
@@ -50,16 +50,16 @@
             <input id="title" class="form-control" @bind="PromoDescription" required />
         </div>
         <div class="form-group mt-5">
-            <label for="title">Promo Stock (Leave 0 for no limit)</label>
+            <label for="title">Promo Stock (Enter 0 for no limit)</label>
             <input id="title" class="form-control" @bind="PromoStock" required />
         </div>
         <div class="form-group mt-5">
-            <label for="title">Retail Price (Leave 0 for no limit)</label>
+            <label for="title">Retail Price (Enter $0.00 if you want it to be a coupon)</label>
             <input id="title" class="form-control" @bind="RetailPrice" required />
         </div>
         <div class="form-group mt-5">
-            <label for="title">Total Reclaimable (Leave 0 for no limit)</label>
-            <input id="title" class="form-control" @bind="TotalReclaimable" required />
+            <label for="title">Total Reclaimable (Enter 0 for no limit)</label>
+            <span>$</span><input id="title" class="form-control" @bind="TotalReclaimable" required />
         </div>
         @if (errorMessage == "")
         {

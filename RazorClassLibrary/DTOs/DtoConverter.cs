@@ -40,6 +40,7 @@ public static class DtoConverter
             RetailPrice = voucher.RetailPrice,
             AmmountReclaimable = voucher.TotalReclaimable,
             Stock = voucher.PromoStock,
+            StripeId = voucher.StripeId,    
             PriceId = voucher.PriceId,
             IsActive = voucher.IsActive,
             IsBundle = voucher.IsBundle,
