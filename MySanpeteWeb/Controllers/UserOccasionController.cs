@@ -25,21 +25,21 @@ public class UserOccasionController : Controller
         return result;
     }
 
-    [HttpGet("/GetAllByOccasion/{occasionId}")]
+    [HttpGet("GetAllByOccasion/{occasionId}")]
     public async Task<List<UserOccasionDTO?>> GetAllByOccasion(int occasionId)
     {
         var result = await userOccasionService.GetAllUserOccasionsByOccasion(occasionId);
         return result;
     }
 
-    [HttpGet("/GetAllByUser/{userGuid}")]
+    [HttpGet("GetAllByUser/{userGuid}")]
     public async Task<List<UserOccasionDTO?>> GetAllByUser(Guid userGuid)
     {
         var result = await userOccasionService.GetAllUserOccasionsByUser(userGuid);
         return result;
     }
 
-    [HttpGet("/GetById/{userOccasionId}")]
+    [HttpGet("GetById/{userOccasionId}")]
     public async Task<UserOccasionDTO?> GetById(int userOccasionId)
     {
         var result = await userOccasionService.GetUserOccasion(userOccasionId);

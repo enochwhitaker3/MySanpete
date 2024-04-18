@@ -14,9 +14,10 @@ public class MobileUserOccasionService : IUserOccasionService
         this.httpClient = HttpClient;
     }
 
-    public Task<UserOccasionDTO?> AddNewUserOccasion(AddUserOccasionRequest userOccasionRequest)
+    public async Task<UserOccasionDTO?> AddNewUserOccasion(AddUserOccasionRequest userOccasionRequest)
     {
-        throw new NotImplementedException();
+        var result = await httpClient.PostAsJsonAsync($"/api/useroccasion/add/{userOccasionRequest}", userOccasionRequest);
+        return await result.Content.ReadFromJsonAsync<UserOccasionDTO>();
     }
 
     public Task<bool> DeleteUserOccasion(int id)
@@ -38,7 +39,8 @@ public class MobileUserOccasionService : IUserOccasionService
 
     public async Task<List<UserOccasionDTO?>> GetAllUserOccasionsByUser(Guid? userId)
     {
-        var result = await httpClient.GetFromJsonAsync<List<UserOccasionDTO>>($"/api/useroccasion/getallbyuser/{userId}");
+        var guidString = userId.ToString();
+        var result = await httpClient.GetFromJsonAsync<List<UserOccasionDTO>>($"/api/useroccasion/getallbyuser/{guidString}");
         return result!;
     }
 
