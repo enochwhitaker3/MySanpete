@@ -1,0 +1,30 @@
+name: Pull Request Environment
+on: 
+  pull_request:
+   types: [opened, reopened]
+jobs:
+  deploy_to_kubernetes:
+    runs-on: MySanpete
+    steps: 
+      - name: check out code
+        uses: actions/checkout@v4
+      - name: deploy kubernetes environment
+        run: |
+          export PULL_REQUEST_ID=${{ github.event.pull_request.number }}
+          kubectl create namespace mysanpete-pr-$PULL_REQUEST_ID || true
+
+          export NAMESPACE="mysanpete-pr-${PULL_REQUEST_ID}"
+
+          kubectl -n $NAMESPACE delete configmap my-sanpete-postgres-init || true
+          kubectl -n $NAMESPACE create configmap my-sanpete-postgres-init --from-file=20240328.06.25.21.sql
+
+          cd ./MySanpeteWeb
+            export RUN_SALT="pr-${PULL_REQUEST_ID}-${GITHUB_RUN_ID}"
+            docker build -t 144.17.92.12:5000/codebras/mysanpete:${RUN_SALT} .
+            docker push 144.17.92.12:5000/codebras/mysanpete:${RUN_SALT}
+
+          cd ../Telemetry
+
+          for file in ./kube-pr/*; do
+            cat $file | envsubst | kubectl apply -f -
+          done

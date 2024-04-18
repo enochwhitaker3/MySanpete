@@ -5,8 +5,8 @@ receivers:
       http:
 
 exporters:
-  # prometheus:
-    # endpoint: "0.0.0.0:3628"
+  prometheus:
+    endpoint: "0.0.0.0:3628"
   loki:
     endpoint: "http://loki:3100/loki/api/v1/push"
   # zipkin: 
@@ -27,9 +27,9 @@ service:
     # traces:
     #   receivers: [otlp]
     #   exporters: [zipkin]
-    # metrics:
-    #   receivers: [otlp]
-    #   exporters: [prometheus]
+    metrics:
+      receivers: [otlp]
+      exporters: [prometheus]
     logs:
       receivers: [otlp]
       processors: [batch]

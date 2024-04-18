@@ -2,3 +2,13 @@
 @page "/podcasts"
 
 <RazorClassLibrary.Pages.Podcasts></RazorClassLibrary.Pages.Podcasts>
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        MySanpeteMetrics.PodcastPageHitCount.Add(1);
+    }
+
+}
+

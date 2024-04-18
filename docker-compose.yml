@@ -38,7 +38,7 @@ services:
       - SUBDOMAINS=www,
       - VALIDATION=duckdns
       - DUCKDNSTOKEN=${DUCKDNS:-blahblahblah} #optional
-      - STAGING=false #optional
+      - STAGING=true #optional
     volumes:
       - swag-data:/config
       - ./Telemetry/nginx-default.conf:/config/nginx/site-confs/mysite.conf

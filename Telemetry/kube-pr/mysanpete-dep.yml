@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: ${NAMESPACE}
+  name: my-sanpete-deployment
+  labels:
+    app: my-sanpete
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-sanpete
+  template:
+    metadata:
+      labels:
+        app: my-sanpete
+    spec:
+      containers:
+      - name: my-sanpete
+        image: 144.17.92.12:5000/codebras/mysanpete:${RUN_SALT}
+        ports:
+        - containerPort: 8080
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Development
+        - name: MySanpeteDb
+          value: user id = postgres; password=postgres; server=my-sanpete-database-service; database= postgres; port= 5432
+        - name: WebsiteUrl
+          value: ${GITHUB_RUN_ID}.mysanpetekube.duckdns.org
