@@ -12,16 +12,16 @@
 
 @attribute [Authorize(Roles = "Admin")]
 
-@if (allBundles is not null)
+@if (AllBundles is not null)
 {
-    <div class="form-container" onsubmit="return false">
+    <div class="form-container" onsubmit="return false" style="margin-bottom: 20px;">
         <h3>Admin Edit Bundle</h3>
         <form class="mt-5">
             <div class="form-group mt-5">
-                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#voucherPopup">Select Bundle</button>
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#bundlePopup">Select Bundle</button>
             </div>
 
-            <div class="modal fade" id="voucherPopup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="bundlePopup" tabindex="-1" role="dialog" aria-labelledby="SelectBundle" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -38,7 +38,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var bundle in allBundles)
+                                    @foreach (var bundle in AllBundles)
                                     {
                                         <tr @onclick="() => AddBundle(bundle.Id)" data-dismiss="modal">
                                             <td>@bundle.Name</td>
@@ -54,31 +54,116 @@
                 </div>
             </div>
 
-            @if (selectedBundle is not null)
+            @if (SelectedBundle is not null && SelectedBundle.Vouchers is not null)
             {
                 <div class="form-group mt-5">
-                    <label for="name">@selectedBundle.Name</label>
-                    <input id="name" class="form-control" @bind="Name" required />
+                    <label for="name">@SelectedBundle.Name</label>
+                    <input id="name" class="form-control" placeholder="@SelectedBundle.Name" @bind="@SelectedBundle.Name" required />
                 </div>
                 <div class="form-group mt-5">
-                    <label for="startDate">@selectedBundle.StartDate</label>
-                    <input id="startDate" type="datetime-local" class="form-control" @bind="StartDate" required />
+                    <label for="startDate">@SelectedBundle.StartDate</label>
+                    <input id="startDate" type="datetime-local" class="form-control" @bind="@SelectedBundle.StartDate" required />
                 </div>
                 <div class="form-group mt-5">
-                    <label for="endDate">@selectedBundle.EndDate</label>
-                    <input id="endDate" type="datetime-local" class="form-control" @bind="EndDate" required />
+                    <label for="endDate">@SelectedBundle.EndDate</label>
+                    <input id="endDate" type="datetime-local" class="form-control" @bind="@SelectedBundle.EndDate" required />
                 </div>
+                <hr />
+                @foreach (var voucher in SelectedBundle.Vouchers)
+                {
+                    <div class="d-flex flex-row justify-content-between">
+                        <p>@voucher.PromoName</p>
+                        <button class="btn btn-danger" @onclick="() => RemoveVoucher(voucher)">Remove</button>
+                    </div>
+                    <hr />
+                }
+
+                <div class="form-group mt-5">
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#voucherPopup">+ Add Voucher</button>
+                </div>
+
+                if (AllVouchers is not null)
+                {
+                    <div class="modal fade" id="voucherPopup" tabindex="-1" role="dialog" aria-labelledby="AddVoucher" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Add Voucher</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Voucher Name</th>
+                                                <th scope="col">Business Name</th>
+                                                <th scope="col">Start Date</th>
+                                                <th scope="col">End Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var voucher in AllVouchers)
+                                            {
+                                                <tr @onclick="() => AddVoucher(voucher.Id)" data-dismiss="modal">
+                                                    <td>@voucher.PromoName</td>
+                                                    <td>@voucher.BusinessName</td>
+                                                    <td>@voucher.StartDate</td>
+                                                    <td>@voucher.EndDate</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                @if (errorMessage == "")
+                {
+                    <div class="form-group mt-5">
+                        <button type="submit" class="btn btn-primary" @onclick="() => UpdateBundle(SelectedBundle)">Update</button>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-danger">
+                        <p>Please fix the error to update the bundle</p>
+                        <p>@errorMessage</p>
+                        <div class="form-group mt-5">
+                            <button type="submit" class="btn btn-primary" @onclick="() => UpdateBundle(SelectedBundle)">Update</button>
+                        </div>
+                    </div>
+                }
+
             }
             else
             {
                 <p>Select a bundle to be able to edit it</p>
             }
         </form>
+
+        @if (Success == "true")
+        {
+            <div class="alert-success alert alert-dismissible fade show" role="alert" @onclick="ChangeSuccess">
+                <p>You successfully updated the last bundle!</p>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        }
     </div>
 }
 else
 {
-
+    <div>
+        <p>No bundles to edit, add more bundles to edit them here</p>
+    </div>
 }
 
 @code {
@@ -86,34 +171,137 @@ else
     public string? Success { get; set; }
 
     public string? Name { get; set; }
-    public string? errorMessage { get; set; }
+    public string? errorMessage { get; set; } = "";
 
     public DateTime StartDate { get; set; } = DateTime.Today.ToUniversalTime();
     public DateTime EndDate { get; set; } = DateTime.Today.ToUniversalTime();
 
-    public List<BundleDTO>? allBundles { get; set; }
-    public BundleDTO? selectedBundle { get; set; }
+    public List<BundleDTO>? AllBundles { get; set; }
+    public BundleDTO? SelectedBundle { get; set; }
+
+    public List<VoucherDTO>? AllVouchers { get; set; }
+    public List<VoucherDTO>? allSelectedVouchers { get; set; }
+    public VoucherDTO? SelectedVoucher { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        allBundles = await bundleService.GetAllBundles();
+        AllBundles = await bundleService.GetAllBundles();
+        AllVouchers = await voucherService.GetAllVouchers();
+        AllVouchers = AllVouchers.Where(x => x.IsBundle == true).ToList();
     }
 
     public async void AddBundle(int selectedBundleId)
     {
         try
         {
-            selectedBundle = await bundleService.GetBundle(selectedBundleId);
-            if (selectedBundle is null)
+            SelectedBundle = await bundleService.GetBundle(selectedBundleId);
+            if (SelectedBundle is null)
             {
                 throw new Exception("Bundle not found");
             }
+            allSelectedVouchers = SelectedBundle.Vouchers;
             StateHasChanged();
         }
         catch (Exception ex)
         {
             errorMessage = ex.Message;
         }
+    }
 
+    public void RemoveVoucher(VoucherDTO voucher)
+    {
+        try
+        {
+            if (SelectedBundle is null)
+            {
+                throw new Exception("Bundle was null");
+            }
+            if (SelectedBundle.Vouchers is null)
+            {
+                throw new Exception("Bundle has no vouchers");
+            }
+            SelectedBundle.Vouchers.Remove(voucher);
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+
+    }
+
+    public void AddVoucher(int selectedVoucherId)
+    {
+        AllVouchers = AllVouchers.Where(x => x.Id )
+        try
+        {
+            if (AllVouchers is null || AllVouchers.Count == 0)
+            {
+                throw new Exception("No vouchers were found");
+            }
+            SelectedVoucher = AllVouchers.Where(x => x.Id == selectedVoucherId).FirstOrDefault();
+
+            if (SelectedVoucher is null)
+            {
+                throw new Exception("The selected voucher was null");
+            }
+            if (SelectedBundle is null || SelectedBundle.Vouchers is null)
+            {
+                throw new Exception("The selected bundle was null or it had no vouchers");
+            }
+
+            SelectedBundle.Vouchers.Add(SelectedVoucher);
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+
+    }
+
+    public async Task UpdateBundle(BundleDTO bundle)
+    {
+        try
+        {
+            if (bundle is null || bundle.Vouchers is null)
+            {
+                throw new Exception("The bundle was null or it had no vouchers");
+            }
+            if (bundle.Vouchers.Count < 2)
+            {
+                throw new Exception("There needs to be at least 2 vouchers in a bundle");
+            }
+            if (bundle.EndDate < bundle.StartDate)
+            {
+                throw new Exception("The end date for the bundle needs to be more in the future than the start date");
+            }
+            if (bundle.Name is null)
+            {
+                throw new Exception("The bundle needs to have a name");
+            }
+
+            var newBundle = await bundleService.UpdateBundle(bundle);
+
+            if (newBundle is null)
+            {
+                throw new Exception("The new bundle was null");
+            }
+            errorMessage = "";
+            Success = "true";
+            ReloadPage();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
+
+    public void ReloadPage()
+    {
+        navManager.NavigateTo($"/edit-bundle/{Success}", true);
+    }
+
+    public void ChangeSuccess()
+    {
+        Success = "false";
     }
 }

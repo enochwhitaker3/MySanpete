@@ -41,6 +41,8 @@ public static class DtoConverter
             AmmountReclaimable = voucher.TotalReclaimable,
             Stock = voucher.PromoStock,
             PriceId = voucher.PriceId,
+            IsActive = voucher.IsActive,
+            IsBundle = voucher.IsBundle,
         };
     }
 

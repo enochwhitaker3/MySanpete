@@ -39,6 +39,8 @@ public class WebVoucherService : IVoucherService
             TotalReclaimable = request.TotalReclaimable,
             StripeId = request.StripeId,
             PriceId = request.PriceId,
+            IsActive = request.IsActive,
+            IsBundle = request.IsBundle
         };
 
         if (newVoucher is not null)
@@ -134,6 +136,8 @@ public class WebVoucherService : IVoucherService
             voucherUnderChange.PromoStock = voucher.PromoStock;
             voucherUnderChange.RetailPrice = voucher.RetailPrice;
             voucherUnderChange.TotalReclaimable = voucher.TotalReclaimable;
+            voucherUnderChange.IsBundle = voucher.IsBundle;
+            voucherUnderChange.IsActive = voucher.IsActive;
         }
         else { return null; }
 

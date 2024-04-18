@@ -21,4 +21,6 @@ public class AddVoucherRequest
 
     public string? StripeId { get; set; }
     public string? PriceId { get; set; }
+    public bool? IsActive { get; set; }
+    public bool? IsBundle { get; set; }
 }
