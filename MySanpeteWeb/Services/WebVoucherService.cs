@@ -149,7 +149,7 @@ public class WebVoucherService : IVoucherService
         }
         catch (Exception ex)
         {
-            throw new Exception("Something went wrong with updating this voucher. Please check all fields.");
+            throw new Exception($"Something went wrong with updating this voucher. Please check all fields. {ex}");
         }
         return voucherUnderChange.ToDto();
     }
