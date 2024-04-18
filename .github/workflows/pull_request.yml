@@ -1,0 +1,10 @@
+name: Pull Request Environment
+on: 
+  pull_request:
+   types: [opened]
+jobs:
+  deploy_to_kubernetes:
+    runs-on: MySanpete
+    steps: 
+      - name: check out code
+        uses: actions/checkout@v4
