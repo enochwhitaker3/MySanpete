@@ -8,3 +8,7 @@ jobs:
     steps: 
       - name: check out code
         uses: actions/checkout@v4
+      - name: deploy kubernetes environment
+        run: |
+          export PULL_REQUEST_ID=${{ github.event.pull_request.number }}
+          kubectl create namespace mysanpete-pr-$PULL_REQUEST_ID
