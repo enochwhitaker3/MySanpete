@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: ${NAMESPACE}
+  name: my-sanpete-database-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: ${NAMESPACE}
+  name: my-sanpete-database-deployment
+  labels:
+    app: my-sanpete-database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-sanpete-database
+  template:
+    metadata:
+      labels:
+        app: my-sanpete-database
+    spec:
+      containers:
+      - name: my-sanpete-database
+        image: postgres
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_USER
+          value: postgres
+        - name: POSTGRES_PASSWORD
+          value: postgres
+        - name: POSTGRES_DB
+          value: postgres
+        volumeMounts:
+        - name: postgresstorage
+          mountPath: /var/lib/postgresql/data
+        - name: init-script
+          mountPath: /docker-entrypoint-initdb.d
+      volumes:
+      - name: postgresstorage
+        persistentVolumeClaim:
+          claimName: my-sanpete-database-pvc
+      - name: init-script
+        configMap:
+          name: my-sanpete-postgres-init
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: ${NAMESPACE}
+  name: my-sanpete-database-service
+spec:
+  type: ClusterIP
+  selector:
+    app: my-sanpete-database
+  ports:
+    - port: 5432
+      targetPort: 5432
