@@ -8,6 +8,7 @@
 @inject IConfiguration config
 @inject IBusinessService businessService
 @inject IOccasionService occasionService
+@inject NavigationManager NavMan
 
 
 <div class="main-section">
@@ -35,83 +36,30 @@
         <div class="sm-view col-8 mt-10 d-flex justify-content-center align-items-center">
             <div class="hl"></div>
         </div>
-
-
-
-
         <div class="event-container d-grid col-lg-6 mt-10 mb-15 justify-content-center" style="overflow-y:scroll; max-height: 50vh;">
-            <a class="event-card row shadow mb-10" href="/view-event/2">
-                <div class="event-date col-3 d-flex align-items-center" style="background-image: url(Images/green_wave.svg); background-repeat: repeat-y;">
-                    <div class="event-date">
-                        <h2>MAY</h2>
-                        <h2>24</h2>
+            @foreach (var o in allOccasions)
+            {
+                o.StartDate = o.StartDate.AddHours(-6);
+                o.EndDate = o.EndDate.AddHours(-6);
+                <a class="event-card row shadow mb-10" @onclick="() => GoToEventPage(o.Id)">
+                    <div class="event-date col-3 d-flex align-items-center" style="background-image: url(Images/green_wave.svg); background-repeat: repeat-y;">
+                        <div class="event-date">
+                            <h2>@o.StartDate.ToString("MMMM")</h2>
+                            <h2>@o.StartDate.Day</h2>
+                        </div>
                     </div>
-                </div>
-                <div class="event-details col-6 d-grid align-content-center" style="color: black">
-                    <h2>Scandinavian Days</h2>
-                    <h4>12PM - 8:30PM</h4>
-                    <h4>
-                        Come and join for Scandinavia Festivities!
-                    </h4>
-                </div>
-                <div class="col-3 d-flex" style="padding-right: 0 !important; max-height:25vh;">
-                    <img src="https://scandinavianfestival.org/wp-content/uploads/2023/03/p3.png" style="width: 100%; object-fit: cover; object-position: center;" />
-                </div>
-            </a>
-            <a class="event-card row shadow mb-10" href="/view-event/2">
-                <div class="event-date col-3 d-flex align-items-center" style="background-image: url(Images/green_wave.svg); background-repeat: repeat-y;">
-                    <div class="event-date">
-                        <h2>MAY</h2>
-                        <h2>25</h2>
+                    <div class="event-details col-6 d-grid align-content-center" style="color: black">
+                        <h2>@o.Title</h2>
+                        <h4>@o.StartDate.ToString("hh:mm tt") - @o.EndDate.ToString("hh:mm tt")</h4>
+                        <h4>
+                            @o.Description
+                        </h4>
                     </div>
-                </div>
-                <div class="event-details col-6 d-grid align-content-center" style="color: black">
-                    <h2>Nordic Fun Run</h2>
-                    <h4>6:30AM</h4>
-                    <h4>
-                        Join us for our Festival Races! All ages are welcome!
-                    </h4>
-                </div>
-                <div class="col-3 d-flex" style="padding-right: 0 !important; max-height:25vh;">
-                    <img src="https://scandinavianfestival.org/wp-content/uploads/2023/03/race.png" style="width: 100%; object-fit: cover;" />
-                </div>
-            </a>
-            <a class="event-card row shadow mb-10" href="/view-event/2">
-                <div class="event-date col-3 d-flex align-items-center" style="background-image: url(Images/green_wave.svg); background-repeat: repeat-y;">
-                    <div class="event-date">
-                        <h2>MAY</h2>
-                        <h2>25</h2>
+                    <div class="col-3 d-flex" style="padding-right: 0 !important; max-height:25vh;">
+                        <img src="@o.PhotoURL" style="width: 100%; object-fit: cover; object-position: center;" />
                     </div>
-                </div>
-                <div class="event-details col-6 d-grid align-content-center" style="color: black">
-                    <h2>Axe Throwing</h2>
-                    <h4>10AM - 6PM</h4>
-                    <h4>
-                        Axe Throwing and Viking Games open to the public
-                    </h4>
-                </div>
-                <div class="col-3 d-flex" style="padding-right: 0 !important; max-height:25vh;">
-                    <img src="https://scandinavianfestival.org/wp-content/uploads/2022/11/cropped-slide6.png" style="width: 100%; object-fit: cover; object-position: center;" />
-                </div>
-            </a>
-            <a class="event-card row shadow mb-10" href="/view-event/2">
-                <div class="event-date col-3 d-flex align-items-center" style="background-image: url(Images/green_wave.svg); background-repeat: repeat-y;">
-                    <div class="event-date">
-                        <h2>MAY</h2>
-                        <h2>24</h2>
-                    </div>
-                </div>
-                <div class="event-details col-6 d-grid align-content-center" style="color: black">
-                    <h2>Scandinavian Days</h2>
-                    <h4>12PM - 8:30PM</h4>
-                    <h4>
-                        Come and join for Scandinavia Festivities!
-                    </h4>
-                </div>
-                <div class="col-3 d-flex" style="padding-right: 0 !important; max-height:25vh;">
-                    <img src="https://scandinavianfestival.org/wp-content/uploads/2023/03/p3.png" style="width: 100%; object-fit: cover; object-position: center;" />
-                </div>
-            </a>
+                </a>
+            }
         </div>
     </div>
 </div>
@@ -124,23 +72,30 @@
 @code {
     public string? MapsKey { get; set; }
     public string? jsonOccasions { get; set; }
+    public List<OccasionDTO> allOccasions { get; set; } = new();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         MapsKey = config.GetValue<string>("MapKey") ?? throw new Exception("Map key is not in the secrets");
+        allOccasions = await occasionService.GetAllOcassions();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        var allOccasion = await occasionService.GetAllOcassions();
+        allOccasions = await occasionService.GetAllOcassions();
         var allBusiness = await businessService.GetAllBusinesses();
-        jsonOccasions = JsonSerializer.Serialize(allOccasion);
+        jsonOccasions = JsonSerializer.Serialize(allOccasions);
         var jsonBusinesses = JsonSerializer.Serialize(allBusiness);
 
         if (firstRender)
         {
             await JSRuntime.InvokeVoidAsync("initializeMap", MapsKey, jsonOccasions, jsonBusinesses);
         }
+    }
+
+    public void GoToEventPage(int id)
+    {
+        NavMan.NavigateTo($"/view-event/{id}", true);
     }
 
 
