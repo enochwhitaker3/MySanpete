@@ -1,7 +1,7 @@
 name: Pull Request Environment
 on: 
   pull_request:
-   types: [opened]
+   types: [opened, reopened]
 jobs:
   deploy_to_kubernetes:
     runs-on: MySanpete
@@ -11,4 +11,7 @@ jobs:
       - name: deploy kubernetes environment
         run: |
           export PULL_REQUEST_ID=${{ github.event.pull_request.number }}
-          kubectl create namespace mysanpete-pr-$PULL_REQUEST_ID
+          kubectl create namespace mysanpete-pr-$PULL_REQUEST_ID || true
+
+          kubectl -n mysanpete-pr-$PULL_REQUEST_ID delete configmap my-sanpete-postgres-init || true
+          kubectl -n mysanpete-pr-$PULL_REQUEST_ID create configmap my-sanpete-postgres-init --from-file=20240328.06.25.21.sql
