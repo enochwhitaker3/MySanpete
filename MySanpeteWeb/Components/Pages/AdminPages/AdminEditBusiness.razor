@@ -13,144 +13,145 @@
 
 @if (allBusinesses is not null)
 {
-    <div class="main-section d-flex justify-content-center align-items-center" style="height:70vh;">
-        <div class="form-container" onsubmit="return false">
-            <h3>Admin Edit Business</h3>
-            <form class="mt-5 ">
-                <div class="form-group mt-5 d-grid justify-content-center">
-                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#voucherPopup">Select Business</button>
-                </div>
+    <div class="form-container" onsubmit="return false" style="margin-bottom: 20px;">
 
-                <div class="modal fade" id="voucherPopup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Add Voucher</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Business Name</th>
+        <h3>Admin Edit Business</h3>
+        <form class="mt-5 ">
+            <div class="form-group mt-5 d-grid justify-content-center">
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#voucherPopup">Select Business</button>
+            </div>
+
+            <div class="modal fade" id="voucherPopup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Add Voucher</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Business Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var b in allBusinesses!)
+                                    {
+                                        <tr @onclick="() => AddBusiness(b.Id)" data-dismiss="modal">
+                                            <td>@b.BusinessName</td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var b in allBusinesses!)
-                                        {
-                                            <tr @onclick="() => AddBusiness(b.Id)" data-dismiss="modal">
-                                                <td>@b.BusinessName</td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            </div>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                @if (selectedBusiness is not null)
+            @if (selectedBusiness is not null)
+            {
+                <div class="form-group mt-5">
+                    <label for="Name">Business Name</label>
+                    <input id="title" class="form-control" @bind="@selectedBusiness.BusinessName" required />
+                </div>
+                <div class="form-group mt-5">
+                    <label for="Address">Address</label>
+                    <input id="title" class="form-control" @bind="@selectedBusiness.Address" required />
+                </div>
+                <div class="form-group mt-5">
+                    <label for="Phone Number">Phone Number (Format like ***-***-****)</label>
+                    <input id="phone" class="form-control" type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" @bind="@selectedBusiness.PhoneNumber" />
+                </div>
+                <div class="form-group mt-5">
+                    <label for="Website URL">Website URL</label>
+                    <input id="website" class="form-control" @bind="@selectedBusiness.WebsiteURL" />
+                </div>
+                <div class="form-group mt-5">
+                    <label for="Email">Email</label>
+                    <input id="email" class="form-control" type="email" @bind="@selectedBusiness.Email" required />
+                </div>
+                <div class="form-group mt-5">
+                    <label for="Description">Description</label>
+                    <input id="title" class="form-control" @bind="@selectedBusiness.Description" />
+                </div>
+                <div class="form-group">
+                    <label for="photo">Business Logo</label>
+                    <InputFile OnChange="SaveFile"></InputFile>
+                </div>
+
+
+
+                @if (errorMessage == "")
                 {
                     <div class="form-group mt-5">
-                        <label for="Name">Business Name</label>
-                        <input id="title" class="form-control" @bind="@selectedBusiness.BusinessName" placeholder="@selectedBusiness.BusinessName" required />
+                        <button type="submit" class="btn btn-primary" @onclick="() => UpdateBusiness(selectedBusiness)">Update</button>
                     </div>
                     <div class="form-group mt-5">
-                        <label for="Address">Address</label>
-                        <input id="title" class="form-control" @bind="@selectedBusiness.Address" placeholder="@selectedBusiness.Address" required />
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
                     </div>
-                    <div class="form-group mt-5">
-                        <label for="Phone Number">Phone Number (Format like ***-***-****)</label>
-                        <input id="phone" class="form-control" type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="@selectedBusiness.PhoneNumber" @bind="@selectedBusiness.PhoneNumber" />
-                    </div>
-                    <div class="form-group mt-5">
-                        <label for="Website URL">Website URL</label>
-                        <input id="website" class="form-control" @bind="@selectedBusiness.WebsiteURL" placeholder="@selectedBusiness.WebsiteURL" />
-                    </div>
-                    <div class="form-group mt-5">
-                        <label for="Email">Email</label>
-                        <input id="email" class="form-control" type="email" placeholder="@selectedBusiness.Email" @bind="@selectedBusiness.Email" required />
-                    </div>
-                    <div class="form-group mt-5">
-                        <label for="Description">Description</label>
-                        <input id="title" class="form-control" @bind="@selectedBusiness.Description" placeholder="@selectedBusiness.Description" />
-                    </div>
-                    <div class="form-group">
-                        <label for="photo">Business Logo</label>
-                        <InputFile OnChange="SaveFile"></InputFile>
-                    </div>
-
-
-
-                    @if (errorMessage == "")
-                    {
+                }
+                else
+                {
+                    <div class="alert alert-danger">
+                        <p>Please fix the error to submit the form</p>
+                        <p>@errorMessage</p>
                         <div class="form-group mt-5">
                             <button type="submit" class="btn btn-primary" @onclick="() => UpdateBusiness(selectedBusiness)">Update</button>
                         </div>
                         <div class="form-group mt-5">
                             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
                         </div>
-                    }
-                    else
-                    {
-                        <div class="alert alert-danger">
-                            <p>Please fix the error to submit the form</p>
-                            <p>@errorMessage</p>
-                            <div class="form-group mt-5">
-                                <button type="submit" class="btn btn-primary" @onclick="() => UpdateBusiness(selectedBusiness)">Update</button>
-                            </div>
-                            <div class="form-group mt-5">
-                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
-                            </div>
-                        </div>
-                    }
+                    </div>
+                }
 
-                    <div class="modal fade" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="deleteConfirm" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Deletion Confirmation</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    Are you sure you want to delete @selectedBusiness.BusinessName? You won't be able to get it back!
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                   @*  <button type="submit" class="btn btn-danger" @onclick="() => DeleteBusiness(selectedBusiness)">Delete</button> *@
-                                </div>
+                <div class="modal fade" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="deleteConfirm" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Deletion Confirmation</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete @selectedBusiness.BusinessName? You won't be able to get it back!
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-danger" @onclick="() => DeleteBusiness(selectedBusiness)">Delete</button>
                             </div>
                         </div>
                     </div>
-                }
-                else
-                {
-                    <p>Select a business to be able to edit it</p>
-                }
-            </form>
-            @if (Success == "true")
-            {
-                <div class="alert-success alert alert-dismissible fade show" role="alert" @onclick="ChangeSuccess">
-                    <p>You successfully updated the business!</p>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
             }
-        </div>
+            else
+            {
+                <p>Select a business to be able to edit it</p>
+            }
+        </form>
+        @if (Success == "true")
+        {
+            <div class="alert-success alert alert-dismissible fade show" role="alert" @onclick="ChangeSuccess">
+                <p>You successfully updated the business!</p>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        }
     </div>
 
 }
 else
 {
-
+    <div>
+        <p>No businesses to edit, add more businesses to edit them here</p>
+    </div>
 }
 
 @code {
@@ -266,10 +267,31 @@ else
         }
     }
 
-    // public async void DeleteBusiness(BusinessDTO business)
-    // {
-        
-    // }
+    public async void DeleteBusiness(BusinessDTO business)
+    {
+        try
+        {
+            if (business is null)
+            {
+                throw new Exception("Selected business was not found");
+            }
+
+            var result = await businessService.DeleteBusiness(business.Id);
+
+            if (result == false)
+            {
+                throw new Exception("Business was unable to be deleted");
+            }
+
+            errorMessage = "";
+            Success = "true";
+            ReloadPage();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
 
     public void ReloadPage()
     {

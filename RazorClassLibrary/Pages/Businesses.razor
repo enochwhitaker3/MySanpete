@@ -10,10 +10,24 @@
 }
 else
 {
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="input-group mb-3 pt-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text bg-light rounded-left">
+                            <img src="Images/MagnifyingGlass.png" alt="Search" style="width: 20px; height: 20px;" />
+                        </span>
+                    </div>
+                    <input type="text" class="form-control rounded-right" placeholder="Search All Businesses" @onchange="@FilterBusinesses" />
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="business-container row mx-auto mt-10 pb-8" style="max-width: 1800px;">
-        @if (AllBusinesses is not null)
+        @if (SearchedBusinesses is not null)
         {
-            @foreach (var b in AllBusinesses)
+            @foreach (var b in SearchedBusinesses)
             {
                 <div class="col-lg-3 mt-10">
                     <div class="card h-100 shadow">
@@ -44,6 +58,7 @@ else
 
 @code {
     public List<BusinessDTO> AllBusinesses { get; set; } = new();
+    public List<BusinessDTO> SearchedBusinesses { get; set; } = new();
 
     public string test { get; set; } = "";
     public bool isLoading { get; set; } = true;
@@ -51,7 +66,17 @@ else
     protected override async Task OnInitializedAsync()
     {
         isLoading = true;
-        AllBusinesses = await service.GetAllBusinesses();
+        AllBusinesses = SearchedBusinesses = await service.GetAllBusinesses();
         isLoading = false;
+    }
+
+    private void FilterBusinesses(Microsoft.AspNetCore.Components.ChangeEventArgs args)
+    {
+        string searchString = ((string)args.Value!).ToLower();
+
+        SearchedBusinesses = AllBusinesses.Where(x =>
+        {
+            return x.BusinessName!.ToLower().Contains(searchString);
+        }).ToList();
     }
 }

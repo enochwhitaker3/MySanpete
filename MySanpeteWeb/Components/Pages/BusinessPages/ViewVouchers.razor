@@ -3,6 +3,8 @@
 @using RazorClassLibrary.Services
 @attribute [Authorize(Roles = "Business")] 
 @inject IUserVoucherService userVoucherService
+@using System.Diagnostics.CodeAnalysis
+@using System.Globalization
 
 <table class="table" style="height: 100%; width: 100%;">
     <thead>
@@ -22,7 +24,7 @@
                 <tr>
                     <td>@userVoucher.Promo_Code</td>
                     <td>@userVoucher?.User?.Username</td>
-                    @if (userVoucher?.Total_Reclaimable == null || userVoucher.Total_Reclaimable > 1)
+                    @if (userVoucher?.Total_Reclaimable == null || userVoucher.Total_Reclaimable > 1 || userVoucher.Total_Reclaimable ==0)
                     {
                         <td>Multi-Use</td>
                     }
@@ -33,18 +35,19 @@
                     <td>
                         <div style="width: 35%">
 
-                            @if (userVoucher?.Total_Reclaimable == null || userVoucher.Total_Reclaimable > 0)
+                            @if (userVoucher?.Total_Reclaimable == null || userVoucher.Total_Reclaimable > 1 || userVoucher.Total_Reclaimable == 0)
                             {
-                                <input style="outline-color: black; outline-width: 2px; outline-style: solid; width: 45%; line-height: 212%"
-                                       placeholder="0"
-                                       type="number"
-                                       min="0"
-                                       max="@(userVoucher?.Total_Reclaimable)"
-                                       @bind="userVoucher!.Times_Claimed"
-                                       step="1" />
-                                <button style="width: 50%" class="btn btn-primary" @onclick="() => ClaimVoucher(userVoucher)">
-                                    Save
-                                </button>
+                                <EditForm Model="@userVoucher" OnValidSubmit="() => ClaimVoucher(userVoucher!)">
+                                    <InputNumber style="outline-color: black; outline-width: 2px; outline-style: solid; width: 45%; line-height: 212%"
+                                                 placeholder="0"
+                                                 min="0"
+                                                 max="@(userVoucher?.Total_Reclaimable == 0 ? int.MaxValue : userVoucher?.Total_Reclaimable )"
+                                                 @bind-Value="userVoucher!.Times_Claimed"
+                                                 step="1" />
+                                    <button style="width: 50%" class="btn btn-primary" type="submit">
+                                        @(userVoucher!.Total_Reclaimable == null || userVoucher.Total_Reclaimable == 0 ? "Save" : userVoucher.Total_Reclaimable > userVoucher.Times_Claimed ? "Save" : "Claimed")
+                                    </button>
+                                </EditForm>
                             }
                             else
                             {
@@ -99,13 +102,24 @@
         var authState = await (authenticationStateTask ?? throw new Exception("Auth state unfound"));
         email = authState.User.Claims.FirstOrDefault(x => x.Type.Contains("email"))?.Value ?? throw new Exception("Email missing on business");
 
-        vouchers = await userVoucherService.GetAllByBusiness(email);
+        vouchers = (await userVoucherService.GetAllByBusiness(email)).OrderBy(x => x.Is_Used).ToList();
 
     }
 
     private async Task ClaimVoucher(UserVoucherDTO userVoucher)
     {
-        userVoucher.Is_Used = true;
+        if(userVoucher.Total_Reclaimable == 1)
+        {
+            userVoucher.Times_Claimed++;
+        }
+        if(userVoucher.Total_Reclaimable <= userVoucher.Times_Claimed)
+        {
+            userVoucher.Is_Used = true;
+        }
+        else
+        {
+            userVoucher.Is_Used = false;
+        }
 
         await userVoucherService.UpdateUserVoucher(userVoucher);
     }
@@ -117,6 +131,7 @@
 
     private async Task UnclaimVoucher()
     {
+        userVoucherToUnclaim.Times_Claimed--;
         userVoucherToUnclaim.Is_Used = false;
 
         await userVoucherService.UpdateUserVoucher(userVoucherToUnclaim);

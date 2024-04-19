@@ -43,6 +43,10 @@
                         {
                             <a class="dropdown-item" href="admin">Admin Controls</a>
                         }
+                        @if (userState!.User.IsInRole("Business"))
+                        {
+                            <a class="dropdown-item" href="business/viewvouchers">Claim User Vouchers</a>
+                        }
                         <a class="dropdown-item" href="/Account">My Account</a>
                         <a class="dropdown-item" href="/user-vouchers">My Vouchers</a>
                         <a class="dropdown-item" href="/user-bundles">My Bundles</a>

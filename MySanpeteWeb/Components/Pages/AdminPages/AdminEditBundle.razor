@@ -332,7 +332,7 @@ else
     {
         try
         {
-            @if (bundle is null)
+            if (bundle is null)
             {
                 throw new Exception("Selected bundle was not found");
             }
