@@ -3,3 +3,11 @@
 @page "/blogs"
 
 <RazorClassLibrary.Pages.Blogs></RazorClassLibrary.Pages.Blogs>
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        MySanpeteMetrics.BlogPageHitCount.Add(1);
+    }
+}

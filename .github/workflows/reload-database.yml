@@ -12,6 +12,6 @@ jobs:
           CONTAINER_NAME=$(kubectl -n codebras get pods --no-headers -o custom-columns=":metadata.name" | grep my-sanpete-database-deployment)
 
           kubectl -n codebras cp /home/enoch/dumps/mysanpetedump.sql \
-          $CONTAINER_NAME:/mysanpetedump.sql \
-          && kubectl -n codebras exec -t $CONTAINER_NAME -- \
-          pg_restore -U postgres -d postgres --no-owner -1 /mysanpetedump.sql
+          $CONTAINER_NAME:/mysanpetedump.sql && kubectl -n codebras \
+          exec -t $CONTAINER_NAME \
+          -- sh -c 'psql -U postgres postgres < /mysanpetedump.sql'
