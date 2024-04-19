@@ -28,7 +28,7 @@ public class ImageController(IDbContextFactory<MySanpeteDbContext> factory, IApp
     {
         var stopwatch = new Stopwatch();
         stopwatch.Start();
-        var result =  await cache.GetOrAddAsync($"Business{id}", () => GetBusinessImageAsync(id));
+        var result = await cache.GetOrAddAsync($"Business{id}", () => GetBusinessImageAsync(id));
         stopwatch.Stop();
         MySanpeteMetrics.ImageRetrieval.Record(stopwatch.ElapsedMilliseconds);
         return result;
