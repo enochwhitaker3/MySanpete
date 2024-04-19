@@ -82,9 +82,11 @@ public static class DtoConverter
         return new PodcastDTO()
         {
             Id = podcast.Id,
+            Name = podcast.PodcastName,
             URL = podcast.PodcastUrl,
             Comments = podcast.PodcastComments.Select(x => x.Comment.ToDto()).ToList(),
             Reactions = podcast.PodcastReactions.Select(x => x.Reaction).ToList(),
+            PublishDate = podcast.PublishDate,
         };
     }
 
