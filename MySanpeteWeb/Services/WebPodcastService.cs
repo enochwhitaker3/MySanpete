@@ -18,9 +18,9 @@ public class WebPodcastService : IPodcastService
     {
         var context = await dbContextFactory.CreateDbContextAsync();
 
-        if (request.URL is null || request.URL == "" || !Uri.IsWellFormedUriString(request.URL, UriKind.Absolute))
+        if (request.URL is null || request.URL == "")
         {
-            throw new Exception("Podcasts requires a valid URL");
+            throw new Exception("Podcasts requires embedded code.");
         }
 
         Podcast podcast = new Podcast()
@@ -55,12 +55,15 @@ public class WebPodcastService : IPodcastService
     public async Task<List<PodcastDTO>> GetAllPodcasts()
     {
         var context = await dbContextFactory.CreateDbContextAsync();
-        return await context.Podcasts
+        List<PodcastDTO> result = new List<PodcastDTO>();
+        result = await context.Podcasts
               .Include(x => x.PodcastComments)
                 .ThenInclude(x => x.Comment)
                 .ThenInclude(x => x.User)
               .Include(x => x.PodcastReactions)
               .Select(x => x.ToDto()).ToListAsync();
+
+        return result;
     }
 
     public async Task<PodcastDTO> GetPodcast(int podcastId)
