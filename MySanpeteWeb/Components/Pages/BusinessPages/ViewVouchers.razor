@@ -45,7 +45,7 @@
                                                  @bind-Value="userVoucher!.Times_Claimed"
                                                  step="1" />
                                     <button style="width: 50%" class="btn btn-primary" type="submit">
-                                        @(userVoucher!.Total_Reclaimable == null || userVoucher.Total_Reclaimable == 0 ? "Save" : userVoucher.Total_Reclaimable > userVoucher.Times_Claimed ? "Save" : "Max Uses")
+                                        @(userVoucher!.Total_Reclaimable == null || userVoucher.Total_Reclaimable == 0 ? "Save" : userVoucher.Total_Reclaimable > userVoucher.Times_Claimed ? "Save" : "Claimed")
                                     </button>
                                 </EditForm>
                             }
@@ -102,7 +102,7 @@
         var authState = await (authenticationStateTask ?? throw new Exception("Auth state unfound"));
         email = authState.User.Claims.FirstOrDefault(x => x.Type.Contains("email"))?.Value ?? throw new Exception("Email missing on business");
 
-        vouchers = await userVoucherService.GetAllByBusiness(email);
+        vouchers = (await userVoucherService.GetAllByBusiness(email)).OrderBy(x => x.Is_Used).ToList();
 
     }
 
