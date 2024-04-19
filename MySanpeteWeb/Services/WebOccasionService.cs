@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RazorClassLibrary.Data;
 using RazorClassLibrary.DTOs;
-using RazorClassLibrary.Pages;
 using RazorClassLibrary.Requests;
 using RazorClassLibrary.Services;
 
@@ -75,7 +74,9 @@ public class WebOccasionService : IOccasionService
             throw new Exception("No occasion found with given ID");
         }
 
-        context.Occasions.Remove(isExist);
+        isExist.Title = "[Removed]";
+
+        context.Update(isExist);
         await context.SaveChangesAsync();
 
         return true;

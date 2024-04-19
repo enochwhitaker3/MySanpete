@@ -21,7 +21,10 @@
     {
         @if (p.URL is not null)
         {
-            @((MarkupString)@p.URL)
+            <!-- Render the iframe that she copies in from Podbean -->
+            <div style="padding: 50px;">
+                @((MarkupString)@p.URL)
+            </div>
         }
     }
 }

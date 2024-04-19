@@ -14,7 +14,7 @@ public interface IVoucherService
 
     public Task<VoucherDTO> AddVoucher(AddVoucherRequest request);
 
-    public Task<VoucherDTO?> UpdateVoucher(Voucher voucher);
+    public Task<VoucherDTO?> UpdateVoucher(VoucherDTO voucher);
 
     public Task<bool> DeleteVoucher(int id);
 

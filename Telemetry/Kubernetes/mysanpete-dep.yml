@@ -26,4 +26,4 @@ spec:
         - name: MySanpeteDb
           value: user id = postgres; password=postgres; server=my-sanpete-database-service; database= postgres; port= 5432
         - name: WebsiteUrl
-          value: ${GITHUB_RUN_ID}.mysanpetekube.duckdns.org
+          value: http://${GITHUB_RUN_ID}.mysanpetekube.duckdns.org

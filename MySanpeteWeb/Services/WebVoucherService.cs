@@ -121,7 +121,7 @@ public class WebVoucherService : IVoucherService
         return null;
     }
 
-    public async Task<VoucherDTO?> UpdateVoucher(Voucher voucher)
+    public async Task<VoucherDTO?> UpdateVoucher(VoucherDTO voucher)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
         var voucherUnderChange = await context.Vouchers.Include(v => v.Business).Where(x => x.Id == voucher.Id).FirstOrDefaultAsync();
@@ -130,19 +130,27 @@ public class WebVoucherService : IVoucherService
         {
             voucherUnderChange.StartDate = voucher.StartDate;
             voucherUnderChange.EndDate = voucher.EndDate;
-            voucherUnderChange.PromoCode = voucher.PromoCode;
-            voucherUnderChange.PromoName = voucher.PromoName;
-            voucherUnderChange.PromoDescription = voucher.PromoDescription;
-            voucherUnderChange.PromoStock = voucher.PromoStock;
+            voucherUnderChange.PromoCode = voucher.PromoCode ?? "";
+            voucherUnderChange.PromoName = voucher.PromoName ?? "";
+            voucherUnderChange.PromoDescription = voucher.PromoDescription ?? "";
+            voucherUnderChange.PromoStock = voucher.Stock;
             voucherUnderChange.RetailPrice = voucher.RetailPrice;
-            voucherUnderChange.TotalReclaimable = voucher.TotalReclaimable;
+            voucherUnderChange.TotalReclaimable = voucher.AmmountReclaimable;
             voucherUnderChange.IsBundle = voucher.IsBundle;
             voucherUnderChange.IsActive = voucher.IsActive;
+            voucherUnderChange.PriceId = voucher.PriceId;
         }
         else { return null; }
 
-        context.Vouchers.Update(voucherUnderChange);
-        await context.SaveChangesAsync();
+        try
+        {
+            context.Vouchers.Update(voucherUnderChange);
+            await context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Something went wrong with updating this voucher. Please check all fields. {ex}");
+        }
         return voucherUnderChange.ToDto();
     }
 }

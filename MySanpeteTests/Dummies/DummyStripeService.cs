@@ -36,6 +36,11 @@ namespace MySanpeteTests.Dummies
             throw new NotImplementedException();
         }
 
+        public string UpdateStripeProduct(VoucherDTO newVoucher)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool ValidateStripeId(string id)
         {
             return true;

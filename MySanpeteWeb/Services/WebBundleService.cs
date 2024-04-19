@@ -94,12 +94,9 @@ public class WebBundleService : IBundleService
             throw new Exception("Can't delete bundle that doesn't exist");
         }
 
-        foreach (var bundleVoucher in bundleToDelete.BundleVouchers)
-        {
-            context.BundleVouchers.Remove(bundleVoucher);
-        }
+        bundleToDelete.BundleName = "[Removed]";
 
-        context.Bundles.Remove(bundleToDelete);
+        context.Update(bundleToDelete);
         await context.SaveChangesAsync();
 
         return true;

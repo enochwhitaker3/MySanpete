@@ -5,7 +5,7 @@ public class VoucherDTO
     public int Id { get; set; }
     public string? BusinessName { get; set; }
     public string? BusinessLogoURL { get; set; }
-    public DateTime? StartDate { get; set; }
+    public DateTime StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public string? PromoCode { get; set; }
     public string? PromoName { get; set; }
