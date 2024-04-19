@@ -29,6 +29,45 @@
   "panels": [
     {
       "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 7,
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": false,
+        "sortOrder": "Descending",
+        "wrapLogMessage": false
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "loki"
+          },
+          "editorMode": "builder",
+          "expr": "{job=\"MySanpete\"} |= `error`",
+          "key": "Q-8a396ce3-495b-4096-9ef0-f01849c766e7-0",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "All errors happening",
+      "type": "logs"
+    },
+    {
+      "datasource": {
         "type": "prometheus",
         "uid": "prometheus"
       },
@@ -54,10 +93,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 15,
+        "h": 11,
         "w": 11,
         "x": 0,
-        "y": 0
+        "y": 8
       },
       "id": 4,
       "options": {
@@ -158,10 +197,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 15,
+        "h": 11,
         "w": 13,
         "x": 11,
-        "y": 0
+        "y": 8
       },
       "id": 2,
       "options": {
@@ -234,10 +273,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 17,
+        "h": 10,
         "w": 11,
         "x": 0,
-        "y": 15
+        "y": 19
       },
       "id": 6,
       "options": {
