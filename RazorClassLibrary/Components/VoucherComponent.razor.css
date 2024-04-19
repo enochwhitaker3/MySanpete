@@ -1,0 +1,204 @@
+﻿.title {
+    font-size: calc(4em - 0.1vw);
+    font-family: Casual;
+}
+
+.card {
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='1' ry='1' stroke='%23333' stroke-width='3' stroke-dasharray='6%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+    border: none !important;
+    font-family: 'Tenor', Arial !important;
+}
+
+.card-title {
+    font-size: calc(2em - 0.1vw);
+}
+
+.card-text {
+    font-size: calc(.75em - 0.1vw);
+    color: #828181
+}
+
+.undertitle {
+    font-size: large;
+    font-family: 'Segoe UI';
+    padding-left: 65px;
+}
+
+.filtered {
+    height: 130px;
+    width: 130px;
+    border-radius: 65px;
+    object-fit: cover;
+    object-position: center;
+    margin: 20px;
+    transform: scale(1.2);
+    box-shadow: 0px 6px 10px 9px #e0e0e0
+}
+
+
+.non-filtered {
+    height: 130px;
+    width: 130px;
+    border-radius: 65px;
+    object-fit: cover;
+    object-position: center;
+    margin: 20px;
+    transition: transform .2s; /* Animation */
+}
+
+    .non-filtered:hover {
+        transform: scale(1.2); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+    }
+
+
+
+.button {
+    --width: 100px;
+    --height: 35px;
+    --tooltip-height: 35px;
+    --tooltip-width: 90px;
+    --gap-between-tooltip-to-button: 18px;
+    --button-color: #222;
+    --tooltip-color: #fff;
+    width: var(--width);
+    height: var(--height);
+    background: var(--button-color);
+    position: relative;
+    text-align: center;
+    border-radius: 0.45em;
+    font-family: "Arial";
+    transition: background 0.3s;
+    margin-left: auto;
+}
+
+.text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-wrapper, .text, .icon {
+    overflow: hidden;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    color: #fff;
+}
+
+.text {
+    top: 0
+}
+
+.text, .icon {
+    transition: top 0.5s;
+}
+
+.icon {
+    color: #fff;
+    top: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .icon svg {
+        width: 24px;
+        height: 24px;
+    }
+
+.button:hover {
+    background: #222;
+}
+
+    .button:hover .text {
+        top: -100%;
+    }
+
+    .button:hover .icon {
+        top: 0;
+    }
+
+    .button:hover:before, .button:hover:after {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .button:hover:after {
+        bottom: calc(var(--height) + var(--gap-between-tooltip-to-button) - 20px);
+    }
+
+    .button:hover:before {
+        bottom: calc(var(--height) + var(--gap-between-tooltip-to-button));
+    }
+
+
+@media (max-width: 1250px) {
+    .card-title {
+        font-size: calc(2em - 0.75vw);
+    }
+}
+
+@media (max-width: 1040px) {
+    .card-title {
+        font-size: calc(2em - 1.15vw);
+    }
+}
+
+@media (max-width: 900px) {
+    .card-title {
+        font-size: calc(2em - 1.75vw);
+    }
+}
+
+@media (max-width: 767px) {
+    .blogo {
+        max-width: 150px;
+    }
+
+    .card-title {
+        font-size: calc(2em - 0.1vw);
+    }
+
+    .card-text {
+        font-size: calc(.75em - 0.1vw);
+        color: #828181
+    }
+}
+
+@media (max-width: 611px) {
+    .card-title {
+        font-size: calc(1.75em - 0.5vw);
+    }
+
+    .card-text {
+        font-size: calc(.75em - 0.5vw);
+        color: #828181
+    }
+}
+
+@media (max-width: 495px) {
+    .card-title {
+        font-size: calc(1.25em - 0.5vw);
+    }
+
+    .card-text {
+        font-size: calc(.75em - 0.2vw);
+        color: #828181
+    }
+}
+
+@media (max-width: 379px) {
+    .title {
+        font-size: calc(3em - 1vw);
+    }
+
+    .card-title {
+        font-size: calc(1em - 0.5vw);
+    }
+
+    .card-text {
+        font-size: calc(1em - 0.5vw);
+        color: #828181
+    }
+}
