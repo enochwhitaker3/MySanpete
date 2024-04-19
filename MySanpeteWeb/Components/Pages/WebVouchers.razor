@@ -77,22 +77,24 @@
                     {
                         @foreach (var voucher in searchedVouchers)
                         {
-
-                            <div class="col-md-6 p-3">
-                                <RazorClassLibrary.Components.VoucherComponent thisVoucher="@voucher"></RazorClassLibrary.Components.VoucherComponent>
-                            </div>
+                            @if (voucher.IsBundle == false)
+                            {
+                                <div class="col-md-6 p-3">
+                                    <RazorClassLibrary.Components.VoucherComponent thisVoucher="@voucher"></RazorClassLibrary.Components.VoucherComponent>
+                                </div>
+                            }
                         }
                     }
                     else
                     {
                         @foreach (var voucher in searchedVouchers.Where(x => x.BusinessName == filteredBusiness).ToList())
                         {
-
-                            <div class="col-md-6 p-3">
-                                <RazorClassLibrary.Components.VoucherComponent thisVoucher="@voucher"></RazorClassLibrary.Components.VoucherComponent>
-                            </div>
-
-
+                            @if(voucher.IsBundle == false)
+                            {
+                                <div class="col-md-6 p-3">
+                                    <RazorClassLibrary.Components.VoucherComponent thisVoucher="@voucher"></RazorClassLibrary.Components.VoucherComponent>
+                                </div>
+                            }
                         }
                     }
                 }
