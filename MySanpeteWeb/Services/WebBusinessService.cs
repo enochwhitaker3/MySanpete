@@ -75,7 +75,15 @@ public class WebBusinessService : IBusinessService
             return false;
         }
 
-        context.Businesses.Remove(bud);
+        bud.Website = "[Removed]";
+        bud.Email = "[Removed]";
+        bud.Address = "[Removed]";
+        bud.PhoneNumber = "[Removed]";
+        bud.Description = "[Removed]";
+        bud.XCoordinate = 0;
+        bud.YCoordinate = 0;
+
+        context.Update(bud);
         await context.SaveChangesAsync();
 
         return true;
@@ -152,6 +160,14 @@ public class WebBusinessService : IBusinessService
         {
             buc.Logo = businessRequest.Logo;
         }
+
+        if (businessRequest.Address is not null)
+        {
+            var coords = await googleApiService.GetCoordsOfAddress(businessRequest.Address);
+            buc.XCoordinate = coords!.X;
+            buc.YCoordinate = coords!.Y;
+        }
+
 
         context.Update(buc);
         await context.SaveChangesAsync();
