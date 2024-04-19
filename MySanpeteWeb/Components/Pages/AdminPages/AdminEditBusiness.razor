@@ -92,15 +92,43 @@
                         <div class="form-group mt-5">
                             <button type="submit" class="btn btn-primary" @onclick="() => UpdateBusiness(selectedBusiness)">Update</button>
                         </div>
+                        <div class="form-group mt-5">
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
+                        </div>
                     }
                     else
                     {
                         <div class="alert alert-danger">
                             <p>Please fix the error to submit the form</p>
                             <p>@errorMessage</p>
-                            <button type="submit" class="btn btn-primary" @onclick="() => UpdateBusiness(selectedBusiness)">Update</button>
+                            <div class="form-group mt-5">
+                                <button type="submit" class="btn btn-primary" @onclick="() => UpdateBusiness(selectedBusiness)">Update</button>
+                            </div>
+                            <div class="form-group mt-5">
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
+                            </div>
                         </div>
                     }
+
+                    <div class="modal fade" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="deleteConfirm" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Deletion Confirmation</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete @selectedBusiness.BusinessName? You won't be able to get it back!
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                   @*  <button type="submit" class="btn btn-danger" @onclick="() => DeleteBusiness(selectedBusiness)">Delete</button> *@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 }
                 else
                 {
@@ -118,7 +146,7 @@
             }
         </div>
     </div>
-    
+
 }
 else
 {
@@ -237,6 +265,11 @@ else
             errorMessage = ex.Message;
         }
     }
+
+    // public async void DeleteBusiness(BusinessDTO business)
+    // {
+        
+    // }
 
     public void ReloadPage()
     {

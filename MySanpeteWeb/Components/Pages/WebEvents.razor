@@ -79,7 +79,7 @@
     {
         MapsKey = config.GetValue<string>("MapKey") ?? throw new Exception("Map key is not in the secrets");
         MySanpeteMetrics.EventPageHitCount.Add(1);
-        allOccasions = await occasionService.GetAllOcassions();
+        allOccasions = (await occasionService.GetAllOcassions()).Where(x => x.Title != "[Removed]").ToList();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

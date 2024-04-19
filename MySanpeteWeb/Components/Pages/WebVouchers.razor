@@ -257,7 +257,7 @@
         allVouchers = await voucherService.GetAllVouchers();
         searchedVouchers = allVouchers = allVouchers.Where(x => x.EndDate >= DateTime.UtcNow).ToList();
         allBusinesses = await businessService.GetAllBusinesses();
-        allBundles = await bundleService.GetAllBundles();
+        allBundles = (await bundleService.GetAllBundles()).Where(x => x.Name != "[Removed]").ToList();
         isLoading = false;
     }
 
