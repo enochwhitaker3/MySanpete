@@ -157,7 +157,7 @@ public static class DtoConverter
             Vouchers = vouchers,
             Description = business.Description,
             XCoordinate = business.XCoordinate,
-            YCoordinate = business.YCoordinate
+            YCoordinate = business.YCoordinate,
         };
     }
 
