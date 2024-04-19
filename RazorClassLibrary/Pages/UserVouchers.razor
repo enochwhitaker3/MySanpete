@@ -31,20 +31,42 @@
         <div class="mx-auto w-75">
             @foreach (var userVoucher in allUserVouchers!)
             {
-                <div>
-                    <div class="card mb-6 shadow" style="border: none;">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title"><strong>@userVoucher!.Voucher!.PromoName</strong></h5>
+                @if (userVoucher.Is_Used == false)
+                {
 
-                                <p>@userVoucher.Voucher.BusinessName</p>
-                                <p>Good Through @userVoucher.Voucher.StartDate to @userVoucher.Voucher.EndDate</p>
+                    <div>
+                        <div class="card mb-6 shadow" style="border: none;">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><strong>@userVoucher!.Voucher!.PromoName</strong></h5>
 
-                                <button class="btn btn-primary" style="text-align: right;" @onclick="()=> GoToDetailsPage(userVoucher.Id)">View Voucher</button>
+                                    <p>@userVoucher.Voucher.BusinessName</p>
+                                    <p>Good Through @userVoucher.Voucher.StartDate to @userVoucher.Voucher.EndDate</p>
+
+                                    <button class="btn btn-primary" style="text-align: right;" @onclick="()=> GoToDetailsPage(userVoucher.Id)">View Voucher</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                }
+                else
+                {
+                    <div>
+                        <div class="card mb-6 shadow" style="border: none;">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title" style="color: gray;"><strong>@userVoucher!.Voucher!.PromoName (used)</strong></h5>
+
+                                    <p style="color: gray">@userVoucher.Voucher.BusinessName</p>
+                                    <p>Good Through @userVoucher.Voucher.StartDate to @userVoucher.Voucher.EndDate</p>
+
+                                    <p>Purchased on @userVoucher.Purchase_Date</p>
+                                    <p>Used on @userVoucher.Last_Updated</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
             }
         </div>
     }
