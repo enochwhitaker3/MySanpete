@@ -79,25 +79,7 @@ public class PodcastTests : IClassFixture<MySanpeteFactory>
         await service.Invoking(vs => vs.AddPodcast(podcastRequest))
             .Should()
             .ThrowAsync<Exception>()
-            .Where(e => e.Message == "Podcasts requires a valid URL");
-    }
-
-    [Fact]
-    public async void AddAPodcastWithInvalidURLFieldFails()
-    {
-        IPodcastService service = createService();
-
-        AddPodcastRequest podcastRequest = new AddPodcastRequest()
-        {
-            URL = "NOT_A_REAL_URL",
-            Commentable = true,
-            PodcastName = "name"
-        };
-
-        await service.Invoking(vs => vs.AddPodcast(podcastRequest))
-            .Should()
-            .ThrowAsync<Exception>()
-            .Where(e => e.Message == "Podcasts requires a valid URL");
+            .Where(e => e.Message == "Podcasts requires embedded code.");
     }
 
     [Fact]
