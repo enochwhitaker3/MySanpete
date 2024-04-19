@@ -8,6 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using LazyCache;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
+using System.Diagnostics;
+using MySanpeteWeb.Telemetry;
+using Sprache;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace MySanpeteWeb.Controllers;
 
@@ -20,16 +24,38 @@ public class ImageController(IDbContextFactory<MySanpeteDbContext> factory, IApp
     private readonly IAppCache cache = cache;
 
     [HttpGet("business/{id}")]
-    public async Task<IActionResult> GetImage(int id) => await cache.GetOrAddAsync($"Business{id}", () => GetBusinessImageAsync(id));
+    public async Task<IActionResult> GetImage(int id)
+    {
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
+        var result =  await cache.GetOrAddAsync($"Business{id}", () => GetBusinessImageAsync(id));
+        stopwatch.Stop();
+        MySanpeteMetrics.ImageRetrieval.Record(stopwatch.ElapsedMilliseconds);
+        return result;
+    }
 
     [HttpGet("blogs/{id}")]
     public async Task<IActionResult> GetBlogImage(int id)
     {
-        return await cache.GetOrAddAsync($"Blogs{id}", () => GetBlogImageAsync(id));
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
+        var result = await cache.GetOrAddAsync($"Blogs{id}", () => GetBlogImageAsync(id));
+        stopwatch.Stop();
+        MySanpeteMetrics.ImageRetrieval.Record(stopwatch.ElapsedMilliseconds);
+        return result;
     }
 
     [HttpGet("occasion/{id}")]
-    public async Task<IActionResult> GetOccasionImage(int id) => await cache.GetOrAddAsync($"Occasion{id}", () => GetOccasionImageAsync(id));
+    public async Task<IActionResult> GetOccasionImage(int id)
+    {
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
+        var result = await cache.GetOrAddAsync($"Occasion{id}", () => GetOccasionImageAsync(id));
+        stopwatch.Stop();
+        MySanpeteMetrics.ImageRetrieval.Record(stopwatch.ElapsedMilliseconds);
+        return result;
+    }
+
 
     [HttpGet("user/{userId}")]
     public async Task<IActionResult> GetUserImage(int userId)

@@ -2,3 +2,11 @@
 @page "/businesses"
 
 <RazorClassLibrary.Pages.Businesses></RazorClassLibrary.Pages.Businesses>
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        MySanpeteMetrics.BusinessPageHitCount.Add(1);
+    }
+}
