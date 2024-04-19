@@ -3,88 +3,90 @@
 
 @inject NavigationManager navManager
 
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th scope="col">Page Name</th>
-            <th scope="col">Page Link</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr @onclick="GoToAddBlogsPage">
-            <td>Add Blogs</td>
-            <td>
-                <button class="btn-light" @onclick="GoToAddBlogsPage">Add Blogs</button>
-            </td>
-        </tr>
-        <tr @onclick="GoToAddBundlePage">
-            <td>Add Bundles</td>
-            <td>
-                <button class="btn-light" @onclick="GoToAddBundlePage">Add Bundles</button>
-            </td>
-        </tr>
-        <tr @onclick="GoToAddBusinessPage">
-            <td>Add Businesses</td>
-            <td>
-                <button class="btn-light" @onclick="GoToAddBusinessPage">Add Business</button>
-            </td>
-        </tr>
-        <tr @onclick="GoToAddEventPage">
-            <td>Add Events</td>
-            <td>
-                <button class="btn-light" @onclick="GoToAddEventPage">Add Events</button>
-            </td>
-        </tr>
-        <tr @onclick="GoToAddPodcastPage">
-            <td>Add Podcasts</td>
-            <td>
-                <button class="btn-light" @onclick="GoToAddPodcastPage">Add Podcasts</button>
-            </td>
-        </tr>
-        <tr @onclick="GoToAddVoucherPage">
-            <td>Add Vouchers</td>
-            <td>
-                <button class="btn-light" @onclick="GoToAddVoucherPage">Add Vouchers</button>
-            </td>
-        </tr>
-        <tr @onclick="GoToEditBlogsPage">
-            <td>Edit Blogs</td>
-            <td>
-                <button class="btn-light" @onclick="GoToEditBlogsPage">Edit Blogs</button>
-            </td>
-        </tr>
-        <tr @onclick="GoToEditBundlePage">
-            <td>Edit Bundles</td>
-            <td>
-                <button class="btn-light" @onclick="GoToEditBundlePage">Edit Bundles</button>
-            </td>
-        </tr>
-        <tr @onclick="GoToEditBusinessPage">
-            <td>Edit Businesses</td>
-            <td>
-                <button class="btn-light" @onclick="GoToEditBusinessPage">Edit Business</button>
-            </td>
-        </tr>
-        <tr @onclick="GoToEditEventPage">
-            <td>Edit Events</td>
-            <td>
-                <button class="btn-light" @onclick="GoToEditEventPage">Edit Events</button>
-            </td>
-        </tr>
-        <tr @onclick="GoToEditPodcastPage">
-            <td>Edit Podcasts</td>
-            <td>
-                <button class="btn-light" @onclick="GoToEditPodcastPage">Edit Podcasts</button>
-            </td>
-        </tr>
-        <tr @onclick="GoToEditVoucherPage">
-            <td>Edit Vouchers</td>
-            <td>
-                <button class="btn-light" @onclick="GoToEditVoucherPage">Edit Vouchers</button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div class="m-5">
+    <table class="table table-hover" style="background-color: white;">
+        <thead>
+            <tr>
+                <th scope="col">Page Name</th>
+                <th scope="col">Page Link</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr @onclick="GoToAddBlogsPage">
+                <td>Add Blogs</td>
+                <td>
+                    <button class="btn btn-secondary" @onclick="GoToAddBlogsPage">Add Blogs</button>
+                </td>
+            </tr>
+            <tr @onclick="GoToAddBundlePage">
+                <td>Add Bundles</td>
+                <td>
+                    <button class="btn btn-secondary" @onclick="GoToAddBundlePage">Add Bundles</button>
+                </td>
+            </tr>
+            <tr @onclick="GoToAddBusinessPage">
+                <td>Add Businesses</td>
+                <td>
+                    <button class="btn btn-secondary" @onclick="GoToAddBusinessPage">Add Business</button>
+                </td>
+            </tr>
+            <tr @onclick="GoToAddEventPage">
+                <td>Add Events</td>
+                <td>
+                    <button class="btn btn-secondary" @onclick="GoToAddEventPage">Add Events</button>
+                </td>
+            </tr>
+            <tr @onclick="GoToAddPodcastPage">
+                <td>Add Podcasts</td>
+                <td>
+                    <button class="btn btn-secondary" @onclick="GoToAddPodcastPage">Add Podcasts</button>
+                </td>
+            </tr>
+            <tr @onclick="GoToAddVoucherPage">
+                <td>Add Vouchers</td>
+                <td>
+                    <button class="btn btn-secondary" @onclick="GoToAddVoucherPage">Add Vouchers</button>
+                </td>
+            </tr>
+            <tr @onclick="GoToEditBlogsPage">
+                <td>Edit Blogs</td>
+                <td>
+                    <button class="btn btn-secondary" @onclick="GoToEditBlogsPage">Edit Blogs</button>
+                </td>
+            </tr>
+            <tr @onclick="GoToEditBundlePage">
+                <td>Edit Bundles</td>
+                <td>
+                    <button class="btn btn-secondary" @onclick="GoToEditBundlePage">Edit Bundles</button>
+                </td>
+            </tr>
+            <tr @onclick="GoToEditBusinessPage">
+                <td>Edit Businesses</td>
+                <td>
+                    <button class="btn btn-secondary" @onclick="GoToEditBusinessPage">Edit Business</button>
+                </td>
+            </tr>
+            <tr @onclick="GoToEditEventPage">
+                <td>Edit Events</td>
+                <td>
+                    <button class="btn btn-secondary" @onclick="GoToEditEventPage">Edit Events</button>
+                </td>
+            </tr>
+            <tr @onclick="GoToEditPodcastPage">
+                <td>Edit Podcasts</td>
+                <td>
+                    <button class="btn btn-secondary" @onclick="GoToEditPodcastPage">Edit Podcasts</button>
+                </td>
+            </tr>
+            <tr @onclick="GoToEditVoucherPage">
+                <td>Edit Vouchers</td>
+                <td>
+                    <button class="btn btn-secondary" @onclick="GoToEditVoucherPage">Edit Vouchers</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 @code {
 
