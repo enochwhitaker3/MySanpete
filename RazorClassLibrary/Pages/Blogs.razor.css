@@ -76,8 +76,11 @@ body, html {
         font-weight: normal;
     }
 
+    .card-body h5 {
+        color: #828181;
+    }
+
     .card-body h2 {
-        font-size: 25px;
         font-weight: bold;
     }
 
@@ -86,12 +89,8 @@ body, html {
     text-align: center;
 }
 
-    .main-text p {
-        font-size: 1vw;
-    }
 
-    .main-text h2 {
-        font-size: 1.5vw;
+    .main-text h3 {
         font-weight: bold;
     }
 
@@ -100,12 +99,7 @@ body, html {
     text-align: center;
 }
 
-    .sub-text p {
-        font-size: .75vw;
-    }
-
-    .sub-text h2 {
-        font-size: 1vw;
+    .sub-text h3 {
         font-weight: bold;
     }
 
@@ -204,22 +198,13 @@ body, html {
 
 @media screen and (max-width: 767px){
 
-    .main-text h2{
-        font-size: 3.5vw;
-    }
-    .main-text p {
-        font-size: 3vw;
-    }
-    .sub-text p {
-        font-size: 2.5vw;
-    }
 
-    .sub-text h2 {
-        font-size: 3vw;
-        font-weight: bold;
-    }
+
     .btn{
         width:65%;
+    }
+    .button{
+        display:none;
     }
 
 }

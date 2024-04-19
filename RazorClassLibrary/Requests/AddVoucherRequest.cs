@@ -10,7 +10,7 @@ namespace RazorClassLibrary.Requests;
 public class AddVoucherRequest
 {
     public int BusinessId { get; set; }
-    public DateTime? StartDate { get; set; }
+    public DateTime StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public string? PromoCode { get; set; }
     public string? PromoDescription { get; set; }
@@ -21,4 +21,6 @@ public class AddVoucherRequest
 
     public string? StripeId { get; set; }
     public string? PriceId { get; set; }
+    public bool? IsActive { get; set; }
+    public bool? IsBundle { get; set; }
 }

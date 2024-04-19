@@ -46,7 +46,7 @@ public class MobileVoucherService : IVoucherService
         return result!;
     }
 
-    public Task<VoucherDTO?> UpdateVoucher(Voucher voucher)
+    public Task<VoucherDTO?> UpdateVoucher(VoucherDTO voucher)
     {
         throw new NotImplementedException();
     }

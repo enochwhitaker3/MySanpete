@@ -5,6 +5,7 @@ using MySanpeteWeb;
 using RazorClassLibrary.Requests;
 using MySanpeteWeb.Services;
 using RazorClassLibrary.Data;
+using RazorClassLibrary.DTOs;
 
 namespace MySanpeteTests;
 
@@ -173,17 +174,16 @@ public class VoucherTests : IClassFixture<MySanpeteFactory>
         if (voucher == null) { throw new Exception("Something went wrong getting voucher in UpdateVoucherTest"); }
         voucher.PromoName = "New Test Name";
 
-        Voucher newVoucher = new Voucher()
+        VoucherDTO newVoucher = new VoucherDTO()
         {
             PromoName = voucher.PromoName,
             EndDate = voucher.EndDate,
             StartDate = voucher.StartDate,
             PromoDescription = voucher.PromoDescription!,
             PromoCode = voucher.PromoCode!,
-            PromoStock = voucher.Stock,
+            Stock = voucher.Stock,
             RetailPrice = voucher.RetailPrice,
-            TotalReclaimable = voucher.AmmountReclaimable,
-            BusinessId = request.BusinessId,
+            AmmountReclaimable = voucher.AmmountReclaimable,
             Id = voucher.Id
         };
 

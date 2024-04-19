@@ -116,6 +116,36 @@ public class StripeService : IStripeService
         return stripeIds;
     }
 
+    public string UpdateStripeProduct(VoucherDTO newVoucher)
+    {
+
+        long numberOfCents = Convert.ToInt32(newVoucher.RetailPrice * 100);
+
+        // Create a new price object with a new amount
+        var priceOptions = new PriceCreateOptions
+        {
+            Currency = "usd",
+            UnitAmount = numberOfCents,
+            Product = newVoucher.StripeId,
+            //ProductData = new PriceProductDataOptions { Name = newVoucher.PromoName },
+        };
+        var priceService = new PriceService();
+        var priceResponse = priceService.Create(priceOptions);
+
+
+        // Update stripe product with new price, name, and description
+        var options = new ProductUpdateOptions
+        {
+            Name = newVoucher.PromoName,
+            Description = newVoucher.PromoDescription,
+            DefaultPrice = priceResponse.Id             // price id after updating
+        };
+        var service = new ProductService();
+        var result = service.Update(newVoucher.StripeId, options);   // update using stripe product id
+
+        return result.DefaultPriceId;
+    }
+
     public bool ValidateStripeId(string id)
     {
         var service = new ProductService();

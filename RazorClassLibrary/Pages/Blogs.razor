@@ -17,7 +17,7 @@
         
             @foreach(var blog in featuredBlogs)
             {
-                <div class="col-md-4 m-4">
+                <div class="col-lg-4 m-4">
                     <div class="card shadow" style="height: 99%; transition: none !important; transform:none !important;">
                         <div class="logo-container d-flex justify-content-center" style="height: 55%;">
                             <img class="card-img-top"
@@ -25,7 +25,7 @@
                         </div>
                         <div class="card-body w-100">
                             <div class="main-text">
-                                <p>@blog.PublishDate?.ToString("MMMM dd, yyyy")</p>
+                                <h5>@blog.PublishDate?.ToString("MMMM dd, yyyy")</h5>
                                 <h2 class="d-grid">
                                     @blog.Title
                                     <span>@blog.AuthorName</span>
@@ -36,13 +36,14 @@
                     </div>
                 </div>
             }
+
         </div>
 
         <div class="business-container row justify-content-center m-5">
 
             @foreach (var blog in restBlogs)
             {
-                <div class="card-container col-md-3">
+                <div class="card-container col-lg-3">
                     <div class="card shadow w-65" @onclick="() => NavigateToBlog(blog.Id)">
                         <div class="image-container d-flex justify-content-center" style="height: 55%;">
                             <img class="card-img-top img-fluid"
@@ -51,8 +52,10 @@
                         <div class="card-body mt-3">
                             <div class="sub-text">
                                 <p>@blog.PublishDate?.ToString("MMMM dd, yyyy")</p>
-                                <h2>@blog.Title</h2>
-                                <p>@blog.AuthorName</p>
+                                <h3 class="d-grid">
+                                    @blog.Title
+                                    <span>@blog.AuthorName</span>
+                                </h3>
                             </div>
                             <div class="button">
                                 <h1 @onclick="() => NavigateToBlog(blog.Id)">Read now</h1>

@@ -190,6 +190,10 @@ a:hover{
     width: 35vw;
 }
 
+    .event-card:hover{
+        cursor: pointer;
+    }
+
 .event-date {
     background-image: url(Images/green_wave.svg);
     background-repeat: repeat-y;
@@ -225,6 +229,9 @@ a:hover{
 
     .sm-view {
         display: inline-block !important;
+    }
+    .event-container{
+        max-height: none!important;
     }
     .event-card {
         height: 15vh;

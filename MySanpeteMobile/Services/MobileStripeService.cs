@@ -36,6 +36,11 @@ public class MobileStripeService : IStripeService
         throw new NotImplementedException();
     }
 
+    public string UpdateStripeProduct(VoucherDTO newVoucher)
+    {
+        throw new NotImplementedException();
+    }
+
     public bool ValidateStripeId(string id)
     {
         throw new NotImplementedException();
