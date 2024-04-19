@@ -1,0 +1,342 @@
+﻿@page "/edit-event/{Success}"
+@page "/edit-event"
+
+@using MySanpeteWeb.Services
+@using RazorClassLibrary.DTOs
+@using RazorClassLibrary.Data
+@using RazorClassLibrary.Requests
+@using RazorClassLibrary.Services
+
+@inject IOccasionService occasionService
+@inject IBusinessService businessService
+@inject NavigationManager navManager
+@inject NavigationManager navManager;
+
+@attribute [Authorize(Roles = "Admin")]
+
+@if (AllOccasions is not null)
+{
+    <div class="form-container" onsubmit="return false" style="margin-bottom: 20px;">
+        <h3>Admin Edit Event</h3>
+        <form class="mt-5">
+            <div class="form-group mt-5">
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#occasionPopup">Select Event</button>
+            </div>
+
+            <div class="modal fade" id="occasionPopup" tabindex="-1" role="dialog" aria-labelledby="SelectOccasion" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Add Voucher</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Bundle Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var occasion in AllOccasions)
+                                    {
+                                        <tr @onclick="() => SelectOccasion(occasion.Id)" data-dismiss="modal">
+                                            <td>@occasion.Title</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @if (SelectedOccasion is not null && SelectedOccasion.Business is not null)
+            {
+                <div class="form-group mt-5">
+                    <label for="title">Title</label>
+                    <input id="title" class="form-control" @bind="@SelectedOccasion.Title" required />
+                </div>
+                <div class="form-group mt-5">
+                    <label for="businessName">Business Name</label>
+                    <select id="businessName" class="form-control" @bind="@SelectedOccasion.Business.BusinessName">
+                        @if (AllBusinesses is not null)
+                        {
+                            <option value="">Choose a business</option>
+                            @foreach (var business in AllBusinesses)
+                            {
+                                <option value="@business.BusinessName">@business.BusinessName</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="form-group mt-5">
+                    <label for="xCoordinate">X Coordinate</label>
+                    <input id="xCoordinate" class="form-control" @bind="@SelectedOccasion.XCoordinate" required />
+                </div>
+                <div class="form-group mt-5">
+                    <label for="yCoordinate">Y Coordinate</label>
+                    <input id="yCoordinate" class="form-control" @bind="@SelectedOccasion.YCoordinate" required />
+                </div>
+                <div class="form-group mt-5">
+                    <label for="description">Description</label>
+                    <input id="description" class="form-control" @bind="@SelectedOccasion.Description" required />
+                </div>
+                <div class="form-group mt-5">
+                    <label for="startDate">Start Date</label>
+                    <input id="startDate" class="form-control" @bind="@SelectedOccasion.StartDate" required />
+                </div>
+                <div class="form-group mt-5">
+                    <label for="endDate">End Date</label>
+                    <input id="endDate" class="form-control" @bind="@SelectedOccasion.EndDate" required />
+                </div>
+                <div class="form-group mt-5">
+                    <label for="photo">Photo</label>
+                    <InputFile OnChange="SaveFile"></InputFile>
+                </div>
+
+                @if (errorMessage == "")
+                {
+                    <div class="form-group mt-5">
+                        <button type="submit" class="btn btn-primary" @onclick="() => UpdateOccasion(SelectedOccasion)">Update</button>
+                    </div>
+                    <div class="form-group mt-5">
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-danger">
+                        <p>Please fix the error to update the bundle</p>
+                        <p>@errorMessage</p>
+                        <div class="form-group mt-5">
+                            <button type="submit" class="btn btn-primary" @onclick="() => UpdateOccasion(SelectedOccasion)">Update</button>
+                        </div>
+                        <div class="form-group mt-5">
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
+                        </div>
+                    </div>
+                }
+
+                <div class="modal fade" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="deleteConfirm" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Deletion Confirmation</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete @SelectedOccasion.Title? You won't be able to get it back!
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-danger" @onclick="() => DeleteOccasion(SelectedOccasion)">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            }
+            else
+            {
+                <p>Select an event to be able to edit it</p>
+            }
+        </form>
+
+        @if (Success == "true")
+        {
+            <div class="alert-success alert alert-dismissible fade show" role="alert" @onclick="ChangeSuccess">
+                <p>You successfully updated the last event!</p>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div>
+        <p>No events to edit, add more events to edit them here</p>
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public string? Success { get; set; }
+
+    public string? errorMessage { get; set; } = "";
+
+    public byte[]? ImageBytes { get; set; }
+
+    public List<OccasionDTO>? AllOccasions { get; set; }
+    public OccasionDTO? SelectedOccasion { get; set; }
+
+    public List<BusinessDTO>? AllBusinesses { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        AllOccasions = (await occasionService.GetAllOcassions()).Where(x => x.Title != "[Removed]").ToList();
+        AllBusinesses = await businessService.GetAllBusinesses();
+    }
+
+    public async void SelectOccasion(int selectedOccasionId)
+    {
+        try
+        {
+            if (AllOccasions is null || AllOccasions.Count == 0)
+            {
+                throw new Exception("No occasions were found");
+            }
+            SelectedOccasion = await occasionService.GetOccasion(selectedOccasionId);
+
+            if (SelectedOccasion is null)
+            {
+                throw new Exception("The selected occasion was null");
+            }
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
+
+    public async Task SaveFile(InputFileChangeEventArgs e)
+    {
+        IBrowserFile file = e.GetMultipleFiles(1).Single();
+
+        using (var ms = new MemoryStream())
+        {
+            await file.OpenReadStream().CopyToAsync(ms);
+            ImageBytes = ms.ToArray();
+        }
+    }
+
+    public async void UpdateOccasion(OccasionDTO occasion)
+    {
+        try
+        {
+            if (occasion.Title is null)
+            {
+                throw new Exception("The event needs to have a title");
+            }
+
+            if (occasion.EndDate <= occasion.StartDate)
+            {
+                throw new Exception("The end date needs to be further in the future than the start date");
+            }
+
+            if (occasion.Business is null)
+            {
+                throw new Exception("The event needs to have a business tied to it");
+            }
+
+            if (occasion.Description is null)
+            {
+                throw new Exception("The event needs to have a description");
+            }
+
+            if (ImageBytes is not null)
+            {
+                UpdateOccasionRequest request = new()
+                    {
+                        Title = occasion.Title,
+                        StartDate = occasion.StartDate.ToUniversalTime(),
+                        EndDate = occasion.EndDate.ToUniversalTime(),
+                        Description = occasion.Description,
+                        Photo = ImageBytes,
+                        BusinessId = occasion.BusinessId,
+                        Id = occasion.Id,
+                        XCoordinate = occasion.XCoordinate,
+                        YCoordinate = occasion.YCoordinate
+                    };
+
+                var result = await occasionService.UpdateOccasion(request);
+
+                if (result is null)
+                {
+                    throw new Exception("The occasion was returned null and probably didn't update");
+                }
+
+                Success = "true";
+                ReloadPage();
+            }
+            else
+            {
+                UpdateOccasionRequest request = new()
+                    {
+                        Title = occasion.Title,
+                        StartDate = occasion.StartDate,
+                        EndDate = occasion.EndDate,
+                        Description = occasion.Description,
+                        BusinessId = occasion.BusinessId,
+                        Id = occasion.Id,
+                        XCoordinate = occasion.XCoordinate,
+                        YCoordinate = occasion.YCoordinate
+                    };
+
+                var result = await occasionService.UpdateOccasion(request);
+
+                if (result is null)
+                {
+                    throw new Exception("The occasion was returned null and probably didn't update");
+                }
+
+                errorMessage = "";
+                Success = "true";
+                ReloadPage();
+            }
+
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
+
+    public async void DeleteOccasion(OccasionDTO occasion)
+    {
+        try
+        {
+            if (occasion is null)
+            {
+                throw new Exception("Selected occasion was not found");
+            }
+
+            var result = await occasionService.DeleteOccasion(occasion.Id);
+
+            if (result ==  false)
+            {
+                throw new Exception("Occasion was unable to be deleted");
+            }
+
+            errorMessage = "";
+            Success = "true";
+            ReloadPage();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
+
+    public void ReloadPage()
+    {
+        navManager.NavigateTo($"/edit-event/{Success}", true);
+    }
+
+    public void ChangeSuccess()
+    {
+        Success = "false";
+    }
+}

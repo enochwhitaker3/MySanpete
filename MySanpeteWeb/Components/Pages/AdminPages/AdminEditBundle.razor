@@ -58,15 +58,15 @@
             @if (SelectedBundle is not null && SelectedBundle.Vouchers is not null)
             {
                 <div class="form-group mt-5">
-                    <label for="name">@SelectedBundle.Name</label>
+                    <label for="name">Name</label>
                     <input id="name" class="form-control" @bind="@SelectedBundle.Name" required />
                 </div>
                 <div class="form-group mt-5">
-                    <label for="startDate">@SelectedBundle.StartDate</label>
+                    <label for="startDate">StartDate</label>
                     <input id="startDate" type="datetime-local" class="form-control" @bind="@SelectedBundle.StartDate" required />
                 </div>
                 <div class="form-group mt-5">
-                    <label for="endDate">@SelectedBundle.EndDate</label>
+                    <label for="endDate">EndDate</label>
                     <input id="endDate" type="datetime-local" class="form-control" @bind="@SelectedBundle.EndDate" required />
                 </div>
                 <hr />
@@ -130,6 +130,9 @@
                     <div class="form-group mt-5">
                         <button type="submit" class="btn btn-primary" @onclick="() => UpdateBundle(SelectedBundle)">Update</button>
                     </div>
+                    <div class="form-group mt-5">
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
+                    </div>
                 }
                 else
                 {
@@ -139,9 +142,31 @@
                         <div class="form-group mt-5">
                             <button type="submit" class="btn btn-primary" @onclick="() => UpdateBundle(SelectedBundle)">Update</button>
                         </div>
+                        <div class="form-group mt-5">
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
+                        </div>
                     </div>
                 }
 
+                <div class="modal fade" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="deleteConfirm" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Deletion Confirmation</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete @SelectedBundle.Name? You won't be able to get it back!
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-danger" @onclick="() => DeleteBundle(SelectedBundle)">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             }
             else
             {
@@ -173,9 +198,6 @@ else
 
     public string? errorMessage { get; set; } = "";
 
-    public DateTime StartDate { get; set; } = DateTime.Today.ToUniversalTime();
-    public DateTime EndDate { get; set; } = DateTime.Today.ToUniversalTime();
-
     public List<BundleDTO>? AllBundles { get; set; }
     public BundleDTO? SelectedBundle { get; set; }
 
@@ -185,7 +207,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        AllBundles = await bundleService.GetAllBundles();
+        AllBundles = (await bundleService.GetAllBundles()).Where(x => x.Name != "[Removed]").ToList();
         AllVouchers = await voucherService.GetAllVouchers();
         AllVouchers = AllVouchers.Where(x => x.IsBundle == true).ToList();
     }
@@ -296,6 +318,32 @@ else
             {
                 throw new Exception("The new bundle was null");
             }
+            errorMessage = "";
+            Success = "true";
+            ReloadPage();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
+
+    public async void DeleteBundle(BundleDTO bundle)
+    {
+        try
+        {
+            @if (bundle is null)
+            {
+                throw new Exception("Selected bundle was not found");
+            }
+
+            var result = await bundleService.DeleteBundle(bundle.Id);
+
+            if (result == false)
+            {
+                throw new Exception("Bundle was unable to be deleted");
+            }
+
             errorMessage = "";
             Success = "true";
             ReloadPage();
