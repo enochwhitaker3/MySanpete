@@ -61,6 +61,21 @@
             <label for="title">Total Reclaimable (Enter 0 for no limit)</label>
             <span>$</span><input id="title" class="form-control" @bind="TotalReclaimable" required />
         </div>
+        <div class="form-group mt-5">
+            <label for="isActive">Is Active? <br /><small>Edit this if you don't this to show up as purchasable.</small></label><br />
+            <input type="radio" id="radioTrue" name="myRadio" @onchange="@(e => IsActive = true)" checked="@(IsActive == true)" />
+            <label for="radioTrue">Active</label>
+            <br />
+            <input type="radio" id="radioFalse" name="myRadio" @onchange="@(e => IsActive = false)" checked="@(IsActive == false)" />
+            <label for="radioFalse">Not Active</label>
+        </div>
+        <div class="form-group mt-5">
+            <label for="isBundle">Is part of Bundle? <br /><small>If this voucher is part of a bundle, you cannot purchase it individually.</small></label><br />
+            <input type="radio" id="radioTrue" name="myRadio1" @onchange="@(e => IsBundle = true)" checked="@(IsBundle == true)" />
+            <label for="radioTrue">Yes</label><br />
+            <input type="radio" id="radioFalse" name="myRadio1" @onchange="@(e => IsBundle = false)" checked="@(IsBundle == false)" />
+            <label for="radioFalse">No</label>
+        </div>
         @if (errorMessage == "")
         {
             <button type="submit" class="btn btn-primary" @onclick="CreateNewVoucher">Submit</button>
@@ -104,6 +119,8 @@
     public int PromoStock { get; set; }
     public Decimal RetailPrice { get; set; }
     public int TotalReclaimable { get; set; }
+    public bool IsActive { get; set; } = true;
+    public bool IsBundle { get; set; } = false;
 
     public IEnumerable<BusinessDTO>? AllBusinesses { get; set; }
 
@@ -112,7 +129,6 @@
         newVoucher = new();
 
         AllBusinesses = await businessService.GetAllBusinesses();
-
     }
 
     public async Task CreateNewVoucher()
@@ -176,7 +192,9 @@
                     PromoName = PromoName,
                     PromoStock = PromoStock,
                     RetailPrice = RetailPrice,
-                    TotalReclaimable = TotalReclaimable
+                    TotalReclaimable = TotalReclaimable,
+                    IsActive = IsActive, 
+                    IsBundle = IsBundle
                 };
 
             string[] returnedStripeId = stripeService.AddProductToStripe(request);
@@ -193,7 +211,9 @@
                     RetailPrice = RetailPrice,
                     TotalReclaimable = TotalReclaimable,
                     StripeId = returnedStripeId[0],
-                    PriceId = returnedStripeId[1]
+                    PriceId = returnedStripeId[1],
+                    IsActive = IsActive,
+                    IsBundle = IsBundle
                 };
 
             try

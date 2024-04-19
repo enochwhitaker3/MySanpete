@@ -1,0 +1,210 @@
+.about{
+    font-family: 'Tenor'
+}
+
+.about h1{
+    font-weight: bolder;
+    font-size: 3vw;
+}
+
+
+.event-card {
+    background-color: #fff;
+    height: 17vh;
+/*    width: 35vw;*/
+}
+a:hover {
+    text-decoration: none;
+}
+
+
+    .event-card:hover {
+        cursor: pointer;
+    }
+
+.event-date {
+    background-image: url(Images/green_wave.svg);
+    background-repeat: repeat-y;
+    color: #fcfcf8;
+}
+
+    .event-date h2 {
+        font-family: Inter-Bold;
+        font-size: 2.25vw;
+        width: fit-content;
+        transform-origin: bottom center;
+    }
+
+.vl {
+    border-left: 2px solid black;
+    height: 50vh;
+}
+
+.hl {
+    border-bottom: 2px solid black;
+}
+
+.lg-view {
+    display: flex !important;
+}
+
+.sm-view {
+    display: none !important;
+}
+
+.event-details {
+    color: black;
+}
+
+    .event-details h2 {
+        font-family: Inter-Bold;
+        font-size: 1.5rem;
+    }
+
+    .event-details h4 {
+        font-family: Inter;
+        font-size: 1rem;
+    }
+
+.card{
+    margin-bottom: 40px !important;
+}
+
+@media screen and (max-width: 1200px) {
+    .lg-view {
+        display: none !important;
+    }
+
+    .sm-view {
+        display: inline-block !important;
+    }
+
+    .event-container {
+        max-height: none !important;
+    }
+
+    .event-card {
+        height: 15vh;
+        width: 50vw !important;
+    }
+
+    .event-date h2 {
+        font-size: 3vw;
+    }
+
+    .map-vr-container {
+        margin-top: 25px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .event-card {
+        height: 15vh;
+        width: 75vw !important;
+    }
+
+    .event-date h2 {
+        font-size: 3vw;
+    }
+
+    .event-details h2 {
+        font-size: 3.5vw;
+    }
+
+    .event-details h4 {
+        font-size: 0.6rem;
+    }
+}
+
+
+@media (max-width: 379px) {
+    .title {
+        font-size: calc(3em - 1vw);
+    }
+}
+
+@media( max-height: 915px) {
+    .title {
+        font-size: calc(3em - 1vw);
+    }
+}
+
+@media( max-height: 798px) {
+    .title {
+        font-size: calc(2.25em - 1vw);
+    }
+}
+
+.playstore-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #000;
+    border-radius: 9999px;
+    background-color: white;
+    padding: 1.5rem 3rem;
+    text-align: center;
+    outline: 0;
+    transition: all .2s ease;
+    text-decoration: none;
+    color: black !important;
+}
+
+    .playstore-button:hover {
+        transform: translateY(-4px) translateX(-2px);
+        box-shadow: 2px 5px 0 0 black;
+    }
+
+.google-icon {
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+.texts {
+    margin-left: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1;
+}
+
+.text-1 {
+    margin-bottom: 0.25rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 768px) {
+    .playstore-button {
+        padding: 0.5rem 1.25rem; /* Adjusted padding for smaller screens */
+    }
+
+    .text-1 {
+        font-size: 0.65rem; /* Adjusted font size for smaller screens */
+    }
+
+    .discover {
+        font-size: calc(2.75em - 0.1vw);
+        width: 100%;
+    }
+
+    .lg-view {
+        width: 70%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .playstore-button {
+        padding: 0.4rem 1rem; /* Further adjusted padding for even smaller screens */
+    }
+
+    .text-1 {
+        font-size: 0.5rem; /* Further adjusted font size for even smaller screens */
+    }
+}
+
+
+.text-2 {
+    font-weight: 600;
+}

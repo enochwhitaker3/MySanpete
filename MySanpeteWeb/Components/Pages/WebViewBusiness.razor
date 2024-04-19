@@ -1,0 +1,8 @@
+﻿@page "/view-business/{BusinessId:int}"
+
+<RazorClassLibrary.Pages.ViewBusiness BusinessId="@BusinessId"></RazorClassLibrary.Pages.ViewBusiness>
+
+@code {
+    [Parameter]
+    public int BusinessId { get; set; }
+}
