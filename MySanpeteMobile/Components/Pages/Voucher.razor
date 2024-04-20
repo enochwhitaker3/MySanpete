@@ -1,0 +1,9 @@
+﻿@page "/Vouchers"
+
+@code {
+    protected async override Task OnInitializedAsync()
+    {
+        Uri uri = new Uri("https://mysanpete.azurewebsites.net/vouchers");
+        await Microsoft.Maui.ApplicationModel.Browser.Default.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
+    }
+}

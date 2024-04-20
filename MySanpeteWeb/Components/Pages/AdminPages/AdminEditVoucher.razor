@@ -12,27 +12,51 @@
 
 @attribute [Authorize(Roles = "Admin")]
 
-<h3>Admin Edit Voucher</h3>
 
 <div class="form-container mb-5">
+    <h3>Admin Edit Voucher</h3>
     <form class="mt-5" onsubmit="return false">
         <div class="form-group mt-5">
-            <label for="author">Choose a voucher to edit</label>
-            <select id="author" class="form-control" @bind="SelectedVoucherId" required>
-                @if (AllVouchers is not null)
-                {
-                    <option value="">Select a voucher to edit...</option>
-                    @foreach (var v in AllVouchers)
-                    {
-                        <option value="@v.Id" @onclick="() => UpdateWhichVoucherIsSelected(v.Id)">@v.PromoName</option>
-                    }
-                }
-            </select>
+
+            <div class="form-group mt-5">
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#voucherPopup">Select A Voucher</button>
+            </div>
+
+            <div class="modal fade" id="voucherPopup" tabindex="-1" role="dialog" aria-labelledby="SelectVoucher" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addVoucherModal">Select a Voucher</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Vouchers</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var voucher in AllVouchers)
+                                    {
+                                        <tr @onclick="() => UpdateWhichVoucherIsSelected(voucher.Id)" data-dismiss="modal">
+                                            <td>@voucher.PromoName</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         @if (SelectedVoucher is not null)
         {
-
-
             <hr />
             <div class="form-group mt-5">
                 <label for="author">Choose Business Associated with this Voucher</label>
@@ -166,6 +190,8 @@
         PromoStock = SelectedVoucher.Stock;
         RetailPrice = SelectedVoucher.RetailPrice;
         TotalReclaimable = SelectedVoucher.AmmountReclaimable;
+        IsActive = IsActive;
+        IsBundle = IsBundle;
     }
 
     public async Task UpdateVoucher()

@@ -8,8 +8,10 @@
 @inject NavigationManager navManager
 @attribute [Authorize(Roles = "Admin")]
 
-<div class="form-container">
-    <table class="table">
+
+<div class="form-container mt-5" style="max-width: 95vw; margin: auto auto; margin-bottom: 100px; ">
+    <a href="/add-podcast"><button class="btn btn-primary mb-3">Add Podcast</button></a>
+    <table class="table table-responsive">
         <thead>
             <tr>
                 <th scope="col">Podcast Title</th>
@@ -21,20 +23,18 @@
         <tbody>
             @if(AllPodcasts is not null)
             {
-                
-            @foreach (var p in AllPodcasts)
-            {
-                <tr>
-                    <th scope="row">@p.Name</th>
-                    <td><pre style="inline-size: 400px; overflow-x: scroll; padding-bottom: 30px;">@p.URL</pre></td>
-                    <td>@p.PublishDate</td>
-                    <td><button class="btn btn-danger" @onclick="() => DeletePodcast(p.Id)">Delete</button></td>
-                </tr>
-            }
+                @foreach (var p in AllPodcasts)
+                {
+                    <tr>
+                        <th scope="row">@p.Name</th>
+                        <td><pre style="inline-size: 450px; overflow-x: scroll; padding-bottom: 30px;">@p.URL</pre></td>
+                        <td>@p.PublishDate</td>
+                        <td><button class="btn btn-danger" @onclick="() => DeletePodcast(p.Id)">Delete</button></td>
+                    </tr>
+                }
             }
         </tbody>
     </table>
-
 </div>
 
 @code {

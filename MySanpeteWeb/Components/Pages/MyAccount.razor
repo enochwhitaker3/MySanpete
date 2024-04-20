@@ -41,14 +41,13 @@
             </div>
         </div>
 
-        <p style="margin-top: 20px;">Username:</p>
-        <div class="d-flex flex-row">
+        <div class="d-flex flex-row" style="margin-top: 20px;">
             <button class="mr-3" data-toggle="modal" data-target="#usernameModal" style="background-color: white; border: solid 1px gray; width: 33px; height: 33px; border-radius: 5px;"><i class="bi bi-pencil-fill" style="font-size: 19px; color: dimgray"></i></button>
-            <h3><strong class="">@User.Username</strong></h3>
+            <h3><strong class="">Username: @User.Username</strong></h3>
         </div>
 
 
-        <!-- Modal -->
+        <!-- Update Username Modal -->
         <div class="modal fade" id="usernameModal" tabindex="-1" role="dialog" aria-labelledby="editUsernameModal" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -100,7 +99,14 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (AuthStateTask is null)
+        await TryToAuthenticateUser();
+
+        User = await userService.GetAuthUser(AuthId!) ?? new UserDTO();
+    }
+
+    public async Task TryToAuthenticateUser()
+    {
+       if (AuthStateTask is null)
         {
             throw new Exception("There is no user logged in.");
         }
@@ -117,8 +123,6 @@
         {
             NavMan.NavigateTo("/404");
         }
-
-        User = await userService.GetAuthUser(AuthId!) ?? new UserDTO();
     }
 
     public async Task SaveFile(InputFileChangeEventArgs e)

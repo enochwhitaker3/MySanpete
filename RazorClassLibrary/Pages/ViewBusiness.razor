@@ -5,110 +5,104 @@
 
 
 
-<div class="container">
-    <div class="container-row row d-flex align-content-center justify-content-center">
+<div class="epic-container">
+    <div class="container-row row d-flex align-content-center justify-content-center g-0">
+        <div class="business-container col-md-4 d-flex align-items-center">
+            <img class="top-image col-md-4 img-fluid rounded-circle mr-5 "src="@selectedBusiness!.LogoURL" />
 
-        <div class="col-md-3">
-            <img class="card-img-top rounded-circle "
-                 src="https://iconape.com/wp-content/files/hd/243655/png/wendys-logo.png" />
-        </div>
-        <div class="col-md-4 d-flex align-items-center">
             <div class="about">
-                <h1>Wendy's</h1>
+                <h1>@selectedBusiness.BusinessName</h1>
                 <div class="phone d-flex align-items-center">
                     <h4 class="bi bi-telephone"></h4>
-                    <h4 style="margin-left: 5px;">(435) 283-4300</h4>
+                    <h4 style="margin-left: 5px;">@selectedBusiness.PhoneNumber</h4>
                 </div>
 
                 <div class="phone d-flex align-items-center">
                     <h4 class="bi bi-geo-alt"></h4>
-                    <h4 style="margin-left: 5px;">747 S Main St, Ephraim, UT</h4>
+                    <h4 style="margin-left: 5px;">@selectedBusiness.Address</h4>
                 </div>
             </div>
         </div>
     </div>
 
+    <div class="d-flex row justify-content-center m-3">
+        <div class="d-grid col-xl-4">
+            <h1 class="about d-flex justify-content-center" style="font-weight:bold;">@selectedBusiness.BusinessName Events</h1>
+            <div class="@(businessOccasions.Count == 0 ? "not-found" : "foreach") d-grid col-lg justify-content-center">
 
-    <div class="d-flex row justify-content-center">
-        <div class="d-grid col-lg-6">
-            <h1 class="about d-flex justify-content-center" style="font-weight:bold;">Wendy's Events</h1>
-            <div class="d-grid col justify-content-center" style="overflow-y:scroll; width:fit-content; max-height: 60vh;">
-                @foreach (var o in businessOccasions)
+                @if(businessOccasions.Count == 0)
                 {
-                    o.StartDate = o.StartDate.AddHours(-6);
-                    o.EndDate = o.EndDate.AddHours(-6);
-                    <a class="event-card row shadow mb-10" @onclick="() => GoToEventPage(o.Id)">
-                        <div class="event-date col-3 d-flex align-items-center" style="background-image: url(Images/green_wave.svg); background-repeat: repeat-y;">
-                            <div class="event-date">
-                                <h2>@o.StartDate.ToString("MMMM")</h2>
-                                <h2>@o.StartDate.Day</h2>
+                    <div  class="alert alert-danger event-card shadow w-100">
+                        <p>There are no current scheudled events for this business</p>
+                    </div>
+                }
+                else
+                {
+                    @foreach (var o in businessOccasions)
+                    {
+                        o.StartDate = o.StartDate.AddHours(-6);
+                        o.EndDate = o.EndDate.AddHours(-6);
+                        <a class="event-card row shadow mb-10 mr-1" @onclick="() => GoToEventPage(o.Id)">
+                            <div class="event-date col-3 d-flex align-items-center" style="background-image: url(Images/green_wave.svg); background-repeat: repeat-y;">
+                                <div class="event-date">
+                                    <h2>@o.StartDate.ToString("MMMM")</h2>
+                                    <h2>@o.StartDate.Day</h2>
+                                </div>
                             </div>
-                        </div>
-                        <div class="event-details col-6 d-grid align-content-center" style="color: black">
-                            <h2>@o.Title</h2>
-                            <h4>@o.StartDate.ToString("hh:mm tt") - @o.EndDate.ToString("hh:mm tt")</h4>
-                            <h4>
-                                @o.Description
-                            </h4>
-                        </div>
-                        <div class="col-3 d-flex" style="padding-right: 0 !important; max-height:25vh;">
-                            <img src="@o.PhotoURL" style="width: 100%; object-fit: cover; object-position: center;" />
-                        </div>
-                    </a>
+                            <div class="event-details col-6 d-grid align-content-center" style="color: black">
+                                <h2>@o.Title</h2>
+                                <h4>@o.StartDate.ToString("hh:mm tt") - @o.EndDate.ToString("hh:mm tt")</h4>
+                                <h4>
+                                    @o.Description
+                                </h4>
+                            </div>
+                            <div class="col-3 d-flex" style="padding-right: 0 !important; max-height:25vh;">
+                                <img src="@o.PhotoURL" style="width: 100%; object-fit: cover; object-position: center;" />
+                            </div>
+                        </a>
+                    }
                 }
             </div>
             <div class="download-button d-grid p-3 align-content-center justify-content-center">
-                <a class="playstore-button" href="/#" style="color: black !important;">
+                <a class="playstore-button" href="/events" style="color: black !important;">
                     <span class="texts" style="margin-left:0px;">
                         <span class="text-2">Discover More</span>
                     </span>
                 </a>
             </div>
         </div>
-
-
-
-
         <div class="lg-view col-lg-1 d-flex justify-content-center align-items-center">
             <div class="vl"></div>
         </div>
-
-@*         <div class="sm-view col-8 mt-10 d-flex justify-content-center align-items-center">
-            <div class="hl"></div>
-        </div> *@
-
-
-        <div class="d-grid col-lg-5">
-            <h1 class="about d-flex justify-content-center" style="font-weight:bold;">Wendy's Vouchers</h1>
-            <div class="d-grid justify-content-center" style="overflow-y:scroll; max-height: 60vh">
-                @foreach (var v in businessVouchers)
+        <div class="d-grid col-xl-4">
+            <h1 class="about d-flex justify-content-center" style="font-weight:bold;">@selectedBusiness.BusinessName Vouchers</h1>
+            <div class="@(businessVouchers.Count == 0 ? "not-found" : "foreach") d-grid w-100" style="height: 60vh">
+                @if(businessVouchers.Count == 0)
                 {
-                    <div class="mb-10">
-                        <RazorClassLibrary.Components.VoucherComponent thisVoucher="@v"></RazorClassLibrary.Components.VoucherComponent>
-
+                    <div class="alert alert-danger event-card shadow w-100">
+                        <p>There are no current availbe vouchers for this business</p>
                     </div>
+                }
+                else
+                {
+                    @foreach (var v in businessVouchers)
+                    {
+                        <div>
+                            <RazorClassLibrary.Components.VoucherComponent thisVoucher="@v"></RazorClassLibrary.Components.VoucherComponent>
+
+                        </div>
+                    }
                 }
             </div>
             <div class="download-button d-grid p-3 align-content-center justify-content-center">
-                <a class="playstore-button" href="/#" style="color: black !important;">
+                <a class="playstore-button" href="/vouchers" style="color: black !important;">
                     <span class="texts" style="margin-left:0px;">
                         <span class="text-2">Discover More</span>
                     </span>
                 </a>
             </div>
         </div>
-
-
-
     </div>
-
-
-
-
-
-
-
-
 </div>
 
 
@@ -116,15 +110,23 @@
     [Parameter]
     public int BusinessId { get; set; }
 
+    public BusinessDTO? selectedBusiness { get; set; } = new();
     public List<OccasionDTO> businessOccasions { get; set; } = new();
     public List<VoucherDTO> businessVouchers { get; set; } = new();
 
 
     protected override async Task OnInitializedAsync()
     {
-        // businessOccasions = (await occasionService.GetAllOcassions()).Where(x => x.BusinessId == BusinessId).ToList();
-        businessOccasions = await occasionService.GetAllOcassions();
+
+        selectedBusiness = await businessService.GetBusiness(BusinessId);
+
+        businessOccasions = (await occasionService.GetAllOcassions()).Where(x => x.BusinessId == BusinessId).ToList();
+        //businessOccasions = await occasionService.GetAllOcassions();
+        businessOccasions = businessOccasions.Take(3).ToList();
+
         businessVouchers = await voucherService.GetAllBusinessVouchers(BusinessId);
+        businessVouchers = businessVouchers.Take(3).ToList();
+
     }
 
     public void GoToEventPage(int id)

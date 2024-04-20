@@ -1,3 +1,24 @@
+@font-face {
+    font-family: 'Nelphim';
+    src: url('Fonts/Nephilm.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Casual';
+    src: url('Fonts/Casual-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Tajawal';
+    src: url('Fonts/Tajawal-Regular.ttf') format('truetype');
+}
+
+
+h1, h2, h3 {
+    font-family: 'Nelphim' !important;
+}
+
+
 .btn-primary {
     background-color: black;
     color: white;
