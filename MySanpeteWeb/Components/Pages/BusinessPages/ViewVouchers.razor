@@ -1,7 +1,7 @@
 ﻿@page "/business/viewvouchers"
 @using RazorClassLibrary.Data
 @using RazorClassLibrary.Services
-@attribute [Authorize(Roles = "Business")] 
+@attribute [Authorize(Roles = "Business")]
 @inject IUserVoucherService userVoucherService
 @using System.Diagnostics.CodeAnalysis
 @using System.Globalization
@@ -9,22 +9,49 @@
 <table class="table" style="height: 100%; width: 100%;">
     <thead>
         <tr>
-            <th>Coupon Code</th>
-            <th>User Name</th>
+            <th>
+
+                <div class="container d-flex align-items-center">
+                    <span class="mr-3">Coupon Code</span>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-light rounded-left">
+                                <img src="Images/MagnifyingGlass.png" alt="Search" style="width: 20px; height: 20px;" />
+                            </span>
+                        </div>
+                        <input type="text" class="form-control rounded-right" placeholder="Search For Code" @onchange="@SortByCode" />
+                    </div>
+                </div>
+            </th>
+            <th>
+                <div class="container d-flex align-items-center">
+                    <span class="mr-3">Username</span>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-light rounded-left">
+                                <img src="Images/MagnifyingGlass.png" alt="Search" style="width: 20px; height: 20px;" />
+                            </span>
+                        </div>
+                        <input type="text" class="form-control rounded-right" placeholder="Search For User" @onchange="@SortByUsername" />
+                    </div>
+                </div>
+            </th>
             <th>Voucher Type</th>
             <th>Claim</th>
         </tr>
     </thead>
     <tbody>
-        @if (vouchers is not null)
+        @if (SortedVouchers is not null)
         {
 
-            @foreach (var userVoucher in vouchers)
+            @foreach (var userVoucher in SortedVouchers)
             {
                 <tr>
                     <td>@userVoucher.Promo_Code</td>
                     <td>@userVoucher?.User?.Username</td>
-                    @if (userVoucher?.Total_Reclaimable == null || userVoucher.Total_Reclaimable > 1 || userVoucher.Total_Reclaimable ==0)
+                    @if (userVoucher?.Total_Reclaimable == null || userVoucher.Total_Reclaimable > 1 || userVoucher.Total_Reclaimable == 0)
                     {
                         <td>Multi-Use</td>
                     }
@@ -94,6 +121,7 @@
     public BusinessDTO? business { get; set; }
 
     List<UserVoucherDTO> vouchers { get; set; } = new();
+    List<UserVoucherDTO> SortedVouchers { get; set; } = new();
 
     private UserVoucherDTO userVoucherToUnclaim { get; set; } = new();
 
@@ -102,17 +130,17 @@
         var authState = await (authenticationStateTask ?? throw new Exception("Auth state unfound"));
         email = authState.User.Claims.FirstOrDefault(x => x.Type.Contains("email"))?.Value ?? throw new Exception("Email missing on business");
 
-        vouchers = (await userVoucherService.GetAllByBusiness(email)).OrderBy(x => x.Is_Used).ToList();
+        vouchers = SortedVouchers = (await userVoucherService.GetAllByBusiness(email)).OrderBy(x => x.Is_Used).ToList();
 
     }
 
     private async Task ClaimVoucher(UserVoucherDTO userVoucher)
     {
-        if(userVoucher.Total_Reclaimable == 1)
+        if (userVoucher.Total_Reclaimable == 1)
         {
             userVoucher.Times_Claimed++;
         }
-        if(userVoucher.Total_Reclaimable <= userVoucher.Times_Claimed)
+        if (userVoucher.Total_Reclaimable <= userVoucher.Times_Claimed)
         {
             userVoucher.Is_Used = true;
         }
@@ -135,5 +163,19 @@
         userVoucherToUnclaim.Is_Used = false;
 
         await userVoucherService.UpdateUserVoucher(userVoucherToUnclaim);
+    }
+
+    private void SortByCode(Microsoft.AspNetCore.Components.ChangeEventArgs args)
+    {
+        string searchString = ((string)args.Value!).ToLower();
+
+        SortedVouchers = vouchers.OrderByDescending(x => x!.Promo_Code!.ToLower().Contains(searchString)).ToList();
+    }
+
+    private void SortByUsername(Microsoft.AspNetCore.Components.ChangeEventArgs args)
+    {
+        string searchString = ((string)args.Value!).ToLower();
+
+        SortedVouchers = vouchers.OrderByDescending(x => x!.User!.Username!.ToLower().Contains(searchString)).ToList();
     }
 }
