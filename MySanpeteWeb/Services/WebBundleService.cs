@@ -1,11 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RazorClassLibrary.Data;
 using RazorClassLibrary.DTOs;
-using RazorClassLibrary.Pages;
 using RazorClassLibrary.Requests;
 using RazorClassLibrary.Services;
-using System.Runtime.InteropServices;
-using System.Threading.RateLimiting;
 
 namespace MySanpeteWeb.Services;
 
@@ -222,7 +219,7 @@ public class WebBundleService : IBundleService
             BundleName = bundle.Name,
             Id = bundle.Id,
             PriceId = bundle.PriceId,
-            StripeId = bundle.StripeId
+            StripeId = bundle.StripeId,
         };
 
         context.Bundles.Update(buc);

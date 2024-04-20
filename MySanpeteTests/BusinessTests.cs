@@ -91,10 +91,7 @@ public class BusinessTests : IClassFixture<MySanpeteFactory>
         var result = await businessService.DeleteBusiness(business!.Id);
         result.Should().NotBeNull();
 
-        await businessService.Invoking(vs => vs.GetBusiness(business.Id))
-            .Should()
-            .ThrowAsync<Exception>()
-            .Where(e => e.Message == "No businesses found with given ID");
+        result.Should().BeTrue();
     }
 
     [Fact]

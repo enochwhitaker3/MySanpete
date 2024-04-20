@@ -33,7 +33,9 @@ else
                 @((MarkupString)blog.Content)
             </div>
 
-
+            @if(blog.Commentable)
+            {
+                
             <div class="d-flex align-items-center justify-content-center" style="margin-top: 10vh;">
                 <div class="container">
                     @if (AllComments is not null && AllComments.Count() > 0 && TopLevelComments is not null)
@@ -151,11 +153,12 @@ else
                     }
                 </div>
             </div>
+            }
 
         }
         else
         {
-            <p>Loading...</p>
+            <p>No blog found...</p>
         }
     </div>
 }

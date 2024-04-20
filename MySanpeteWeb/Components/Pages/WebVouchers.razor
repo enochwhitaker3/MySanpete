@@ -77,22 +77,24 @@
                     {
                         @foreach (var voucher in searchedVouchers)
                         {
-
-                            <div class="col-md-6 p-3">
-                                <RazorClassLibrary.Components.VoucherComponent thisVoucher="@voucher"></RazorClassLibrary.Components.VoucherComponent>
-                            </div>
+                            @if (voucher.IsBundle == false && voucher.IsActive == true)
+                            {
+                                <div class="col-md-6 p-3">
+                                    <RazorClassLibrary.Components.VoucherComponent thisVoucher="@voucher"></RazorClassLibrary.Components.VoucherComponent>
+                                </div>
+                            }
                         }
                     }
                     else
                     {
                         @foreach (var voucher in searchedVouchers.Where(x => x.BusinessName == filteredBusiness).ToList())
                         {
-
-                            <div class="col-md-6 p-3">
-                                <RazorClassLibrary.Components.VoucherComponent thisVoucher="@voucher"></RazorClassLibrary.Components.VoucherComponent>
-                            </div>
-
-
+                            @if(voucher.IsBundle == false && voucher.IsActive == true)
+                            {
+                                <div class="col-md-6 p-3">
+                                    <RazorClassLibrary.Components.VoucherComponent thisVoucher="@voucher"></RazorClassLibrary.Components.VoucherComponent>
+                                </div>
+                            }
                         }
                     }
                 }
@@ -104,6 +106,8 @@
                 }
             }
         </div>
+        <hr />
+        <center><h2>Bundles</h2></center>
         <div class="card-container row mt-5" style="max-width: 1200px; margin-left: auto; margin-right: auto">
             @if (allBundles is not null)
             {

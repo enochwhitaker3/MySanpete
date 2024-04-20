@@ -3,7 +3,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark">
 <!-- Alt Layout -->
-    <a class="navbar-brand" href="#">My Sanpete.</a>
+    <a class="navbar-brand" href="#">My Sanpete</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon" style="color:black!important"></span>
@@ -42,6 +42,10 @@
                         @if (userState!.User.IsInRole("Admin"))
                         {
                             <a class="dropdown-item" href="admin">Admin Controls</a>
+                        }
+                        @if (userState!.User.IsInRole("Business"))
+                        {
+                            <a class="dropdown-item" href="business/viewvouchers">Claim User Vouchers</a>
                         }
                         <a class="dropdown-item" href="/Account">My Account</a>
                         <a class="dropdown-item" href="/user-vouchers">My Vouchers</a>
