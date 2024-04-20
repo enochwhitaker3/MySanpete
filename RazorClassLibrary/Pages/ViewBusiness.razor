@@ -110,7 +110,7 @@
     [Parameter]
     public int BusinessId { get; set; }
 
-    public BusinessDTO selectedBusiness { get; set; } = new();
+    public BusinessDTO? selectedBusiness { get; set; } = new();
     public List<OccasionDTO> businessOccasions { get; set; } = new();
     public List<VoucherDTO> businessVouchers { get; set; } = new();
 
@@ -118,7 +118,7 @@
     protected override async Task OnInitializedAsync()
     {
 
-        selectedBusiness = await businessService.GetBusiness(BusinessId)!;
+        selectedBusiness = await businessService.GetBusiness(BusinessId);
 
         businessOccasions = (await occasionService.GetAllOcassions()).Where(x => x.BusinessId == BusinessId).ToList();
         //businessOccasions = await occasionService.GetAllOcassions();
