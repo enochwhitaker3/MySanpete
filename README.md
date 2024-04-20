@@ -32,12 +32,12 @@
     </tr>
     <tr>
       <td>application performance</td>
-      <td>04/13/2024</td>
+      <td>04/22/2024</td>
       <td></td>
     </tr>
     <tr>
       <td>application usage (concurent users, most popular pages)</td>
-      <td>04/13/2024</td>
+      <td>04/22/2024</td>
       <td></td>
     </tr>
     <tr>
@@ -72,7 +72,7 @@
     </tr>
     <tr>
       <td>Zero downtime deployment (users are unaware of application updates)</td>
-      <td>04/27/2024</td>
+      <td>04/25/2024</td>
       <td></td>
     </tr>
     <tr>
@@ -122,12 +122,12 @@
     </tr>
     <tr>
       <td>turn off after PR is merged / closed</td>
-      <td>04/20/2024</td>
+      <td>04/23/2024</td>
       <td></td>
     </tr>
     <tr>
       <td>add messages in the PR about the status of the environment</td>
-      <td>04/20/2024</td>
+      <td>04/26/2024</td>
       <td></td>
     </tr>
   </tbody>
