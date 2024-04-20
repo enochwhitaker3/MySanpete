@@ -12,7 +12,7 @@
 @inject NavigationManager navManager;
 @attribute [Authorize(Roles = "Admin")]
 
-<div class="form-container" onsubmit="return false">
+<div class="form-container" onsubmit="return false" style="margin-bottom: 20px;">
     <h3>Admin Add Bundle</h3>
     <form class="mt-5">
         <div class="form-group mt-5">
@@ -130,7 +130,7 @@
     {
         try
         {
-            if (Name is null || Name == "Default Name")
+            if (Name is null || Name == "Default Name" || Name.Trim() == "")
             {
                 throw new Exception("You need to give a name for the bundle or change it from the default one");
             }

@@ -10,7 +10,7 @@
 @inject NavigationManager navManager
 @attribute [Authorize(Roles = "Admin")]
 
-<div class="form-container">
+<div class="form-container" style="margin-bottom: 20px;">
     <h3>Admin Add Event</h3>
     <div class="form-group mt-5">
         <label for="title">Title</label>
@@ -116,7 +116,7 @@
     {
         try
         {
-            if (Title is null || Title == "Default Title")
+            if (Title is null || Title == "Default Title" || Title.Trim() == "")
             {
                 throw new Exception("The event needs to have a title");
             }
@@ -133,7 +133,7 @@
                 throw new Exception("You need to select a business for this event");
             }
 
-            if (Description is null || Description == "Default Description")
+            if (Description is null || Description == "Default Description" || Description.Trim() == "")
             {
                 throw new Exception("The event needs to have a description");
             }

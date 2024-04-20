@@ -9,7 +9,7 @@
 @inject NavigationManager navManager
 @attribute [Authorize(Roles = "Admin")]
 
-<div class="form-container">
+<div class="form-container" style="margin-bottom: 20px;">
     <h3>Admin Add Podcast</h3>
     <div class="form-group mt-5">
         <label for="PodcastName">Podcast Name</label>
@@ -82,12 +82,12 @@
     {
         try
         {
-            if (PodcastName is null || PodcastName == "Default Name")
+            if (PodcastName is null || PodcastName == "Default Name" || PodcastName.Trim() == "")
             {
                 throw new Exception("The podcast needs a name");
             }
 
-            if (URL is null || URL == "Default URL")
+            if (URL is null || URL == "Default URL" || URL.Trim() == "")
             {
                 throw new Exception("The podcast needs a URL to the podbean link");
             }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using RazorClassLibrary.Data;
 using RazorClassLibrary.Requests;
 using RazorClassLibrary.Services;
@@ -124,20 +125,29 @@ public class WebCommentService : ICommentService
         var context = await dbContextFactory.CreateDbContextAsync();
 
         //Blog comment under deletion
-        var bcud = await context.BlogComments
-            .Include(u => u.Comment)
-            .FirstOrDefaultAsync(bc => bc.Id == id);
+        var bcud = await context.UserComments
+            .Include(u => u.BlogComments)
+            .FirstOrDefaultAsync(c => c.Id == id);
 
         if (bcud is null)
         {
             return false;
         }
 
-        bcud.Comment.CommentText = "[Deleted]";
-        bcud.Comment.UserId = 1;
+        //context.BlogComments.Remove(bcud.BlogComments.First());
 
+        //var commentsToDelete = await context.UserComments.Where(x => x.ReplyId == id).ToListAsync();
 
-        context.UserComments.Update(bcud.Comment);
+        //foreach(var item in commentsToDelete)
+        //{
+        //   await DeleteBlogComment(item.Id);
+        //}
+
+        //bcud = await context.UserComments
+        //   .Include(u => u.BlogComments)
+        //   .FirstOrDefaultAsync(c => c.Id == id);
+
+        context.UserComments.Remove(bcud);
         await context.SaveChangesAsync();
 
         return true;

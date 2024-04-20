@@ -106,8 +106,6 @@ public class WebBlogService : IBlogService
             .Include(x => x.BlogComments)
                 .ThenInclude(x => x.Comment)
                 .ThenInclude(x => x.User)
-            .Include(x => x.BlogReactions)
-                .ThenInclude(x => x.Reaction)
             .Include(x => x.Author)
             .Select(x => x.ToDto()).ToListAsync();
     }

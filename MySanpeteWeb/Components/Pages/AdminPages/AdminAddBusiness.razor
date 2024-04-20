@@ -73,7 +73,7 @@
 
     public string? Name { get; set; } = "Default Name";
     public string? Address { get; set; } = "Default Address";
-    public string? Email { get; set; } = "Deafault Email";
+    public string? Email { get; set; } = "Default Email";
     public byte[]? ImageBytes { get; set; }
     public string? PhoneNum { get; set; }
     public string? WebURL { get; set; } = "Default URL";
@@ -100,22 +100,22 @@
     {
         try
         {
-            if (Name is null || Name == "Default Name")
+            if (Name is null || Name == "Default Name" || Name.Trim() == "")
             {
                 throw new Exception("The business needs to have a name");
             }
 
-            if (Address is null || Address == "Default Address")
+            if (Address is null || Address == "Default Address" || Address.Trim() == "")
             {
                 throw new Exception("The business needs to have an address");
             }
 
-            if (Description is null || Description == "Default Description")
+            if (Description is null || Description == "Default Description" || Description.Trim() == "")
             {
                 throw new Exception("The business needs to have a description");
             }
 
-            if (WebURL is null || WebURL == "Default URL")
+            if (WebURL is null || WebURL == "Default URL" || WebURL.Trim() == "")
             {
                 throw new Exception("You need to give a link to the business website");
             }

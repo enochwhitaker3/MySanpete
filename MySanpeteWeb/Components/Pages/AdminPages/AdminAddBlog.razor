@@ -9,101 +9,101 @@
 @inject IUserService userService;
 @inject IBlogService blogService;
 @inject NavigationManager navManager;
-@* @attribute [Authorize(Roles = "Admin")] *@
+@attribute [Authorize(Roles = "Admin")]
 
+<center>
+    <div class="form-container" onsubmit="return false" style="margin-bottom: 20px;">
+        <h3>Admin Add Blog</h3>
+        <form class="mt-5">
+            <div class="form-group mt-5">
+                <label for="author">Author</label>
+                <select id="author" class="form-control" @bind="AuthorId" required>
+                    @if (PotentialAuthors is not null)
+                    {
+                        <option value="">Choose the author...</option>
+                        @foreach (var author in PotentialAuthors)
+                        {
+                            <option value="@author.Id">@author.Username</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group mt-5">
+                <label for="startDate">Allow Comments?</label><br />
+                <label for="radioTrue">Yes</label>
+                <input type="radio" id="radioTrue" name="myRadio" @onchange="@(e => Commentable = true)" checked="@(Commentable == true)" />
+                <label for="radioFalse">No</label>
+                <input type="radio" id="radioFalse" name="myRadio" @onchange="@(e => Commentable = false)" checked="@(Commentable == false)" />
+            </div>
+            <div class="form-group">
+                <label for="photo">Add a Thumbnail Image</label>
+                <small style="color: darkgray;"><br />Recommended image size of 500 X 750 pixels. If no image is provided, MySanpete Logo will be displayed.<br /></small>
+                <InputFile OnChange="SaveFile"></InputFile>
+            </div>
 
-<div class="form-container">
-    <h3>Admin Add Blog</h3>
-    @*     <form class="mt-5"> *@
-    <div class="form-group mt-5">
-        <label for="author">Author</label>
-        <select id="author" class="form-control" @bind="AuthorId" required>
-            @if (PotentialAuthors is not null)
+            <div class="form-group mt-5">
+                <label for="title">Title</label>
+                <input id="title" class="form-control" placeholder="Default Title" @bind="Title" required />
+            </div>
+
+            <BlazoredTextEditor @ref="@QuillHtml">
+                <ToolbarContent>
+                    <select class="ql-header">
+                        <option selected=""></option>
+                        <option value="1"></option>
+                        <option value="2"></option>
+                        <option value="3"></option>
+                        <option value="4"></option>
+                        <option value="5"></option>
+                    </select>
+                    <span class="ql-formats">
+                        <button class="ql-bold"></button>
+                        <button class="ql-italic"></button>
+                        <button class="ql-underline"></button>
+                        <button class="ql-strike"></button>
+                    </span>
+                    <span class="ql-formats">
+                        <select class="ql-color"></select>
+                        <select class="ql-background"></select>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-list" value="ordered"></button>
+                        <button class="ql-list" value="bullet"></button>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-link"></button>
+                    </span>
+                </ToolbarContent>
+                <EditorContent>
+
+                </EditorContent>
+            </BlazoredTextEditor>
+
+            @if (errorMessage == "")
             {
-                <option value="">Choose the author...</option>
-                @foreach (var author in PotentialAuthors)
-                {
-                    <option value="@author.Id">@author.Username</option>
-                }
+                <button class="btn btn-primary mt-5" @onclick="CreateNewBlog">Add Blog</button>
+                <button class="btn btn-secondary mt-5" @onclick="GetHTML">Generate Preview</button>
             }
-        </select>
+            else
+            {
+                <div class="alert alert-danger">
+                    <p>Please fix the error to submit the form</p>
+                    <p>@errorMessage</p>
+                    <button class="btn btn-primary mt-5" @onclick="CreateNewBlog">Add Blog</button>
+                    <button class="btn btn-secondary mt-5" @onclick="GetHTML">Generate Preview</button>
+                </div>
+            }
+        </form>
     </div>
-    <div class="form-group mt-5">
-        <label for="startDate">Allow Comments?</label><br />
-        <label for="radioTrue">Yes</label>
-        <input type="radio" id="radioTrue" name="myRadio" @onchange="@(e => Commentable = true)" checked="@(Commentable == true)" />
-        <label for="radioFalse">No</label>
-        <input type="radio" id="radioFalse" name="myRadio" @onchange="@(e => Commentable = false)" checked="@(Commentable == false)" />
+    <div>
+        @if (QuillHTMLContent is not null)
+        {
+            <h1>@Title</h1>
+            <p></p>
+            @((MarkupString)QuillHTMLContent)
+        }
     </div>
-    <div class="form-group">
-        <label for="photo">Add a Thumnail Image</label>
-        <small style="color: darkgray;"><br />Recommended image size of 500 X 750 pixels. If no image is provided, MySanpete Logo will be displayed.<br /></small>
-        <InputFile OnChange="SaveFile"></InputFile>
-    </div>
-
-    <div class="form-group mt-5">
-        <label for="title">Title</label>
-        <input id="title" class="form-control" placeholder="Default Title" @bind="Title" required />
-    </div>
-
-    <BlazoredTextEditor @ref="@QuillHtml">
-        <ToolbarContent>
-            <select class="ql-header">
-                <option selected=""></option>
-                <option value="1"></option>
-                <option value="2"></option>
-                <option value="3"></option>
-                <option value="4"></option>
-                <option value="5"></option>
-            </select>
-            <span class="ql-formats">
-                <button class="ql-bold"></button>
-                <button class="ql-italic"></button>
-                <button class="ql-underline"></button>
-                <button class="ql-strike"></button>
-            </span>
-            <span class="ql-formats">
-                <select class="ql-color"></select>
-                <select class="ql-background"></select>
-            </span>
-            <span class="ql-formats">
-                <button class="ql-list" value="ordered"></button>
-                <button class="ql-list" value="bullet"></button>
-            </span>
-            <span class="ql-formats">
-                <button class="ql-link"></button>
-            </span>
-        </ToolbarContent>
-        <EditorContent>
-
-        </EditorContent>
-    </BlazoredTextEditor>
-
-    @if (errorMessage == "")
-    {
-        <button class="btn btn-primary mt-5" @onclick="CreateNewBlog">Add Blog</button>
-        <button class="btn btn-secondary mt-5" @onclick="GetHTML">Generate Preview</button>
-    }
-    else
-    {
-        <div class="alert alert-danger">
-            <p>Please fix the error to submit the form</p>
-            <p>@errorMessage</p>
-            <button class="btn btn-primary mt-5" @onclick="CreateNewBlog">Add Blog</button>
-            <button class="btn btn-secondary mt-5" @onclick="GetHTML">Generate Preview</button>
-        </div>
-    }
-    @*     </form> *@
-</div>
-
-<div>
-    @if (QuillHTMLContent is not null)
-    {
-        <h1>@Title</h1>
-        <p></p>
-        @((MarkupString)QuillHTMLContent)
-    }
-</div>
+</center>
 
 @if (Success == "true")
 {
@@ -148,7 +148,7 @@
         {
             await GetHTML();
 
-            if (Title is null || Title == "Default Title")
+            if (Title is null || Title == "Default Title" || Title.Trim() == "")
             {
                 throw new Exception("You need to give a title for the blog");
             }

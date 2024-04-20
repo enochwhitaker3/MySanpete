@@ -307,7 +307,7 @@ else
             {
                 throw new Exception("The end date for the bundle needs to be more in the future than the start date");
             }
-            if (bundle.Name is null)
+            if (bundle.Name is null || bundle.Name.Trim() == "")
             {
                 throw new Exception("The bundle needs to have a name");
             }

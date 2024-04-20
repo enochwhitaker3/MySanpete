@@ -226,7 +226,7 @@ else
     {
         try
         {
-            if (occasion.Title is null)
+            if (occasion.Title is null || occasion.Title.Trim() == "")
             {
                 throw new Exception("The event needs to have a title");
             }
@@ -241,7 +241,7 @@ else
                 throw new Exception("The event needs to have a business tied to it");
             }
 
-            if (occasion.Description is null)
+            if (occasion.Description is null || occasion.Description.Trim() == "")
             {
                 throw new Exception("The event needs to have a description");
             }

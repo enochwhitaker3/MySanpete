@@ -199,6 +199,10 @@ else
 
     public async Task UpdateBusiness(BusinessDTO business)
     {
+        if (business is null)
+        {
+            throw new Exception("Business was not found");
+        }
         if (ImageBytes is null)
         {
             updateBusiness = new UpdateBusinessRequest()
@@ -234,19 +238,19 @@ else
             {
                 throw new Exception("The business was null");
             }
-            if (updateBusiness.BusinessName is null)
+            if (updateBusiness.BusinessName is null || updateBusiness.BusinessName.Trim() == "")
             {
                 throw new Exception("The bundle needs to have a name");
             }
-            if (updateBusiness.Address is null)
+            if (updateBusiness.Address is null || updateBusiness.Address.Trim() == "")
             {
                 throw new Exception("The bundle needs to have an Address");
             }
-            if (updateBusiness.Email is null)
+            if (updateBusiness.Email is null || updateBusiness.Email.Trim() == "")
             {
                 throw new Exception("The bundle needs to have an Email");
             }
-            if (updateBusiness.PhoneNumber is null)
+            if (updateBusiness.PhoneNumber is null || updateBusiness.PhoneNumber.Trim() == "")
             {
                 throw new Exception("The bundle needs to have an Phone Number");
             }

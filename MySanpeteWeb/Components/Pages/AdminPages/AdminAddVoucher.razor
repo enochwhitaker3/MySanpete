@@ -13,7 +13,7 @@
 @attribute [Authorize(Roles = "Admin")]
 
 
-<div class="form-container">
+<div class="form-container" style="margin-bottom: 20px;">
     <h3>Admin Add Voucher</h3>
     <form class="mt-5" onsubmit="return false">
         <div class="form-group mt-5">
@@ -135,24 +135,24 @@
     {
         try
         {
-            if (PromoCode is null || PromoDescription is null || PromoName is null)
+            if (PromoCode is null || PromoCode.Trim() == "")
             {
-                throw new Exception("You need to fully fill out all the details for the Promo");
+                throw new Exception("You need to give the voucher a promo code");
             }
 
-            if (PromoCode == "Default Promo")
+            if (PromoDescription is null || PromoDescription.Trim() == "" || PromoDescription == "Default Description")
+            {
+                throw new Exception("You need to give the voucher a promo description");
+            }
+
+            if (PromoName is null || PromoName.Trim() == "" || PromoName == "Default Promo Name")
+            {
+                throw new Exception("You need to give the voucher a promo name");
+            }
+
+            if (PromoCode == "Default Promo" || PromoCode.Trim() == "")
             {
                 throw new Exception("You need to change the promo code from the default");
-            }
-
-            if (PromoDescription == "Default Description")
-            {
-                throw new Exception("You need to change the promo description from the default");
-            }
-
-            if (PromoName == "Default Promo Name")
-            {
-                throw new Exception("You need to change the promo name from the default");
             }
 
             if (PromoStock < 0)

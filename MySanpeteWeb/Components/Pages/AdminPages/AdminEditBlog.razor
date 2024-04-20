@@ -1,0 +1,350 @@
+﻿@page "/edit-blog/{Success}"
+@page "/edit-blog"
+
+@using Blazored.TextEditor
+@using RazorClassLibrary.Data
+@using RazorClassLibrary.Requests
+@using RazorClassLibrary.Services
+
+@inject IBlogService blogService;
+@inject IUserService userService;
+@inject ICommentService commentService;
+@inject NavigationManager navManager;
+
+@attribute [Authorize(Roles = "Admin")]
+
+@if (AllBlogs is not null && AllBlogs.Count >= 1)
+{
+    <div class="form-container" onsubmit="return false" style="margin-bottom: 20px;">
+        <h3>Admin Edit Blog</h3>
+        <form class="mt-5">
+            <div class="form-group mt-5">
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#blogPopup">Select Blog</button>
+            </div>
+
+            <div class="modal fade" id="blogPopup" tabindex="-1" role="dialog" aria-labelledby="SelectBlog" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Add Voucher</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Blog Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var blog in AllBlogs)
+                                    {
+                                        <tr @onclick="() => SelectBlog(blog)" data-dismiss="modal">
+                                            <td>@blog.Title</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @if (SelectedBlog is not null)
+            {
+                <div class="form-group mt-5">
+                    <label for="comments">Allow Comments?</label><br />
+                    <label for="radioTrue">Yes</label>
+                    <input type="radio" id="radioTrue" name="myRadio" @onchange="@(e => SelectedBlog.Commentable = true)" checked="@(SelectedBlog.Commentable == true)" />
+                    <label for="radioFalse">No</label>
+                    <input type="radio" id="radioFalse" name="myRadio" @onchange="@(e => SelectedBlog.Commentable = false)" checked="@(SelectedBlog.Commentable == false)" />
+                </div>
+                <div class="form-group">
+                    <label for="photo">Blog Photo</label>
+                    <small style="color: darkgray;"><br />Recommended image size of 500 X 750 pixels. If no image is provided, MySanpete Logo will be displayed.<br /></small>
+                    <InputFile OnChange="SaveFile"></InputFile>
+                </div>
+                <div class="form-group mt-5">
+                    <label for="authorName">AuthorName</label>
+                    <input id="authorName" class="form-control" @bind="@SelectedBlog.AuthorName" />
+                </div>
+                <div class="form-group mt-5">
+                    <label for="title">Title</label>
+                    <input id="title" class="form-control" @bind="@SelectedBlog.Title" />
+                </div>
+
+                <BlazoredTextEditor @ref="@QuillHtml">
+                    <ToolbarContent>
+                        <select class="ql-header">
+                            <option selected=""></option>
+                            <option value="1"></option>
+                            <option value="2"></option>
+                            <option value="3"></option>
+                            <option value="4"></option>
+                            <option value="5"></option>
+                        </select>
+                        <span class="ql-formats">
+                            <button class="ql-bold"></button>
+                            <button class="ql-italic"></button>
+                            <button class="ql-underline"></button>
+                            <button class="ql-strike"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <select class="ql-color"></select>
+                            <select class="ql-background"></select>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-list" value="ordered"></button>
+                            <button class="ql-list" value="bullet"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-link"></button>
+                        </span>
+                    </ToolbarContent>
+                    <EditorContent>
+                        @if (SelectedBlog.Content is not null)
+                        {
+                            @((MarkupString)SelectedBlog.Content)
+                        }
+                    </EditorContent>
+                </BlazoredTextEditor>
+
+                @if (errorMessage == "")
+                {
+                    <div class="form-group mt-5">
+                        <button type="submit" class="btn btn-primary" @onclick="() => UpdateBlog(SelectedBlog)">Update</button>
+                    </div>
+                    <div class="form-group mt-5">
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-danger">
+                        <p>Please fix the error to submit the form</p>
+                        <p>@errorMessage</p>
+                        <div class="form-group mt-5">
+                            <button type="submit" class="btn btn-primary" @onclick="() => UpdateBlog(SelectedBlog)">Update</button>
+                        </div>
+                        <div class="form-group mt-5">
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
+                        </div>
+                    </div>
+                }
+
+                <div class="modal fade" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="deleteConfirm" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Deletion Confirmation</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete @SelectedBlog.Title? You won't be able to get it back!
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-danger" @onclick="() => DeleteBusiness(SelectedBlog)">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+            else
+            {
+                <p>Select a business to be able to edit it</p>
+            }
+        </form>
+        @if (Success == "true")
+        {
+            <div class="alert-success alert alert-dismissible fade show" role="alert" @onclick="ChangeSuccess">
+                <p>You successfully updated the business!</p>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div>
+        <p>No Blogs to edit, add more blogs to edit them here</p>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public string? Success { get; set; }
+
+    public string? errorMessage { get; set; } = "";
+    public byte[]? ImageBytes { get; set; }
+
+    public List<BlogDTO>? AllBlogs { get; set; }
+    public BlogDTO? SelectedBlog { get; set; }
+
+    public UserDTO? SelectedAuthor { get; set; }
+
+    public UpdateBlogRequest? updateBlogRequest { get; set; }
+
+    BlazoredTextEditor? QuillHtml;
+
+    protected override async Task OnInitializedAsync()
+    {
+        AllBlogs = await blogService.GetAllBlogs();
+    }
+
+    public void SelectBlog(BlogDTO selectedBlog)
+    {
+        try
+        {
+            if (selectedBlog is not null)
+            {
+                SelectedBlog = selectedBlog;
+                StateHasChanged();
+            }
+            else
+            {
+                throw new Exception("Blog was not found");
+            }
+
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
+
+    public async Task SaveFile(InputFileChangeEventArgs e)
+    {
+        IBrowserFile file = e.GetMultipleFiles(1).Single();
+
+        using (var ms = new MemoryStream())
+        {
+            await file.OpenReadStream().CopyToAsync(ms);
+            ImageBytes = ms.ToArray();
+        }
+    }
+
+    public async Task UpdateBlog(BlogDTO blog)
+    {
+        try
+        {
+
+            if (blog is null)
+            {
+                throw new Exception("Blog was not found");
+            }
+            if (blog.Content is null)
+            {
+                throw new Exception("The content for the blog was null");
+            }
+            if (blog.Title is null || blog.Title.Trim() == "")
+            {
+                throw new Exception("The title for the blog was null");
+            }
+
+            SelectedAuthor = (await userService.GetAllUsers()).Where(x => x.Username == blog.AuthorName).FirstOrDefault();
+
+            if (SelectedAuthor is null)
+            {
+                throw new Exception("No user was found with that user name");
+            }
+
+            if (ImageBytes is null)
+            {
+                updateBlogRequest = new UpdateBlogRequest()
+                    {
+                        Id = blog.Id,
+                        AuthorId = SelectedAuthor.Id,
+                        BlogContent = blog.Content,
+                        Commentable = blog.Commentable,
+                        Photo = ImageBytes,
+                        PublishDate = DateTime.UtcNow.ToUniversalTime(),
+                        Title = blog.Title
+                    };
+            }
+            else
+            {
+                updateBlogRequest = new UpdateBlogRequest()
+                    {
+                        Id = blog.Id,
+                        AuthorId = SelectedAuthor.Id,
+                        BlogContent = blog.Content,
+                        Commentable = blog.Commentable,
+                        PublishDate = DateTime.UtcNow.ToUniversalTime(),
+                        Title = blog.Title
+                    };
+            }
+
+            if (updateBlogRequest is null)
+            {
+                throw new Exception("Couldn't create update blog request to update the blog");
+            }
+
+            var updatedBlog = await blogService.EditBlog(updateBlogRequest);
+
+            if (updatedBlog is null)
+            {
+                throw new Exception("The blog was unable to be updated");
+            }
+            errorMessage = "";
+            Success = "true";
+            ReloadPage();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
+
+    public async Task DeleteBusiness(BlogDTO blog)
+    {
+        var dummy = await blogService.GetAllBlogs();
+        // try
+        // {
+        //     if (blog is null || blog.Comments is null)
+        //     {
+        //         throw new Exception("Selected blog was not found");
+        //     }
+
+        //     foreach (var comment in blog.Comments)
+        //     {
+        //         await commentService.DeleteBlogComment(comment.Id);
+        //     }
+
+        //     var result = await blogService.DeleteBlog(blog.Id);
+
+        //     if (result == false)
+        //     {
+        //         throw new Exception("Blog was unable to be deleted");
+        //     }
+
+        //     errorMessage = "";
+        //     Success = "true";
+        //     ReloadPage();
+        // }
+        // catch (Exception ex)
+        // {
+        //     errorMessage = ex.Message;
+        // }
+    }
+
+    public void ReloadPage()
+    {
+        navManager.NavigateTo($"/edit-blogs/{Success}", true);
+    }
+
+    public void ChangeSuccess()
+    {
+        Success = "false";
+    }
+}
