@@ -38,7 +38,7 @@
     <tr>
       <td>application usage (concurent users, most popular pages)</td>
       <td>04/13/2024</td>
-      <td>X</td>
+      <td></td>
     </tr>
     <tr>
       <td>error count and error messages</td>
@@ -88,7 +88,7 @@
     <tr>
       <td>use of ssl and dns entry for production application</td>
       <td>04/20/2024</td>
-      <td></td>
+      <td>X</td>
     </tr>
     <tr>
       <td>automated backups of persistant storage (database and other volumes)</td>
@@ -118,7 +118,7 @@
     <tr>
       <td>turn on at the beginning of the pull request</td>
       <td>04/20/2024</td>
-      <td></td>
+      <td>X</td>
     </tr>
     <tr>
       <td>turn off after PR is merged / closed</td>
