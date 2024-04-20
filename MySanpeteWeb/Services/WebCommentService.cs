@@ -125,29 +125,19 @@ public class WebCommentService : ICommentService
         var context = await dbContextFactory.CreateDbContextAsync();
 
         //Blog comment under deletion
-        var bcud = await context.UserComments
-            .Include(u => u.BlogComments)
-            .FirstOrDefaultAsync(c => c.Id == id);
+        var bcud = await context.BlogComments
+            .Include(u => u.Comment)
+            .FirstOrDefaultAsync(bc => bc.Id == id);
 
         if (bcud is null)
         {
             return false;
         }
 
-        //context.BlogComments.Remove(bcud.BlogComments.First());
+        bcud.Comment.CommentText = "[Deleted]";
+        bcud.Comment.UserId = 1;
 
-        //var commentsToDelete = await context.UserComments.Where(x => x.ReplyId == id).ToListAsync();
-
-        //foreach(var item in commentsToDelete)
-        //{
-        //   await DeleteBlogComment(item.Id);
-        //}
-
-        //bcud = await context.UserComments
-        //   .Include(u => u.BlogComments)
-        //   .FirstOrDefaultAsync(c => c.Id == id);
-
-        context.UserComments.Remove(bcud);
+        context.UserComments.Update(bcud.Comment);
         await context.SaveChangesAsync();
 
         return true;
