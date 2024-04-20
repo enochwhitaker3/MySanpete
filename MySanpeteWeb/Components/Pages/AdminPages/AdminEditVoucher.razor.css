@@ -43,3 +43,12 @@
     color: red;
     margin-top: 10px;
 }
+
+tr:hover {
+    cursor: pointer;
+}
+
+tr:hover {
+    cursor: pointer;
+}
+
