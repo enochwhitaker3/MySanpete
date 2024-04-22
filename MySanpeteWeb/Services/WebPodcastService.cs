@@ -56,11 +56,13 @@ public class WebPodcastService : IPodcastService
     {
         var context = await dbContextFactory.CreateDbContextAsync();
         List<PodcastDTO> result = new List<PodcastDTO>();
+
         result = await context.Podcasts
               .Include(x => x.PodcastComments)
                 .ThenInclude(x => x.Comment)
                 .ThenInclude(x => x.User)
               .Include(x => x.PodcastReactions)
+              .OrderByDescending(x => x.PublishDate)
               .Select(x => x.ToDto()).ToListAsync();
 
         return result;

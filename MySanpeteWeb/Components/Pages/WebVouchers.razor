@@ -96,6 +96,10 @@
                                 </div>
                             }
                         }
+                        @if (filteringTooSpecific)
+                        {
+                            <div class="alert alert-info">Nothing matched your search.</div>
+                        }
                     }
                 }
                 else
@@ -165,6 +169,7 @@
     public List<BusinessDTO> allBusinesses { get; set; } = new();
     public bool isLoading { get; set; } = true;
     public bool filtering { get; set; } = false;
+    public bool filteringTooSpecific { get; set; } = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -205,14 +210,19 @@
 
     private void FilterVouchers(Microsoft.AspNetCore.Components.ChangeEventArgs args)
     {
+        filteringTooSpecific = false;
         string searchString = ((string)args.Value!).ToLower();
 
         searchedVouchers = allVouchers.Where(x =>
         {
             return x.PromoName!.ToLower().Contains(searchString)
             || x.BusinessName!.ToLower().Contains(searchString)
-            || x.PromoDescription!.ToLower().Contains(searchString)
-            ;
+            || x.PromoDescription!.ToLower().Contains(searchString);
         }).ToList();
+
+        if (searchedVouchers.Count <= 0)
+        {
+            filteringTooSpecific = true;
+        }
     }
 }
