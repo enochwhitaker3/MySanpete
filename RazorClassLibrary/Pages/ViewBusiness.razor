@@ -8,7 +8,7 @@
 <div class="epic-container">
     <div class="container-row row d-flex align-content-center justify-content-center g-0">
         <div class="business-container col-md-4 d-flex align-items-center">
-            <img class="top-image col-md-4 img-fluid rounded-circle mr-5 "src="@selectedBusiness!.LogoURL" />
+            <img class="top-image col-md-4 img-fluid rounded-circle mr-5 " src="@selectedBusiness!.LogoURL" />
 
             <div class="about">
                 <h1>@selectedBusiness.BusinessName</h1>
@@ -24,85 +24,91 @@
             </div>
         </div>
     </div>
+    @if (occasionsAreLoading)
+    {
+        <LoadingComponent></LoadingComponent>
+    }
+    else
+    {
 
-    <div class="d-flex row justify-content-center m-3">
-        <div class="d-grid col-xl-4">
-            <h1 class="about d-flex justify-content-center" style="font-weight:bold;">@selectedBusiness.BusinessName Events</h1>
-            <div class="@(businessOccasions.Count == 0 ? "not-found" : "foreach") d-grid col-lg justify-content-center">
-
-                @if(businessOccasions.Count == 0)
-                {
-                    <div  class="alert alert-danger event-card shadow w-100">
-                        <p>There are no current scheudled events for this business</p>
-                    </div>
-                }
-                else
-                {
-                    @foreach (var o in businessOccasions)
+        <div class="d-flex row justify-content-center m-3">
+            <div class="d-grid col-xl-4">
+                <h1 class="about d-flex justify-content-center" style="font-weight:bold;">@selectedBusiness.BusinessName Events</h1>
+                <div class="@(businessOccasions.Count == 0 ? "not-found" : "foreach") d-grid col-lg justify-content-center">
+                    @if (businessOccasions.Count == 0)
                     {
-                        o.StartDate = o.StartDate.AddHours(-6);
-                        o.EndDate = o.EndDate.AddHours(-6);
-                        <a class="event-card row shadow mb-10 mr-1" @onclick="() => GoToEventPage(o.Id)">
-                            <div class="event-date col-3 d-flex align-items-center" style="background-image: url(Images/green_wave.svg); background-repeat: repeat-y;">
-                                <div class="event-date">
-                                    <h2>@o.StartDate.ToString("MMMM")</h2>
-                                    <h2>@o.StartDate.Day</h2>
-                                </div>
-                            </div>
-                            <div class="event-details col-6 d-grid align-content-center" style="color: black">
-                                <h2>@o.Title</h2>
-                                <h4>@o.StartDate.ToString("hh:mm tt") - @o.EndDate.ToString("hh:mm tt")</h4>
-                                <h4>
-                                    @o.Description
-                                </h4>
-                            </div>
-                            <div class="col-3 d-flex" style="padding-right: 0 !important; max-height:25vh;">
-                                <img src="@o.PhotoURL" style="width: 100%; object-fit: cover; object-position: center;" />
-                            </div>
-                        </a>
-                    }
-                }
-            </div>
-            <div class="download-button d-grid p-3 align-content-center justify-content-center">
-                <a class="playstore-button" href="/events" style="color: black !important;">
-                    <span class="texts" style="margin-left:0px;">
-                        <span class="text-2">Discover More</span>
-                    </span>
-                </a>
-            </div>
-        </div>
-        <div class="lg-view col-lg-1 d-flex justify-content-center align-items-center">
-            <div class="vl"></div>
-        </div>
-        <div class="d-grid col-xl-4">
-            <h1 class="about d-flex justify-content-center" style="font-weight:bold;">@selectedBusiness.BusinessName Vouchers</h1>
-            <div class="@(businessVouchers.Count == 0 ? "not-found" : "foreach") d-grid w-100" style="height: 60vh">
-                @if(businessVouchers.Count == 0)
-                {
-                    <div class="alert alert-danger event-card shadow w-100">
-                        <p>There are no current availbe vouchers for this business</p>
-                    </div>
-                }
-                else
-                {
-                    @foreach (var v in businessVouchers)
-                    {
-                        <div>
-                            <RazorClassLibrary.Components.VoucherComponent thisVoucher="@v"></RazorClassLibrary.Components.VoucherComponent>
-
+                        <div class="alert alert-danger event-card shadow w-100">
+                            <p>There are no current scheudled events for this business</p>
                         </div>
                     }
-                }
+                    else
+                    {
+                        @foreach (var o in businessOccasions)
+                        {
+                            o.StartDate = o.StartDate.AddHours(-6);
+                            o.EndDate = o.EndDate.AddHours(-6);
+                            <a class="event-card row shadow mb-10 mr-1" @onclick="() => GoToEventPage(o.Id)">
+                                <div class="event-date col-3 d-flex align-items-center" style="background-image: url(Images/green_wave.svg); background-repeat: repeat-y;">
+                                    <div class="event-date">
+                                        <h2>@o.StartDate.ToString("MMMM")</h2>
+                                        <h2>@o.StartDate.Day</h2>
+                                    </div>
+                                </div>
+                                <div class="event-details col-6 d-grid align-content-center" style="color: black">
+                                    <h2>@o.Title</h2>
+                                    <h4>@o.StartDate.ToString("hh:mm tt") - @o.EndDate.ToString("hh:mm tt")</h4>
+                                    <h4>
+                                        @o.Description
+                                    </h4>
+                                </div>
+                                <div class="col-3 d-flex" style="padding-right: 0 !important; max-height:25vh;">
+                                    <img src="@o.PhotoURL" style="width: 100%; object-fit: cover; object-position: center;" />
+                                </div>
+                            </a>
+                        }
+                    }
+                </div>
+                <div class="download-button d-grid p-3 align-content-center justify-content-center">
+                    <a class="playstore-button" href="/events" style="color: black !important;">
+                        <span class="texts" style="margin-left:0px;">
+                            <span class="text-2">Discover More</span>
+                        </span>
+                    </a>
+                </div>
             </div>
-            <div class="download-button d-grid p-3 align-content-center justify-content-center">
-                <a class="playstore-button" href="/vouchers" style="color: black !important;">
-                    <span class="texts" style="margin-left:0px;">
-                        <span class="text-2">Discover More</span>
-                    </span>
-                </a>
+            <div class="lg-view col-lg-1 d-flex justify-content-center align-items-center">
+                <div class="vl"></div>
+            </div>
+            <div class="d-grid col-xl-4">
+                <h1 class="about d-flex justify-content-center" style="font-weight:bold;">@selectedBusiness.BusinessName Vouchers</h1>
+                <div class="@(businessVouchers.Count == 0 ? "not-found" : "foreach") d-grid w-100" style="height: 60vh">
+                    @if (businessVouchers.Count == 0)
+                    {
+                        <div class="alert alert-danger event-card shadow w-100">
+                            <p>There are no current availbe vouchers for this business</p>
+                        </div>
+                    }
+                    else
+                    {
+                        @foreach (var v in businessVouchers)
+                        {
+                            <div>
+                                <RazorClassLibrary.Components.VoucherComponent thisVoucher="@v"></RazorClassLibrary.Components.VoucherComponent>
+
+                            </div>
+                        }
+                    }
+                </div>
+                <div class="download-button d-grid p-3 align-content-center justify-content-center">
+                    <a class="playstore-button" href="/vouchers" style="color: black !important;">
+                        <span class="texts" style="margin-left:0px;">
+                            <span class="text-2">Discover More</span>
+                        </span>
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
+    }
 </div>
 
 
@@ -114,9 +120,12 @@
     public List<OccasionDTO> businessOccasions { get; set; } = new();
     public List<VoucherDTO> businessVouchers { get; set; } = new();
 
+    bool occasionsAreLoading { get; set; } = true;
+
 
     protected override async Task OnInitializedAsync()
     {
+        occasionsAreLoading = true;
 
         selectedBusiness = await businessService.GetBusiness(BusinessId);
 
@@ -127,6 +136,7 @@
         businessVouchers = await voucherService.GetAllBusinessVouchers(BusinessId);
         businessVouchers = businessVouchers.Take(3).ToList();
 
+        occasionsAreLoading = false;
     }
 
     public void GoToEventPage(int id)
