@@ -1,3 +1,22 @@
+@font-face {
+    font-family: 'Nelphim';
+    src: url('Fonts/Nephilm.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Casual';
+    src: url('Fonts/Casual-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Tenor';
+    src: url('Fonts/TenorSans-Regular.ttf') format('truetype');
+}
+
+h1, h2, h3 {
+    font-family: Casual, 'Sans Serif Collection';
+}
+
 .banner {
     display: flex;
     background-color: #5EB0BF;
