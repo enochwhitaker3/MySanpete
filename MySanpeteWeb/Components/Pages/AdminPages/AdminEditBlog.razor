@@ -199,7 +199,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        AllBlogs = await blogService.GetAllBlogs();
+        AllBlogs = (await blogService.GetAllBlogs()).Where(x => x.Title != "[Removed]").ToList();
     }
 
     public void SelectBlog(BlogDTO selectedBlog)
@@ -308,34 +308,28 @@ else
 
     public async Task DeleteBusiness(BlogDTO blog)
     {
-        var dummy = await blogService.GetAllBlogs();
-        // try
-        // {
-        //     if (blog is null || blog.Comments is null)
-        //     {
-        //         throw new Exception("Selected blog was not found");
-        //     }
+        try
+        {
+            if (blog is null)
+            {
+                throw new Exception("Selected blog was not found");
+            }
 
-        //     foreach (var comment in blog.Comments)
-        //     {
-        //         await commentService.DeleteBlogComment(comment.Id);
-        //     }
+            var result = await blogService.DeleteBlog(blog.Id);
 
-        //     var result = await blogService.DeleteBlog(blog.Id);
+            if (result == false)
+            {
+                throw new Exception("Blog was unable to be deleted");
+            }
 
-        //     if (result == false)
-        //     {
-        //         throw new Exception("Blog was unable to be deleted");
-        //     }
-
-        //     errorMessage = "";
-        //     Success = "true";
-        //     ReloadPage();
-        // }
-        // catch (Exception ex)
-        // {
-        //     errorMessage = ex.Message;
-        // }
+            errorMessage = "";
+            Success = "true";
+            ReloadPage();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
     }
 
     public void ReloadPage()

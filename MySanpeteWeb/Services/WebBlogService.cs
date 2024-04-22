@@ -64,7 +64,8 @@ public class WebBlogService : IBlogService
         var bud = await context.Blogs.Where(x => x.Id == id).FirstOrDefaultAsync();
         if (bud != null)
         {
-            context.Blogs.Remove(bud);
+            bud.Title = "[Removed]";
+            context.Blogs.Update(bud);
             await context.SaveChangesAsync();
 
             return true;
