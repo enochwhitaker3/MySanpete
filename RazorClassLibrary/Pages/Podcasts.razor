@@ -1,26 +1,39 @@
 ﻿@inject IPodcastService service;
 
+<center>
+    <h1 class="mt-5">Podcasts</h1>
+</center>
 <div class="logo-row d-flex flex-row justify-content-center">
     <div class="mx-5">
-        <img class="img-fluid border-rounded logo" style="width: 40px;" src="/Images/Iheart_radio_logo.jpg" />
+        <a href="https://www.iheart.com/podcast/338-the-mysanpete-podcast-121891831/" target="_blank" rel="noopener">
+            <img class="img-fluid border-rounded logo" style="width: 40px;" src="/Images/Iheart_radio_logo.jpg" />
+        </a>
     </div>
     <div class="mx-5">
-        <img class="img-fluid border-rounded logo" style="width: 40px;" src="/Images/iOS_podcast_logo.svg" />
+        <a href="https://podcasts.apple.com/us/podcast/the-mysanpete-podcast/id1689842676" target="_blank" rel="noopener">
+            <img class="img-fluid border-rounded logo" style="width: 40px;" src="/Images/iOS_podcast_logo.svg" />
+        </a>
     </div>
     <div class="mx-5">
-        <img class="img-fluid border-rounded logo" style="width: 40px;" src="/Images/podbean_logo.png" />
+        <a href="https://mysanpete.podbean.com/" target="_blank" rel="noopener">
+            <img class="img-fluid border-rounded logo" style="width: 40px;" src="/Images/podbean_logo.png" />
+        </a>
     </div>
     <div class="mx-5">
-        <img class="img-fluid border-rounded logo" style="width: 40px;" src="/Images/amazon_music_logo.jpg" />
+        <a href="https://music.amazon.com/podcasts/3095b76b-f356-4ea6-802e-300e5635ace4/the-mysanpete-podcast" target="_blank" rel="noopener">
+            <img class="img-fluid border-rounded logo" style="width: 40px;" src="/Images/amazon_music_logo.jpg" />
+        </a>
     </div>
 </div>
 
+<center style="margin-top: 100px;"><h2>Episodes</h2></center>
 @if(AllPodcasts is not null)
 {
     @foreach (var p in AllPodcasts)
     {
         @if (p.URL is not null)
         {
+            <p>@p.PublishDate</p>
             <!-- Render the iframe that she copies in from Podbean -->
             <div style="padding: 50px;">
                 @((MarkupString)@p.URL)
