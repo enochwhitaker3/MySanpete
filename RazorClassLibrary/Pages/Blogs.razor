@@ -86,7 +86,7 @@
     protected override async Task OnInitializedAsync()
     {
         isLoading = true;
-        restBlogs = await blogService.GetAllBlogs();
+        restBlogs = (await blogService.GetAllBlogs()).Where(x => x.Title != "[Removed]").ToList();
         restBlogs = restBlogs.OrderByDescending(x => x.PublishDate).ToList();
 
         featuredBlogs = restBlogs.GetRange(0, 2);
