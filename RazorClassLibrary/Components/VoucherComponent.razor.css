@@ -115,6 +115,7 @@ h2 {
     font-family: "Arial";
     transition: background 0.3s;
     margin-left: auto;
+    cursor: pointer;
 }
 
 .text {

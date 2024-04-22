@@ -261,25 +261,15 @@ a:hover{
     .event-details h4 {
         font-size: 0.6rem;
     }
+    .title {
+        font-size: calc(2.25em - 1vw);
+    }
 }
 
-
+/*
 @media (max-width: 379px) {
     .title {
         font-size: calc(3em - 1vw);
     }
 
-}
-
-@media( max-height: 915px)
-{
-    .title {
-        font-size: calc(3em - 1vw);
-    }
-}
-
-@media( max-height: 798px) {
-    .title {
-        font-size: calc(2.25em - 1vw);
-    }
-}
+}*/
