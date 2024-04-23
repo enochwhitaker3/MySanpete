@@ -16,18 +16,20 @@
 {
     <div class="container">
         <div class="content d-grid justify-content-center align-items-center">
-            <img class="img_success" src="Images/order_success.svg"/>
+            <img class="img_success" src="Images/order_success.svg" />
             <h2>Order Complete</h2>
             <p>Got it, thanks!</p>
-            @if(BusinessDefined is true)
+            @if (BusinessDefined is true)
             {
-                @if(IsBundle)
+                @if (IsBundle)
                 {
                     <p>Your bundle has been purchased! Have fun with your events</p>
+                    <button type="submit" class="btn btn-primary" @onclick="@(() => navManager.NavigateTo("/user-bundles"))">Bundles</button>
                 }
                 else
                 {
-                    <p>Please check your email to see your voucher. Show this at @voucher.BusinessName to redeem.</p>
+                    <p>Go to your purchased voucher page to redeem them around Sanpete County!</p>
+                    <button type="submit" class="btn btn-primary" @onclick="@(() => navManager.NavigateTo("/user-vouchers"))">Vouchers</button>
                 }
             }
             else
@@ -47,15 +49,19 @@ else
 @code {
     public string? intentId { get; set; }
     public string? authId { get; set; }
+    public string BusinessName { get; set; } = "";
+    public string? errorMessage { get; set; } = "";
+
     public int userId { get; set; }
     public int bundleId { get; set; }
     public int voucherId { get; set; }
+
     public decimal finalPrice { get; set; }
-    public string errorMessage = "";
+
+    public static bool BusinessDefined = false;
+
     public VoucherDTO voucher { get; set; } = new();
     public BundleDTO bundle { get; set; } = new();
-    public static bool BusinessDefined = false;
-    public string BusinessName { get; set; } = "";
 
     [SupplyParameterFromQuery]
     public bool IsBundle { get; set; }
@@ -117,7 +123,7 @@ else
         {
             if (id is not null)
             {
-                if(IsBundle)
+                if (IsBundle)
                 {
                     await PurchaseBundle(id, firstRender);
                 }
@@ -189,7 +195,7 @@ else
         {
             //Make sure that this charge hasn't been added to the database yet.
             var allVouchers = await userVoucherService.GetAllByUser(userId);
-            if(!allVouchers.Any(x => x.Charge_Id == intentId && x.Charge_Id != "Free Voucher Claimed"))
+            if (!allVouchers.Any(x => x.Charge_Id == intentId && x.Charge_Id != "Free Voucher Claimed"))
             {
                 await CreateNewUserVoucher();
             }
@@ -234,7 +240,7 @@ else
             var allVouchers = await userVoucherService.GetAllByUser(userId);
             if (!allVouchers.Any(x => x.Charge_Id == intentId && x.Charge_Id != "Free Voucher Claimed"))
             {
-                foreach(var voucher in bundle!.Vouchers!)
+                foreach (var voucher in bundle!.Vouchers!)
                 {
                     voucherId = voucher.Id;
                     finalPrice = voucher.RetailPrice ?? 0M;

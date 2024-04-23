@@ -29,7 +29,7 @@
         }
 
         <div class="mx-auto w-75">
-            @foreach (var userVoucher in allUserVouchers!)
+            @foreach (var userVoucher in allUserVouchers.OrderBy(x => x.Is_Used)!)
             {
                 @if (userVoucher.Is_Used == false)
                 {
@@ -106,12 +106,19 @@
 
         currentUser = await userService.GetAuthUser(authId!);
         allUserVouchers = await userVoucherService.GetAllUserVouchers();
-
-        allUserVouchers = allUserVouchers.Where(x => x.User!.Id == currentUser!.Id)
+        var freebies = allUserVouchers
+                .Where(x => x.Charge_Id == "Free Voucher Claimed")
+                .ToList();
+        allUserVouchers = allUserVouchers
+            .Where(x => x.User!.Id == currentUser!.Id)
             .GroupBy(x => x.Charge_Id)
             .Where(x => x.Count() <= 1)
             .Select(x => x.First())
             .ToList();
+
+        allUserVouchers.AddRange(freebies);
+
+        allUserVouchers.OrderByDescending(x => x.Is_Used);
 
         isLoading = false;
     }
