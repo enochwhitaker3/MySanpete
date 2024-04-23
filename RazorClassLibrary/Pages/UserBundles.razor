@@ -10,7 +10,7 @@
     <center class="my-6"><h3><strong>My Bundles</strong></h3></center>
     @if (allBundles is null || allBundles.Count == 0)
     {
-        <div class="mx-auto w-75">
+        <div class="mx-auto mb-10 w-75">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">No bundles to show</h5>
@@ -22,7 +22,7 @@
     }
     else
     {
-        <div class="mx-auto w-75">
+        <div class="mx-auto mb-10 mt-10 w-75">
             @foreach (var group in allBundles)
             {
                 <div class="container shadow" style="background-color: white; padding-bottom: 25px; padding-top: 25px;">
