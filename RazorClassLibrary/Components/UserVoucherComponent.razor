@@ -1,0 +1,35 @@
+﻿@inject NavigationManager NavMan
+
+
+<div class="card m-2 rounded-3 shadow">
+    <div class="d-flex flex-row">
+
+        <div class="blogo d-flex align-items-center col-md img-square-wrapper rounded" style="padding: 0px;">
+
+            <img class="business-logo"
+                 style="height: 130px; width: 130px; border-radius: 65px; object-fit: cover; object-position: center; margin: 20px;"
+                 src="@thisVoucher.Voucher!.BusinessLogoURL" />
+        </div>
+        <div class="col-md card-body">
+            <h2 class="d-grid card-title" style="max-height: 42px;">
+                @thisVoucher.Voucher!.PromoName
+                @if (thisVoucher.Voucher!.EndDate is not null)
+                {
+                    <span class="card-text">Good through @thisVoucher.Voucher!.EndDate.Value.ToString("M/dd/yy")</span>
+                }
+
+            </h2>
+        </div>
+
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public UserVoucherDTO thisVoucher { get; set; } = new();
+
+    public void GoToDetailsPage(int id)
+    {
+        NavMan.NavigateTo($"/view-voucher/{id}", true);
+    }
+}
