@@ -9,8 +9,8 @@
 @inject IBundleService bundleService
 @inject IStripeService stripeService
 @inject IUserService userService
+@inject IUserState userState
 
-@attribute [Authorize]
 
 <div style="padding-bottom: 25px;">
     @if (bundle is not null)
@@ -37,12 +37,24 @@
                         }
                         <div class="mb-10 mt-10">
                             <h3>$@bundle.FinalPrice</h3>
-                            <form method="post" @formname="checkout" @onsubmit="Checkout" class="d-flex justify-content-center align-items-center">
-                                <button type="submit" class="btn btn-primary">
-                                    Checkout with Stripe
-                                </button>
-                                <AntiforgeryToken />
-                            </form>
+                            <AuthorizeView>
+                                <Authorized>
+                                    <form method="post" @formname="checkout" @onsubmit="Checkout" class="d-flex justify-content-center align-items-center">
+                                        <button type="submit" class="btn btn-primary">
+                                            Checkout with Stripe
+                                        </button>
+                                        <AntiforgeryToken />
+                                    </form>
+                                </Authorized>
+                                <NotAuthorized>
+                                    <form method="post" @formname="checkout" class="d-flex justify-content-center align-items-center">
+                                        <button type="submit" class="btn btn-primary" @onclick="userState.Login">
+                                            Login To Checkout
+                                        </button>
+                                        <AntiforgeryToken />
+                                    </form>
+                                </NotAuthorized>
+                            </AuthorizeView>
                         </div>
                     </div>
                 </div>
@@ -93,20 +105,24 @@
         }
         var authState = await AuthStateTask;
 
-        try
+        bundle = await bundleService.GetBundle(bundleId);
+        if (authState!.User!.Identity!.IsAuthenticated)
         {
-            authId = authState.User.Claims.FirstOrDefault(x => x.Type == "authId")!.Value;
 
-            if (authId is null)
+            try
             {
-                throw new Exception("User was not found");
-            }
+                authId = authState.User.Claims.FirstOrDefault(x => x.Type == "authId")!.Value;
 
-            bundle = await bundleService.GetBundle(bundleId);
-        }
-        catch (Exception)
-        {
-            navManager.NavigateTo("/404", true);
+                if (authId is null)
+                {
+                    throw new Exception("User was not found");
+                }
+
+            }
+            catch (Exception)
+            {
+                navManager.NavigateTo("/404", true);
+            }
         }
 
     }
