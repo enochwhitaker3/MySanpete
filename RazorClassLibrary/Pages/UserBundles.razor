@@ -51,8 +51,12 @@
 
     List<IGrouping<string?, UserVoucherDTO>> allBundles { get; set; } = new();
 
+    public bool isLoading { get; set; } = true;
+
     protected async override Task OnInitializedAsync()
     {
+        isLoading = true;
+
         if (AuthStateTask is null)
         {
             return;
@@ -70,6 +74,7 @@
             navManager.NavigateTo("/", true);
         }
 
+        isLoading = false;
     }
 
     public void GoToDetailsPage(string id)

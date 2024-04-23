@@ -55,9 +55,9 @@ h2 {
     font-family: 'Tenor', Arial !important;
 }
 
-.card-title {
+/*.card-title {
     font-size: calc(2em - 0.1vw);
-}
+}*/
 
 .card-text {
     font-size: calc(.75em - 0.1vw);
@@ -182,7 +182,7 @@ h2 {
 
 @media (max-width: 1250px) {
     .card-title {
-        font-size: calc(2em - 0.75vw);
+        font-size: calc(1em - 0.75vw);
     }
 }
 
