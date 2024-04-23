@@ -25,7 +25,7 @@
 }
 
 ::deep h1, ::deep h2, ::deep h3, ::deep h4, ::deep h5 {
-    font-family: Tenor;
+    font-family: Tenor, sans-serif;
 }
 
 ::deep a {

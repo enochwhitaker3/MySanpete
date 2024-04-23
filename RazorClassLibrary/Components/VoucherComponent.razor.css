@@ -18,7 +18,7 @@
 /*align-items: center;*/ /* Vertically center */
 
 h2 {
-    font-family: Nelphim !important;
+    font-family: Nelphim !important, sans-serif;
 }
 
 .main-section {
@@ -46,13 +46,13 @@ h2 {
 
 .title {
     font-size: calc(4em - 0.1vw);
-    font-family: Casual;
+    font-family: Casual, sans-serif;
 }
 
 .card {
     background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='1' ry='1' stroke='%23333' stroke-width='3' stroke-dasharray='6%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
     border: none !important;
-    font-family: 'Tenor', Arial !important;
+    font-family: 'Tenor', Arial !important, sans-serif;
 }
 
 /*.card-title {
@@ -66,7 +66,7 @@ h2 {
 
 .undertitle {
     font-size: large;
-    font-family: 'Segoe UI';
+    font-family: 'Segoe UI', sans-serif;
     padding-left: 65px;
 }
 
@@ -112,7 +112,7 @@ h2 {
     position: relative;
     text-align: center;
     border-radius: 0.45em;
-    font-family: "Arial";
+    font-family: "Arial", sans-serif;
     transition: background 0.3s;
     margin-left: auto;
     cursor: pointer;

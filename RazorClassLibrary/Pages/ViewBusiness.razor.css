@@ -1,5 +1,5 @@
-.about{
-    font-family: 'Tenor'
+.about {
+    font-family: 'Tenor', sans-serif;
 }
 
 .about h1{
@@ -30,7 +30,7 @@ a:hover {
 }
 
     .event-date h2 {
-        font-family: Inter-Bold;
+        font-family: Inter-Bold, sans-serif;
         font-size: 2.25vw;
         width: fit-content;
         transform-origin: bottom center;
@@ -58,12 +58,12 @@ a:hover {
 }
 
     .event-details h2 {
-        font-family: Inter-Bold;
+        font-family: Inter-Bold, sans-serif;
         font-size: 1.5rem;
     }
 
     .event-details h4 {
-        font-family: Inter;
+        font-family: Inter, sans-serif;
         font-size: 1rem;
     }
 

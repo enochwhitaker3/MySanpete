@@ -14,7 +14,7 @@
 }
 
 h1, h2, h3 {
-    font-family: Casual, 'Sans Serif Collection';
+    font-family: Casual, 'Sans Serif Collection', sans-serif;
 }
 
 .published-tag {
@@ -46,14 +46,14 @@ h1, h2, h3 {
 
 .title {
     font-size: 50px;
-    font-family: 'Segoe UI';
+    font-family: 'Segoe UI', sans-serif;
     font-weight: bold;
     margin-bottom: 25px;
 }
 
 .undertitle {
     font-size: large;
-    font-family: 'Segoe UI';
+    font-family: 'Segoe UI', sans-serif;
     padding-left: 65px;
 }
 
