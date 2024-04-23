@@ -6,42 +6,50 @@
 @inject IUserVoucherService userVoucherService
 @inject NavigationManager navManager
 
-<div class="container" >
-    <center class="my-6"><h3><strong>My Bundles</strong></h3></center>
-    @if (allBundles is null || allBundles.Count == 0)
-    {
-        <div class="mx-auto w-75">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">No bundles to show</h5>
-                    <p class="card-text">Go to our website to purchase bundles to use around Sanpete!</p>
-                    <a href="/Vouchers" class="btn btn-primary">Find Bundles</a>
-                </div>
-            </div>
-        </div>
-    }
-    else
-    {
-        <div class="mx-auto w-75">
-            @foreach (var group in allBundles)
-            {
-                <div class="container shadow" style="background-color: white; padding-bottom: 25px; padding-top: 25px;">
-                    <center class="my-6"><h3><strong>@group</strong></h3></center>
-                    @foreach (var voucher in group)
-                    {
-                        <RazorClassLibrary.Components.UserVoucherComponent thisVoucher="@voucher"></RazorClassLibrary.Components.UserVoucherComponent>
-                        <hr>
-                    }
-                    <div class="card">
-                        <button class="btn btn-primary" style="text-align: center;" @onclick="()=> GoToDetailsPage(group!.Key!)">View Bundle</button>
+
+@if (isLoading)
+{
+    <LoadingComponent></LoadingComponent>
+}
+else
+{
+    <div class="container">
+        <center class="my-6"><h3><strong>My Bundles</strong></h3></center>
+        @if (allBundles is null || allBundles.Count == 0)
+        {
+            <div class="mx-auto w-75">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">No bundles to show</h5>
+                        <p class="card-text">Go to our website to purchase bundles to use around Sanpete!</p>
+                        <a href="/Vouchers" class="btn btn-primary">Find Bundles</a>
                     </div>
                 </div>
-                <br />
-            }
-        </div>
-        <br>
-    }
-</div>
+            </div>
+        }
+        else
+        {
+            <div class="mx-auto w-75">
+                @foreach (var group in allBundles)
+                {
+                    <div class="container shadow" style="background-color: white; padding-bottom: 25px; padding-top: 25px;">
+                        <center class="my-6"><h3><strong>@group</strong></h3></center>
+                        @foreach (var voucher in group)
+                        {
+                            <RazorClassLibrary.Components.UserVoucherComponent thisVoucher="@voucher"></RazorClassLibrary.Components.UserVoucherComponent>
+                            <hr>
+                        }
+                        <div class="card">
+                            <button class="btn btn-primary" style="text-align: center;" @onclick="()=> GoToDetailsPage(group!.Key!)">View Bundle</button>
+                        </div>
+                    </div>
+                    <br />
+                }
+            </div>
+            <br>
+        }
+    </div>
+}
 
 @code
 {
@@ -50,8 +58,12 @@
 
     List<IGrouping<string?, UserVoucherDTO>> allBundles { get; set; } = new();
 
+    public bool isLoading { get; set; } = true;
+
     protected async override Task OnInitializedAsync()
     {
+        isLoading = true;
+
         if (AuthStateTask is null)
         {
             return;
@@ -69,6 +81,7 @@
             navManager.NavigateTo("/", true);
         }
 
+        isLoading = false;
     }
 
     public void GoToDetailsPage(string id)
