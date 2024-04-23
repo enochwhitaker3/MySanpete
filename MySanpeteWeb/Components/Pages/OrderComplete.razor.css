@@ -30,3 +30,11 @@
     height: 25vw;
     width: 25vw;
 }
+
+button {
+    background-color: black;
+    color: white;
+    border-radius: 30px;
+    border: none;
+    padding: 10px;
+}

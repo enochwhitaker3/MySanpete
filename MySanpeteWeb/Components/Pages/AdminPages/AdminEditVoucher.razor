@@ -218,7 +218,7 @@
 
         try
         {
-            string newPriceId = StripeService.UpdateStripeProduct(voucher);
+            string newPriceId = StripeService.UpdateStripeVoucher(voucher);
             voucher.PriceId = newPriceId;
         }
         catch (Exception ex)

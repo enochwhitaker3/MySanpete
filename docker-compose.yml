@@ -20,7 +20,8 @@ services:
       ClientId: ${ClientId}
       STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
       MapKey: ${MapKey}
-      ##WebsiteUrl: http://localhost:420
+      FeatureFlag: "true"
+      WebsiteUrl: http://localhost:420
       DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE: false
       ASPNETCORE_ENVIRONMENT: Development
     depends_on: 

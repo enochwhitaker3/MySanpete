@@ -11,7 +11,7 @@
 
 .event-card {
     background-color: #fff;
-    height: 17vh;
+    max-height: 25vh;
 /*    width: 35vw;*/
 }
 a:hover {
@@ -82,10 +82,10 @@ a:hover {
 
 @media screen and (max-height: 1080px){
     .foreach {
-        max-height: none !important;
+        height: auto !important;
     }
     .not-found {
-        max-height: none !important;
+        height: auto !important;
     }
 }
 
@@ -115,7 +115,6 @@ a:hover {
         display: none !important;
     }
     .event-card{
-        height: 20vh;
         margin-right: 0 !important;
     }
     .foreach{

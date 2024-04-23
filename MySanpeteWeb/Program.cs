@@ -120,11 +120,6 @@ builder.Services.AddOpenTelemetry()
      .WithMetrics(metrics => metrics
          .AddAspNetCoreInstrumentation()
          .AddMeter(MySanpeteMetrics.Meter.Name)
-         .AddView
-         (
-            instrumentName: MySanpeteMetrics.ImageRetrieval.Name,
-            new ExplicitBucketHistogramConfiguration()
-         )
      // .AddConsoleExporter()
          .AddOtlpExporter(o =>
            o.Endpoint = new Uri(otelUrl)))
@@ -220,7 +215,6 @@ app.MapRazorComponents<App>()
 app.MapRazorPages();
 
 app.UseStatusCodePagesWithRedirects("/404");
-
 
 app.Run();
 

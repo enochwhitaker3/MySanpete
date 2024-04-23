@@ -9,7 +9,8 @@
 
 @inject IBundleService bundleService
 @inject IVoucherService voucherService
-@inject NavigationManager navManager;
+@inject NavigationManager navManager
+@inject IStripeService StripeService
 
 @attribute [Authorize(Roles = "Admin")]
 
@@ -321,6 +322,21 @@ else
             {
                 throw new Exception("The bundle needs to have a name");
             }
+
+            // update final price before updating stripe price id
+            bundle.FinalPrice = bundle.Vouchers.Select(x => x.RetailPrice).Sum();
+
+            // Update price in stripe before updating database so we get the new stripe id
+            try
+            {
+                string newPriceId = StripeService.UpdateStripeBundle(bundle);
+                bundle.PriceId = newPriceId;
+            }
+            catch (Exception ex)
+            {
+                errorMessage = $"Something went wrong when updating this product in Stripe. Developer exception: {ex}";
+            }
+
 
             var newBundle = await bundleService.UpdateBundle(bundle);
 

@@ -116,7 +116,7 @@ public class StripeService : IStripeService
         return stripeIds;
     }
 
-    public string UpdateStripeProduct(VoucherDTO newVoucher)
+    public string UpdateStripeVoucher(VoucherDTO newVoucher)
     {
 
         long numberOfCents = Convert.ToInt32(newVoucher.RetailPrice * 100);
@@ -142,6 +142,33 @@ public class StripeService : IStripeService
         };
         var service = new ProductService();
         var result = service.Update(newVoucher.StripeId, options);   // update using stripe product id
+
+        return result.DefaultPriceId;
+    }
+
+    public string UpdateStripeBundle(BundleDTO newBundle)
+    {
+        long numberOfCents = Convert.ToInt32(newBundle.FinalPrice * 100);
+
+        // Create a new price object with a new amount
+        var priceOptions = new PriceCreateOptions
+        {
+            Currency = "usd",
+            UnitAmount = numberOfCents,
+            Product = newBundle.StripeId,
+        };
+        var priceService = new PriceService();
+        var priceResponse = priceService.Create(priceOptions);
+
+
+        // Update stripe product with new price, name, and description
+        var options = new ProductUpdateOptions
+        {
+            Name = newBundle.Name,
+            DefaultPrice = priceResponse.Id             // price id after updating
+        };
+        var service = new ProductService();
+        var result = service.Update(newBundle.StripeId, options);   // update using stripe product id
 
         return result.DefaultPriceId;
     }

@@ -24,7 +24,10 @@
     <div class="container">
         @if (errorMessage == "")
         {
-            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#refundModal">Refund this whole bundle</button>
+            @if (!Success)
+            {
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#refundModal">Refund this whole bundle</button>
+            }
         }
         else
         {
@@ -36,25 +39,32 @@
         }
         @foreach (var voucher in VouchersInBundle)
         {
-            <hr />
-            <div class="container">
-                <div class="content">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img class="img-fluid rounded-circle" width="300" src="@voucher!.Voucher!.BusinessLogoURL " />
-                        </div>
-                        <div class="col-md-6">
-                            <h2 class="card-title"><strong>@voucher!.Voucher!.PromoName</strong></h2>
-                            <p>Promo Code: @voucher.Promo_Code</p>
-                            <p>@voucher.Voucher.BusinessName</p>
-                            <p>Good Through @voucher.Voucher.StartDate to @voucher.Voucher.EndDate</p>
+            SetCurrentVoucher(voucher);
+            @if (CurrentVoucher is not null && CurrentVoucher.Voucher is not null)
+            {
+                <hr />
+                <div class="container">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <img class="img-fluid rounded-circle" width="300" src="@voucher!.Voucher!.BusinessLogoURL " />
+                            </div>
+                            <div class="col-md-6">
+                                <h2 class="card-title"><strong>@voucher!.Voucher!.PromoName</strong></h2>
+                                <p>Promo Code: CurrentVoucher.Promo_Code</p>
+                                <p>CurrentVoucher.Voucher.BusinessName</p>
+                                @if (CurrentVoucher.Voucher.EndDate is not null)
+                                {
+                                    <p>Good Through CurrentVoucher.StartDate.ToString("hh:mm tt") to CurrentVoucher.EndDate.ToString("hh:mm tt")</p>
+                                }
 
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            }
         }
-        <hr/>
+        <hr />
     </div>
 }
 <div class="modal fade" id="refundModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -79,15 +89,17 @@
 {
     [Parameter]
     public string? ChargeId { get; set; }
+    public string? errorMessage { get; set; } = "";
 
     public bool Success { get; set; } = false;
 
     [CascadingParameter]
     Task<AuthenticationState>? AuthStateTask { get; set; }
 
-    List<UserVoucherDTO> VouchersInBundle { get; set; } = new();
+    public List<UserVoucherDTO> VouchersInBundle { get; set; } = new();
 
-    public string? errorMessage { get; set; } = "";
+    public UserVoucherDTO CurrentVoucher { get; set; } = new();
+
 
     protected async override Task OnInitializedAsync()
     {
@@ -125,5 +137,10 @@
             Success = false;
             StateHasChanged();
         }
+    }
+
+    public void SetCurrentVoucher(UserVoucherDTO userVoucherDTO)
+    {
+        CurrentVoucher = userVoucherDTO;
     }
 }

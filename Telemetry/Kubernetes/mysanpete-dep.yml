@@ -26,4 +26,19 @@ spec:
         - name: MySanpeteDb
           value: user id = postgres; password=postgres; server=my-sanpete-database-service; database= postgres; port= 5432
         - name: WebsiteUrl
-          value: http://${GITHUB_RUN_ID}.mysanpetekube.duckdns.org
+          value: http://mysanpetekube.duckdns.org
+        - name: "DOTNET_HOSTBUILDER_RELOADCONFIGONCHANGE"
+          value: "false"
+        livenessProbe: 
+          httpGet:
+            path: /healthcheck
+            port: 8080
+          initialDelaySeconds: 6
+          periodSeconds: 5
+        readinessProbe: 
+          httpGet:
+            path: /healthcheck
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+
