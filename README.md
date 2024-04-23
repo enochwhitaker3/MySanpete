@@ -2,6 +2,7 @@
 <p align="center"><a href="https://mysanpete.azurewebsites.net/" target="_blank">mysanpete.azurewebsites.net</a></p>
 <p align="center">MySanpete is a web app and mobile app that connects entrepreneurs and small business owners to locals in Sanpete County, Utah.</p>
 
+
 # Built With
 <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/Blazor.png" width="40"/>
 
