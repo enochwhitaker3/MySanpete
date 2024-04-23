@@ -58,8 +58,10 @@
 
     [CascadingParameter]
     Task<AuthenticationState>? AuthStateTask { get; set; }
+
     public UserDTO? currentUser { get; set; } = new();
     public List<UserOccasionDTO?> allUserOccasions { get; set; } = new();
+
     public string? authId { get; set; }
 
     public bool isLoading { get; set; } = true;
