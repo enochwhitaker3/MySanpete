@@ -38,7 +38,7 @@ else
 
                 @if (AllComments is not null && AllComments.Count() > 0 && TopLevelComments is not null)
                 {
-                    <div class="d-flex align-items-center justify-content-center" style="margin-top: 10vh;">
+                    <div class="d-flex align-items-center justify-content-center" style="margin-top: 10vh; min-width: 800px;">
                         <div class="container">
                             <div class="row justify-content-center mb-4">
                                 <div class="col-lg-10">
@@ -85,7 +85,7 @@ else
                                                                     </div>
                                                                     <div class="flex-grow-1 ms-2 ms-sm-3">
                                                                         <form onsubmit="return false">
-                                                                            <textarea @bind="inputedComment" class="form-control py-0 px-1 border-0" rows="1" placeholder="Reply to @c.UserName..." style="resize: none;"></textarea>
+                                                                            <textarea @bind="inputedComment" class="form-control py-0 px-1 border-0" rows="1" placeholder="Reply to @c.UserName..." style="resize: none;" required></textarea>
                                                                             <button @onclick="@(() => AddResponse(c.Id))" class="btn btn-primary mt-5">Add Comment</button>
                                                                         </form>
                                                                     </div>
@@ -148,7 +148,7 @@ else
                                 </div>
                                 <div class="flex-grow-1 ms-2 ms-sm-3">
                                     <form onsubmit="return false">
-                                        <textarea @bind="inputedComment" class="form-control py-0 px-1 border-0" rows="1" placeholder="Start writing..." style="resize: none;"></textarea>
+                                        <textarea @bind="inputedComment" class="form-control py-0 px-1 border-0" rows="1" placeholder="Start writing..." style="resize: none;" required></textarea>
                                         <button @onclick="@(() => AddResponse())" class="btn btn-primary mt-5">Add Comment</button>
                                     </form>
                                 </div>
@@ -222,6 +222,10 @@ else
 
     public async Task AddResponse()
     {
+        if(inputedComment!.Length <=0)
+        {
+            return;
+        }
         isLoading = true;
         AddCommentRequest newRequest = new()
             {
@@ -243,6 +247,10 @@ else
 
     public async Task AddResponse(int replyId)
     {
+        if(inputedComment!.Length <= 0)
+        {
+            return;
+        }
         isLoading = true;
         AddCommentRequest newRequest = new()
             {
