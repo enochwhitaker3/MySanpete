@@ -27,3 +27,5 @@ spec:
           value: user id = postgres; password=postgres; server=my-sanpete-database-service; database= postgres; port= 5432
         - name: WebsiteUrl
           value: ${PULL_REQUEST_ID}.mysanpetekube.duckdns.org
+        - name: "DOTNET_HOSTBUILDER_RELOADCONFIGONCHANGE"
+          value: "false"
