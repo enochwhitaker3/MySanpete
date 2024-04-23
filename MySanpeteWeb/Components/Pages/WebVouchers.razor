@@ -83,6 +83,10 @@
                                     <RazorClassLibrary.Components.VoucherComponent thisVoucher="@voucher"></RazorClassLibrary.Components.VoucherComponent>
                                 </div>
                             }
+                            @if(searchedVouchers.Count <= 0)
+                            {
+                                <p>No vouchers match your search.</p>
+                            }
                         }
                     }
                     else
@@ -95,10 +99,10 @@
                                     <RazorClassLibrary.Components.VoucherComponent thisVoucher="@voucher"></RazorClassLibrary.Components.VoucherComponent>
                                 </div>
                             }
-                        }
-                        @if (filteringTooSpecific)
-                        {
-                            <div class="alert alert-info">Nothing matched your search.</div>
+                            @if (searchedVouchers.Count <= 0)
+                            {
+                                <p>No vouchers match your search.</p>
+                            }
                         }
                     }
                 }
@@ -224,5 +228,6 @@
         {
             filteringTooSpecific = true;
         }
+        StateHasChanged();
     }
 }

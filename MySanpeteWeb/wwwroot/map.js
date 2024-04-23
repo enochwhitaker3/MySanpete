@@ -6,21 +6,25 @@ function initializeMap(mapsKey, jsonOccasions, jsonBusinesses) {
     // Create the map instance
     map = new atlas.Map("mapDiv", {
         view: "Auto",
-        center: [-122.129, 47.640],
-        zoom: 3,
+        center: [-111.58251375208721, 39.36257310977088], 
+        zoom: 13,
         showFeedbackLink: false,
         showLogo: false
     });
 
     // Get user's location
-    navigator.geolocation.getCurrentPosition(function (position) {
-        var userLocation = [position.coords.longitude, position.coords.latitude];
-        map.setCamera({
-            center: userLocation,
-            zoom: 13
-        });
-    });
+    //navigator.geolocation.getCurrentPosition(function (position) {
+    //    var userLocation = [- 111.58251375208721, 39.36257310977088];
+    //    map.setCamera({
+    //        center: userLocation,
+    //        zoom: 13
+    //    });
+    //});
 
+    map.setCamera({
+        center: [-111.58251375208721, 39.36257310977088],
+        zoom: 13
+    });
 
 
 
@@ -66,4 +70,11 @@ function initializeMap(mapsKey, jsonOccasions, jsonBusinesses) {
         }
     })
 
+}
+
+function focusMap(YCoordinate, XCoordinate) {
+    map.setCamera({
+        center: [YCoordinate, XCoordinate],
+        zoom: 13
+    });
 }
