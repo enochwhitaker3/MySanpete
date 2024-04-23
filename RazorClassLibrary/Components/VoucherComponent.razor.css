@@ -180,9 +180,15 @@ h2 {
     }
 
 
-@media (max-width: 1250px) {
+@media (max-width: 1600px) {
     .card-title {
-        font-size: calc(1em - 0.75vw);
+        font-size: calc(2.25em - 0.75vw);
+    }
+}
+
+@media (max-width: 1420px) {
+    .card-title {
+        font-size: calc(2em - 0.75vw);
     }
 }
 

@@ -60,14 +60,22 @@ else
             </div>
             <div class="form-group mt-5">
                 <label for="title">Retail Price (Enter $0.00 if you want it to be a coupon)</label>
-                <input id="title" class="form-control" @bind="RetailPrice" required />
+
+                @* <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">$</span>
+                    </div>
+                    <input type="number" class="form-control" placeholder="0.00" aria-label="Retail Price" aria-describedby="basic-addon1" @bind="RetailPrice" required>
+                </div> *@
+
+                <input id="title" class="form-control" @bind="RetailPrice" required /> 
             </div>
             <div class="form-group mt-5">
                 <label for="title">Total Reclaimable (Enter 0 for no limit)</label>
-                <span>$</span><input id="title" class="form-control" @bind="TotalReclaimable" required />
+                <input id="title" class="form-control" @bind="TotalReclaimable" required />
             </div>
             <div class="form-group mt-5">
-                <label for="isActive">Is Active? <br /><small>Edit this if you don't this to show up as purchasable.</small></label><br />
+                <label for="isActive">Is Active? <br /><small>Only active vouchers are purchasable to users.</small></label><br />
                 <input type="radio" id="radioTrue" name="myRadio" @onchange="@(e => IsActive = true)" checked="@(IsActive == true)" />
                 <label for="radioTrue">Active</label>
                 <br />
