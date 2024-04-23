@@ -216,7 +216,6 @@ app.MapRazorPages();
 
 app.UseStatusCodePagesWithRedirects("/404");
 
-
 app.Run();
 
 public partial class Program { }
