@@ -82,7 +82,7 @@
                                 @if (voucher.IsBundle == false && voucher.IsActive == true)
                                 {
                                     <div class="col-md-6 p-3">
-                                        <RazorClassLibrary.Components.VoucherComponent thisVoucher="@voucher"></RazorClassLibrary.Components.VoucherComponent>
+                                        <RazorClassLibrary.Components.VoucherComponent thisVoucher="@voucher" showPrice="true"></RazorClassLibrary.Components.VoucherComponent>
                                     </div>
                                 }
                             }
@@ -100,7 +100,7 @@
                             @if(voucher.IsBundle == false && voucher.IsActive == true)
                             {
                                 <div class="col-md-6 p-3">
-                                    <RazorClassLibrary.Components.VoucherComponent thisVoucher="@voucher"></RazorClassLibrary.Components.VoucherComponent>
+                                    <RazorClassLibrary.Components.VoucherComponent thisVoucher="@voucher" showPrice="true"></RazorClassLibrary.Components.VoucherComponent>
                                 </div>
                             }
                         }
