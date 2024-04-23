@@ -8,52 +8,61 @@
 @inject NavigationManager navManager
 @attribute [Authorize(Roles = "Admin")]
 
-
-<div class="form-container mt-5" style="max-width: 95vw; margin: auto auto; margin-bottom: 100px; ">
-    <a href="/add-podcast"><button class="btn btn-primary mb-3">Add Podcast</button></a>
-    <table class="table table-responsive">
-        <thead>
-            <tr>
-                <th scope="col">Podcast Title</th>
-                <th scope="col">Embed Code</th>
-                <th scope="col">Publish Date</th>
-                <th scope="col">Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if(AllPodcasts is not null)
-            {
-                @foreach (var p in AllPodcasts)
+@if (IsLoading)
+{
+    <RazorClassLibrary.Pages.LoadingComponent></RazorClassLibrary.Pages.LoadingComponent>
+}
+else
+{
+    <div class="form-container mt-5" style="max-width: 95vw; margin: auto auto; margin-bottom: 100px; ">
+        <a href="/add-podcast"><button class="btn btn-primary mb-3">Add Podcast</button></a>
+        <table class="table table-responsive">
+            <thead>
+                <tr>
+                    <th scope="col">Podcast Title</th>
+                    <th scope="col">Embed Code</th>
+                    <th scope="col">Publish Date</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (AllPodcasts is not null)
                 {
-                    <tr>
-                        <th scope="row">@p.Name</th>
-                        <td><pre style="inline-size: 450px; overflow-x: scroll; padding-bottom: 30px;">@p.URL</pre></td>
-                        <td>@p.PublishDate</td>
-                        <td><button class="btn btn-danger" @onclick="() => DeletePodcast(p.Id)">Delete</button></td>
-                    </tr>
+                    @foreach (var p in AllPodcasts)
+                    {
+                        <tr>
+                            <th scope="row">@p.Name</th>
+                            <td><pre style="inline-size: 450px; overflow-x: scroll; padding-bottom: 30px;">@p.URL</pre></td>
+                            <td>@p.PublishDate</td>
+                            <td><button class="btn btn-danger" @onclick="() => DeletePodcast(p.Id)">Delete</button></td>
+                        </tr>
+                    }
                 }
-            }
-        </tbody>
-    </table>
-</div>
+            </tbody>
+        </table>
+    </div>
+}
 
 @code {
-    public AddPodcastRequest? newPodcast = new();
-
-    public List<PodcastDTO> AllPodcasts { get; set; } = new();
-
-    public string errorMessage = "";
     [Parameter]
     public string? Success { get; set; }
-
-    public string URL { get; set; } = "Default Embed Code";
-    public bool Commentable { get; set; }
+    public string? ErrorMessage = "";
     public string PodcastName { get; set; } = "Default Name";
+    public string URL { get; set; } = "Default Embed Code";
+
+    public bool Commentable { get; set; } = true;
+    public bool IsLoading { get; set; } = true;
+
     public DateTime PublishDate { get; set; } = DateTime.Today.ToUniversalTime();
+
+    public AddPodcastRequest? NewPodcast = new();
+    public List<PodcastDTO> AllPodcasts { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
+        IsLoading = true;
         AllPodcasts = await podcastService.GetAllPodcasts();
+        IsLoading = false;
     }
 
     public async Task DeletePodcast(int id)
@@ -62,7 +71,7 @@
 
         AllPodcasts = await podcastService.GetAllPodcasts();
     }
-    
+
     public void ReloadPage()
     {
         navManager.NavigateTo($"/add-podcast/{Success}", true);

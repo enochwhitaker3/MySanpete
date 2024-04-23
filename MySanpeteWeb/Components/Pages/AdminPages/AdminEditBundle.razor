@@ -14,7 +14,7 @@
 
 @attribute [Authorize(Roles = "Admin")]
 
-@if (isLoading)
+@if (IsLoading)
 {
     <RazorClassLibrary.Pages.LoadingComponent></RazorClassLibrary.Pages.LoadingComponent>
 }
@@ -133,9 +133,9 @@ else
                         </div>
                     }
 
-                    <h3>Bundle Price: $@allSelectedVouchers!.Select(x => x.RetailPrice).Sum()</h3>
+                    <h3>Bundle Price: $@AllSelectedVouchers!.Select(x => x.RetailPrice).Sum()</h3>
 
-                    @if (errorMessage == "")
+                    @if (ErrorMessage == "")
                     {
                         <div class="form-group mt-5">
                             <button type="submit" style="height: 50px;" class="btn btn-primary" @onclick="() => UpdateBundle(SelectedBundle)">Update</button>
@@ -146,7 +146,7 @@ else
                     {
                         <div class="alert alert-danger">
                             <p>Please fix the error to update the bundle</p>
-                            <p>@errorMessage</p>
+                            <p>@ErrorMessage</p>
                             <div class="mt-5">
                                 <button type="submit" style="height: 50px;" class="btn btn-primary" @onclick="() => UpdateBundle(SelectedBundle)">Update</button>
                                 <button type="button" style="height: 50px;" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
@@ -203,24 +203,24 @@ else
     [Parameter]
     public string? Success { get; set; }
 
-    public string? errorMessage { get; set; } = "";
+    public string? ErrorMessage { get; set; } = "";
 
-    public bool isLoading { get; set; } = true;
+    public bool IsLoading { get; set; } = true;
 
     public List<BundleDTO>? AllBundles { get; set; }
     public BundleDTO? SelectedBundle { get; set; }
 
     public List<VoucherDTO>? AllVouchers { get; set; }
-    public List<VoucherDTO>? allSelectedVouchers { get; set; }
+    public List<VoucherDTO>? AllSelectedVouchers { get; set; }
     public VoucherDTO? SelectedVoucher { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        isLoading = true;
+        IsLoading = true;
         AllBundles = (await bundleService.GetAllBundles()).Where(x => x.Name != "[Removed]").ToList();
         AllVouchers = await voucherService.GetAllVouchers();
         AllVouchers = AllVouchers.Where(x => x.IsBundle == true).ToList();
-        isLoading = false;
+        IsLoading = false;
     }
 
     public async void SelectBundle(int selectedBundleId)
@@ -236,20 +236,20 @@ else
             {
                 throw new Exception("There were no vouchers found");
             }
-            allSelectedVouchers = SelectedBundle.Vouchers;
+            AllSelectedVouchers = SelectedBundle.Vouchers;
 
-            if (allSelectedVouchers is null)
+            if (AllSelectedVouchers is null)
             {
                 throw new Exception("No vouchers were found in the slected bundle");
             }
             AllVouchers = await voucherService.GetAllVouchers();
             AllVouchers = AllVouchers.Where(x => x.IsBundle == true).ToList();
-            AllVouchers = AllVouchers.Where(x => !allSelectedVouchers.Any(y => y.Id == x.Id)).ToList();
+            AllVouchers = AllVouchers.Where(x => !AllSelectedVouchers.Any(y => y.Id == x.Id)).ToList();
             StateHasChanged();
         }
         catch (Exception ex)
         {
-            errorMessage = ex.Message;
+            ErrorMessage = ex.Message;
         }
     }
 
@@ -269,7 +269,7 @@ else
         }
         catch (Exception ex)
         {
-            errorMessage = ex.Message;
+            ErrorMessage = ex.Message;
         }
 
     }
@@ -297,7 +297,7 @@ else
         }
         catch (Exception ex)
         {
-            errorMessage = ex.Message;
+            ErrorMessage = ex.Message;
         }
 
     }
@@ -334,7 +334,7 @@ else
             }
             catch (Exception ex)
             {
-                errorMessage = $"Something went wrong when updating this product in Stripe. Developer exception: {ex}";
+                ErrorMessage = $"Something went wrong when updating this product in Stripe. Developer exception: {ex}";
             }
 
 
@@ -344,13 +344,13 @@ else
             {
                 throw new Exception("The new bundle was null");
             }
-            errorMessage = "";
+            ErrorMessage = "";
             Success = "true";
             ReloadPage();
         }
         catch (Exception ex)
         {
-            errorMessage = ex.Message;
+            ErrorMessage = ex.Message;
         }
     }
 
@@ -370,13 +370,13 @@ else
                 throw new Exception("Bundle was unable to be deleted");
             }
 
-            errorMessage = "";
+            ErrorMessage = "";
             Success = "true";
             ReloadPage();
         }
         catch (Exception ex)
         {
-            errorMessage = ex.Message;
+            ErrorMessage = ex.Message;
         }
     }
 

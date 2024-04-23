@@ -9,73 +9,83 @@
 @inject NavigationManager navManager
 @attribute [Authorize(Roles = "Admin")]
 
-<div class="form-container" style="margin-bottom: 20px;">
-    <h3>Admin Add Podcast</h3>
-    <div class="form-group mt-5">
-        <label for="PodcastName">Podcast Name</label>
-        <input id="PodcastName" class="form-control" @bind="PodcastName" />
-    </div>
+@if (IsLoading)
+{
+    <RazorClassLibrary.Pages.LoadingComponent></RazorClassLibrary.Pages.LoadingComponent>
+}
+else
+{
+    <div class="form-container" style="margin-bottom: 20px;">
+        <h3>Admin Add Podcast</h3>
+        <div class="form-group mt-5">
+            <label for="PodcastName">Podcast Name</label>
+            <input id="PodcastName" class="form-control" @bind="PodcastName" />
+        </div>
 
-    <div class="form-group mt-5">
-        <label for="PodcastUrl">Podcast Embed Share Code</label>
-        <input id="PodcastUrl" class="form-control" @bind="URL" />
-    </div>
+        <div class="form-group mt-5">
+            <label for="PodcastUrl">Podcast Embed Share Code</label>
+            <input id="PodcastUrl" class="form-control" @bind="URL" />
+        </div>
 
-    <div class="form-group mt-5">
-        <label for="PublishDate">Publish Date</label>
-        <input id="PublishDate" type="datetime-local" class="form-control" @bind="PublishDate" required />
-    </div>
+        <div class="form-group mt-5">
+            <label for="PublishDate">Publish Date</label>
+            <input id="PublishDate" type="datetime-local" class="form-control" @bind="PublishDate" required />
+        </div>
 
-    <div class="form-group mt-5">
-        <label for="AllowComments">Allow Comments?</label><br />
+        <div class="form-group mt-5">
+            <label for="AllowComments">Allow Comments?</label><br />
 
-        <label for="radioTrue">Yes</label>
-        <input type="radio" id="radioTrue" name="myRadio" @onchange="@(e => Commentable = true)" checked="@(Commentable == true)" />
+            <label for="radioTrue">Yes</label>
+            <input type="radio" id="radioTrue" name="myRadio" @onchange="@(e => Commentable = true)" checked="@(Commentable == true)" />
 
-        <label for="radioFalse">No</label>
-        <input type="radio" id="radioFalse" name="myRadio" @onchange="@(e => Commentable = false)" checked="@(Commentable == false)" />
-    </div>
+            <label for="radioFalse">No</label>
+            <input type="radio" id="radioFalse" name="myRadio" @onchange="@(e => Commentable = false)" checked="@(Commentable == false)" />
+        </div>
 
-    @if (errorMessage == "")
-    {
-        <button type="submit" class="btn btn-primary" @onclick="CreateNewPodcast">Submit</button>
-    }
-    else
-    {
-        <div class="alert alert-danger">
-            <p>Please fix the error to submit the form</p>
-            <p>@errorMessage</p>
+        @if (ErrorMessage == "")
+        {
             <button type="submit" class="btn btn-primary" @onclick="CreateNewPodcast">Submit</button>
-        </div>
-    }
+        }
+        else
+        {
+            <div class="alert alert-danger">
+                <p>Please fix the error to submit the form</p>
+                <p>@ErrorMessage</p>
+                <button type="submit" class="btn btn-primary" @onclick="CreateNewPodcast">Submit</button>
+            </div>
+        }
 
-    @if (Success == "true")
-    {
-        <div class="alert-success alert alert-dismissible fade show" role="alert" @onclick="ChangeSuccess">
-            <p>You successfully added the new podcast!</p>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    }
+        @if (Success == "true")
+        {
+            <div class="alert-success alert alert-dismissible fade show" role="alert" @onclick="ChangeSuccess">
+                <p>You successfully added the new podcast!</p>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        }
 
-</div>
+    </div>
+}
 
 @code {
-    public AddPodcastRequest? newPodcast = new();
-
-    public string errorMessage = "";
     [Parameter]
     public string? Success { get; set; }
-
     public string URL { get; set; } = "Default URL";
-    public bool Commentable { get; set; }
+    public string ErrorMessage = "";
     public string PodcastName { get; set; } = "Default Name";
+
+    public bool Commentable { get; set; } = true;
+    public bool IsLoading { get; set; } = true;
+
     public DateTime PublishDate { get; set; } = DateTime.Today.ToUniversalTime();
+
+    public AddPodcastRequest? NewPodcast = new();
 
     protected override void OnInitialized()
     {
-
+        IsLoading = true;
+        IsLoading = false;
     }
 
     public async Task CreateNewPodcast()
@@ -92,7 +102,7 @@
                 throw new Exception("The podcast needs a URL to the podbean link");
             }
 
-            newPodcast = new AddPodcastRequest()
+            NewPodcast = new AddPodcastRequest()
                 {
                     Commentable = Commentable,
                     PodcastName = PodcastName,
@@ -100,9 +110,9 @@
                     PublishDate = PublishDate
                 };
 
-            if (newPodcast is not null)
+            if (NewPodcast is not null)
             {
-                await podcastService.AddPodcast(newPodcast);
+                await podcastService.AddPodcast(NewPodcast);
 
                 Success = "true";
                 ReloadPage();
@@ -115,7 +125,7 @@
         catch (Exception ex)
         {
             // Handle errors appropriately
-            errorMessage = ex.Message;
+            ErrorMessage = ex.Message;
         }
     }
 
