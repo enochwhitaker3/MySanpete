@@ -4,6 +4,8 @@
 @inject IUserOccasionService userOccasionService
 @inject IUserService userService
 @inject NavigationManager navManager
+@inject IGoogleApiService googleApiService
+
 
 @attribute [Authorize]
 
@@ -24,7 +26,7 @@ else
         </div>
     }
 
-    @if (selectedUserOccasion is not null)
+    @if (selectedUserOccasion is not null && Address is not null)
     {
         <div class="container">
             <div class="content">
@@ -37,7 +39,7 @@ else
                         <p>Put on by: @selectedUserOccasion!.Occasion!.Business!.BusinessName</p>
                         <p>@selectedUserOccasion.Occasion.Description</p>
                         <p>Starting: @selectedUserOccasion.Occasion.StartDate Ending: @selectedUserOccasion.Occasion.EndDate</p>
-                        <p>Located at: @selectedUserOccasion.Occasion.XCoordinate , @selectedUserOccasion.Occasion.YCoordinate</p>
+                        <p>Located at: @Address</p>
 
                         @if (errorMessage == "")
                         {
@@ -94,6 +96,7 @@ else
     public string? authId { get; set; }
     public string? imgDataURL { get; set; } = "";
     public string? errorMessage { get; set; } = "";
+    public string? Address { get; set; } = "";
 
     [CascadingParameter]
     Task<AuthenticationState>? AuthStateTask { get; set; }
@@ -128,6 +131,13 @@ else
 
             currentUser = await userService.GetAuthUser(authId!);
             selectedUserOccasion = await userOccasionService.GetUserOccasion(userOccasionId);
+            if (selectedUserOccasion is not null &&
+                selectedUserOccasion.Occasion is not null &&
+                selectedUserOccasion.Occasion.YCoordinate is not null && 
+                selectedUserOccasion.Occasion.XCoordinate is not null )
+            {
+                Address = (await googleApiService.GetAddressOfLatLon(selectedUserOccasion.Occasion.XCoordinate, selectedUserOccasion.Occasion.YCoordinate));
+            }
             imgDataURL = selectedUserOccasion!.Occasion!.PhotoURL;
             isLoading = false;
         }

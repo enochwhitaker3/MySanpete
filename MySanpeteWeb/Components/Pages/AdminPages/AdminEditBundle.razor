@@ -60,7 +60,7 @@ else
                         </div>
                     </div>
                 </div>
-
+                <hr />
                 @if (SelectedBundle is not null && SelectedBundle.Vouchers is not null)
                 {
                     <div class="form-group mt-5">
@@ -137,10 +137,8 @@ else
                     @if (errorMessage == "")
                     {
                         <div class="form-group mt-5">
-                            <button type="submit" class="btn btn-primary" @onclick="() => UpdateBundle(SelectedBundle)">Update</button>
-                        </div>
-                        <div class="form-group mt-5">
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
+                            <button type="submit" style="height: 50px;" class="btn btn-primary" @onclick="() => UpdateBundle(SelectedBundle)">Update</button>
+                            <button type="button" style="height: 50px;" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
                         </div>
                     }
                     else
@@ -149,10 +147,8 @@ else
                             <p>Please fix the error to update the bundle</p>
                             <p>@errorMessage</p>
                             <div class="mt-5">
-                                <button type="submit" class="btn btn-primary" @onclick="() => UpdateBundle(SelectedBundle)">Update</button>
-                            </div>
-                            <div class="mt-5">
-                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
+                                <button type="submit" style="height: 50px;" class="btn btn-primary" @onclick="() => UpdateBundle(SelectedBundle)">Update</button>
+                                <button type="button" style="height: 50px;" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
                             </div>
                         </div>
                     }

@@ -14,12 +14,12 @@ h1 {
 
 .my-footer {
     background-color: white;
-    color: black;
+    color: dimgray;
     box-shadow: 0px -5px 15px #dbd8d3;
 }
 
     .my-footer a {
-        color: black;
+        color: dimgray;
         text-decoration: underline;
     }
 
@@ -33,4 +33,15 @@ h1 {
 
 .codebras:hover * {
     display: inline;
+}
+
+
+@media only screen and (max-width: 578px) {
+    .name {
+        text-align: center;
+    }
+
+    .img-fluid {
+        display: none;
+    }
 }

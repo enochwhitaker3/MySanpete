@@ -17,7 +17,7 @@
 
         <h3>Admin Edit Business</h3>
         <form class="mt-5 ">
-            <div class="form-group mt-5 d-grid justify-content-center">
+            <div class="form-group mt-5">
                 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#voucherPopup">Select Business</button>
             </div>
 
@@ -53,7 +53,7 @@
                     </div>
                 </div>
             </div>
-
+            <hr />
             @if (selectedBusiness is not null)
             {
                 <div class="form-group mt-5">
@@ -90,10 +90,8 @@
                 @if (errorMessage == "")
                 {
                     <div class="form-group mt-5">
-                        <button type="submit" class="btn btn-primary" @onclick="() => UpdateBusiness(selectedBusiness)">Update</button>
-                    </div>
-                    <div class="form-group mt-5">
-                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
+                        <button type="submit" style="height: 50px;" class="btn btn-primary" @onclick="() => UpdateBusiness(selectedBusiness)">Update</button>
+                        <button type="button" style="height: 50px;" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
                     </div>
                 }
                 else
@@ -102,10 +100,8 @@
                         <p>Please fix the error to submit the form</p>
                         <p>@errorMessage</p>
                         <div class="form-group mt-5">
-                            <button type="submit" class="btn btn-primary" @onclick="() => UpdateBusiness(selectedBusiness)">Update</button>
-                        </div>
-                        <div class="form-group mt-5">
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
+                            <button type="submit" style="height: 50px;" class="btn btn-primary" @onclick="() => UpdateBusiness(selectedBusiness)">Update</button>
+                            <button type="button" style="height: 50px;" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
                         </div>
                     </div>
                 }

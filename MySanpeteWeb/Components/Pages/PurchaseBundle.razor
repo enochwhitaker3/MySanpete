@@ -15,7 +15,7 @@
 <div style="padding-bottom: 25px;">
     @if (bundle is not null)
     {
-        <div class="container">
+        <div class="container" style="background-color: white">
             <div class="content rounded-3 shadow">
                 <center>
                     <h2>@bundle.Name</h2>
@@ -23,41 +23,24 @@
                 </center>
                 <hr />
                 <div class="row">
-                    <div class="col-md-6">
-                        <img width="300" src="Images/My_Sanpete.png" class="img-fluid img rounded-circle" />
+                    <div class="col-md-6 d-grid justify-content-center align-items-center">
+                        <img width="500" src="Images/My_Sanpete.png" class="img-fluid img rounded-circle mb-10" />
                     </div>
                     <div class="col-md-6">
                         @foreach (var voucher in bundle!.Vouchers!)
                         {
                             @if (voucher is not null)
                             {
-                                <div class="container">
-                                    <div class="content rounded-3 shadow">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <img width="300" src="@voucher.BusinessLogoURL" class="img-fluid img rounded-circle" style="padding-left: 5px" />
-                                            </div>
-                                            <div class="col-md-6">
-                                                <h2>@voucher.PromoName</h2>
-                                                <strong><p>@voucher.BusinessName</p></strong>
-                                                <p>@voucher.PromoDescription</p>
-                                                <p>$@voucher.RetailPrice</p>
-                                                <p>Good through @voucher.EndDate</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <RazorClassLibrary.Components.VoucherComponent thisVoucher="@voucher" showPrice="false"></RazorClassLibrary.Components.VoucherComponent>
                                 <br />
                             }
                         }
-                        <div class="container" style="padding-bottom: 10px; padding-top: 10px;">
-                            <form method="post" @formname="checkout" @onsubmit="Checkout" style="justify-content: right">
-                                <div class="card" >
-                                    <button type="submit" class="btn btn-primary">
-                                        Checkout with Stripe
-                                    </button>
-                                    <AntiforgeryToken />
-                                </div>
+                        <div class="mb-10 mt-10">
+                            <form method="post" @formname="checkout" @onsubmit="Checkout" class="d-flex justify-content-center align-items-center">
+                                <button type="submit" class="btn btn-primary">
+                                    Checkout with Stripe
+                                </button>
+                                <AntiforgeryToken />
                             </form>
                         </div>
                     </div>
@@ -71,6 +54,23 @@
         <p>View All Vouchers</p>
     }
 </div>
+
+<style>
+    .btn {
+        background-color: black;
+        color: white;
+        border-radius: 30px;
+        border: none;
+        padding: 10px;
+    }
+
+        .btn:hover {
+            background-color: white;
+            color: black;
+            border: black solid 1px;
+        }
+
+</style>
 
 @code {
     [Parameter]

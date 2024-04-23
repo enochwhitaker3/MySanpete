@@ -17,6 +17,12 @@ h1, h2, h3 {
     font-family: Casual, 'Sans Serif Collection';
 }
 
+.published-tag {
+    font-family: Nelphim, sans-serif;
+    color: dimgray;
+    padding-left: 50px;
+}
+
 .banner {
     display: flex;
     background-color: #5EB0BF;
