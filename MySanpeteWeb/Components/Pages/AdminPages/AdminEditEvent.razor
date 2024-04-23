@@ -14,167 +14,176 @@
 
 @attribute [Authorize(Roles = "Admin")]
 
-@if (AllOccasions is not null)
+@if (IsLoading)
 {
-    <div class="form-container" onsubmit="return false" style="margin-bottom: 20px;">
-        <h3>Admin Edit Event</h3>
-        <form class="mt-5">
-            <div class="form-group mt-5">
-                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#occasionPopup">Select Event</button>
-            </div>
+    <RazorClassLibrary.Pages.LoadingComponent></RazorClassLibrary.Pages.LoadingComponent>
+}
+else
+{
 
-            <div class="modal fade" id="occasionPopup" tabindex="-1" role="dialog" aria-labelledby="SelectOccasion" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Add Voucher</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Bundle Name</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var occasion in AllOccasions)
-                                    {
-                                        <tr @onclick="() => SelectOccasion(occasion.Id)" data-dismiss="modal">
-                                            <td>@occasion.Title</td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <hr />
-            @if (SelectedOccasion is not null && SelectedOccasion.Business is not null)
-            {
+    @if (AllOccasions is not null)
+    {
+        <div class="form-container" onsubmit="return false" style="margin-bottom: 20px;">
+            <h3>Admin Edit Event</h3>
+            <form class="mt-5">
                 <div class="form-group mt-5">
-                    <label for="title">Title</label>
-                    <input id="title" class="form-control" @bind="@SelectedOccasion.Title" required />
-                </div>
-                <div class="form-group mt-5">
-                    <label for="businessName">Business Name</label>
-                    <select id="businessName" class="form-control" @bind="@SelectedOccasion.Business.BusinessName">
-                        @if (AllBusinesses is not null)
-                        {
-                            <option value="">Choose a business</option>
-                            @foreach (var business in AllBusinesses)
-                            {
-                                <option value="@business.BusinessName">@business.BusinessName</option>
-                            }
-                        }
-                    </select>
-                </div>
-                <div class="form-group mt-5">
-                    <label for="xCoordinate">X Coordinate</label>
-                    <input id="xCoordinate" class="form-control" @bind="@SelectedOccasion.XCoordinate" required />
-                </div>
-                <div class="form-group mt-5">
-                    <label for="yCoordinate">Y Coordinate</label>
-                    <input id="yCoordinate" class="form-control" @bind="@SelectedOccasion.YCoordinate" required />
-                </div>
-                <div class="form-group mt-5">
-                    <label for="description">Description</label>
-                    <input id="description" class="form-control" @bind="@SelectedOccasion.Description" required />
-                </div>
-                <div class="form-group mt-5">
-                    <label for="startDate">Start Date</label>
-                    <input id="startDate" class="form-control" @bind="@SelectedOccasion.StartDate" required />
-                </div>
-                <div class="form-group mt-5">
-                    <label for="endDate">End Date</label>
-                    <input id="endDate" class="form-control" @bind="@SelectedOccasion.EndDate" required />
-                </div>
-                <div class="form-group mt-5">
-                    <label for="photo">Photo</label>
-                    <InputFile OnChange="SaveFile"></InputFile>
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#occasionPopup">Select Event</button>
                 </div>
 
-                @if (errorMessage == "")
-                {
-                    <div class="form-group mt-5">
-                        <button type="submit" class="btn btn-primary" style="height: 50px;" @onclick="() => UpdateOccasion(SelectedOccasion)">Update</button>
-
-                        <button type="button" class="btn btn-danger" style="height: 50px;" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
-                    </div>
-                }
-                else
-                {
-                    <div class="alert alert-danger">
-                        <p>Please fix the error to update the bundle</p>
-                        <p>@errorMessage</p>
-                        <div class="form-group mt-5">
-                            <button type="submit" style="height: 50px;" class="btn btn-primary" @onclick="() => UpdateOccasion(SelectedOccasion)">Update</button>
-                            <button type="button" style="height: 50px;" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
-                        </div>
-                    </div>
-                }
-
-                <div class="modal fade" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="deleteConfirm" aria-hidden="true">
+                <div class="modal fade" id="occasionPopup" tabindex="-1" role="dialog" aria-labelledby="SelectOccasion" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Deletion Confirmation</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Add Voucher</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
-                                Are you sure you want to delete @SelectedOccasion.Title? You won't be able to get it back!
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Bundle Name</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var occasion in AllOccasions)
+                                        {
+                                            <tr @onclick="() => SelectOccasion(occasion.Id)" data-dismiss="modal">
+                                                <td>@occasion.Title</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-danger" @onclick="() => DeleteOccasion(SelectedOccasion)">Delete</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
+                <hr />
+                @if (SelectedOccasion is not null && SelectedOccasion.Business is not null)
+                {
+                    <div class="form-group mt-5">
+                        <label for="title">Title</label>
+                        <input id="title" class="form-control" @bind="@SelectedOccasion.Title" required />
+                    </div>
+                    <div class="form-group mt-5">
+                        <label for="businessName">Business Name</label>
+                        <select id="businessName" class="form-control" @bind="@SelectedOccasion.Business.BusinessName">
+                            @if (AllBusinesses is not null)
+                            {
+                                <option value="">Choose a business</option>
+                                @foreach (var business in AllBusinesses)
+                                {
+                                    <option value="@business.BusinessName">@business.BusinessName</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group mt-5">
+                        <label for="xCoordinate">X Coordinate</label>
+                        <input id="xCoordinate" class="form-control" @bind="@SelectedOccasion.XCoordinate" required />
+                    </div>
+                    <div class="form-group mt-5">
+                        <label for="yCoordinate">Y Coordinate</label>
+                        <input id="yCoordinate" class="form-control" @bind="@SelectedOccasion.YCoordinate" required />
+                    </div>
+                    <div class="form-group mt-5">
+                        <label for="description">Description</label>
+                        <input id="description" class="form-control" @bind="@SelectedOccasion.Description" required />
+                    </div>
+                    <div class="form-group mt-5">
+                        <label for="startDate">Start Date</label>
+                        <input id="startDate" class="form-control" @bind="@SelectedOccasion.StartDate" required />
+                    </div>
+                    <div class="form-group mt-5">
+                        <label for="endDate">End Date</label>
+                        <input id="endDate" class="form-control" @bind="@SelectedOccasion.EndDate" required />
+                    </div>
+                    <div class="form-group mt-5">
+                        <label for="photo">Photo</label>
+                        <InputFile OnChange="SaveFile"></InputFile>
+                    </div>
 
-            }
-            else
+                    @if (ErrorMessage == "")
+                    {
+                        <div class="form-group mt-5">
+                            <button type="submit" class="btn btn-primary" style="height: 50px;" @onclick="() => UpdateOccasion(SelectedOccasion)">Update</button>
+
+                            <button type="button" class="btn btn-danger" style="height: 50px;" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger">
+                            <p>Please fix the error to update the bundle</p>
+                            <p>@ErrorMessage</p>
+                            <div class="form-group mt-5">
+                                <button type="submit" style="height: 50px;" class="btn btn-primary" @onclick="() => UpdateOccasion(SelectedOccasion)">Update</button>
+                                <button type="button" style="height: 50px;" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="modal fade" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="deleteConfirm" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Deletion Confirmation</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete @SelectedOccasion.Title? You won't be able to get it back!
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-danger" @onclick="() => DeleteOccasion(SelectedOccasion)">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                }
+                else
+                {
+                    <p>Select an event to be able to edit it</p>
+                }
+            </form>
+
+            @if (Success == "true")
             {
-                <p>Select an event to be able to edit it</p>
+                <div class="alert-success alert alert-dismissible fade show" role="alert" @onclick="ChangeSuccess">
+                    <p>You successfully updated the last event!</p>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
             }
-        </form>
-
-        @if (Success == "true")
-        {
-            <div class="alert-success alert alert-dismissible fade show" role="alert" @onclick="ChangeSuccess">
-                <p>You successfully updated the last event!</p>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        }
-    </div>
-}
-else
-{
-    <div>
-        <p>No events to edit, add more events to edit them here</p>
-    </div>
+        </div>
+    }
+    else
+    {
+        <div>
+            <p>No events to edit, add more events to edit them here</p>
+        </div>
+    }
 }
 
 
 @code {
     [Parameter]
     public string? Success { get; set; }
-
-    public string? errorMessage { get; set; } = "";
+    public string? ErrorMessage { get; set; } = "";
 
     public byte[]? ImageBytes { get; set; }
+
+    public bool IsLoading { get; set; } = true;
 
     public List<OccasionDTO>? AllOccasions { get; set; }
     public OccasionDTO? SelectedOccasion { get; set; }
@@ -183,8 +192,10 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        IsLoading = true;
         AllOccasions = (await occasionService.GetAllOcassions()).Where(x => x.Title != "[Removed]").ToList();
         AllBusinesses = await businessService.GetAllBusinesses();
+        IsLoading = false;
     }
 
     public async void SelectOccasion(int selectedOccasionId)
@@ -205,7 +216,7 @@ else
         }
         catch (Exception ex)
         {
-            errorMessage = ex.Message;
+            ErrorMessage = ex.Message;
         }
     }
 
@@ -290,7 +301,7 @@ else
                     throw new Exception("The occasion was returned null and probably didn't update");
                 }
 
-                errorMessage = "";
+                ErrorMessage = "";
                 Success = "true";
                 ReloadPage();
             }
@@ -298,7 +309,7 @@ else
         }
         catch (Exception ex)
         {
-            errorMessage = ex.Message;
+            ErrorMessage = ex.Message;
         }
     }
 
@@ -313,18 +324,18 @@ else
 
             var result = await occasionService.DeleteOccasion(occasion.Id);
 
-            if (result ==  false)
+            if (result == false)
             {
                 throw new Exception("Occasion was unable to be deleted");
             }
 
-            errorMessage = "";
+            ErrorMessage = "";
             Success = "true";
             ReloadPage();
         }
         catch (Exception ex)
         {
-            errorMessage = ex.Message;
+            ErrorMessage = ex.Message;
         }
     }
 

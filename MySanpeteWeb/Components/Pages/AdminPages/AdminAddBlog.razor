@@ -11,99 +11,106 @@
 @inject NavigationManager navManager;
 @attribute [Authorize(Roles = "Admin")]
 
-<center>
-    <div class="form-container" onsubmit="return false" style="margin-bottom: 20px;">
-        <h3>Admin Add Blog</h3>
-        <form class="mt-5">
-            <div class="form-group mt-5">
-                <label for="author">Author</label>
-                <select id="author" class="form-control" @bind="AuthorId" required>
-                    @if (PotentialAuthors is not null)
-                    {
-                        <option value="">Choose the author...</option>
-                        @foreach (var author in PotentialAuthors)
+@if (IsLoading)
+{
+    <RazorClassLibrary.Pages.LoadingComponent></RazorClassLibrary.Pages.LoadingComponent>
+}
+else
+{
+    <center>
+        <div class="form-container" onsubmit="return false" style="margin-bottom: 20px;">
+            <h3>Admin Add Blog</h3>
+            <form class="mt-5">
+                <div class="form-group mt-5">
+                    <label for="author">Author</label>
+                    <select id="author" class="form-control" @bind="AuthorId" required>
+                        @if (PotentialAuthors is not null)
                         {
-                            <option value="@author.Id">@author.Username</option>
+                            <option value="">Choose the author...</option>
+                            @foreach (var author in PotentialAuthors)
+                            {
+                                <option value="@author.Id">@author.Username</option>
+                            }
                         }
-                    }
-                </select>
-            </div>
-            <div class="form-group mt-5">
-                <label for="startDate">Allow Comments?</label><br />
-                <label for="radioTrue">Yes</label>
-                <input type="radio" id="radioTrue" name="myRadio" @onchange="@(e => Commentable = true)" checked="@(Commentable == true)" />
-                <label for="radioFalse">No</label>
-                <input type="radio" id="radioFalse" name="myRadio" @onchange="@(e => Commentable = false)" checked="@(Commentable == false)" />
-            </div>
-            <div class="form-group">
-                <label for="photo">Add a Thumbnail Image</label>
-                <small style="color: darkgray;"><br />Recommended image size of 500 X 750 pixels. If no image is provided, MySanpete Logo will be displayed.<br /></small>
-                <InputFile OnChange="SaveFile"></InputFile>
-            </div>
-
-            <div class="form-group mt-5">
-                <label for="title">Title</label>
-                <input id="title" class="form-control" placeholder="Default Title" @bind="Title" required />
-            </div>
-
-            <BlazoredTextEditor @ref="@QuillHtml">
-                <ToolbarContent>
-                    <select class="ql-header">
-                        <option selected=""></option>
-                        <option value="1"></option>
-                        <option value="2"></option>
-                        <option value="3"></option>
-                        <option value="4"></option>
-                        <option value="5"></option>
                     </select>
-                    <span class="ql-formats">
-                        <button class="ql-bold"></button>
-                        <button class="ql-italic"></button>
-                        <button class="ql-underline"></button>
-                        <button class="ql-strike"></button>
-                    </span>
-                    <span class="ql-formats">
-                        <select class="ql-color"></select>
-                        <select class="ql-background"></select>
-                    </span>
-                    <span class="ql-formats">
-                        <button class="ql-list" value="ordered"></button>
-                        <button class="ql-list" value="bullet"></button>
-                    </span>
-                    <span class="ql-formats">
-                        <button class="ql-link"></button>
-                    </span>
-                </ToolbarContent>
-                <EditorContent>
+                </div>
+                <div class="form-group mt-5">
+                    <label for="startDate">Allow Comments?</label><br />
+                    <label for="radioTrue">Yes</label>
+                    <input type="radio" id="radioTrue" name="myRadio" @onchange="@(e => Commentable = true)" checked="@(Commentable == true)" />
+                    <label for="radioFalse">No</label>
+                    <input type="radio" id="radioFalse" name="myRadio" @onchange="@(e => Commentable = false)" checked="@(Commentable == false)" />
+                </div>
+                <div class="form-group">
+                    <label for="photo">Add a Thumbnail Image</label>
+                    <small style="color: darkgray;"><br />Recommended image size of 500 X 750 pixels. If no image is provided, MySanpete Logo will be displayed.<br /></small>
+                    <InputFile OnChange="SaveFile"></InputFile>
+                </div>
 
-                </EditorContent>
-            </BlazoredTextEditor>
+                <div class="form-group mt-5">
+                    <label for="title">Title</label>
+                    <input id="title" class="form-control" placeholder="Default Title" @bind="Title" required />
+                </div>
 
-            @if (errorMessage == "")
-            {
-                <button class="btn btn-primary mt-5" @onclick="CreateNewBlog">Add Blog</button>
-                <button class="btn btn-secondary mt-5" @onclick="GetHTML">Generate Preview</button>
-            }
-            else
-            {
-                <div class="alert alert-danger">
-                    <p>Please fix the error to submit the form</p>
-                    <p>@errorMessage</p>
+                <BlazoredTextEditor @ref="@QuillHtml">
+                    <ToolbarContent>
+                        <select class="ql-header">
+                            <option selected=""></option>
+                            <option value="1"></option>
+                            <option value="2"></option>
+                            <option value="3"></option>
+                            <option value="4"></option>
+                            <option value="5"></option>
+                        </select>
+                        <span class="ql-formats">
+                            <button class="ql-bold"></button>
+                            <button class="ql-italic"></button>
+                            <button class="ql-underline"></button>
+                            <button class="ql-strike"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <select class="ql-color"></select>
+                            <select class="ql-background"></select>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-list" value="ordered"></button>
+                            <button class="ql-list" value="bullet"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-link"></button>
+                        </span>
+                    </ToolbarContent>
+                    <EditorContent>
+
+                    </EditorContent>
+                </BlazoredTextEditor>
+
+                @if (ErrorMessage == "")
+                {
                     <button class="btn btn-primary mt-5" @onclick="CreateNewBlog">Add Blog</button>
                     <button class="btn btn-secondary mt-5" @onclick="GetHTML">Generate Preview</button>
-                </div>
+                }
+                else
+                {
+                    <div class="alert alert-danger">
+                        <p>Please fix the error to submit the form</p>
+                        <p>@ErrorMessage</p>
+                        <button class="btn btn-primary mt-5" @onclick="CreateNewBlog">Add Blog</button>
+                        <button class="btn btn-secondary mt-5" @onclick="GetHTML">Generate Preview</button>
+                    </div>
+                }
+            </form>
+        </div>
+        <div>
+            @if (QuillHTMLContent is not null)
+            {
+                <h1>@Title</h1>
+                <p></p>
+                @((MarkupString)QuillHTMLContent)
             }
-        </form>
-    </div>
-    <div>
-        @if (QuillHTMLContent is not null)
-        {
-            <h1>@Title</h1>
-            <p></p>
-            @((MarkupString)QuillHTMLContent)
-        }
-    </div>
-</center>
+        </div>
+    </center>
+}
 
 @if (Success == "true")
 {
@@ -118,28 +125,30 @@
 @code {
     [Parameter]
     public string? Success { get; set; }
+    public string? Message { get; set; }
+    public string? QuillHTMLContent { get; set; }
+    public string ErrorMessage = "";
+    public string? Title { get; set; }
 
-    BlazoredTextEditor? QuillHtml;
+    public int AuthorId { get; set; } = 0;
 
-    string? QuillHTMLContent { get; set; }
-    AddBlogRequest? newBlog;
+    public bool Commentable { get; set; } = true;
+    public bool IsLoading { get; set; } = true;
 
-    string errorMessage = "";
+    public byte[]? ImageBytes { get; set; }
 
-    string? Title { get; set; }
-    int AuthorId { get; set; } = 0;
-    bool Commentable { get; set; }
+    public AddBlogRequest? NewBlog { get; set; }
+    public List<UserDTO>? PotentialAuthors { get; set; }
 
-    string? Message { get; set; }
-    byte[]? ImageBytes { get; set; }
-
-    List<UserDTO>? PotentialAuthors { get; set; }
+    public BlazoredTextEditor? QuillHtml;
 
     protected override async Task OnInitializedAsync()
     {
+        IsLoading = true;
         PotentialAuthors = await userService.GetAllUsers();
         PotentialAuthors = PotentialAuthors.Where(x => x.Username != "[Deleted]").ToList();
-        newBlog = new();
+        NewBlog = new();
+        IsLoading = false;
     }
 
     public async Task CreateNewBlog()
@@ -163,15 +172,15 @@
                 throw new Exception("The blog needs some content");
             }
 
-            newBlog!.Title = Title;
-            newBlog.AuthorId = AuthorId;
-            newBlog.Content = QuillHTMLContent!;
-            newBlog.Commentable = Commentable;
-            newBlog.Photo = ImageBytes;
+            NewBlog!.Title = Title;
+            NewBlog.AuthorId = AuthorId;
+            NewBlog.Content = QuillHTMLContent!;
+            NewBlog.Commentable = Commentable;
+            NewBlog.Photo = ImageBytes;
 
-            if (newBlog is not null)
+            if (NewBlog is not null)
             {
-                var returnBlog = await blogService.AddBlog(newBlog);
+                var returnBlog = await blogService.AddBlog(NewBlog);
 
                 Success = "true";
                 ReloadPage();
@@ -185,7 +194,7 @@
         }
         catch (Exception ex)
         {
-            errorMessage = ex.Message;
+            ErrorMessage = ex.Message;
         }
     }
 
