@@ -80,7 +80,11 @@ a:hover {
     height: 60vh;
 }
 
-@media screen and (max-height: 1080px){
+.no-events-found:hover {
+    cursor: default !important;
+}
+
+@media screen and (max-height: 1080px) {
     .foreach {
         height: auto !important;
     }

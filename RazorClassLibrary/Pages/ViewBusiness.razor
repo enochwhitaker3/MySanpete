@@ -37,7 +37,7 @@
                 <div class="@(businessOccasions.Count == 0 ? "not-found" : "foreach") d-grid col-lg justify-content-center">
                     @if (businessOccasions.Count == 0)
                     {
-                        <div class="alert alert-danger event-card shadow w-100">
+                        <div class="alert alert-danger event-card shadow w-100 no-events-found">
                             <p>There are no current scheudled events for this business</p>
                         </div>
                     }
@@ -84,7 +84,7 @@
                 <div class="@(businessVouchers.Count == 0 ? "not-found" : "foreach") d-grid w-100" style="height: 60vh">
                     @if (businessVouchers.Count == 0)
                     {
-                        <div class="alert alert-danger event-card shadow w-100">
+                        <div class="alert alert-danger event-card shadow w-100 no-events-found">
                             <p>There are no current available vouchers for this business</p>
                         </div>
                     }
@@ -94,7 +94,6 @@
                         {
                             <div>
                                 <RazorClassLibrary.Components.VoucherComponent thisVoucher="@v" showPrice="true"></RazorClassLibrary.Components.VoucherComponent>
-
                             </div>
                         }
                     }
