@@ -9,80 +9,89 @@
 @inject NavigationManager navManager
 @attribute [Authorize(Roles = "Admin")]
 
-<div class="form-container" style="margin-bottom: 20px;">
-    <h3>Admin Add Business</h3>
-    <div class="form-group mt-5">
-        <label for="title">Name</label>
-        <input id="title" class="form-control" @bind="Name" required />
-    </div>
-    <div class="form-group mt-5">
-        <label for="title">Address</label>
-        <input id="title" class="form-control" @bind="Address" required />
-    </div>
-    <div class="form-group mt-5">
-        <label for="email">Email</label>
-        <input id="email" class="form-control" type="email" placeholder="email@email.com" @bind="Email" required />
-    </div>
-    <div class="form-group mt-5">
-        <label for="title">Description</label>
-        <input id="website" class="form-control" @bind="Description" required />
-    </div>
-    <div class="form-group mt-5">
-        <label for="title">Phone Number (Format like ***-***-****)</label>
-        <input id="phone" class="form-control" type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="888-888-8888" @bind="PhoneNum" required />
-    </div>
-    <div class="form-group mt-5">
-        <label for="title">Website URL</label>
-        <input id="website" class="form-control" @bind="WebURL" required />
-    </div>
-    <div class="form-group">
-        <label for="photo">Photo</label>
-        <InputFile OnChange="SaveFile"></InputFile>
-    </div>
-    @if (errorMessage == "")
-    {
-        <button type="submit" class="btn btn-primary" @onclick="CreateNewBusiness">Submit</button>
-    }
-    else
-    {
-        <div class="alert alert-danger">
-            <p>Please fix the error to submit the form</p>
-            <p>@errorMessage</p>
+@if (IsLoading)
+{
+    <RazorClassLibrary.Pages.LoadingComponent></RazorClassLibrary.Pages.LoadingComponent>
+}
+else
+{
+    <div class="form-container" style="margin-bottom: 20px;">
+        <h3>Admin Add Business</h3>
+        <div class="form-group mt-5">
+            <label for="title">Name</label>
+            <input id="title" class="form-control" @bind="Name" required />
+        </div>
+        <div class="form-group mt-5">
+            <label for="title">Address</label>
+            <input id="title" class="form-control" @bind="Address" required />
+        </div>
+        <div class="form-group mt-5">
+            <label for="email">Email</label>
+            <input id="email" class="form-control" type="email" placeholder="email@email.com" @bind="Email" required />
+        </div>
+        <div class="form-group mt-5">
+            <label for="title">Description</label>
+            <input id="website" class="form-control" @bind="Description" required />
+        </div>
+        <div class="form-group mt-5">
+            <label for="title">Phone Number (Format like ***-***-****)</label>
+            <input id="phone" class="form-control" type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="888-888-8888" @bind="PhoneNum" required />
+        </div>
+        <div class="form-group mt-5">
+            <label for="title">Website URL</label>
+            <input id="website" class="form-control" @bind="WebURL" required />
+        </div>
+        <div class="form-group">
+            <label for="photo">Photo</label>
+            <InputFile OnChange="SaveFile"></InputFile>
+        </div>
+        @if (ErrorMessage == "")
+        {
             <button type="submit" class="btn btn-primary" @onclick="CreateNewBusiness">Submit</button>
-        </div>
-    }
+        }
+        else
+        {
+            <div class="alert alert-danger">
+                <p>Please fix the error to submit the form</p>
+                <p>@ErrorMessage</p>
+                <button type="submit" class="btn btn-primary" @onclick="CreateNewBusiness">Submit</button>
+            </div>
+        }
 
-    @if (Success == "true")
-    {
-        <div class="alert-success alert alert-dismissible fade show" role="alert" @onclick="ChangeSuccess">
-            <p>You successfully added the new business!</p>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    }
+        @if (Success == "true")
+        {
+            <div class="alert-success alert alert-dismissible fade show" role="alert" @onclick="ChangeSuccess">
+                <p>You successfully added the new business!</p>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        }
 
-</div>
+    </div>
+}
 
 @code {
-    public AddBusinessRequest? newBusiness = new();
-
-    public string errorMessage = "";
     [Parameter]
     public string? Success { get; set; }
-
+    public string ErrorMessage = "";
+    public string? Description { get; set; } = "Default Description";
     public string? Name { get; set; } = "Default Name";
     public string? Address { get; set; } = "Default Address";
     public string? Email { get; set; } = "Default Email";
-    public byte[]? ImageBytes { get; set; }
     public string? PhoneNum { get; set; }
     public string? WebURL { get; set; } = "Default URL";
-    public string? Description { get; set; } = "Default Description";
 
+    public bool IsLoading { get; set; } = true;
+
+    public byte[]? ImageBytes { get; set; }
+
+    public AddBusinessRequest? NewBusiness = new();
 
     protected override void OnInitialized()
     {
-
+        IsLoading = true;
+        IsLoading = false;
     }
 
     public async Task SaveFile(InputFileChangeEventArgs e)
@@ -128,35 +137,35 @@
 
             if (ImageBytes is not null)
             {
-                newBusiness = new AddBusinessRequest()
-                {
-                    Name = Name,
-                    Address = Address,
-                    Email = Email,
-                    PhoneNum = PhoneNum,
-                    WebURL = WebURL,
-                    Logo = ImageBytes
-                };
+                NewBusiness = new AddBusinessRequest()
+                    {
+                        Name = Name,
+                        Address = Address,
+                        Email = Email,
+                        PhoneNum = PhoneNum,
+                        WebURL = WebURL,
+                        Logo = ImageBytes
+                    };
 
             }
             else
             {
-                newBusiness = new AddBusinessRequest()
-                {
-                    Name = Name,
-                    Address = Address,
-                    Email = Email,
-                    PhoneNum = PhoneNum,
-                    WebURL = WebURL,
-                };
+                NewBusiness = new AddBusinessRequest()
+                    {
+                        Name = Name,
+                        Address = Address,
+                        Email = Email,
+                        PhoneNum = PhoneNum,
+                        WebURL = WebURL,
+                    };
 
             }
 
             try
             {
-                if (newBusiness != null)
+                if (NewBusiness != null)
                 {
-                    await businessService.AddBusiness(newBusiness);
+                    await businessService.AddBusiness(NewBusiness);
 
                     Success = "true";
                     ReloadPage();
@@ -169,16 +178,16 @@
             catch (Exception ex)
             {
                 // Handle errors appropriately
-                errorMessage = ex.Message;
+                ErrorMessage = ex.Message;
             }
         }
         catch (Exception ex)
         {
             // Handle errors appropriately
-            errorMessage = ex.Message;
+            ErrorMessage = ex.Message;
         }
 
-        
+
     }
 
     public void ReloadPage()
