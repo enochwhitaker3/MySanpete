@@ -9,8 +9,7 @@
 @inject IVoucherService service
 @inject IBusinessService businessService
 @inject IStripeService stripeService
-
-@attribute [Authorize]
+@inject IUserState userState
 
 <div style="height: 80vh; margin-top: 100px">
     @if (voucher is not null)
@@ -27,12 +26,24 @@
                         <p>@voucher.PromoDescription</p>
                         <p>$@voucher.RetailPrice</p>
                         <p>Good through @voucher.EndDate</p>
-                        <form method="post" @formname="checkout" @onsubmit="Checkout">
-                            <button type="submit" class="btn btn-primary">
-                                Checkout with Stripe
-                            </button>
-                            <AntiforgeryToken />
-                        </form>
+                        <AuthorizeView>
+                            <Authorized>
+                                <form method="post" @formname="checkout" @onsubmit="Checkout" class="d-flex justify-content-center align-items-center">
+                                    <button type="submit" class="btn btn-primary">
+                                        Checkout with Stripe
+                                    </button>
+                                    <AntiforgeryToken />
+                                </form>
+                            </Authorized>
+                            <NotAuthorized>
+                                <form method="post" @formname="checkout" class="d-flex justify-content-center align-items-center">
+                                    <button type="submit" class="btn btn-primary" @onclick="userState.Login">
+                                        Login To Checkout
+                                    </button>
+                                    <AntiforgeryToken />
+                                </form>
+                            </NotAuthorized>
+                        </AuthorizeView>
                     </div>
                 </div>
             </div>
@@ -69,19 +80,22 @@
         }
         var authState = await AuthStateTask;
 
-        try
+        if(authState!.User!.Identity!.IsAuthenticated)
         {
-            authId = authState.User.Claims.FirstOrDefault(x => x.Type == "authId")!.Value;
+            try
+            {
+                authId = authState.User.Claims.FirstOrDefault(x => x.Type == "authId")!.Value;
 
-            voucher = await service.GetVoucher(voucherId) ?? new VoucherDTO();
-            var businesses = await businessService.GetAllBusinesses();
-            business = businesses.Where(x => x.BusinessName == voucher.BusinessName).FirstOrDefault();
-            imgDataURL = business!.LogoURL!;
+            }
+            catch (Exception)
+            {
+                navManager.NavigateTo("/404", true);
+            }
         }
-        catch (Exception)
-        {
-            navManager.NavigateTo("/404", true);
-        }
+        voucher = await service.GetVoucher(voucherId) ?? new VoucherDTO();
+        var businesses = await businessService.GetAllBusinesses();
+        business = businesses.Where(x => x.BusinessName == voucher.BusinessName).FirstOrDefault();
+        imgDataURL = business!.LogoURL!;
 
     }
 
