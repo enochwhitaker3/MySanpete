@@ -12,123 +12,132 @@
 @inject NavigationManager navManager
 @attribute [Authorize(Roles = "Admin")]
 
-
-<div class="form-container" style="margin-bottom: 20px;">
-    <h3>Admin Add Voucher</h3>
-    <form class="mt-5" onsubmit="return false">
-        <div class="form-group mt-5">
-            <label for="title">Business Name</label>
-            <select id="title" class="form-control" @bind="BusinessName" required>
-                @if (AllBusinesses is not null)
-                {
-                    <option value="">Choose a business</option>
-                    @foreach (var business in AllBusinesses)
+@if (IsLoading)
+{
+    <RazorClassLibrary.Pages.LoadingComponent></RazorClassLibrary.Pages.LoadingComponent>
+}
+else
+{
+    <div class="form-container" style="margin-bottom: 20px;">
+        <h3>Admin Add Voucher</h3>
+        <form class="mt-5" onsubmit="return false">
+            <div class="form-group mt-5">
+                <label for="title">Business Name</label>
+                <select id="title" class="form-control" @bind="BusinessName" required>
+                    @if (AllBusinesses is not null)
                     {
-                        <option value="@business.BusinessName">@business.BusinessName</option>
+                        <option value="">Choose a business</option>
+                        @foreach (var business in AllBusinesses)
+                        {
+                            <option value="@business.BusinessName">@business.BusinessName</option>
+                        }
                     }
-                }
-            </select>
-        </div>
-        <div class="form-group mt-5">
-            <label for="startDate">Start Date</label>
-            <input id="startDate" type="datetime-local" class="form-control" @bind="StartDate" required />
-        </div>
-        <div class="form-group mt-5">
-            <label for="endDate">End Date</label>
-            <input id="endDate" type="datetime-local" class="form-control" @bind="EndDate" required />
-        </div>
-        <div class="form-group mt-5">
-            <label for="title">Promo Code</label>
-            <input id="title" class="form-control" @bind="PromoCode" required />
-        </div>
-        <div class="form-group mt-5">
-            <label for="title">Promo Name</label>
-            <input id="title" class="form-control" @bind="PromoName" required />
-        </div>
-        <div class="form-group mt-5">
-            <label for="title">Promo Description</label>
-            <input id="title" class="form-control" @bind="PromoDescription" required />
-        </div>
-        <div class="form-group mt-5">
-            <label for="title">Promo Stock (Enter 0 for no limit)</label>
-            <input id="title" class="form-control" @bind="PromoStock" required />
-        </div>
-        <div class="form-group mt-5">
-            <label for="title">Retail Price (Enter $0.00 if you want it to be a coupon)</label>
-            <input id="title" class="form-control" @bind="RetailPrice" required />
-        </div>
-        <div class="form-group mt-5">
-            <label for="title">Total Reclaimable (Enter 0 for no limit)</label>
-            <span>$</span><input id="title" class="form-control" @bind="TotalReclaimable" required />
-        </div>
-        <div class="form-group mt-5">
-            <label for="isActive">Is Active? <br /><small>Edit this if you don't this to show up as purchasable.</small></label><br />
-            <input type="radio" id="radioTrue" name="myRadio" @onchange="@(e => IsActive = true)" checked="@(IsActive == true)" />
-            <label for="radioTrue">Active</label>
-            <br />
-            <input type="radio" id="radioFalse" name="myRadio" @onchange="@(e => IsActive = false)" checked="@(IsActive == false)" />
-            <label for="radioFalse">Not Active</label>
-        </div>
-        <div class="form-group mt-5">
-            <label for="isBundle">Is part of Bundle? <br /><small>If this voucher is part of a bundle, you cannot purchase it individually.</small></label><br />
-            <input type="radio" id="radioTrue" name="myRadio1" @onchange="@(e => IsBundle = true)" checked="@(IsBundle == true)" />
-            <label for="radioTrue">Yes</label><br />
-            <input type="radio" id="radioFalse" name="myRadio1" @onchange="@(e => IsBundle = false)" checked="@(IsBundle == false)" />
-            <label for="radioFalse">No</label>
-        </div>
-        @if (errorMessage == "")
-        {
-            <button type="submit" class="btn btn-primary" @onclick="CreateNewVoucher">Submit</button>
-        }
-        else
-        {
-            <div class="alert alert-danger">
-                <p>Please fix the error to submit the form</p>
-                <p>@errorMessage</p>
+                </select>
+            </div>
+            <div class="form-group mt-5">
+                <label for="startDate">Start Date</label>
+                <input id="startDate" type="datetime-local" class="form-control" @bind="StartDate" required />
+            </div>
+            <div class="form-group mt-5">
+                <label for="endDate">End Date</label>
+                <input id="endDate" type="datetime-local" class="form-control" @bind="EndDate" required />
+            </div>
+            <div class="form-group mt-5">
+                <label for="title">Promo Code</label>
+                <input id="title" class="form-control" @bind="PromoCode" required />
+            </div>
+            <div class="form-group mt-5">
+                <label for="title">Promo Name</label>
+                <input id="title" class="form-control" @bind="PromoName" required />
+            </div>
+            <div class="form-group mt-5">
+                <label for="title">Promo Description</label>
+                <input id="title" class="form-control" @bind="PromoDescription" required />
+            </div>
+            <div class="form-group mt-5">
+                <label for="title">Promo Stock (Enter 0 for no limit)</label>
+                <input id="title" class="form-control" @bind="PromoStock" required />
+            </div>
+            <div class="form-group mt-5">
+                <label for="title">Retail Price (Enter $0.00 if you want it to be a coupon)</label>
+                <input id="title" class="form-control" @bind="RetailPrice" required />
+            </div>
+            <div class="form-group mt-5">
+                <label for="title">Total Reclaimable (Enter 0 for no limit)</label>
+                <span>$</span><input id="title" class="form-control" @bind="TotalReclaimable" required />
+            </div>
+            <div class="form-group mt-5">
+                <label for="isActive">Is Active? <br /><small>Edit this if you don't this to show up as purchasable.</small></label><br />
+                <input type="radio" id="radioTrue" name="myRadio" @onchange="@(e => IsActive = true)" checked="@(IsActive == true)" />
+                <label for="radioTrue">Active</label>
+                <br />
+                <input type="radio" id="radioFalse" name="myRadio" @onchange="@(e => IsActive = false)" checked="@(IsActive == false)" />
+                <label for="radioFalse">Not Active</label>
+            </div>
+            <div class="form-group mt-5">
+                <label for="isBundle">Is part of Bundle? <br /><small>If this voucher is part of a bundle, you cannot purchase it individually.</small></label><br />
+                <input type="radio" id="radioTrue" name="myRadio1" @onchange="@(e => IsBundle = true)" checked="@(IsBundle == true)" />
+                <label for="radioTrue">Yes</label><br />
+                <input type="radio" id="radioFalse" name="myRadio1" @onchange="@(e => IsBundle = false)" checked="@(IsBundle == false)" />
+                <label for="radioFalse">No</label>
+            </div>
+            @if (ErrorMessage == "")
+            {
                 <button type="submit" class="btn btn-primary" @onclick="CreateNewVoucher">Submit</button>
+            }
+            else
+            {
+                <div class="alert alert-danger">
+                    <p>Please fix the error to submit the form</p>
+                    <p>@ErrorMessage</p>
+                    <button type="submit" class="btn btn-primary" @onclick="CreateNewVoucher">Submit</button>
+                </div>
+            }
+        </form>
+
+        @if (Success == "true")
+        {
+            <div class="alert-success alert alert-dismissible fade show" role="alert" @onclick="ChangeSuccess">
+                <p>You successfully added the last voucher!</p>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
         }
-    </form>
-
-    @if (Success == "true")
-    {
-        <div class="alert-success alert alert-dismissible fade show" role="alert" @onclick="ChangeSuccess">
-            <p>You successfully added the last voucher!</p>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    }
-
-</div>
+    </div>
+}
 
 @code {
-    public AddVoucherRequest? newVoucher;
-    public BusinessDTO selectedBusiness { get; set; } = new();
-
-    public string errorMessage = "";
     [Parameter]
     public string? Success { get; set; }
-
-    public string BusinessName { get; set; } = "";
-    public DateTime StartDate { get; set; } = DateTime.Today.ToUniversalTime();
-    public DateTime EndDate { get; set; } = DateTime.Today.ToUniversalTime();
     public string? PromoCode { get; set; } = "Default Promo";
     public string? PromoDescription { get; set; } = "Default Description";
     public string? PromoName { get; set; } = "Default Promo Name";
-    public int PromoStock { get; set; }
-    public Decimal RetailPrice { get; set; }
+    public string ErrorMessage = "";
+    public string BusinessName { get; set; } = "";
+
     public int TotalReclaimable { get; set; }
+    public int PromoStock { get; set; }
+
+    public Decimal RetailPrice { get; set; }
+
     public bool IsActive { get; set; } = true;
     public bool IsBundle { get; set; } = false;
+    public bool IsLoading { get; set; } = true;
 
+    public DateTime StartDate { get; set; } = DateTime.Today.ToUniversalTime();
+    public DateTime EndDate { get; set; } = DateTime.Today.ToUniversalTime();
+
+    public AddVoucherRequest? NewVoucher;
+    public BusinessDTO SelectedBusiness { get; set; } = new();
     public IEnumerable<BusinessDTO>? AllBusinesses { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        newVoucher = new();
-
+        IsLoading = true;
+        NewVoucher = new();
         AllBusinesses = await businessService.GetAllBusinesses();
+        IsLoading = false;
     }
 
     public async Task CreateNewVoucher()
@@ -175,16 +184,16 @@
                 throw new Exception("You need to make the end date further in the future than the start date");
             }
 
-            selectedBusiness = AllBusinesses!.Where(x => x.BusinessName == BusinessName).FirstOrDefault()!;
+            SelectedBusiness = AllBusinesses!.Where(x => x.BusinessName == BusinessName).FirstOrDefault()!;
 
-            if (selectedBusiness is null)
+            if (SelectedBusiness is null)
             {
                 throw new Exception("You need to select a business for this voucher");
             }
 
             AddVoucherRequest request = new()
                 {
-                    BusinessId = selectedBusiness.Id,
+                    BusinessId = SelectedBusiness.Id,
                     EndDate = EndDate,
                     StartDate = StartDate,
                     PromoCode = PromoCode,
@@ -193,15 +202,15 @@
                     PromoStock = PromoStock,
                     RetailPrice = RetailPrice,
                     TotalReclaimable = TotalReclaimable,
-                    IsActive = IsActive, 
+                    IsActive = IsActive,
                     IsBundle = IsBundle
                 };
 
             string[] returnedStripeId = stripeService.AddProductToStripe(request);
 
-            newVoucher = new AddVoucherRequest()
+            NewVoucher = new AddVoucherRequest()
                 {
-                    BusinessId = selectedBusiness.Id,
+                    BusinessId = SelectedBusiness.Id,
                     StartDate = StartDate.ToUniversalTime(),
                     EndDate = EndDate.ToUniversalTime(),
                     PromoCode = PromoCode,
@@ -218,14 +227,14 @@
 
             try
             {
-                if (newVoucher is not null)
+                if (NewVoucher is not null)
                 {
 
-                    await voucherService.AddVoucher(newVoucher);
+                    await voucherService.AddVoucher(NewVoucher);
 
                     // Clear the form
-                    newVoucher = new AddVoucherRequest();
-                    errorMessage = "";
+                    NewVoucher = new AddVoucherRequest();
+                    ErrorMessage = "";
 
                     Success = "true";
                     ReloadPage();
@@ -238,12 +247,12 @@
             catch (Exception ex)
             {
                 // Handle errors appropriately
-                errorMessage = ex.Message;
+                ErrorMessage = ex.Message;
             }
         }
         catch (Exception ex)
         {
-            errorMessage = ex.Message;
+            ErrorMessage = ex.Message;
         }
     }
 

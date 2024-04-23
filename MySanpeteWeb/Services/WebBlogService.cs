@@ -79,11 +79,13 @@ public class WebBlogService : IBlogService
         var buc = await context.Blogs
             .Include(x => x.BlogComments)
                 .ThenInclude(x => x.Comment)
+                    .ThenInclude(x => x.User)
             .Include(x => x.BlogReactions)
                 .ThenInclude(x => x.Reaction)
             .Include(x => x.Author)
             .Where(x => x.Id == updateBlog.Id)
             .FirstOrDefaultAsync();
+
         if (buc != null)
         {
             buc.Title = updateBlog.Title ?? "Default Title";
