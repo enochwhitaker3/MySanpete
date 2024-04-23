@@ -28,6 +28,183 @@
   "liveNow": false,
   "panels": [
     {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 21,
+      "panels": [],
+      "title": "Uptime",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "dark-red",
+                  "index": 1,
+                  "text": "OFFLINE"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 0,
+                  "text": "ONLINE"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 11,
+        "x": 0,
+        "y": 1
+      },
+      "id": 17,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.4.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "builder",
+          "expr": "up{instance=\"http://mysanpeteweb:8080/healthcheck\"}",
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Uptime Status",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "dark-red",
+                "value": 0
+              },
+              {
+                "color": "semi-dark-orange",
+                "value": 25
+              },
+              {
+                "color": "yellow",
+                "value": 50
+              },
+              {
+                "color": "green",
+                "value": 75
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 13,
+        "x": 11,
+        "y": 1
+      },
+      "id": 19,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "9.4.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "100 * avg_over_time(up{instance=\"http://mysanpeteweb:8080/healthcheck\"}[1w])",
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Percentage of Uptime",
+      "type": "gauge"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 9
+      },
+      "id": 23,
+      "panels": [],
+      "title": "Errors",
+      "type": "row"
+    },
+    {
       "datasource": {
         "type": "loki",
         "uid": "loki"
@@ -37,7 +214,7 @@
         "h": 9,
         "w": 11,
         "x": 0,
-        "y": 0
+        "y": 10
       },
       "id": 7,
       "options": {
@@ -97,7 +274,7 @@
         "h": 9,
         "w": 13,
         "x": 11,
-        "y": 0
+        "y": 10
       },
       "id": 15,
       "options": {
@@ -134,7 +311,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 9
+        "y": 19
       },
       "id": 9,
       "panels": [],
@@ -171,7 +348,7 @@
         "h": 11,
         "w": 11,
         "x": 0,
-        "y": 10
+        "y": 20
       },
       "id": 4,
       "options": {
@@ -285,7 +462,7 @@
         "h": 11,
         "w": 13,
         "x": 11,
-        "y": 10
+        "y": 20
       },
       "id": 6,
       "options": {
@@ -314,12 +491,12 @@
       "type": "histogram"
     },
     {
-      "collapsed": true,
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 21
+        "y": 31
       },
       "id": 11,
       "panels": [],
@@ -358,7 +535,7 @@
         "h": 11,
         "w": 11,
         "x": 0,
-        "y": 22
+        "y": 32
       },
       "id": 13,
       "options": {
@@ -424,7 +601,7 @@
         "h": 11,
         "w": 13,
         "x": 11,
-        "y": 22
+        "y": 32
       },
       "id": 2,
       "options": {
