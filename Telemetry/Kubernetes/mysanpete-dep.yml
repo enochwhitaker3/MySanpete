@@ -27,3 +27,15 @@ spec:
           value: user id = postgres; password=postgres; server=my-sanpete-database-service; database= postgres; port= 5432
         - name: WebsiteUrl
           value: http://${GITHUB_RUN_ID}.mysanpetekube.duckdns.org
+        livenessProbe: 
+          httpGet:
+            path: /healthcheck
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        readinessProbe: 
+          httpGet:
+            path: /healthcheck
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
