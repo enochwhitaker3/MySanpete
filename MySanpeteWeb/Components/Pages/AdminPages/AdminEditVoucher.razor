@@ -182,6 +182,7 @@
     {
         SelectedVoucher = AllVouchers.Where(x => x.Id == id).FirstOrDefault()!;
 
+        SelectedVoucherId = id;
         StartDate = SelectedVoucher!.StartDate;
         EndDate = SelectedVoucher.EndDate;
         PromoCode = SelectedVoucher.PromoCode;
