@@ -14,6 +14,7 @@ public static class MySanpeteMetrics
     public static Counter<int> BlogPageHitCount { get; set; } = Meter.CreateCounter<int>("blog_page_hit_count");
     public static Counter<int> PodcastPageHitCount { get; set; } = Meter.CreateCounter<int>("podcast_page_hit_count");
     public static Counter<int> BusinessPageHitCount { get; set; } = Meter.CreateCounter<int>("business_page_hit_count");
+    public static ObservableCounter<long> TotalStorageTaken { get; set; } = Meter.CreateObservableCounter<long>("total_storage_taken", () => GC.GetTotalMemory(true));
 
     public static UpDownCounter<int> UsersOnHomePageCount { get; set; } = Meter.CreateUpDownCounter<int>("users_on_home_page_count");
 

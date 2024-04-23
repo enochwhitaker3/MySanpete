@@ -56,6 +56,7 @@
                 </div>
             </div>
 
+            <hr />
             @if (SelectedOccasion is not null && SelectedOccasion.Business is not null)
             {
                 <div class="form-group mt-5">
@@ -103,10 +104,9 @@
                 @if (errorMessage == "")
                 {
                     <div class="form-group mt-5">
-                        <button type="submit" class="btn btn-primary" @onclick="() => UpdateOccasion(SelectedOccasion)">Update</button>
-                    </div>
-                    <div class="form-group mt-5">
-                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
+                        <button type="submit" class="btn btn-primary" style="height: 50px;" @onclick="() => UpdateOccasion(SelectedOccasion)">Update</button>
+
+                        <button type="button" class="btn btn-danger" style="height: 50px;" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
                     </div>
                 }
                 else
@@ -115,10 +115,8 @@
                         <p>Please fix the error to update the bundle</p>
                         <p>@errorMessage</p>
                         <div class="form-group mt-5">
-                            <button type="submit" class="btn btn-primary" @onclick="() => UpdateOccasion(SelectedOccasion)">Update</button>
-                        </div>
-                        <div class="form-group mt-5">
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
+                            <button type="submit" style="height: 50px;" class="btn btn-primary" @onclick="() => UpdateOccasion(SelectedOccasion)">Update</button>
+                            <button type="button" style="height: 50px;" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
                         </div>
                     </div>
                 }

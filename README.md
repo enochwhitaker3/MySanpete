@@ -38,7 +38,7 @@
     <tr>
       <td>application usage (concurent users, most popular pages)</td>
       <td>04/22/2024</td>
-      <td></td>
+      <td>X</td>
     </tr>
     <tr>
       <td>error count and error messages</td>

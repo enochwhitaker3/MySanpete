@@ -20,22 +20,26 @@
 
             </h2>
             <!-- Button trigger modal -->
-            <div class="button mt-15" @onclick="() => GoToDetailsPage(thisVoucher.Id)">
-                <div class="button-wrapper">
-                    <div class="text">$@thisVoucher.RetailPrice</div>
-                    <span class="icon">
-                        View
-                    </span>
+            @if (showPrice)
+            {
+                <div class="button mt-15" @onclick="() => GoToDetailsPage(thisVoucher.Id)">
+                    <div class="button-wrapper">
+                        <div class="text">$@thisVoucher.RetailPrice</div>
+                        <span class="icon">
+                            View
+                        </span>
+                    </div>
                 </div>
-            </div>
+            }
         </div>
-
     </div>
 </div>
 
-@code{
+@code {
     [Parameter]
     public VoucherDTO thisVoucher { get; set; } = new();
+    [Parameter]
+    public bool showPrice { get; set; } = new();
 
     public void GoToDetailsPage(int id)
     {
