@@ -17,7 +17,7 @@
     {
         @if (allUserVouchers!.Count == 0)
         {
-            <div class="mx-auto w-75">
+            <div class="mx-auto w-75" style="margin-bottom: 20px;">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">No vouchers to show</h5>
@@ -105,7 +105,17 @@
         }
 
         currentUser = await userService.GetAuthUser(authId!);
-        allUserVouchers = await userVoucherService.GetAllUserVouchers();
+        if (currentUser is not null)
+        {
+            allUserVouchers = await userVoucherService.GetAllByUser(currentUser.Id);
+
+        }
+
+        if (allUserVouchers is null)
+        {
+            throw new Exception("No vouchers found");
+        }
+
         var freebies = allUserVouchers
                 .Where(x => x.Charge_Id == "Free Voucher Claimed")
                 .ToList();
