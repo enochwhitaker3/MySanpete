@@ -56,13 +56,13 @@ else
                                         <div class="comment d-flex mb-5">
                                             <div class="flex-shrink-0">
                                                 <div class="avatar avatar-sm rounded-circle">
-                                                    <img class="avatar-img" src="@c.UserPhotoURL" alt="">
+                                                    <img class="avatar-img" src="@c.UserPhotoURL" alt="@c.UserName's Photos">
                                                 </div>
                                             </div>
                                             <div class="flex-grow-1 ms-2 ms-sm-3">
 
                                                 <div class="comment-meta d-flex align-items-baseline">
-                                                    <h6 class="me-2">@c.UserName</h6>
+                                                        <h6 class="me-2">@c.UserName</h6><span class="text-muted">@c.PostedDate!.Value.ToString("MMMM") @c.PostedDate!.Value.Day</span>
                                                 </div>
                                                 <div class="comment-body">
                                                     @c.Content
@@ -73,6 +73,7 @@ else
                                                         <a data-toggle="collapse" href="@("#collapseExample" + c.Id)" role="button" aria-expanded="false" aria-controls="@("collapseExample" + c.Id)" class="reply-btn">
                                                             Reply
                                                         </a>
+                                                            
                                                     }
                                                     <!-- Reply box that slides out -->
                                                     <div class="collapse mt-2" id="@("collapseExample" + c.Id)">
@@ -104,13 +105,12 @@ else
                                                             <div class="reply d-flex">
                                                                 <div class="flex-shrink-0">
                                                                     <div class="avatar avatar-sm rounded-circle">
-                                                                        <img class="avatar-img" src="@r.UserPhotoURL" alt="">
+                                                                        <img class="avatar-img" src="@r.UserPhotoURL" alt="@r.UserName's Profile Image">
                                                                     </div>
                                                                 </div>
                                                                 <div class="flex-grow-1 ms-2 ms-sm-3">
                                                                     <div class="reply-meta d-flex align-items-baseline">
-                                                                        <h6 class="mb-0 me-2">@r.UserName</h6>
-                                                                        <span class="text-muted">2d</span>
+                                                                            <h6 class="mb-0 me-2">@r.UserName</h6><span class="text-muted">@r.PostedDate!.Value.ToString("MMMM") @r.PostedDate!.Value.Day</span>
                                                                     </div>
                                                                     <div class="reply-body">
                                                                         @r.Content

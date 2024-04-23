@@ -15,7 +15,9 @@ public interface IStripeService
     public Task BundleCheckout(PurchaseBundleRequest request);
     public string[] AddProductToStripe(AddVoucherRequest request);
 
-    public string UpdateStripeProduct(VoucherDTO newVoucher);
+    public string UpdateStripeVoucher(VoucherDTO newVoucher);
+
+    public string UpdateStripeBundle(BundleDTO newBundle);
     public string[] AddBundleToStripe(AddBundleRequest bundle);
     public Task<string> CreateRefund(UserVoucherDTO userVoucher);
     public bool ValidateStripeId(string id);

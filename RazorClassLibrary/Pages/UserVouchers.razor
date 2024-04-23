@@ -7,7 +7,7 @@
 
 @attribute [Authorize]
 
-<div>
+<div class="mt-10 mb-10">
     <center class="my-6"><h3><strong>My Vouchers</strong></h3></center>
     @if (isLoading)
     {
@@ -28,7 +28,7 @@
             </div>
         }
 
-        <div class="mx-auto w-75">
+        <div class="mx-auto mb-10 w-75">
             @foreach (var userVoucher in allUserVouchers.OrderBy(x => x.Is_Used)!)
             {
                 @if (userVoucher.Is_Used == false)
