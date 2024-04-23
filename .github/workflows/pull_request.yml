@@ -23,7 +23,7 @@ jobs:
           docker build -t 144.17.92.12:5000/codebras/mysanpete:${RUN_SALT} .
           docker push 144.17.92.12:5000/codebras/mysanpete:${RUN_SALT}
 
-          cd ../Telemetry
+          cd ./Telemetry
 
           for file in ./kube-pr/*; do
             cat $file | envsubst | kubectl apply -f -
