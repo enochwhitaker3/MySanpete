@@ -36,7 +36,12 @@ namespace MySanpeteTests.Dummies
             throw new NotImplementedException();
         }
 
-        public string UpdateStripeProduct(VoucherDTO newVoucher)
+        public string UpdateStripeBundle(BundleDTO newBundle)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string UpdateStripeVoucher(VoucherDTO newVoucher)
         {
             throw new NotImplementedException();
         }
