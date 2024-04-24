@@ -21,7 +21,7 @@
 /*align-items: center;*/ /* Vertically center */
 
 h2 {
-    font-family: Nelphim !important;
+    font-family: Nelphim !important, sans-serif;
 }
 
 .main-section {
@@ -49,7 +49,7 @@ h2 {
 
 .title {
     font-size: 60px;
-    font-family: Casual;
+    font-family: Casual, sans-serif;
 }
 
 .card {
@@ -58,13 +58,13 @@ h2 {
 }
 
 .card-title {
-    font-family: 'Tajawal', Arial !important;
+    font-family: 'Tajawal', Arial !important, sans-serif;
 }
 
 
 .undertitle {
     font-size: large;
-    font-family: 'Segoe UI';
+    font-family: 'Segoe UI', sans-serif;
     padding-left: 65px;
 }
 
@@ -117,7 +117,7 @@ h2 {
     position: relative;
     text-align: center;
     border-radius: 0.45em;
-    font-family: "Arial";
+    font-family: "Arial", sans-serif;
     transition: background 0.3s;
     margin-left: auto;
 }

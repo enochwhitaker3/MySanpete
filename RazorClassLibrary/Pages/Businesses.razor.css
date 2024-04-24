@@ -26,7 +26,7 @@ body, html {
 .section-title {
     /*    margin-top: 50px;*/
     font-size: 70px;
-    font-family: Tenor;
+    font-family: Tenor, sans-serif;
     text-align: center;
 }
 
@@ -58,7 +58,7 @@ body, html {
 
 .card-body {
     text-align: center;
-    font-family: Tenor;
+    font-family: Tenor, sans-serif;
 }
     .card-body p {
         margin-top: 15px;
