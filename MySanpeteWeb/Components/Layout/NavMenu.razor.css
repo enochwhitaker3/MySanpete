@@ -45,17 +45,17 @@
 .nav-item {
     font-family: Casual;
     font-size: 1.25rem;
-    color: #3f4a49 !important;
+    color: #3f4a49;
 }
 
 
 .navbar-dark .navbar-nav .nav-link {
-    color: #3f4a49 !important;
-    cursor: pointer !important;
+    color: #3f4a49;
+    cursor: pointer;
 }
 
 .navbar-dark .navbar-toggler {
-    color: #3f4a49 !important;
+    color: #3f4a49;
     border-color: transparent;
 }
 
@@ -70,15 +70,15 @@
 }
 
 .nav-link {
-    color: #fc039d !important;
+    color: #fc039d;
 }
 
 .dropdown-item {
-    color: #3f4a49 !important;
+    color: #3f4a49;
 }
 
 .dropdown-item:hover {
-    color: black !important;
+    color: black;
 }
 
 .dropdown {
@@ -89,3 +89,8 @@
     background-color: black !important;
 }
 */
+
+.nav-link .active {
+    color: blue !important;
+}
+

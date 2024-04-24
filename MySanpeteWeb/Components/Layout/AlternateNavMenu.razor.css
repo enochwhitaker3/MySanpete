@@ -73,3 +73,7 @@
     background-color: black !important;
 }
 */
+
+.active {
+    color: blue !important;
+}
