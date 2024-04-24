@@ -45,7 +45,7 @@ a:hover {
 
 .title {
     font-size: 60px;
-    font-family: Casual;
+    font-family: Casual, sans-serif;
 }
 
 .subtitle {
@@ -63,12 +63,12 @@ a:hover {
 }
 
     .about-us h2 {
-        font-family: Inter-Bold;
+        font-family: Inter-Bold, sans-serif;
         font-size: 2.25rem;
     }
 
     .about-us h3 {
-        font-family: Inter;
+        font-family: Inter, sans-serif;
         font-size: 1rem;
         width: 75%;
     }
@@ -78,12 +78,12 @@ a:hover {
 }
 
     .contact-us h2 {
-        font-family: Inter-Bold;
+        font-family: Inter-Bold, sans-serif;
         font-size: 2.25rem;
     }
 
     .contact-us p {
-        font-family: Inter;
+        font-family: Inter, sans-serif;
         font-size: 1rem;
     }
 
@@ -149,7 +149,7 @@ a:hover {
     position: relative;
     text-align: center;
     border-radius: 0.45em;
-    font-family: "Arial";
+    font-family: "Arial", sans-serif;
     transition: background 0.3s;
     margin-left: auto;
 }
@@ -230,7 +230,7 @@ a:hover {
 }
 
     .event-date h2 {
-        font-family: Inter-Bold;
+        font-family: Inter-Bold, sans-serif;
         font-size: 3vw;
         width: fit-content;
         transform-origin: bottom center;
@@ -242,11 +242,11 @@ a:hover {
 }
 
     .event-details h2 {
-        font-family: Inter-Bold;
+        font-family: Inter-Bold, sans-serif;
         font-size: 2.5vw
     }
     .event-details h4 {
-        font-family: Inter;
+        font-family: Inter, sans-serif;
         font-size: 1rem;
     }
 

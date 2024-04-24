@@ -38,7 +38,7 @@ else
                         <h2>@selectedUserOccasion!.Occasion!.Title</h2>
                         <p>Put on by: @selectedUserOccasion!.Occasion!.Business!.BusinessName</p>
                         <p>@selectedUserOccasion.Occasion.Description</p>
-                        <p>Starting: @selectedUserOccasion.Occasion.StartDate Ending: @selectedUserOccasion.Occasion.EndDate</p>
+                        <p>Starting: @selectedUserOccasion.Occasion.StartDate.ToString("MMMM dd yyyy hh:mm tt") Ending: @selectedUserOccasion.Occasion.EndDate.ToString("MMMM dd yyyy hh:mm tt")</p>
                         <p>Located at: @Address</p>
 
                         @if (errorMessage == "")

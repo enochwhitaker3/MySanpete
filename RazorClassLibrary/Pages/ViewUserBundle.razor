@@ -55,7 +55,7 @@
                                 <p>CurrentVoucher.Voucher.BusinessName</p>
                                 @if (CurrentVoucher.Voucher.EndDate is not null)
                                 {
-                                    <p>Good Through CurrentVoucher.StartDate.ToString("hh:mm tt") to CurrentVoucher.EndDate.ToString("hh:mm tt")</p>
+                                    <p>Good Through @CurrentVoucher.Voucher.StartDate.ToString("MMMM dd yyyy hh:mm tt") to @CurrentVoucher.Voucher.EndDate?.ToString("MMMM dd yyyy hh:mm tt")</p>
                                 }
 
                             </div>

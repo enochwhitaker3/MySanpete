@@ -38,13 +38,13 @@ body {
 }
 
 .navbar-brand {
-    font-family: Casual;
+    font-family: Casual, sans-serif;
     font-size: 1.5rem;
 }
 
 
 .nav-item {
-    font-family: Casual;
+    font-family: Casual, sans-serif;
     font-size: 1.25rem;
     color: white !important;
 }

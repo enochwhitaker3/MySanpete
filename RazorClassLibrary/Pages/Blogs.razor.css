@@ -28,7 +28,7 @@ body, html {
 
 .section-title {
     font-size: 3rem;
-    font-family: Tenor;
+    font-family: Tenor, sans-serif;
     text-align: center;
 }
 
@@ -68,7 +68,7 @@ body, html {
     display: grid;
     align-items: center;
     text-align: center;
-    font-family: Tenor;
+    font-family: Tenor, sans-serif;
 }
 
     .card-body span {
@@ -92,7 +92,7 @@ body, html {
     }
 
 .card-title {
-    font-family: Tenor;
+    font-family: Tenor, sans-serif;
     font-weight: bold;
     color: black !important;
 }
@@ -112,7 +112,7 @@ body, html {
     }
 
 .sub-text {
-    font-family: Tenor;
+    font-family: Tenor, sans-serif;
     text-align: center;
 }
 
