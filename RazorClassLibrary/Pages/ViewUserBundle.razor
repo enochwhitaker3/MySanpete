@@ -8,81 +8,88 @@
 
 @attribute [Authorize]
 
-@if (Success)
+@if (IsLoading)
 {
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <h4 class="alert-heading">Success</h4>
-        <p>Your refund has successfully been processed... you can expect your money back within 7 days</p>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
+    <LoadingComponent></LoadingComponent>
 }
-
-@if (VouchersInBundle.Count() != 0)
+else
 {
-    <div class="container">
-        @if (errorMessage == "")
-        {
-            @if (!Success)
-            {
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#refundModal">Refund this whole bundle</button>
-            }
-        }
-        else
-        {
-            <div class="alert alert-danger">
-                <p>Please fix the error to refund voucher</p>
-                <p>@errorMessage</p>
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#refundModal">Refund this whole bundle</button>
-            </div>
-        }
-        @foreach (var voucher in VouchersInBundle)
-        {
-            SetCurrentVoucher(voucher);
-            @if (CurrentVoucher is not null && CurrentVoucher.Voucher is not null)
-            {
-                <hr />
-                <div class="container">
-                    <div class="content">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <img class="img-fluid rounded-circle" width="300" src="@voucher!.Voucher!.BusinessLogoURL " />
-                            </div>
-                            <div class="col-md-6">
-                                <h2 class="card-title"><strong>@voucher!.Voucher!.PromoName</strong></h2>
-                                <p>Promo Code: CurrentVoucher.Promo_Code</p>
-                                <p>CurrentVoucher.Voucher.BusinessName</p>
-                                @if (CurrentVoucher.Voucher.EndDate is not null)
-                                {
-                                    <p>Good Through @CurrentVoucher.Voucher.StartDate.ToString("MMMM dd yyyy hh:mm tt") to @CurrentVoucher.Voucher.EndDate?.ToString("MMMM dd yyyy hh:mm tt")</p>
-                                }
+    @if (Success)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <h4 class="alert-heading">Success</h4>
+            <p>Your refund has successfully been processed... you can expect your money back within 7 days</p>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
 
+    @if (VouchersInBundle.Count() != 0)
+    {
+        <div class="container">
+            @if (errorMessage == "")
+            {
+                @if (!Success)
+                {
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#refundModal">Refund this whole bundle</button>
+                }
+            }
+            else
+            {
+                <div class="alert alert-danger">
+                    <p>Please fix the error to refund voucher</p>
+                    <p>@errorMessage</p>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#refundModal">Refund this whole bundle</button>
+                </div>
+            }
+            @foreach (var voucher in VouchersInBundle)
+            {
+                SetCurrentVoucher(voucher);
+                @if (CurrentVoucher is not null && CurrentVoucher.Voucher is not null)
+                {
+                    <hr />
+                    <div class="container">
+                        <div class="content">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <img class="img-fluid rounded-circle" width="300" src="@voucher!.Voucher!.BusinessLogoURL " />
+                                </div>
+                                <div class="col-md-6">
+                                    <h2 class="card-title"><strong>@voucher!.Voucher!.PromoName</strong></h2>
+                                    <p>Promo Code: CurrentVoucher.Promo_Code</p>
+                                    <p>CurrentVoucher.Voucher.BusinessName</p>
+                                    @if (CurrentVoucher.Voucher.EndDate is not null)
+                                    {
+                                        <p>Good Through @CurrentVoucher.Voucher.StartDate.ToString("MMMM dd yyyy hh:mm tt") to @CurrentVoucher.Voucher.EndDate?.ToString("MMMM dd yyyy hh:mm tt")</p>
+                                    }
+
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                }
             }
-        }
-        <hr />
-    </div>
-}
-<div class="modal fade" id="refundModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">REFUND</h5>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to refund this bundle?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal" @onclick="CreateRefund">Confirm</button>
+            <hr />
+        </div>
+    }
+    <div class="modal fade" id="refundModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">REFUND</h5>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to refund this bundle?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" @onclick="CreateRefund">Confirm</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+}
 
 
 @code
@@ -92,6 +99,7 @@
     public string? errorMessage { get; set; } = "";
 
     public bool Success { get; set; } = false;
+    public bool IsLoading { get; set; } = true;
 
     [CascadingParameter]
     Task<AuthenticationState>? AuthStateTask { get; set; }
@@ -103,6 +111,7 @@
 
     protected async override Task OnInitializedAsync()
     {
+        IsLoading = true;
         if (AuthStateTask is null)
         {
             return;
@@ -112,6 +121,7 @@
         var userId = (await userService.GetAuthUser(authId) ?? new UserDTO()).Id;
         var userVouchers = await userVoucherService.GetAllByUser(userId);
         VouchersInBundle = userVouchers.Where(v => v.Charge_Id == ChargeId).ToList();
+        IsLoading = false;
     }
 
     public async void CreateRefund()

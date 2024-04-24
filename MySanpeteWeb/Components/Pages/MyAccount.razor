@@ -10,90 +10,97 @@
 
 @attribute [Authorize]
 
-@if (User is not null)
+@if (IsLoading)
 {
-    <div class="row" style="max-width: 1200px; margin-left: auto; margin-right: auto; height: 90vh;">
+    <RazorClassLibrary.Pages.LoadingComponent></RazorClassLibrary.Pages.LoadingComponent>
+}
+else
+{
+    @if (User is not null)
+    {
+        <div class="row" style="max-width: 1200px; margin-left: auto; margin-right: auto; height: 90vh;">
 
-        <h3>My Account</h3>
+            <h3>My Account</h3>
 
-        <img class="img-fluid" style="width: 250px; height: 250px; object-fit: cover; object-position: center; border-radius: 200px; border: solid 1px gray; padding: 0;" src="@User.PhotoURL" />
-        <button data-toggle="modal" data-target="#photoModal" style="background-color: white; border: solid 1px gray; width: 43px; height: 43px; border-radius: 5px; position: relative; top: 200px; left: -50px;"><i class="bi bi-pencil-fill" style="font-size: 19px; color: dimgray"></i></button>
+            <img class="img-fluid" style="width: 250px; height: 250px; object-fit: cover; object-position: center; border-radius: 200px; border: solid 1px gray; padding: 0;" src="@User.PhotoURL" />
+            <button data-toggle="modal" data-target="#photoModal" style="background-color: white; border: solid 1px gray; width: 43px; height: 43px; border-radius: 5px; position: relative; top: 200px; left: -50px;"><i class="bi bi-pencil-fill" style="font-size: 19px; color: dimgray"></i></button>
 
-        <!-- Modal -->
-        <div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="editPhotoModal" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editPhotoModal">Edit your User Photo</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <InputFile OnChange="SaveFile"></InputFile>
+            <!-- Modal -->
+            <div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="editPhotoModal" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editPhotoModal">Edit your User Photo</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button @onclick="UpdateUserPhoto" type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <InputFile OnChange="SaveFile"></InputFile>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button @onclick="UpdateUserPhoto" type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="d-flex flex-row" style="margin-top: 20px;">
-            <button class="mr-3" data-toggle="modal" data-target="#usernameModal" style="background-color: white; border: solid 1px gray; width: 33px; height: 33px; border-radius: 5px;"><i class="bi bi-pencil-fill" style="font-size: 19px; color: dimgray"></i></button>
-            <h3><strong class="">Username: @User.Username</strong></h3>
-        </div>
+            <div class="d-flex flex-row" style="margin-top: 20px;">
+                <button class="mr-3" data-toggle="modal" data-target="#usernameModal" style="background-color: white; border: solid 1px gray; width: 33px; height: 33px; border-radius: 5px;"><i class="bi bi-pencil-fill" style="font-size: 19px; color: dimgray"></i></button>
+                <h3><strong class="">Username: @User.Username</strong></h3>
+            </div>
 
 
-        <!-- Update Username Modal -->
-        <div class="modal fade" id="usernameModal" tabindex="-1" role="dialog" aria-labelledby="editUsernameModal" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editUsernameModal">Edit your User Name</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p>This username will be seen by other users.</p>
-                        <div class="mb-3">
-                            <input @bind="NewUsername" type="text" class="form-control" id="exampleFormControlInput1" placeholder="username">
+            <!-- Update Username Modal -->
+            <div class="modal fade" id="usernameModal" tabindex="-1" role="dialog" aria-labelledby="editUsernameModal" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editUsernameModal">Edit your User Name</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button @onclick="UpdateUserName" type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                        <div class="modal-body">
+                            <p>This username will be seen by other users.</p>
+                            <div class="mb-3">
+                                <input @bind="NewUsername" type="text" class="form-control" id="exampleFormControlInput1" placeholder="username">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button @onclick="UpdateUserName" type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <h3 class="mt-5">My Vouchers</h3>
+            <button @onclick="GoToUserVouchers" class="btn btn-primary" style="width: 200px; height: 80px;">View Vouchers</button>
+
+            <h3 class="mt-5">My Saved Events</h3>
+            <button @onclick="GoToUserEvents" class="btn btn-primary" style="width: 200px; height: 80px;">My Saved Events</button>
+
         </div>
-
-
-
-        <h3 class="mt-5">My Vouchers</h3>
-        <button @onclick="GoToUserVouchers" class="btn btn-primary" style="width: 200px; height: 80px;">View Vouchers</button>
-
-
-
-        <h3 class="mt-5">My Saved Events</h3>
-        <button @onclick="GoToUserEvents" class="btn btn-primary" style="width: 200px; height: 80px;">My Saved Events</button>
-
-    </div>
+    }
+    else
+    {
+        <p>You need to be logged in to be able to see an account</p>
+    }
 }
 
 @code {
-
     byte[]? ImageBytes { get; set; }
 
-    public UserDTO? User { get; set; }
+    public bool IsLoading { get; set; } = true;
 
     public string? AuthId { get; set; }
-
     public string? NewUsername { get; set; }
+
+    public UserDTO? User { get; set; }
 
     public UpdateUserRequest updatedUsr { get; set; } = new();
 
@@ -102,9 +109,11 @@
 
     protected override async Task OnInitializedAsync()
     {
+        IsLoading = true;
         await TryToAuthenticateUser();
 
         User = await userService.GetAuthUser(AuthId!) ?? new UserDTO();
+        IsLoading = false;
     }
 
     public async Task TryToAuthenticateUser()
