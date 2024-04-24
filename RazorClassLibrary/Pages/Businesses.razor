@@ -71,7 +71,7 @@ else
         isLoading = false;
     }
 
-    private void FilterBusinesses(Microsoft.AspNetCore.Components.ChangeEventArgs args)
+    public void FilterBusinesses(Microsoft.AspNetCore.Components.ChangeEventArgs args)
     {
         string searchString = ((string)args.Value!).ToLower();
 
