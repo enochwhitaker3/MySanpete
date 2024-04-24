@@ -4,6 +4,7 @@
 
 @inject IUserService userService
 @inject IUserState userState
+@inject NavigationManager navManager
 
 @inject NavigationManager NavMan
 
@@ -94,6 +95,8 @@
 
     public string? NewUsername { get; set; }
 
+    public UpdateUserRequest updatedUsr { get; set; } = new();
+
     [CascadingParameter]
     Task<AuthenticationState>? AuthStateTask { get; set; }
 
@@ -106,7 +109,7 @@
 
     public async Task TryToAuthenticateUser()
     {
-       if (AuthStateTask is null)
+        if (AuthStateTask is null)
         {
             throw new Exception("There is no user logged in.");
         }
@@ -138,7 +141,7 @@
 
     public async Task UpdateUserPhoto()
     {
-        UpdateUserRequest updatedUsr = new UpdateUserRequest()
+         updatedUsr = new UpdateUserRequest()
             {
                 Guid = User!.Guid,
                 Id = User.Id,
@@ -149,23 +152,45 @@
 
         var result = await userService.PatchUser(updatedUsr);
 
-        NavMan.NavigateTo("/Account", true);
+        ReloadPage();
     }
 
     public async Task UpdateUserName()
     {
-        UpdateUserRequest updatedUsr = new UpdateUserRequest()
-            {
-                Guid = User!.Guid,
-                Id = User.Id,
-                UserEmail = User.UserEmail,
-                Username = NewUsername
-            };
+        if (ImageBytes is null)
+        {
+            updatedUsr = new UpdateUserRequest()
+                {
+                    Guid = User!.Guid,
+                    Id = User.Id,
+                    UserEmail = User.UserEmail,
+                    Username = NewUsername,
+                };
+        }
+        else
+        {
+            updatedUsr = new UpdateUserRequest()
+                {
+                    Guid = User!.Guid,
+                    Id = User.Id,
+                    UserEmail = User.UserEmail,
+                    Username = NewUsername,
+                    Photo = ImageBytes
+                };
+
+        }
 
         var result = await userService.PatchUser(updatedUsr);
+
+        ReloadPage();
+    }
+
+    public void ReloadPage()
+    {
+        navManager.NavigateTo($"/account", true);
     }
 
     public void GoToUserVouchers() => NavMan.NavigateTo("/user-vouchers");
 
-    public void GoToUserEvents() =>  NavMan.NavigateTo("/user-events");
+    public void GoToUserEvents() => NavMan.NavigateTo("/user-events");
 }

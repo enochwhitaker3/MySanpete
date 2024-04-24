@@ -88,7 +88,7 @@ a:hover {
     }
 
 .discover {
-    font-family: Inter-Bold;
+    font-family: 'Tenor';
     font-size: calc(1.25em - 0.1vw);
 }
 
@@ -108,10 +108,12 @@ a:hover {
 }
 
 .voucher-header h2 {
-    font-size: 1.5vw !important;
+    font-size: 1.25vw !important;
+    font-family: 'Tenor';
 }
-.app-header{
-    font-size: 1.5vw !important;
+.app-header {
+    font-size: 1.25vw !important;
+    font-family: 'Tenor';
 }
 .lg-view {
     display: inline-block;
