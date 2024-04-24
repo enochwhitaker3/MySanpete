@@ -1,0 +1,33 @@
+﻿.btn-group {
+    display: flex;
+    align-items: center;
+}
+
+.btn {
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+    display: flex; /* Add display flex */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+}
+
+.voucher-box {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.voucher-info {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+}

@@ -9,29 +9,24 @@
 }
 
 @font-face {
-    font-family: 'Tenor';
-    src: url('Fonts/TenorSans-Regular.ttf') format('truetype');
+    font-family: 'Tajawal';
+    src: url('Fonts/Tajawal-Regular.ttf') format('truetype');
 }
+
 
 h1, h2, h3 {
-    font-family: Casual, 'Sans Serif Collection';
+    font-family: 'Nelphim' !important, sans-serif;
 }
 
-button {
+.btn-primary {
     background-color: black;
     color: white;
-    border-radius: 30px;
+    border-radius: 50px;
     border: none;
-    padding: 10px;
-    border: black solid 1px;
 }
 
-    button:hover {
-        background-color: white;
+    .btn-primary:hover {
         color: black;
-        border: black solid 1px;
-    }
-
-    button:active, button::selection {
-        background-color: black;
+        background-color: white;
+        border: black 1px solid;
     }

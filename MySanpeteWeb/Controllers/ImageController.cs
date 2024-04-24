@@ -77,7 +77,7 @@ public class ImageController(IDbContextFactory<MySanpeteDbContext> factory, IApp
             return NotFound();
         }
 
-        var image = business.Logo;
+        var image = business.Logo ?? System.IO.File.ReadAllBytes("wwwroot/Images/My_Sanpete.png");
 
         if (image == null)
         {
@@ -97,7 +97,7 @@ public class ImageController(IDbContextFactory<MySanpeteDbContext> factory, IApp
             return NotFound();
         }
 
-        var image = blog.Photo;
+        var image = blog.Photo ?? System.IO.File.ReadAllBytes("wwwroot/Images/My_Sanpete.png");
 
         if (image == null)
         {

@@ -26,6 +26,12 @@ public class WebVoucherService : IVoucherService
         bool isInStripe = stripeService.ValidateStripeId(request.StripeId!);
         if (!isInStripe) { stripeService.AddProductToStripe(request); }
 
+        var promoCodeTwins = await context.Vouchers.AnyAsync(x => x.StartDate <= DateTime.UtcNow && x.EndDate >= DateTime.UtcNow && x.BusinessId == request.BusinessId && x.PromoCode == request.PromoCode && x.IsActive == true);
+        if (promoCodeTwins)
+        {
+            throw new Exception("An active voucher for this business already has this promo code. Create a unique promo code.");
+        }
+
         Voucher newVoucher = new()
         {
             BusinessId = request.BusinessId,

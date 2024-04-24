@@ -29,6 +29,8 @@ spec:
           value: http://mysanpetekube.duckdns.org
         - name: "DOTNET_HOSTBUILDER_RELOADCONFIGONCHANGE"
           value: "false"
+        - name: FeatureFlag
+          value: "true"
         livenessProbe: 
           httpGet:
             path: /healthcheck

@@ -9,80 +9,104 @@
 @inject IVoucherService service
 @inject IBusinessService businessService
 @inject IStripeService stripeService
+@inject IUserState userState
 
-@attribute [Authorize]
-
-<div style="height: 80vh; margin-top: 100px">
-    @if (voucher is not null)
-    {
-        <div class="container">
-            <div class="content rounded-3 shadow">
-                <div class="row">
-                    <div class="col-md-6">
-                        <img width="300" src="@imgDataURL" class="img-fluid img rounded-circle" />
-                    </div>
-                    <div class="col-md-6">
-                        <h2>@voucher.PromoName</h2>
-                        <strong><p>@voucher.BusinessName</p></strong>
-                        <p>@voucher.PromoDescription</p>
-                        <p>$@voucher.RetailPrice</p>
-                        <p>Good through @voucher.EndDate</p>
-                        <form method="post" @formname="checkout" @onsubmit="Checkout">
-                            <button type="submit" class="btn btn-primary">
-                                Checkout with Stripe
-                            </button>
-                            <AntiforgeryToken />
-                        </form>
+@if (IsLoading)
+{
+    <RazorClassLibrary.Pages.LoadingComponent></RazorClassLibrary.Pages.LoadingComponent>
+}
+else
+{
+    <div style="height: 80vh; margin-top: 100px">
+        @if (voucher is not null)
+        {
+            <div class="container">
+                <div class="content rounded-3 shadow">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img width="300" src="@imgDataURL" class="img-fluid img rounded-circle" />
+                        </div>
+                        <div class="col-md-6">
+                            <h2>@voucher.PromoName</h2>
+                            <strong><p>@voucher.BusinessName</p></strong>
+                            <p>@voucher.PromoDescription</p>
+                            <p>$@voucher.RetailPrice</p>
+                            <p>Good through @voucher.EndDate</p>
+                            <AuthorizeView>
+                                <Authorized>
+                                    <form method="post" @formname="checkout" @onsubmit="Checkout" class="d-flex justify-content-center align-items-center">
+                                        <button type="submit" class="btn btn-primary">
+                                            Checkout with Stripe
+                                        </button>
+                                        <AntiforgeryToken />
+                                    </form>
+                                </Authorized>
+                                <NotAuthorized>
+                                    <form method="post" @formname="checkout" class="d-flex justify-content-center align-items-center">
+                                        <button type="submit" class="btn btn-primary" @onclick="userState.Login">
+                                            Login To Checkout
+                                        </button>
+                                        <AntiforgeryToken />
+                                    </form>
+                                </NotAuthorized>
+                            </AuthorizeView>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    }
-    else
-    {
-        <p>This voucher doesn't exist anymore (or never existed at all!).</p>
-        <p>View All Vouchers</p>
-    }
-</div>
+        }
+        else
+        {
+            <p>This voucher doesn't exist anymore (or never existed at all!).</p>
+            <p>View All Vouchers</p>
+        }
+    </div>
+}
 
 @code {
     [Parameter]
     public int voucherId { get; set; }
 
-    public VoucherDTO? voucher { get; set; }
-    public BusinessDTO? business { get; set; }
     public string imgDataURL { get; set; } = "";
     public string errorMessage { get; set; } = "";
     public string? authId { get; set; }
 
+    public bool IsLoading { get; set; } = true;
+
+    public VoucherDTO? voucher { get; set; }
+    public BusinessDTO? business { get; set; }
+
     [CascadingParameter]
     Task<AuthenticationState>? AuthStateTask { get; set; }
-
     AuthenticationState? authState { get; set; }
+
 
     protected override async Task OnInitializedAsync()
     {
-
+        IsLoading = true;
         if (AuthStateTask is null)
         {
             throw new Exception("BWAH");
         }
         var authState = await AuthStateTask;
 
-        try
+        if (authState!.User!.Identity!.IsAuthenticated)
         {
-            authId = authState.User.Claims.FirstOrDefault(x => x.Type == "authId")!.Value;
+            try
+            {
+                authId = authState.User.Claims.FirstOrDefault(x => x.Type == "authId")!.Value;
 
-            voucher = await service.GetVoucher(voucherId) ?? new VoucherDTO();
-            var businesses = await businessService.GetAllBusinesses();
-            business = businesses.Where(x => x.BusinessName == voucher.BusinessName).FirstOrDefault();
-            imgDataURL = business!.LogoURL!;
+            }
+            catch (Exception)
+            {
+                navManager.NavigateTo("/404", true);
+            }
         }
-        catch (Exception)
-        {
-            navManager.NavigateTo("/404", true);
-        }
-
+        voucher = await service.GetVoucher(voucherId) ?? new VoucherDTO();
+        var businesses = await businessService.GetAllBusinesses();
+        business = businesses.Where(x => x.BusinessName == voucher.BusinessName).FirstOrDefault();
+        imgDataURL = business!.LogoURL!;
+        IsLoading = false;
     }
 
     private async Task Checkout()

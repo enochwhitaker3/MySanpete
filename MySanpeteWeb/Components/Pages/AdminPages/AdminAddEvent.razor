@@ -10,95 +10,108 @@
 @inject NavigationManager navManager
 @attribute [Authorize(Roles = "Admin")]
 
-<div class="form-container" style="margin-bottom: 20px;">
-    <h3>Admin Add Event</h3>
-    <div class="form-group mt-5">
-        <label for="title">Title</label>
-        <input id="title" class="form-control" @bind="Title" required />
-    </div>
-    <div class="form-group mt-5">
-        <label for="title">Business Name</label>
-        <select id="title" class="form-control" @bind="BusinessName" required>
-            @if (AllBusinesses is not null)
-            {
-                <option value="">Choose a business</option>
-                @foreach (var business in AllBusinesses)
+@if (IsLoading)
+{
+    <RazorClassLibrary.Pages.LoadingComponent></RazorClassLibrary.Pages.LoadingComponent>
+}
+else
+{
+    <div class="form-container" style="margin-bottom: 20px;">
+        <h3>Admin Add Event</h3>
+        <div class="form-group mt-5">
+            <label for="title">Title</label>
+            <input id="title" class="form-control" @bind="Title" required />
+        </div>
+        <div class="form-group mt-5">
+            <label for="title">Business Name</label>
+            <select id="title" class="form-control" @bind="BusinessName" required>
+                @if (AllBusinesses is not null)
                 {
-                    <option value="@business.BusinessName">@business.BusinessName</option>
+                    <option value="">Choose a business</option>
+                    @foreach (var business in AllBusinesses)
+                    {
+                        <option value="@business.BusinessName">@business.BusinessName</option>
+                    }
                 }
-            }
-        </select>
-    </div>
-    <div class="form-group mt-5">
-        <label for="xCoordinate">X Coordinate</label>
-        <input id="xCoordinate" class="form-control" @bind="XCoordinate" required />
-    </div>
-    <div class="form-group mt-5">
-        <label for="yCoordinate">Y Coordinate</label>
-        <input id="yCoordinate" class="form-control" @bind="YCoordinate" required />
-    </div>
-    <div class="form-group mt-5">
-        <label for="description">Description</label>
-        <input id="description" class="form-control" @bind="Description" required />
-    </div>
-    <div class="form-group mt-5">
-        <label for="startDate">Start Date</label>
-        <input id="startDate" type="datetime-local" class="form-control" @bind="StartDate" required />
-    </div>
-    <div class="form-group mt-5">
-        <label for="endDate">End Date</label>
-        <input id="endDate" type="datetime-local" class="form-control" @bind="EndDate" required />
-    </div>
-    <div class="form-group">
-        <label for="photo">Photo</label>
-        <InputFile OnChange="SaveFile"></InputFile>
-    </div>
-    @if (errorMessage == "")
-    {
-        <button type="submit" class="btn btn-primary" @onclick="CreateNewOccasion">Submit</button>
-    }
-    else
-    {
-        <div class="alert alert-danger">
-            <p>Please fix the error to submit the form</p>
-            <p>@errorMessage</p>
+            </select>
+        </div>
+        <div class="form-group mt-5">
+            <label for="xCoordinate">X Coordinate</label>
+            <input id="xCoordinate" class="form-control" @bind="XCoordinate" required />
+        </div>
+        <div class="form-group mt-5">
+            <label for="yCoordinate">Y Coordinate</label>
+            <input id="yCoordinate" class="form-control" @bind="YCoordinate" required />
+        </div>
+        <div class="form-group mt-5">
+            <label for="description">Description</label>
+            <input id="description" class="form-control" @bind="Description" required />
+        </div>
+        <div class="form-group mt-5">
+            <label for="startDate">Start Date</label>
+            <input id="startDate" type="datetime-local" class="form-control" @bind="StartDate" required />
+        </div>
+        <div class="form-group mt-5">
+            <label for="endDate">End Date</label>
+            <input id="endDate" type="datetime-local" class="form-control" @bind="EndDate" required />
+        </div>
+        <div class="form-group">
+            <label for="photo">Photo</label>
+            <InputFile OnChange="SaveFile"></InputFile>
+        </div>
+        @if (ErrorMessage == "")
+        {
             <button type="submit" class="btn btn-primary" @onclick="CreateNewOccasion">Submit</button>
-        </div>
-    }
+        }
+        else
+        {
+            <div class="alert alert-danger">
+                <p>Please fix the error to submit the form</p>
+                <p>@ErrorMessage</p>
+                <button type="submit" class="btn btn-primary" @onclick="CreateNewOccasion">Submit</button>
+            </div>
+        }
 
-    @if (Success == "true")
-    {
-        <div class="alert-success alert alert-dismissible fade show" role="alert" @onclick="ChangeSuccess">
-            <p>You successfully added the new business!</p>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    }
+        @if (Success == "true")
+        {
+            <div class="alert-success alert alert-dismissible fade show" role="alert" @onclick="ChangeSuccess">
+                <p>You successfully added the new business!</p>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        }
 
-</div>
+    </div>
+}
 
 @code {
-    public AddOccasionRequest? newOccasion = new();
+    [Parameter]
+    public string? Success { get; set; }
+    public string ErrorMessage = "";
+    public string? Title { get; set; } = "Default Title";
+    public string? BusinessName { get; set; }
+    public string? Description { get; set; } = "Default Description";
+
+    public decimal XCoordinate { get; set; } = 0M;
+    public decimal YCoordinate { get; set; } = 0M;
+
+    public DateTime StartDate { get; set; } = DateTime.Today.ToUniversalTime();
+    public DateTime EndDate { get; set; } = DateTime.Today.ToUniversalTime();
+
+    public byte[]? ImageBytes { get; set; }
+
+    public bool IsLoading { get; set; } = true;
+
+    public AddOccasionRequest? NewOccasion = new();
     public IEnumerable<BusinessDTO>? AllBusinesses { get; set; }
     public BusinessDTO selectedBusiness { get; set; } = new();
 
-    public string errorMessage = "";
-    [Parameter]
-    public string? Success { get; set; }
-
-    public string? Title { get; set; } = "Default Title";
-    public decimal XCoordinate { get; set; } = 0M;
-    public decimal YCoordinate { get; set; } = 0M;
-    public DateTime StartDate { get; set; } = DateTime.Today.ToUniversalTime();
-    public DateTime EndDate { get; set; } = DateTime.Today.ToUniversalTime();
-    public string? BusinessName { get; set; }
-    public string? Description { get; set; } = "Default Description";
-    public byte[]? ImageBytes { get; set; }
-
     protected override async Task OnInitializedAsync()
     {
+        IsLoading = true;
         AllBusinesses = await businessService.GetAllBusinesses();
+        IsLoading = false;
     }
 
     public async Task SaveFile(InputFileChangeEventArgs e)
@@ -141,36 +154,36 @@
             if (ImageBytes is not null)
             {
                 AddOccasionRequest request = new()
-                {
-                    Title = Title,
-                    BusinessId = selectedBusiness.Id,
-                    Description = Description,
-                    EndDate = EndDate.ToUniversalTime(),
-                    StartDate = StartDate.ToUniversalTime(),
-                    XCoordinate = XCoordinate,
-                    YCoordinate = YCoordinate,
-                    Photo = ImageBytes
-                };
+                    {
+                        Title = Title,
+                        BusinessId = selectedBusiness.Id,
+                        Description = Description,
+                        EndDate = EndDate.ToUniversalTime(),
+                        StartDate = StartDate.ToUniversalTime(),
+                        XCoordinate = XCoordinate,
+                        YCoordinate = YCoordinate,
+                        Photo = ImageBytes
+                    };
 
                 return request;
             }
             else
             {
                 AddOccasionRequest request = new()
-                {
-                    Title = Title,
-                    BusinessId = selectedBusiness.Id,
-                    Description = Description,
-                    EndDate = EndDate.ToUniversalTime(),
-                    StartDate = StartDate.ToUniversalTime(),
-                    XCoordinate = XCoordinate,
-                    YCoordinate = YCoordinate
-                };
+                    {
+                        Title = Title,
+                        BusinessId = selectedBusiness.Id,
+                        Description = Description,
+                        EndDate = EndDate.ToUniversalTime(),
+                        StartDate = StartDate.ToUniversalTime(),
+                        XCoordinate = XCoordinate,
+                        YCoordinate = YCoordinate
+                    };
             }
         }
         catch (Exception ex)
         {
-            errorMessage = ex.Message;
+            ErrorMessage = ex.Message;
         }
 
         return new AddOccasionRequest();
@@ -178,13 +191,13 @@
 
     public async Task CreateNewOccasion()
     {
-        newOccasion = CreateRequest();
+        NewOccasion = CreateRequest();
 
         try
         {
-            if (newOccasion is not null)
+            if (NewOccasion is not null)
             {
-                await occasionService.AddOccasion(newOccasion);
+                await occasionService.AddOccasion(NewOccasion);
 
                 Success = "true";
                 ReloadPage();
@@ -197,7 +210,7 @@
         catch (Exception ex)
         {
             // Handle errors appropriately
-            errorMessage = ex.Message;
+            ErrorMessage = ex.Message;
         }
     }
 

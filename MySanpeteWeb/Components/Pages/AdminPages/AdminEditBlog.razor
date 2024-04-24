@@ -13,193 +13,204 @@
 
 @attribute [Authorize(Roles = "Admin")]
 
-@if (AllBlogs is not null && AllBlogs.Count >= 1)
+@if (IsLoading)
 {
-    <div class="form-container" onsubmit="return false" style="margin-bottom: 20px;">
-        <h3>Admin Edit Blog</h3>
-        <form class="mt-5">
-            <div class="form-group mt-5">
-                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#blogPopup">Select Blog</button>
-            </div>
+    <RazorClassLibrary.Pages.LoadingComponent></RazorClassLibrary.Pages.LoadingComponent>
+}
+else
+{
+    @if (AllBlogs is not null && AllBlogs.Count >= 1)
+    {
+        <div class="form-container" onsubmit="return false" style="margin-bottom: 20px;">
+            <h3>Admin Edit Blog</h3>
+            <form class="mt-5">
+                <div class="form-group mt-5">
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#blogPopup">Select Blog</button>
+                </div>
 
-            <div class="modal fade" id="blogPopup" tabindex="-1" role="dialog" aria-labelledby="SelectBlog" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Add Voucher</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Blog Name</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var blog in AllBlogs)
-                                    {
-                                        <tr @onclick="() => SelectBlog(blog)" data-dismiss="modal">
-                                            <td>@blog.Title</td>
+                <div class="modal fade" id="blogPopup" tabindex="-1" role="dialog" aria-labelledby="SelectBlog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Add Voucher</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Blog Name</th>
                                         </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var blog in AllBlogs)
+                                        {
+                                            <tr @onclick="() => SelectBlog(blog)" data-dismiss="modal">
+                                                <td>@blog.Title</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            @if (SelectedBlog is not null)
-            {
-                <div class="form-group mt-5">
-                    <label for="comments">Allow Comments?</label><br />
-                    <label for="radioTrue">Yes</label>
-                    <input type="radio" id="radioTrue" name="myRadio" @onchange="@(e => SelectedBlog.Commentable = true)" checked="@(SelectedBlog.Commentable == true)" />
-                    <label for="radioFalse">No</label>
-                    <input type="radio" id="radioFalse" name="myRadio" @onchange="@(e => SelectedBlog.Commentable = false)" checked="@(SelectedBlog.Commentable == false)" />
-                </div>
-                <div class="form-group">
-                    <label for="photo">Blog Photo</label>
-                    <small style="color: darkgray;"><br />Recommended image size of 500 X 750 pixels. If no image is provided, MySanpete Logo will be displayed.<br /></small>
-                    <InputFile OnChange="SaveFile"></InputFile>
-                </div>
-                <div class="form-group mt-5">
-                    <label for="authorName">AuthorName</label>
-                    <input id="authorName" class="form-control" @bind="@SelectedBlog.AuthorName" />
-                </div>
-                <div class="form-group mt-5">
-                    <label for="title">Title</label>
-                    <input id="title" class="form-control" @bind="@SelectedBlog.Title" />
-                </div>
-
-                <BlazoredTextEditor @ref="@QuillHtml">
-                    <ToolbarContent>
-                        <select class="ql-header">
-                            <option selected=""></option>
-                            <option value="1"></option>
-                            <option value="2"></option>
-                            <option value="3"></option>
-                            <option value="4"></option>
-                            <option value="5"></option>
-                        </select>
-                        <span class="ql-formats">
-                            <button class="ql-bold"></button>
-                            <button class="ql-italic"></button>
-                            <button class="ql-underline"></button>
-                            <button class="ql-strike"></button>
-                        </span>
-                        <span class="ql-formats">
-                            <select class="ql-color"></select>
-                            <select class="ql-background"></select>
-                        </span>
-                        <span class="ql-formats">
-                            <button class="ql-list" value="ordered"></button>
-                            <button class="ql-list" value="bullet"></button>
-                        </span>
-                        <span class="ql-formats">
-                            <button class="ql-link"></button>
-                        </span>
-                    </ToolbarContent>
-                    <EditorContent>
-                        @if (SelectedBlog.Content is not null)
-                        {
-                            @((MarkupString)SelectedBlog.Content)
-                        }
-                    </EditorContent>
-                </BlazoredTextEditor>
-
-                @if (errorMessage == "")
+                @if (SelectedBlog is not null)
                 {
                     <div class="form-group mt-5">
-                        <button type="submit" class="btn btn-primary" @onclick="() => UpdateBlog(SelectedBlog)">Update</button>
+                        <label for="comments">Allow Comments?</label><br />
+                        <label for="radioTrue">Yes</label>
+                        <input type="radio" id="radioTrue" name="myRadio" @onchange="@(e => SelectedBlog.Commentable = true)" checked="@(SelectedBlog.Commentable == true)" />
+                        <label for="radioFalse">No</label>
+                        <input type="radio" id="radioFalse" name="myRadio" @onchange="@(e => SelectedBlog.Commentable = false)" checked="@(SelectedBlog.Commentable == false)" />
+                    </div>
+                    <div class="form-group">
+                        <label for="photo">Blog Photo</label>
+                        <small style="color: darkgray;"><br />Recommended image size of 500 X 750 pixels. If no image is provided, MySanpete Logo will be displayed.<br /></small>
+                        <InputFile OnChange="SaveFile"></InputFile>
                     </div>
                     <div class="form-group mt-5">
-                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
+                        <label for="authorName">AuthorName</label>
+                        <input id="authorName" class="form-control" @bind="@SelectedBlog.AuthorName" />
                     </div>
-                }
-                else
-                {
-                    <div class="alert alert-danger">
-                        <p>Please fix the error to submit the form</p>
-                        <p>@errorMessage</p>
+                    <div class="form-group mt-5">
+                        <label for="title">Title</label>
+                        <input id="title" class="form-control" @bind="@SelectedBlog.Title" />
+                    </div>
+
+                    <BlazoredTextEditor @ref="@QuillHtml">
+                        <ToolbarContent>
+                            <select class="ql-header">
+                                <option selected=""></option>
+                                <option value="1"></option>
+                                <option value="2"></option>
+                                <option value="3"></option>
+                                <option value="4"></option>
+                                <option value="5"></option>
+                            </select>
+                            <span class="ql-formats">
+                                <button class="ql-bold"></button>
+                                <button class="ql-italic"></button>
+                                <button class="ql-underline"></button>
+                                <button class="ql-strike"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <select class="ql-color"></select>
+                                <select class="ql-background"></select>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-list" value="ordered"></button>
+                                <button class="ql-list" value="bullet"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-link"></button>
+                            </span>
+                        </ToolbarContent>
+                        <EditorContent>
+                            @if (SelectedBlog.Content is not null)
+                            {
+                                @((MarkupString)SelectedBlog.Content)
+                            }
+                        </EditorContent>
+                    </BlazoredTextEditor>
+
+                    @if (ErrorMessage == "")
+                    {
                         <div class="form-group mt-5">
                             <button type="submit" class="btn btn-primary" @onclick="() => UpdateBlog(SelectedBlog)">Update</button>
                         </div>
                         <div class="form-group mt-5">
                             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
                         </div>
-                    </div>
-                }
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger">
+                            <p>Please fix the error to submit the form</p>
+                            <p>@ErrorMessage</p>
+                            <div class="form-group mt-5">
+                                <button type="submit" class="btn btn-primary" @onclick="() => UpdateBlog(SelectedBlog)">Update</button>
+                            </div>
+                            <div class="form-group mt-5">
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm">Delete</button>
+                            </div>
+                        </div>
+                    }
 
-                <div class="modal fade" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="deleteConfirm" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Deletion Confirmation</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                Are you sure you want to delete @SelectedBlog.Title? You won't be able to get it back!
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-danger" @onclick="() => DeleteBusiness(SelectedBlog)">Delete</button>
+                    <div class="modal fade" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="deleteConfirm" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Deletion Confirmation</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete @SelectedBlog.Title? You won't be able to get it back!
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-danger" @onclick="() => DeleteBlog(SelectedBlog)">Delete</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-            }
-            else
+                }
+                else
+                {
+                    <p>Select a blog to be able to edit it</p>
+                }
+            </form>
+            @if (Success == "true")
             {
-                <p>Select a business to be able to edit it</p>
+                <div class="alert-success alert alert-dismissible fade show" role="alert" @onclick="ChangeSuccess">
+                    <p>You successfully updated the blog!</p>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
             }
-        </form>
-        @if (Success == "true")
-        {
-            <div class="alert-success alert alert-dismissible fade show" role="alert" @onclick="ChangeSuccess">
-                <p>You successfully updated the business!</p>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        }
-    </div>
-}
-else
-{
-    <div>
-        <p>No Blogs to edit, add more blogs to edit them here</p>
-    </div>
+        </div>
+    }
+    else
+    {
+        <div>
+            <p>No Blogs to edit, add more blogs to edit them here</p>
+        </div>
+    }
 }
 
 @code {
     [Parameter]
     public string? Success { get; set; }
+    public string? ErrorMessage { get; set; } = "";
 
-    public string? errorMessage { get; set; } = "";
     public byte[]? ImageBytes { get; set; }
+
+    public bool IsLoading { get; set; } = true;
 
     public List<BlogDTO>? AllBlogs { get; set; }
     public BlogDTO? SelectedBlog { get; set; }
 
     public UserDTO? SelectedAuthor { get; set; }
 
-    public UpdateBlogRequest? updateBlogRequest { get; set; }
+    public UpdateBlogRequest? UpdateBlogRequest { get; set; }
 
     BlazoredTextEditor? QuillHtml;
 
     protected override async Task OnInitializedAsync()
     {
+        IsLoading = true;
         AllBlogs = (await blogService.GetAllBlogs()).Where(x => x.Title != "[Removed]").ToList();
+        IsLoading = false;
     }
 
     public void SelectBlog(BlogDTO selectedBlog)
@@ -219,7 +230,7 @@ else
         }
         catch (Exception ex)
         {
-            errorMessage = ex.Message;
+            ErrorMessage = ex.Message;
         }
     }
 
@@ -243,7 +254,7 @@ else
             {
                 throw new Exception("Blog was not found");
             }
-            if (blog.Content is null)
+            if (blog.Content is null || blog.Content.Trim() == "")
             {
                 throw new Exception("The content for the blog was null");
             }
@@ -251,6 +262,7 @@ else
             {
                 throw new Exception("The title for the blog was null");
             }
+            blog.Content = await QuillHtml!.GetHTML();
 
             SelectedAuthor = (await userService.GetAllUsers()).Where(x => x.Username == blog.AuthorName).FirstOrDefault();
 
@@ -259,9 +271,9 @@ else
                 throw new Exception("No user was found with that user name");
             }
 
-            if (ImageBytes is null)
+            if (ImageBytes is not null)
             {
-                updateBlogRequest = new UpdateBlogRequest()
+                UpdateBlogRequest = new UpdateBlogRequest()
                     {
                         Id = blog.Id,
                         AuthorId = SelectedAuthor.Id,
@@ -274,7 +286,7 @@ else
             }
             else
             {
-                updateBlogRequest = new UpdateBlogRequest()
+                UpdateBlogRequest = new UpdateBlogRequest()
                     {
                         Id = blog.Id,
                         AuthorId = SelectedAuthor.Id,
@@ -285,28 +297,28 @@ else
                     };
             }
 
-            if (updateBlogRequest is null)
+            if (UpdateBlogRequest is null)
             {
                 throw new Exception("Couldn't create update blog request to update the blog");
             }
 
-            var updatedBlog = await blogService.EditBlog(updateBlogRequest);
+            var updatedBlog = await blogService.EditBlog(UpdateBlogRequest);
 
             if (updatedBlog is null)
             {
                 throw new Exception("The blog was unable to be updated");
             }
-            errorMessage = "";
+            ErrorMessage = "";
             Success = "true";
             ReloadPage();
         }
         catch (Exception ex)
         {
-            errorMessage = ex.Message;
+            ErrorMessage = ex.Message;
         }
     }
 
-    public async Task DeleteBusiness(BlogDTO blog)
+    public async Task DeleteBlog(BlogDTO blog)
     {
         try
         {
@@ -322,23 +334,24 @@ else
                 throw new Exception("Blog was unable to be deleted");
             }
 
-            errorMessage = "";
+            ErrorMessage = "";
             Success = "true";
             ReloadPage();
         }
         catch (Exception ex)
         {
-            errorMessage = ex.Message;
+            ErrorMessage = ex.Message;
         }
     }
 
     public void ReloadPage()
     {
-        navManager.NavigateTo($"/edit-blogs/{Success}", true);
+        navManager.NavigateTo($"/edit-blog/{Success}", true);
     }
 
     public void ChangeSuccess()
     {
         Success = "false";
+        navManager.NavigateTo($"/edit-blog", true);
     }
 }
