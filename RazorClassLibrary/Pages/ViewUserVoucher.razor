@@ -31,60 +31,76 @@ else
     {
         <div class="container">
             <div class="content">
-                <div class="row">
-                    <div class="col-md-6">
-                        <img width="300" src="@imgDataURL" b class="img-fluid rounded-circle" />
+                
+                <p class="mt-5">Show this at the counter to redeem!</p>
+                <div class="">
+                    <div class="redeem-box" style="background-color: white; border: dashed 1px black; text-align: center; padding: 50px 10px 50px 10px;">
+                        <p><strong><i class="bs-icon bi bi-tags-fill"></i> Promo Code:</strong></p>
+                        <h1 style="font-family: monospace;"><strong>@selectedUserVoucher.Promo_Code</strong></h1>
+                        <br />
+                        <br />
+                        <br />
+                        <p><i class="bi bi-person-fill"></i> <strong>User Name: </strong></p>
+                        <h1 style="font-family: monospace;"><strong>@selectedUserVoucher!.User!.Username</strong></h1>
+                        <br />
+                        <br />
+                        <p>@selectedUserVoucher!.Voucher!.StartDate to @selectedUserVoucher.Voucher.EndDate</p>
                     </div>
-                    <div class="col-md-6">
-                        <h2>@selectedUserVoucher!.Voucher!.PromoName</h2>
-                        <p>Promo Code: @selectedUserVoucher.Promo_Code</p>
-                        <p>Times Used: @selectedUserVoucher.Times_Claimed</p>
-                        @if (selectedUserVoucher.Total_Reclaimable == 0)
-                        {
-                            <p>Uses Left: No Limit</p>
-                        }
-                        else
-                        {
-                            <p>Uses Left: @(@selectedUserVoucher.Total_Reclaimable - @selectedUserVoucher.Times_Claimed)</p>
-                        }
-                        <p>Date Purchased: @selectedUserVoucher.Purchase_Date</p>
-                        <p>@selectedUserVoucher.Voucher.StartDate to @selectedUserVoucher.Voucher.EndDate</p>
-                        <p>@selectedUserVoucher.Voucher.PromoDescription</p>
 
-                        @if (errorMessage == "")
-                        {
+                    <div class="row mt-5">
+                        <div class="col-3">
+                            <img src="@imgDataURL" class="img-fluid rounded-circle" />
+                        </div>
+                        <div class="col-9">
+                            <h5>@selectedUserVoucher!.Voucher!.PromoName</h5>
+                            <p>Description: @selectedUserVoucher.Voucher.PromoDescription</p>
+                            <p class="mt-5">Date Purchased: @selectedUserVoucher.Purchase_Date</p>
+                            <p>Times Used: @selectedUserVoucher.Times_Claimed</p>
+                            @if (selectedUserVoucher.Total_Reclaimable == 0)
+                            {
+                                <p>Uses Left: No Limit</p>
+                            }
+                            else
+                            {
+                                <p>Uses Left: @(@selectedUserVoucher.Total_Reclaimable - @selectedUserVoucher.Times_Claimed)</p>
+                            }
+                        </div>
+                    </div>
+                    
+                    @if (errorMessage == "")
+                    {
+                        <button type="button" class="btn btn-danger mb-5" data-toggle="modal" data-target="#refundModal">Refund</button>
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger">
+                            <p>Please fix the error to refund voucher</p>
+                            <p>@errorMessage</p>
                             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#refundModal">Refund</button>
-                        }
-                        else
-                        {
-                            <div class="alert alert-danger">
-                                <p>Please fix the error to refund voucher</p>
-                                <p>@errorMessage</p>
-                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#refundModal">Refund</button>
-                            </div>
-                        }
-                        <div class="modal fade" id="refundModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Refund @selectedUserVoucher.Voucher.PromoName</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        Are you sure you want to refund @selectedUserVoucher.Voucher.PromoName voucher?
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                        <button type="button" class="btn btn-danger" data-dismiss="modal" @onclick="CreateRefund">Confirm</button>
-                                    </div>
+                        </div>
+                    }
+                    <div class="modal fade" id="refundModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Refund @selectedUserVoucher.Voucher.PromoName</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to refund @selectedUserVoucher.Voucher.PromoName voucher?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal" @onclick="CreateRefund">Confirm</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
     }
     else
