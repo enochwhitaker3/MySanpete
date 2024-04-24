@@ -262,6 +262,7 @@ else
             {
                 throw new Exception("The title for the blog was null");
             }
+            blog.Content = await QuillHtml!.GetHTML();
 
             SelectedAuthor = (await userService.GetAllUsers()).Where(x => x.Username == blog.AuthorName).FirstOrDefault();
 
@@ -270,7 +271,7 @@ else
                 throw new Exception("No user was found with that user name");
             }
 
-            if (ImageBytes is null)
+            if (ImageBytes is not null)
             {
                 UpdateBlogRequest = new UpdateBlogRequest()
                     {
