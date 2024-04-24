@@ -93,6 +93,7 @@ public class WebBlogService : IBlogService
             buc.Commentable = updateBlog.Commentable;
             buc.BlogContent = updateBlog.BlogContent ?? "Default Content";
             buc.Photo = updateBlog.Photo;
+            buc.AuthorId = updateBlog.AuthorId;
 
             context.Blogs.Update(buc);
             await context.SaveChangesAsync();

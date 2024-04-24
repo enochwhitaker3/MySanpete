@@ -29,6 +29,7 @@ else
             <p style="color: gray;" class="mb-5">
                 Published @blog.PublishDate!.Value.Month - @blog.PublishDate.Value.Day - @blog.PublishDate.Value.Year
             </p>
+            <p style="color: gray;" class="mb-5">@blog.AuthorName</p>
             <div class="blog-content">
                 @((MarkupString)blog.Content)
             </div>
