@@ -60,34 +60,81 @@
                         <td>Single-Use</td>
                     }
                     <td>
-                        <div style="width: 35%">
 
-                            @if (userVoucher?.Total_Reclaimable == null || userVoucher.Total_Reclaimable > 1 || userVoucher.Total_Reclaimable == 0)
+                        @if (userVoucher?.Total_Reclaimable == null || userVoucher.Total_Reclaimable > 1 || userVoucher.Total_Reclaimable == 0)
+                        {
+                            <style>
+                                .btn-group {
+                                    display: flex;
+                                    align-items: center;
+                                }
+
+                                .btn {
+                                    width: 30px;
+                                    height: 30px;
+                                    margin-right: 5px;
+                                    display: flex; /* Add display flex */
+                                    justify-content: center; /* Center content horizontally */
+                                    align-items: center; /* Center content vertically */
+                                }
+
+                                .voucher-box {
+                                    background-color: white;
+                                    border: 1px solid #ccc;
+                                    border-radius: 5px;
+                                    padding: 10px;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: space-between;
+                                }
+
+                                .voucher-info {
+                                    font-size: 16px;
+                                    font-weight: bold;
+                                    color: #333;
+                                    margin: 0;
+                                    white-space: nowrap;
+                                    display: flex;
+                                    align-items: center;
+                                }
+                            </style>
+
+                            <div class="voucher-box">
+                                <div class="btn-group">
+                                    <button class="btn btn-primary">+</button>
+                                </div>
+                                <p class="voucher-info">@userVoucher!.Times_Claimed</p>
+                                <div class="btn-group">
+                                    <button class="btn btn-primary">-</button>
+                                </div>
+                            </div>
+
+
+
+
+                            @* <EditForm Model="@userVoucher" OnValidSubmit="() => ClaimVoucher(userVoucher!)">
+                <InputNumber style="outline-color: black; outline-width: 2px; outline-style: solid; width: 45%; line-height: 212%"
+                placeholder="0"
+                min="0"
+                max="@(userVoucher?.Total_Reclaimable == 0 ? int.MaxValue : userVoucher?.Total_Reclaimable )"
+                @bind-Value="userVoucher!.Times_Claimed"
+                step="1" />
+                <button style="width: 50%" class="btn btn-primary" type="submit">
+                @(userVoucher!.Total_Reclaimable == null || userVoucher.Total_Reclaimable == 0 ? "Save" : userVoucher.Total_Reclaimable > userVoucher.Times_Claimed ? "Save" : "Claimed")
+                </button>
+                </EditForm> *@
+                        }
+                        else
+                        {
+                            @if (userVoucher.Is_Used != null && userVoucher.Is_Used == true)
                             {
-                                <EditForm Model="@userVoucher" OnValidSubmit="() => ClaimVoucher(userVoucher!)">
-                                    <InputNumber style="outline-color: black; outline-width: 2px; outline-style: solid; width: 45%; line-height: 212%"
-                                                 placeholder="0"
-                                                 min="0"
-                                                 max="@(userVoucher?.Total_Reclaimable == 0 ? int.MaxValue : userVoucher?.Total_Reclaimable )"
-                                                 @bind-Value="userVoucher!.Times_Claimed"
-                                                 step="1" />
-                                    <button style="width: 50%" class="btn btn-primary" type="submit">
-                                        @(userVoucher!.Total_Reclaimable == null || userVoucher.Total_Reclaimable == 0 ? "Save" : userVoucher.Total_Reclaimable > userVoucher.Times_Claimed ? "Save" : "Claimed")
-                                    </button>
-                                </EditForm>
+                                <button class="btn btn-info" @onclick="() => ConfirmUnclaim(userVoucher)" data-toggle="modal" data-target="#ImportantPopup">Claimed</button>
                             }
                             else
                             {
-                                @if (userVoucher.Is_Used != null && userVoucher.Is_Used == true)
-                                {
-                                    <button style="width: 100%" class="btn btn-info" @onclick="() => ConfirmUnclaim(userVoucher)" data-toggle="modal" data-target="#ImportantPopup">Claimed</button>
-                                }
-                                else
-                                {
-                                    <button style="width: 100%" class="btn btn-primary" @onclick="() => ClaimVoucher(userVoucher)">Claim?</button>
-                                }
+                                <button class="btn btn-primary" @onclick="() => ClaimVoucher(userVoucher)">Claim?</button>
                             }
-                        </div>
+                        }
                     </td>
                 </tr>
 
@@ -120,6 +167,9 @@
 
     public BusinessDTO? business { get; set; }
 
+
+    string codeSearch = "";
+    string userSearch = "";
     List<UserVoucherDTO> vouchers { get; set; } = new();
     List<UserVoucherDTO> SortedVouchers { get; set; } = new();
 
@@ -167,15 +217,20 @@
 
     private void SortByCode(Microsoft.AspNetCore.Components.ChangeEventArgs args)
     {
-        string searchString = ((string)args.Value!).ToLower();
+        codeSearch = ((string)args.Value!).ToLower();
 
-        SortedVouchers = vouchers.OrderByDescending(x => x!.Promo_Code!.ToLower().Contains(searchString)).ToList();
+        Sort();
     }
 
     private void SortByUsername(Microsoft.AspNetCore.Components.ChangeEventArgs args)
     {
-        string searchString = ((string)args.Value!).ToLower();
+        userSearch = ((string)args.Value!).ToLower();
 
-        SortedVouchers = vouchers.OrderByDescending(x => x!.User!.Username!.ToLower().Contains(searchString)).ToList();
+        Sort();
+    }
+
+    private void Sort()
+    {
+        SortedVouchers = vouchers.OrderByDescending(x => x!.Promo_Code!.ToLower().Contains(codeSearch)).ThenByDescending(x => x!.User!.Username!.ToLower().Contains(userSearch)).ToList();
     }
 }
