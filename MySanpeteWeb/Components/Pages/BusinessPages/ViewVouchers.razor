@@ -215,21 +215,21 @@
         await userVoucherService.UpdateUserVoucher(userVoucherToUnclaim);
     }
 
-    private void SortByCode(Microsoft.AspNetCore.Components.ChangeEventArgs args)
+    public void SortByCode(Microsoft.AspNetCore.Components.ChangeEventArgs args)
     {
         codeSearch = ((string)args.Value!).ToLower();
 
         Sort();
     }
 
-    private void SortByUsername(Microsoft.AspNetCore.Components.ChangeEventArgs args)
+    public void SortByUsername(Microsoft.AspNetCore.Components.ChangeEventArgs args)
     {
         userSearch = ((string)args.Value!).ToLower();
 
         Sort();
     }
 
-    private void Sort()
+    public void Sort()
     {
         SortedVouchers = vouchers.OrderByDescending(x => x!.Promo_Code!.ToLower().Contains(codeSearch)).ThenByDescending(x => x!.User!.Username!.ToLower().Contains(userSearch)).ToList();
     }
