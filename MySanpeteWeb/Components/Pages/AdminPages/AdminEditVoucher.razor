@@ -65,7 +65,7 @@ else
                 <hr />
                 <div class="form-group mt-5">
                     <label for="author">Choose Business Associated with this Voucher</label>
-                    <select id="author" class="form-control" @bind="BusinessId" required>
+                    <select id="author" class="form-control" @bind="BusinessName" required>
                         @if (AllBusinesses is not null)
                         {
                             <option value="@SelectedVoucher!.BusinessName"> @SelectedVoucher.BusinessName</option>
@@ -159,6 +159,7 @@ else
     public string? PromoCode { get; set; } = "Default Promo";
     public string? PromoDescription { get; set; } = "Default Description";
     public string? PromoName { get; set; } = "Default Promo Name";
+    public string? BusinessName { get; set; }
 
     public int SelectedVoucherId { get; set; }
     public int BusinessId { get; set; }
@@ -192,6 +193,7 @@ else
         SelectedVoucher = AllVouchers.Where(x => x.Id == id).FirstOrDefault()!;
 
         SelectedVoucherId = id;
+        BusinessName = SelectedVoucher.BusinessName;
         StartDate = SelectedVoucher!.StartDate;
         EndDate = SelectedVoucher.EndDate;
         PromoCode = SelectedVoucher.PromoCode;

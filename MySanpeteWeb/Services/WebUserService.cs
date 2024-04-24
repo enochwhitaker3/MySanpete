@@ -143,7 +143,10 @@ public class WebUserService : IUserService
 
         databaseUser.UserName = userRequest.Username;
         databaseUser.UserEmail = userRequest.UserEmail!;
-        databaseUser.Photo = userRequest.Photo;
+        if (userRequest.Photo is not null)
+        {
+            databaseUser.Photo = userRequest.Photo;
+        }
 
         context.Update(databaseUser);
         await context.SaveChangesAsync();

@@ -11,59 +11,65 @@
 @inject IOccasionService occasionService
 @inject NavigationManager NavMan
 
-
-<div class="main-section">
-    <div class="content">
-        <div class="title">
-            Find Yourself In Sanpete County.
+@if (IsLoading)
+{
+    <RazorClassLibrary.Pages.LoadingComponent></RazorClassLibrary.Pages.LoadingComponent>
+}
+else
+{
+    <div class="main-section">
+        <div class="content">
+            <div class="title">
+                Find Yourself In Sanpete County.
+            </div>
         </div>
-    </div>
-    <img class="full-screen-image" src="Images/event.jpg" alt="Image">
-    <div class="event-container row" style="max-width: 100vw; margin-left: auto; margin-right: auto;  background-color:#fcfcf8; justify-content: center; align-items:center;">
+        <img class="full-screen-image" src="Images/event.jpg" alt="Image">
+        <div class="event-container row" style="max-width: 100vw; margin-left: auto; margin-right: auto;  background-color:#fcfcf8; justify-content: center; align-items:center;">
 
-        <div class="map-vr-container col-3 d-flex justify-content-center align-items-center ">
-            @if (MapsKey is not null)
-            {
-                <div class="map-container p-0 col shadow">
-                    <div id="mapDiv" class="mapp"></div>
-                </div>
-            }
-        </div>
+            <div class="map-vr-container col-3 d-flex justify-content-center align-items-center ">
+                @if (MapsKey is not null)
+                {
+                    <div class="map-container p-0 col shadow">
+                        <div id="mapDiv" class="mapp"></div>
+                    </div>
+                }
+            </div>
 
-        <div class="lg-view col-1 d-flex justify-content-center align-items-center">
-            <div class="vl"></div>
-        </div>
+            <div class="lg-view col-1 d-flex justify-content-center align-items-center">
+                <div class="vl"></div>
+            </div>
 
-        <div class="sm-view col-8 mt-10 d-flex justify-content-center align-items-center">
-            <div class="hl"></div>
-        </div>
-        <div class="event-container d-grid col-lg-6 mt-10 mb-15 justify-content-center" style="overflow-y:scroll; max-height: 50vh;">
-            @foreach (var o in allOccasions)
-            {
-                o.StartDate = o.StartDate.AddHours(-6);
-                o.EndDate = o.EndDate.AddHours(-6);
-                <a class="event-card row shadow mb-10" @onclick="() => GoToEventPage(o.Id)">
-                    <div class="event-date col-3 d-flex align-items-center" style="background-image: url(Images/green_wave.svg); background-repeat: repeat-y;">
-                        <div class="event-date">
-                            <h2>@o.StartDate.ToString("MMMM")</h2>
-                            <h2>@o.StartDate.Day</h2>
+            <div class="sm-view col-8 mt-10 d-flex justify-content-center align-items-center">
+                <div class="hl"></div>
+            </div>
+            <div class="event-container d-grid col-lg-6 mt-10 mb-15 justify-content-center" style="overflow-y:scroll; max-height: 50vh;">
+                @foreach (var o in allOccasions)
+                {
+                    o.StartDate = o.StartDate.AddHours(-6);
+                    o.EndDate = o.EndDate.AddHours(-6);
+                    <a class="event-card row shadow mb-10" @onclick="() => GoToEventPage(o.Id)">
+                        <div class="event-date col-3 d-flex align-items-center" style="background-image: url(Images/green_wave.svg); background-repeat: repeat-y;">
+                            <div class="event-date">
+                                <h2>@o.StartDate.ToString("MMMM")</h2>
+                                <h2>@o.StartDate.Day</h2>
+                            </div>
                         </div>
-                    </div>
-                    <div class="event-details col-6 d-grid align-content-center" style="color: black">
-                        <h2>@o.Title</h2>
-                        <h4>@o.StartDate.ToString("hh:mm tt") - @o.EndDate.ToString("hh:mm tt")</h4>
-                        <h4>
-                            @o.Description
-                        </h4>
-                    </div>
-                    <div class="col-3 d-flex" style="padding-right: 0 !important; max-height:25vh;">
-                        <img src="@o.PhotoURL" style="width: 100%; object-fit: cover; object-position: center;" />
-                    </div>
-                </a>
-            }
+                        <div class="event-details col-6 d-grid align-content-center" style="color: black">
+                            <h2>@o.Title</h2>
+                            <h4>@o.StartDate.ToString("hh:mm tt") - @o.EndDate.ToString("hh:mm tt")</h4>
+                            <h4>
+                                @o.Description
+                            </h4>
+                        </div>
+                        <div class="col-3 d-flex" style="padding-right: 0 !important; max-height:25vh;">
+                            <img src="@o.PhotoURL" style="width: 100%; object-fit: cover; object-position: center;" />
+                        </div>
+                    </a>
+                }
+            </div>
         </div>
     </div>
-</div>
+}
 
 
 
@@ -73,17 +79,23 @@
 @code {
     public string? MapsKey { get; set; }
     public string? jsonOccasions { get; set; }
+
+    public bool IsLoading { get; set; } = true;
+
     public List<OccasionDTO> allOccasions { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
+        IsLoading = true;
         MapsKey = config.GetValue<string>("MapKey") ?? throw new Exception("Map key is not in the secrets");
         MySanpeteMetrics.EventPageHitCount.Add(1);
         allOccasions = (await occasionService.GetAllOcassions()).Where(x => x.Title != "[Removed]").ToList();
+        IsLoading = false;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        IsLoading = true;
         allOccasions = await occasionService.GetAllOcassions();
         var allBusiness = await businessService.GetAllBusinesses();
         jsonOccasions = JsonSerializer.Serialize(allOccasions);
@@ -93,6 +105,7 @@
         {
             await JSRuntime.InvokeVoidAsync("initializeMap", MapsKey, jsonOccasions, jsonBusinesses);
         }
+        IsLoading = false;
     }
 
     public void GoToEventPage(int id)
