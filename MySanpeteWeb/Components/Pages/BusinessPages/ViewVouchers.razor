@@ -168,10 +168,10 @@
     public BusinessDTO? business { get; set; }
 
 
-    string codeSearch = "";
-    string userSearch = "";
-    List<UserVoucherDTO> vouchers { get; set; } = new();
-    List<UserVoucherDTO> SortedVouchers { get; set; } = new();
+    public string codeSearch { get; set; } = "";
+    public string userSearch { get; set; } = "";
+    public List<UserVoucherDTO> vouchers { get; set; } = new();
+    public List<UserVoucherDTO> SortedVouchers { get; set; } = new();
 
     private UserVoucherDTO userVoucherToUnclaim { get; set; } = new();
 
