@@ -32,7 +32,7 @@ namespace MySanpeteTests.UnitTests
             var page = SetUpPage();
 
             //Act
-            page.SortByCode(new Microsoft.AspNetCore.Components.ChangeEventArgs() { Value = "1"});
+            page.SortByCode(new Microsoft.AspNetCore.Components.ChangeEventArgs() { Value = "1" });
 
             //Assert
             page.SortedVouchers.ElementAt(0).Promo_Code.Should().Be("1");
