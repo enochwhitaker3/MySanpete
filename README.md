@@ -123,7 +123,7 @@
     <tr>
       <td>add messages in the PR about the status of the environment</td>
       <td>04/26/2024</td>
-      <td></td>
+      <td>X</td>
     </tr>
   </tbody>
 </table>
