@@ -63,66 +63,22 @@
 
                         @if (userVoucher?.Total_Reclaimable == null || userVoucher.Total_Reclaimable > 1 || userVoucher.Total_Reclaimable == 0)
                         {
-                            <style>
-                                .btn-group {
-                                    display: flex;
-                                    align-items: center;
-                                }
-
-                                .btn {
-                                    width: 30px;
-                                    height: 30px;
-                                    margin-right: 5px;
-                                    display: flex; /* Add display flex */
-                                    justify-content: center; /* Center content horizontally */
-                                    align-items: center; /* Center content vertically */
-                                }
-
-                                .voucher-box {
-                                    background-color: white;
-                                    border: 1px solid #ccc;
-                                    border-radius: 5px;
-                                    padding: 10px;
-                                    display: flex;
-                                    align-items: center;
-                                    justify-content: space-between;
-                                }
-
-                                .voucher-info {
-                                    font-size: 16px;
-                                    font-weight: bold;
-                                    color: #333;
-                                    margin: 0;
-                                    white-space: nowrap;
-                                    display: flex;
-                                    align-items: center;
-                                }
-                            </style>
-
                             <div class="voucher-box">
                                 <div class="btn-group">
-                                    <button class="btn btn-primary">+</button>
+                                    <button class="btn btn-primary" @onclick="() => ClaimVoucher(userVoucher!)">
+                                        @(userVoucher!.Total_Reclaimable is null
+                                            || userVoucher.Total_Reclaimable == 0 ? "+"
+                                            : userVoucher.Times_Claimed
+                                            >= userVoucher.Total_Reclaimable
+                                            ? "MAX" : "+")
+                                    </button>
                                 </div>
                                 <p class="voucher-info">@userVoucher!.Times_Claimed</p>
-                                <div class="btn-group">
-                                    <button class="btn btn-primary">-</button>
+                                <div class="btn-group" data-toggle="modal" data-target="#ImportantPopup">
+                                    <button class="btn btn-primary" @onclick="() => ConfirmUnclaim(userVoucher)">-</button>
                                 </div>
                             </div>
 
-
-
-
-                            @* <EditForm Model="@userVoucher" OnValidSubmit="() => ClaimVoucher(userVoucher!)">
-                <InputNumber style="outline-color: black; outline-width: 2px; outline-style: solid; width: 45%; line-height: 212%"
-                placeholder="0"
-                min="0"
-                max="@(userVoucher?.Total_Reclaimable == 0 ? int.MaxValue : userVoucher?.Total_Reclaimable )"
-                @bind-Value="userVoucher!.Times_Claimed"
-                step="1" />
-                <button style="width: 50%" class="btn btn-primary" type="submit">
-                @(userVoucher!.Total_Reclaimable == null || userVoucher.Total_Reclaimable == 0 ? "Save" : userVoucher.Total_Reclaimable > userVoucher.Times_Claimed ? "Save" : "Claimed")
-                </button>
-                </EditForm> *@
                         }
                         else
                         {
@@ -186,15 +142,17 @@
 
     private async Task ClaimVoucher(UserVoucherDTO userVoucher)
     {
-        if (userVoucher.Total_Reclaimable == 1)
+        if(userVoucher.Is_Used == false)
         {
             userVoucher.Times_Claimed++;
         }
-        if (userVoucher.Total_Reclaimable <= userVoucher.Times_Claimed)
+
+        if (userVoucher.Times_Claimed >= userVoucher.Total_Reclaimable)
         {
             userVoucher.Is_Used = true;
         }
-        else
+
+        if (userVoucher.Total_Reclaimable is null || userVoucher.Total_Reclaimable == 0)
         {
             userVoucher.Is_Used = false;
         }
@@ -209,10 +167,13 @@
 
     private async Task UnclaimVoucher()
     {
-        userVoucherToUnclaim.Times_Claimed--;
-        userVoucherToUnclaim.Is_Used = false;
+        if(userVoucherToUnclaim.Times_Claimed > 0)
+        {
+            userVoucherToUnclaim.Times_Claimed--;
+            userVoucherToUnclaim.Is_Used = false;
+            await userVoucherService.UpdateUserVoucher(userVoucherToUnclaim);
+        }
 
-        await userVoucherService.UpdateUserVoucher(userVoucherToUnclaim);
     }
 
     public void SortByCode(Microsoft.AspNetCore.Components.ChangeEventArgs args)
