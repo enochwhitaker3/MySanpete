@@ -2,12 +2,16 @@
 @page "/"
 @using MySanpeteWeb.Data
 @using MySanpeteWeb.Telemetry
+@using RazorClassLibrary.Requests
+@using RazorClassLibrary.Services
+@inject IBlogService blogService
 @implements IDisposable
 
 <RazorClassLibrary.Pages.Home></RazorClassLibrary.Pages.Home>
 @if(FeatureFlag.IsAvailable)
 {
-    <button @onclick="() => throw new Exception()">Throw an exception</button>
+    <button class="btn btn-primary" @onclick="() => throw new Exception()">Throw an exception</button>
+    <button class="btn btn-primary" @onclick="MakeRandomBlog">Add Random Blog</button>
 }
 
 @code
@@ -19,5 +23,18 @@
     public void Dispose()
     {
         MySanpeteMetrics.UsersOnHomePageCount.Add(-1);
+    }
+
+    public async Task MakeRandomBlog()
+    {
+        var request = new AddBlogRequest()
+        {
+            AuthorId = 1,
+            Title = Random.Shared.Next(100000, 999999).ToString(),
+            Commentable = true,
+            Content = "poggies"
+        };
+
+        await blogService.AddBlog(request);
     }
 }

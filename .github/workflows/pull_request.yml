@@ -28,3 +28,12 @@ jobs:
           for file in ./kube-pr/*; do
             cat $file | envsubst | kubectl apply -f -
           done
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'check out the pull request at <http://${{ github.event.pull_request.number }}.mysanpetekube.duckdns.org>'
+            });

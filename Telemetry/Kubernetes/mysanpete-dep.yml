@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: my-sanpete
-        image: 144.17.92.12:5000/codebras/mysanpete:1
+        image: 144.17.92.12:5000/codebras/mysanpete:${GITHUB_RUN_ID}
         ports:
         - containerPort: 8080
         env:
@@ -27,9 +27,11 @@ spec:
           value: user id = postgres; password=postgres; server=my-sanpete-database-service; database= postgres; port= 5432
         - name: WebsiteUrl
           value: http://mysanpetekube.duckdns.org
-        - name: "DOTNET_HOSTBUILDER_RELOADCONFIGONCHANGE"
+        - name: "DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE"
           value: "false"
         - name: FeatureFlag
+          value: "true"
+        - name: FeatureFlag2
           value: "true"
         livenessProbe: 
           httpGet:
