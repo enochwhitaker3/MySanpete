@@ -68,7 +68,7 @@
     <tr>
       <td>Zero downtime deployment (users are unaware of application updates)</td>
       <td>04/25/2024</td>
-      <td></td>
+      <td>X</td>
     </tr>
     <tr>
       <td>Use of a reverse proxy</td>
