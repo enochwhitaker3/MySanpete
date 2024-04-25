@@ -31,6 +31,8 @@ spec:
           value: "false"
         - name: FeatureFlag
           value: "true"
+        - name: FeatureFlag2
+          value: "true"
         livenessProbe: 
           httpGet:
             path: /healthcheck
