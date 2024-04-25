@@ -214,10 +214,12 @@ else
         isLoading = false;
     }
 
-    public void HideEmail(string UserEmail)
+    public string HideEmail(string UserEmail)
     {
         string pattern = @"(?<=[\w]{1})[\w\-._\+%]*(?=[\w]{1}@)";
         string result = Regex.Replace(UserEmail, pattern, m => new string('*', m.Length));
+
+        return result;
     }
 
 
