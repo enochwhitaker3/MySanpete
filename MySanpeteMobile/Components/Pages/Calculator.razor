@@ -1,0 +1,116 @@
+﻿@page "/calculator"
+
+<h3>Calculator</h3>
+
+<div>
+    <input type="text" @bind="currentNumber" readonly />
+</div>
+
+<div>
+    
+    <button class="btn btn-light" @onclick="() => NumberClicked(1)">1</button>
+    <button class="btn btn-light" @onclick="() => NumberClicked(2)">2</button>
+    <button class="btn btn-light" @onclick="() => NumberClicked(3)">3</button>
+    <button class="btn btn-light" @onclick="@(() => OperationClicked("+"))">+</button>
+</div>
+
+<div>
+    <button class="btn btn-light" @onclick="() => NumberClicked(4)">4</button>
+    <button class="btn btn-light" @onclick="() => NumberClicked(5)">5</button>
+    <button class="btn btn-light" @onclick="() => NumberClicked(6)">6</button>
+    <button class="btn btn-light" @onclick="@(() => OperationClicked("-"))">-</button>
+</div>
+
+<div>
+    <button class="btn btn-light" @onclick="() => NumberClicked(7)">7</button>
+    <button class="btn btn-light" @onclick="() => NumberClicked(8)">8</button>
+    <button class="btn btn-light" @onclick="() => NumberClicked(9)">9</button>
+    <button class="btn btn-light" @onclick="@(() => OperationClicked("*"))">*</button>
+</div>
+
+<div>
+    <button class="btn btn-light" @onclick="() => NumberClicked(1)">0</button>
+    <button class="btn btn-dark" @onclick="Equals">=</button>
+    <button class="btn btn-light" @onclick="@(() => OperationClicked("/"))">/</button>
+    <button class="btn btn-dark" @onclick="Clear">C</button><br />
+</div>
+
+@code {
+    string currentNumber = string.Empty;
+    string operation = string.Empty;
+    double firstNumber = 0;
+    double secondNumber = 0;
+
+    void Clear()
+    {
+        currentNumber = string.Empty;
+        operation = string.Empty;
+    }
+
+    void NumberClicked(int num)
+    {
+        var button = num;
+        currentNumber += button;
+    }
+
+    void OperationClicked(string op)
+    {
+        var button = op;
+        operation = button;
+        firstNumber = double.Parse(currentNumber);
+        currentNumber = string.Empty;
+    }
+
+    void Equals(MouseEventArgs e)
+    {
+        secondNumber = double.Parse(currentNumber);
+        double result = 0;
+
+        switch (operation)
+        {
+            case "+":
+                result = AddNumbers(firstNumber, secondNumber);
+                break;
+            case "-":
+                result = MinusNumbers(firstNumber, secondNumber);
+                break;
+            case "*":
+                result = MultiplyNumbers(firstNumber, secondNumber);
+                break;
+            case "/":
+                result = DivideNumbers(firstNumber, secondNumber);
+                break;
+        }
+
+        currentNumber = result.ToString();
+        operation = string.Empty;
+    }
+
+    public double AddNumbers(double numberOne, double numberTwo)
+    {
+        return numberOne + numberTwo;
+    }
+
+    public double MinusNumbers(double numberOne, double numberTwo)
+    {
+        return numberOne - numberTwo;
+    }
+
+    public double MultiplyNumbers(double numberOne, double numberTwo)
+    {
+        return numberOne * numberTwo;
+    }
+
+    public double DivideNumbers(double numberOne, double numberTwo)
+    {
+        if (numberTwo != 0)
+        {
+            return numberOne / numberTwo;
+        }
+        else
+        {
+            return double.NaN;
+        }
+    }
+
+}

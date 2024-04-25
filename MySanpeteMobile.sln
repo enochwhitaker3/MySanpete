@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RazorClassLibrary", "RazorC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MySanpeteTests", "MySanpeteTests\MySanpeteTests.csproj", "{ACB207EF-BA53-4490-BDC2-C3CA7C9BC942}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySanpeteMobileTests", "MySanpeteMobileTests\MySanpeteMobileTests.csproj", "{49F57651-AE57-4140-B9F9-052E40B9BA43}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{ACB207EF-BA53-4490-BDC2-C3CA7C9BC942}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACB207EF-BA53-4490-BDC2-C3CA7C9BC942}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACB207EF-BA53-4490-BDC2-C3CA7C9BC942}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49F57651-AE57-4140-B9F9-052E40B9BA43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49F57651-AE57-4140-B9F9-052E40B9BA43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49F57651-AE57-4140-B9F9-052E40B9BA43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49F57651-AE57-4140-B9F9-052E40B9BA43}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

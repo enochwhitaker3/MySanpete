@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using MudBlazor.Services;
 using MySanpeteMobile.Services;
 using RazorClassLibrary.Services;
 
@@ -22,7 +21,6 @@ namespace MySanpeteMobile
 
 
             builder.Services.AddMauiBlazorWebView();
-            builder.Services.AddMudServices();
 
             builder.Services.AddSingleton<IOccasionService, MobileOccasionService>();
             builder.Services.AddSingleton<IBlogService, MobileBlogService>();
