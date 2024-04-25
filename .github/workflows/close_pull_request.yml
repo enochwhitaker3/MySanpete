@@ -6,7 +6,7 @@ jobs:
   deploy_to_kubernetes:
     runs-on: MySanpete
     steps: 
-      - name: deploy kubernetes environment
+      - name: remove kubernetes environment
         run: |
           export PULL_REQUEST_ID=${{ github.event.pull_request.number }}
           export NAMESPACE="mysanpete-pr-${PULL_REQUEST_ID}"

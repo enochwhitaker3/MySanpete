@@ -14,4 +14,4 @@ jobs:
           kubectl -n codebras cp /home/enoch/dumps/mysanpetedump.sql \
           $CONTAINER_NAME:/mysanpetedump.sql && kubectl -n codebras \
           exec -t $CONTAINER_NAME \
-          -- sh -c 'psql -U postgres postgres < /mysanpetedump.sql'
+          -- sh -c 'psql -U postgres postgres -a < /mysanpetedump.sql'
