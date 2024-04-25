@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: my-sanpete
-        image: 144.17.92.12:5000/codebras/mysanpete:1
+        image: 144.17.92.12:5000/codebras/mysanpete:${GITHUB_RUN_ID}
         ports:
         - containerPort: 8080
         env:

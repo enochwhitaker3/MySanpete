@@ -28,9 +28,9 @@ jobs:
         working-directory: ./../../../../MySanpete/MySanpeteTests
       - name: "Build and add tag"
         run: |
-            docker build -t 144.17.92.12:5000/codebras/mysanpete:1 .
+            docker build -t 144.17.92.12:5000/codebras/mysanpete:${GITHUB_RUN_ID} .
 
-            docker push 144.17.92.12:5000/codebras/mysanpete:1
+            docker push 144.17.92.12:5000/codebras/mysanpete:${GITHUB_RUN_ID}
             
             kubectl -n codebras delete configmap my-sanpete-postgres-init || true
             kubectl -n codebras create configmap my-sanpete-postgres-init --from-file=20240328.06.25.21.sql
