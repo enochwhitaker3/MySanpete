@@ -68,7 +68,7 @@ main {
 
 .my-container {
     display: grid;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: auto auto auto;
     min-height: 100vh;
 }
 
