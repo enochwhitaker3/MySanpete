@@ -218,7 +218,7 @@
         isLoading = true;
 
         allVouchers = await voucherService.GetAllVouchers();
-        allVouchers = allVouchers.Where(x => x.EndDate >= DateTime.UtcNow).ToList();
+        allVouchers = allVouchers.Where(x => x.EndDate >= DateTime.UtcNow && x.IsBundle == false).ToList();
         allBusinesses = await businessService.GetAllBusinesses();
 
         restOccasions = await occasionService.GetAllOcassions();
