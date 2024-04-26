@@ -22,7 +22,7 @@ jobs:
             dotnet build --warnaserror
             dotnet format --verify-no-changes --no-restore
         working-directory: ./../../../../MySanpete/MySanpeteWeb
-      - name: "Integration tests"
+      - name: "Integration / Unit tests"
         run: |
             dotnet test
         working-directory: ./../../../../MySanpete/MySanpeteTests

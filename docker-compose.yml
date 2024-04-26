@@ -39,8 +39,8 @@ services:
       - URL=mysanpete.duckdns.org
       - SUBDOMAINS=www,
       - VALIDATION=duckdns
-      - DUCKDNSTOKEN=${DUCKDNS:-blahblahblah} #optional
-      - STAGING=true #optional
+      - DUCKDNSTOKEN=${DUCKDNS} #optional
+      - STAGING=false #optional
     volumes:
       - swag-data:/config
       - ./Telemetry/nginx-default.conf:/config/nginx/site-confs/mysite.conf
