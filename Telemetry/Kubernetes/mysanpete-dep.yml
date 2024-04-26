@@ -27,6 +27,8 @@ spec:
           value: user id = postgres; password=postgres; server=my-sanpete-database-service; database= postgres; port= 5432
         - name: WebsiteUrl
           value: http://mysanpetekube.duckdns.org
+        - name: MapKey
+          value: fmCGCOVvE-xgq4gMgTxwRmKzXYFA_5HWHZ7ns0AMD-M
         - name: "DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE"
           value: "false"
         - name: FeatureFlag

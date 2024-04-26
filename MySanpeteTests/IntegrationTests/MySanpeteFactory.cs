@@ -18,7 +18,7 @@ public class MySanpeteFactory : WebApplicationFactory<Program>, IAsyncLifetime
     {
         var whereAmI = Environment.CurrentDirectory;
 
-        var backupFile = Directory.GetFiles("../../../../", "*.sql", SearchOption.AllDirectories)
+        var backupFile = Directory.GetFiles("../../../../", "20240328.06.25.21.sql", SearchOption.AllDirectories)
             .Select(f => new FileInfo(f))
             .OrderByDescending(fi => fi.LastWriteTime)
             .First();

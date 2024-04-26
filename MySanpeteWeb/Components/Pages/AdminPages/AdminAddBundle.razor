@@ -132,7 +132,7 @@ else
     {
         IsLoading = true;
         AllVouchers = await voucherService.GetAllVouchers();
-        AllVouchers = AllVouchers.Where(x => x.EndDate > DateTime.Today.ToUniversalTime() || x.EndDate is null).ToList();
+        AllVouchers = AllVouchers.Where(x => x.EndDate > DateTime.Today.ToUniversalTime() && x.IsBundle == true).ToList();
         IsLoading = false;
     }
 
