@@ -28,6 +28,8 @@ using MySanpeteWeb.Telemetry;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddHealthChecks();
+
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
@@ -51,9 +53,6 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
     options.OnDeleteCookie = cookieContext => CheckSameSite(cookieContext.CookieOptions);
 });
 StripeConfiguration.ApiKey = builder.Configuration["STRIPE_SECRET_KEY"];
-//builder.Services.Configure<StripeOptions>
-
-builder.Services.AddHealthChecks();
 
 builder.Services.AddMudServices();
 builder.Services.AddServerSideBlazor().AddCircuitOptions(options => { options.DetailedErrors = true; });
