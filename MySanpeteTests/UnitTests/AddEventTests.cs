@@ -93,7 +93,7 @@ namespace MySanpeteTests.UnitTests
             page.Title = "Test";
             page.EndDate = DateTime.MaxValue;
             page.StartDate = DateTime.MinValue;
-            var business1 = new RazorClassLibrary.DTOs.BusinessDTO() { BusinessName = "figma?"};
+            var business1 = new RazorClassLibrary.DTOs.BusinessDTO() { BusinessName = "figma?" };
             page.AllBusinesses = [business1];
             page.BusinessName = "figma?";
             page.Description = null;

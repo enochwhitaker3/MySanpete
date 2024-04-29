@@ -32,7 +32,7 @@ namespace MySanpeteTests.UnitTests
 
         }
 
-        public AdminEditBlog SetUpPage() 
+        public AdminEditBlog SetUpPage()
         {
             var page = new AdminEditBlog();
 
