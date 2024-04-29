@@ -31,7 +31,7 @@ else
     {
         <div class="container">
             <div class="content">
-                
+
                 <p class="mt-5">Show this at the counter to redeem!</p>
                 <div class="">
                     <div class="redeem-box" style="background-color: white; border: dashed 1px black; text-align: center; padding: 50px 10px 50px 10px;">
@@ -45,40 +45,31 @@ else
                         <br />
                         <br />
                         <p>@selectedUserVoucher!.Voucher!.StartDate to @selectedUserVoucher.Voucher.EndDate</p>
-                    </div>
+                        <br />
+                        <p>Times Used: @selectedUserVoucher.Times_Claimed</p>
+                        <br />
+                        @if (selectedUserVoucher.Total_Reclaimable == 0)
+                        {
+                            <p>Uses Left: No Limit</p>
+                        }
+                        else
+                        {
+                            <p>Uses Left: @(@selectedUserVoucher.Total_Reclaimable - @selectedUserVoucher.Times_Claimed)</p>
+                        }
 
-                    <div class="row mt-5">
-                        <div class="col-3">
-                            <img src="@imgDataURL" class="img-fluid rounded-circle" />
-                        </div>
-                        <div class="col-9">
-                            <h5>@selectedUserVoucher!.Voucher!.PromoName</h5>
-                            <p>Description: @selectedUserVoucher.Voucher.PromoDescription</p>
-                            <p class="mt-5">Date Purchased: @selectedUserVoucher.Purchase_Date</p>
-                            <p>Times Used: @selectedUserVoucher.Times_Claimed</p>
-                            @if (selectedUserVoucher.Total_Reclaimable == 0)
-                            {
-                                <p>Uses Left: No Limit</p>
-                            }
-                            else
-                            {
-                                <p>Uses Left: @(@selectedUserVoucher.Total_Reclaimable - @selectedUserVoucher.Times_Claimed)</p>
-                            }
-                        </div>
+                        @if (errorMessage == "")
+                        {
+                            <button type="button" class="btn btn-danger mb-5" data-toggle="modal" data-target="#refundModal">Refund</button>
+                        }
+                        else
+                        {
+                            <div class="alert alert-danger">
+                                <p>Please fix the error to refund voucher</p>
+                                <p>@errorMessage</p>
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#refundModal">Refund</button>
+                            </div>
+                        }
                     </div>
-                    
-                    @if (errorMessage == "")
-                    {
-                        <button type="button" class="btn btn-danger mb-5" data-toggle="modal" data-target="#refundModal">Refund</button>
-                    }
-                    else
-                    {
-                        <div class="alert alert-danger">
-                            <p>Please fix the error to refund voucher</p>
-                            <p>@errorMessage</p>
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#refundModal">Refund</button>
-                        </div>
-                    }
                     <div class="modal fade" id="refundModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
