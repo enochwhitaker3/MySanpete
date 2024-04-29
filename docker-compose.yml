@@ -21,7 +21,7 @@ services:
       STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
       MapKey: ${MapKey}
       FeatureFlag: "true"
-      WebsiteUrl: http://localhost:420
+      WebsiteUrl: http://144.17.92.13:420
       DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE: false
       ASPNETCORE_ENVIRONMENT: Development
     depends_on: 
