@@ -126,7 +126,7 @@
             .Select(x => x.First())
             .ToList();
 
-        allUserVouchers.AddRange(freebies);
+        allUserVouchers.Union(freebies);
 
         allUserVouchers.OrderByDescending(x => x.Is_Used);
 
