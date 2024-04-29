@@ -40,10 +40,10 @@
                             </div>
                             <div class="col-md-6 p-3" style="padding: 15px;">
                                 <h2>@Event.Title</h2>
+                                <strong><p>Hosted by @Event!.Business.BusinessName</p></strong>
                                 <p>@Event.Description</p>
-                                <strong><p>@Event!.Business.BusinessName</p></strong>
-                                <p>Taking place at: @Event.Business.XCoordinate, @Event.Business.YCoordinate</p>
-                                <p>Event starts: @Event.StartDate through @Event.EndDate</p>
+                                <p>Taking place at: @Address</p>
+                                <p>@Event.StartDate.ToString("MMMM") @Event.StartDate.Day, @Event.StartDate.Year @Event.StartDate.ToString("h:mm tt") through @Event.EndDate.ToString("MMMM") @Event.EndDate.Day, @Event.EndDate.Year @Event.EndDate.ToString("h:mm tt")</p>
                                 @if (authId is not null)
                                 {
 
