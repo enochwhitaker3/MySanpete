@@ -82,14 +82,16 @@
                         }
                         else
                         {
-                            @if (userVoucher.Is_Used != null && userVoucher.Is_Used == true)
-                            {
-                                <button class="btn btn-info" @onclick="() => ConfirmUnclaim(userVoucher)" data-toggle="modal" data-target="#ImportantPopup">Claimed</button>
-                            }
-                            else
-                            {
-                                <button class="btn btn-primary" @onclick="() => ClaimVoucher(userVoucher)">Claim?</button>
-                            }
+                            <div class="voucher-box">
+                                @if (userVoucher.Is_Used != null && userVoucher.Is_Used == true)
+                                {
+                                    <button class="btn btn-info btn-full-width" @onclick="() => ConfirmUnclaim(userVoucher)" data-toggle="modal" data-target="#ImportantPopup">Claimed</button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-primary btn-full-width" @onclick="() => ClaimVoucher(userVoucher)">Claim?</button>
+                                }
+                            </div>
                         }
                     </td>
                 </tr>
@@ -109,8 +111,8 @@
                 <p>Are you sure you would like to unclaim this voucher?</p>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-danger" data-dismiss="modal" @onclick="UnclaimVoucher">Confirm</button>
-                <button class="btn btn-success" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-danger btn-full-width" data-dismiss="modal" @onclick="UnclaimVoucher">Confirm</button>
+                <button class="btn btn-success btn-full-width" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
@@ -142,7 +144,7 @@
 
     private async Task ClaimVoucher(UserVoucherDTO userVoucher)
     {
-        if(userVoucher.Is_Used == false)
+        if (userVoucher.Is_Used == false)
         {
             userVoucher.Times_Claimed++;
         }
@@ -167,7 +169,7 @@
 
     private async Task UnclaimVoucher()
     {
-        if(userVoucherToUnclaim.Times_Claimed > 0)
+        if (userVoucherToUnclaim.Times_Claimed > 0)
         {
             userVoucherToUnclaim.Times_Claimed--;
             userVoucherToUnclaim.Is_Used = false;

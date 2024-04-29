@@ -31,3 +31,7 @@
     display: flex;
     align-items: center;
 }
+
+.btn-full-width {
+    width: 100%;
+}
