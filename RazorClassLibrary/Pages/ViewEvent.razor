@@ -5,7 +5,7 @@
 @inject IOccasionService occasionService
 @inject IUserOccasionService userOccassionService
 @inject IUserService userService
-@inject IGoogleApiService googleApiService
+@* @inject IGoogleApiService googleApiService *@
 @inject NavigationManager navManager
 
 @attribute [Authorize]
@@ -117,12 +117,12 @@
         {
             authId = authState.User.Claims.FirstOrDefault(x => x.Type == "authId")!.Value;
             currentUser = await userService.GetAuthUser(authId!);
-            if (Event is not null &&
-                Event.YCoordinate is not null &&
-                Event.XCoordinate is not null)
-            {
-                Address = (await googleApiService.GetAddressOfLatLon(Event.XCoordinate, Event.YCoordinate));
-            }
+            // if (Event is not null &&
+            //     Event.YCoordinate is not null &&
+            //     Event.XCoordinate is not null)
+            // {
+            //     Address = (await googleApiService.GetAddressOfLatLon(Event.XCoordinate, Event.YCoordinate));
+            // }
         }
         catch (Exception ex)
         {

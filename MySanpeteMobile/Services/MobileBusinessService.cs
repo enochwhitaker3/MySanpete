@@ -31,7 +31,7 @@ public class MobileBusinessService : IBusinessService
 
     public async Task<BusinessDTO?> GetBusiness(int id)
     {
-        var result = await httpClient.GetFromJsonAsync<BusinessDTO>($"/api/business/byid/{id}");
+        var result = await httpClient.GetFromJsonAsync<BusinessDTO>($"/byid/{id}");
         return result!;
     }
 
