@@ -33,7 +33,7 @@ else
     </div>
 
     <center style="margin-top: 100px;"><h2>Episodes</h2></center>
-    @if (AllPodcasts is not null)
+    @if (AllPodcasts is not null && AllPodcasts.Count() > 0)
     {
         @foreach (var p in AllPodcasts)
         {
