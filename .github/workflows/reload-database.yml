@@ -5,7 +5,7 @@ jobs:
   backup:
     runs-on: MySanpete
     steps:
-      - name: backup
+      - name: Reload
         run: |
           CONTAINER_NAME=$(kubectl -n codebras get pods --no-headers -o custom-columns=":metadata.name" | grep my-sanpete-database-deployment)
 
