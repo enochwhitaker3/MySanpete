@@ -112,7 +112,7 @@ builder.Logging.AddOpenTelemetry(options =>
 builder.Services.AddOpenTelemetry()
      .ConfigureResource(resource => resource.AddService(serviceName))
      //.WithTracing(tracing => tracing
-     //    .AddSource(EthanTraces.Name)
+     //    .AddSource(MySanpeteMetrics.Name)
      //    .AddAspNetCoreInstrumentation()
      ////.AddConsoleExporter()
      //    .AddOtlpExporter(o =>
@@ -123,13 +123,6 @@ builder.Services.AddOpenTelemetry()
      // .AddConsoleExporter()
          .AddOtlpExporter(o =>
            o.Endpoint = new Uri(otelUrl)))
-           //.ConfigureResource(res => res.AddService("NewOne"))
-           //.WithTracing(t => t
-           //     .AddSource(EthanSecondTraces.Name)
-           //     .AddAspNetCoreInstrumentation()
-           ////.AddConsoleExporter()
-           //     .AddOtlpExporter(o =>
-           //       o.Endpoint = new Uri(otelUrl)))
            ;
 
 builder.Services.AddAuth0WebAppAuthentication(options =>
